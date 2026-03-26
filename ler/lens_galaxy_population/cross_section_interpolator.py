@@ -20,7 +20,7 @@ Copyright (C) 2024 Hemantakumar Phurailatpam. Distributed under MIT License.
 import numpy as np
 from numba import njit, prange
 
-from .lens_functions import phi_q2_ellipticity
+from ..image_properties.cross_section_njit import phi_q2_ellipticity
 
 C_LIGHT = 299792.458  # km/s
 
@@ -250,7 +250,7 @@ def _cross_section_eval(
     return cross_section
 
 
-def make_cross_section_reinit(
+def make_cross_section_area_reinit(
     e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid,
     cs_unit_grid, Da_instance,
     csunit_to_cs_slope=0.31830988618379075,

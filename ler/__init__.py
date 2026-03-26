@@ -122,7 +122,7 @@ Where multiprocessing is used:
   - uses njitted sampling functions (see ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_mp)
 
 Where njitted prange is used:
-1. ler.image_properties.cross_section_njit.make_cross_section_reinit
+1. ler.image_properties.cross_section_njit.make_cross_section_area_reinit
   - lenstronomy style njitted cross section calculation
 2. ler.image_properties.epl_shear_njit.create_epl_shear_solver
   - lenstronomy style njitted lens equation solver

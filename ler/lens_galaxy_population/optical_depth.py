@@ -44,9 +44,10 @@ from ..utils import (
 
 from .lens_functions import (
     phi_cut_SIE,
-    phi_q2_ellipticity,
     cross_section,
 )
+
+from ..image_properties.cross_section_njit import phi_q2_ellipticity
 
 from .mp import cross_section_mp
 
@@ -525,12 +526,53 @@ class OpticalDepth:
         # interpolator, [25, 25, 45, 15, 15] corresponds to the resolution for
         # e1, e2, gamma, gamma1, gamma2
         spacing_config = {
-            "e1": {"mode": "geom_mixed_inverse", "geom_fraction": 0.6, "transition_fraction": 0.3},
-            "e2": {"mode": "geom_mixed_inverse", "geom_fraction": 0.6, "transition_fraction": 0.3},
-            "gamma": {"mode": "linear"},
-            "gamma1": {"mode": "linear"},
-            "gamma2": {"mode": "linear"},
+            "e1": {
+                "mode": "two_sided_mixed_grid", 
+                "power_law_part": "lower",
+                "spacing_trend": "increasing",
+                "power": 2.5,
+                "value_transition_fraction": 0.7,
+                "num_transition_fraction": 0.9,
+                "auto_match_slope": True
+            },
+            "e2": {
+                "mode": "two_sided_mixed_grid", 
+                "power_law_part": "lower",
+                "spacing_trend": "increasing",
+                "power": 2.5,
+                "value_transition_fraction": 0.7,
+                "num_transition_fraction": 0.9,
+                "auto_match_slope": True
+            },
+            "gamma": {
+                "mode": "two_sided_mixed_grid", 
+                "power_law_part": "lower",
+                "spacing_trend": "increasing",
+                "power": 2.5,
+                "value_transition_fraction": 0.7,
+                "num_transition_fraction": 0.9,
+                "auto_match_slope": True
+            },
+            "gamma1": {
+                "mode": "two_sided_mixed_grid", 
+                "power_law_part": "lower",
+                "spacing_trend": "increasing",
+                "power": 2.5,
+                "value_transition_fraction": 0.7,
+                "num_transition_fraction": 0.9,
+                "auto_match_slope": True
+            },
+            "gamma2": {
+                "mode": "two_sided_mixed_grid", 
+                "power_law_part": "lower",
+                "spacing_trend": "increasing",
+                "power": 2.5,
+                "value_transition_fraction": 0.7,
+                "num_transition_fraction": 0.9,
+                "auto_match_slope": True
+            },
         }
+
         if lens_type == "sis_galaxy":
             create_new_interpolator.update(
                 cross_section=dict(create_new=False, resolution=[5, 5, 5, 5, 5], spacing_config=spacing_config),
@@ -2744,7 +2786,7 @@ class OpticalDepth:
         return e1, e2, gamma, gamma1, gamma2
 
     def cross_section_epl_shear_interpolation_init(
-        self, file_path, size_list, spacing_config=None
+        self, file_path, size_list, spacing_config=None, batch_size=50000
     ):
         print(f"Cross section interpolation data points will be created at {file_path}")
 
@@ -2816,7 +2858,7 @@ class OpticalDepth:
         set_num_threads(self.npool)
 
         # warm up the Numba function
-        @njit(cache=True)
+        @njit
         def cross_section_epl_shear_unit_(
             e1,
             e2,
@@ -2831,11 +2873,8 @@ class OpticalDepth:
                 gamma,
                 gamma1,
                 gamma2,
-                theta_E,
                 num_th=500,
                 maginf=-100.0,
-                sourceplane=True,
-                return_which="double",
             )
 
         cross_section_epl_shear_unit_(
@@ -2846,16 +2885,19 @@ class OpticalDepth:
             gamma2=gamma2_arr[:2],
         )
 
+        """Memory-efficient wrapper - reuses the same small work arrays."""
+        n = len(e1_arr)
+        cs_unit = np.empty(n)
+
         print(
-            "Computing cross-section data points for interpolation with ler.image_properties.cross_section_njit.cross_section_epl_shear_unit..."
+            f"Computing n={int(n)} cross-section data points for interpolation with ler.image_properties.cross_section_njit.cross_section_epl_shear_unit..."
         )
-        cs_unit = cross_section_epl_shear_unit_(
-            e1=e1_arr,
-            e2=e2_arr,
-            gamma=gamma_arr,
-            gamma1=gamma1_arr,
-            gamma2=gamma2_arr,
-        )
+        
+        for start in range(0, n, batch_size):
+            end = min(start + batch_size, n)
+            cs_unit[start:end] = cross_section_epl_shear_unit_(e1_arr[start:end], e2_arr[start:end], gamma_arr[start:end],
+                                gamma1_arr[start:end], gamma2_arr[start:end])
+
         # --------------------------
 
         # # find slope and intercept for cs_unit to cs conversion
@@ -2933,7 +2975,7 @@ class OpticalDepth:
         Function to compute the cross-section correction factor
         """
 
-        from .cross_section_interpolator import make_cross_section_reinit
+        from .cross_section_interpolator import make_cross_section_area_reinit
 
         # spacing_config = kwargs.get("grid_spacing_config", None)
         if spacing_config is None:
@@ -3002,7 +3044,7 @@ class OpticalDepth:
         self.cs_data_points_path = file_path
 
         # Create the interpolator instance
-        cs_caculator = make_cross_section_reinit(
+        cs_caculator = make_cross_section_area_reinit(
             e1_grid=np.array(e1_grid),
             e2_grid=np.array(e2_grid),
             gamma_grid=np.array(gamma_grid),
@@ -3031,9 +3073,9 @@ class OpticalDepth:
             )
         )
 
-    # ---------------------------------------------------------------------------
+    # ----------------------------------------------------
     # EPL + external shear cross section using Numba njit
-    # ---------------------------------------------------------------------------
+    # ----------------------------------------------------
     def cross_section_epl_shear_njit(
         self,
         zs,
@@ -3092,16 +3134,14 @@ class OpticalDepth:
             Lensing cross-section in arcsec^2.
         """
 
-        from ..image_properties.cross_section_njit import make_cross_section_reinit
+        from ..image_properties.cross_section_njit import make_cross_section_area_reinit
 
         # Create the interpolator instance
         Da_instance = self.angular_diameter_distance.function
-        cs_caculator = make_cross_section_reinit(
+        cs_caculator = make_cross_section_area_reinit(
             Da_instance=Da_instance,
             num_th=num_th,
             maginf=maginf,
-            sourceplane=sourceplane,
-            return_which=return_which,
         )
 
         return (
@@ -3855,7 +3895,7 @@ class OpticalDepth:
                 cross_section_epl_shear_numerical=None,
                 cross_section_epl_shear_interpolation=None,
                 cross_section_epl_shear_njit=dict(
-                    num_th=500, maginf=-100.0, sourceplane=True, return_which="double"
+                    num_th=500, maginf=-100.0
                 ),
             ),
         )

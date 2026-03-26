@@ -34,9 +34,9 @@ from .multiprocessing_routine_epl_shear import (
     solve_lens_equation,
     _init_worker_multiprocessing,
 )
-from ..lens_galaxy_population.lens_functions import phi_q2_ellipticity
+from ..image_properties.cross_section_njit import phi_q2_ellipticity
 
-Mpc_to_m = 3.085677581491367e22
+Mpc_to_m = 3.085677581491367e+22 # from astropy. But lenstronomy uses 3.08567758e22. As a result time delays are slightly different at milisecond precision.
 
 
 class ImageProperties:
@@ -209,7 +209,6 @@ class ImageProperties:
                 max_img=self.n_max_images,
                 num_th=self.image_properties_function_params["num_th"],
                 maginf=self.image_properties_function_params["maginf"],
-                max_tries=self.image_properties_function_params["max_tries"],
                 alpha_scaling=self.image_properties_function_params["alpha_scaling"],
                 magnification_limit=self.image_properties_function_params["magnification_limit"],
                 Nmeas=self.image_properties_function_params["Nmeas"],

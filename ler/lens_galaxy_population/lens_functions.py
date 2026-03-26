@@ -49,30 +49,25 @@ def phi_cut_SIE(q):
             result[i] = np.pi
     return result/np.pi
 
+def einstein_radius(sigma, zl, zs, cosmo=None):
+        """
+        Function to compute the Einstein radii of the lens galaxies
+        """
+        if cosmo is None:
+            from astropy.cosmology import LambdaCDM
+            cosmo = LambdaCDM(
+                H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0
+            )
 
-@njit(cache=True)
-def phi_q2_ellipticity(phi, q):
-    """
-    Convert position angle and axis ratio to ellipticity components.
+        # Compute the angular diameter distances
+        Ds = cosmo.angular_diameter_distance(zs)
+        Dls = cosmo.angular_diameter_distance_z1z2(zl, zs)
+        # Compute the Einstein radii
+        theta_E = (
+            4.0 * np.pi * (sigma / 299792.458) ** 2 * Dls / (Ds)
+        )  # Note: km/s for sigma; Dls, Ds are in Mpc
 
-    Parameters
-    ----------
-    phi : ``numpy.ndarray``
-        Position angle of the major axis (radians).
-    q : ``numpy.ndarray``
-        Axis ratio (0 < q <= 1).
-
-    Returns
-    -------
-    e1 : ``numpy.ndarray``
-        First ellipticity component.
-    e2 : ``numpy.ndarray``
-        Second ellipticity component.
-    """
-    e_1 = (1.0 - q) / (1.0 + q) * np.cos(2 * phi)
-    e_2 = (1.0 - q) / (1.0 + q) * np.sin(2 * phi)
-    return e_1, e_2
-
+        return theta_E
 
 def cross_section(theta_E, e1, e2, gamma, gamma1, gamma2):
     """

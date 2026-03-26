@@ -1,16 +1,16 @@
 """
-Module for analytical caustic computation and cross-section evaluation.
+Module for analytical caustic computation and cross-section evaluation
+of EPL (Elliptical Power-Law) + external shear lens models.
 
 Provides numba-accelerated routines for computing critical curves, caustic
-boundaries, polygon areas, and lensing cross sections for EPL (Elliptical
-Power-Law) + external shear lens models. All core functions are decorated
-with ``@njit`` for high performance.
+boundaries, polygon areas, and lensing cross sections. All core functions
+are decorated with ``@njit`` for high performance.
 
 Usage:
-    Basic workflow example:
+    Compute the double-caustic boundary for a single lens:
 
-    >>> from ler.image_properties.cross_section_njit import caustic_points_epl_shear
-    >>> pts = caustic_points_epl_shear(theta_E=1.0, q=0.8, phi=0.0, gamma=2.0, gamma1=0.03, gamma2=-0.01)
+    >>> from ler.image_properties.cross_section_njit import caustics_epl_shear
+    >>> pts = caustics_epl_shear(q=0.8, phi=0.0, gamma=2.0, gamma1=0.03, gamma2=-0.01)
 
 Copyright (C) 2026 Phurailatpam Hemantakumar. Distributed under MIT License.
 """
@@ -21,7 +21,6 @@ from numba import njit, prange
 C_LIGHT = 299792458.0  # m/s
 PI = np.pi
 TWO_PI = 2.0 * PI
-EPS = 1e-16
 
 @njit(cache=True, fastmath=True)
 def phi_q2_ellipticity(phi, q):
@@ -31,16 +30,16 @@ def phi_q2_ellipticity(phi, q):
     Parameters
     ----------
     phi : ``float``
-        Position angle of the lens major axis in radians. \n
+        Position angle of the lens major axis in radians.
     q : ``float``
-        Axis ratio (minor/major), where ``0 < q <= 1``. \n
+        Axis ratio (minor/major), where ``0 < q <= 1``.
 
     Returns
     -------
     e1 : ``float``
-        First ellipticity component. \n
+        First ellipticity component.
     e2 : ``float``
-        Second ellipticity component. \n
+        Second ellipticity component.
 
     Examples
     --------
@@ -57,16 +56,16 @@ def _shear_cartesian2polar(gamma1, gamma2):
     Parameters
     ----------
     gamma1 : ``float``
-        First Cartesian shear component. \n
+        First Cartesian shear component.
     gamma2 : ``float``
-        Second Cartesian shear component. \n
+        Second Cartesian shear component.
 
     Returns
     -------
     phi : ``float``
-        Shear position angle in radians. \n
+        Shear position angle in radians.
     gamma : ``float``
-        Shear magnitude. \n
+        Shear magnitude.
     """
     phi = np.arctan2(gamma2, gamma1) / 2
     gamma = np.sqrt(gamma1**2 + gamma2**2)
@@ -77,24 +76,6 @@ def _shear_cartesian2polar(gamma1, gamma2):
 def ellipticity2phi_q(e1, e2):
     """
     Convert complex ellipticity moduli to orientation angle and axis ratio.
-
-    Parameters
-    ----------
-    e1 : ``float``
-        First ellipticity component. \n
-    e2 : ``float``
-        Second ellipticity component. \n
-
-    Returns
-    -------
-    phi : ``float``
-        Orientation angle in radians. \n
-    q : ``float``
-        Axis ratio (minor/major). \n
-
-    Examples
-    --------
-    >>> phi, q = ellipticity2phi_q(0.1, 0.05)
     """
     phi = np.arctan2(e2, e1) / 2
     c = np.sqrt(e1**2 + e2**2)
@@ -106,24 +87,20 @@ def ellipticity2phi_q(e1, e2):
 def _shear_polar2cartesian(phi, gamma):
     """
     Convert polar shear representation to Cartesian components.
-
-    Parameters
-    ----------
-    phi : ``float``
-        Shear position angle in radians. \n
-    gamma : ``float``
-        Shear magnitude. \n
-
-    Returns
-    -------
-    gamma1 : ``float``
-        First Cartesian shear component. \n
-    gamma2 : ``float``
-        Second Cartesian shear component. \n
     """
     gamma1 = gamma * np.cos(2 * phi)
     gamma2 = gamma * np.sin(2 * phi)
     return gamma1, gamma2
+
+@njit(cache=True, fastmath=True)
+def pol_to_ell(r, theta, q):
+    """
+    Convert polar coordinates to elliptical coordinates.
+    """
+
+    phi = np.arctan2(np.sin(theta), np.cos(theta) * q)
+    rell = r * np.sqrt(q**2 * np.cos(theta) ** 2 + np.sin(theta) ** 2)
+    return rell, phi
 
 @njit(cache=True, fastmath=True)
 def _rotmat(th):
@@ -133,12 +110,12 @@ def _rotmat(th):
     Parameters
     ----------
     th : ``float``
-        Rotation angle in radians. \n
+        Rotation angle in radians.
 
     Returns
     -------
     M : ``numpy.ndarray``
-        2×2 rotation matrix. \n
+        2×2 rotation matrix.
     """
     return np.array([[np.cos(th), np.sin(th)], [-np.sin(th), np.cos(th)]])
 
@@ -154,11 +131,11 @@ def omega(phi, t, q, niter_max=200, tol=1e-16):
     Parameters
     ----------
     phi : ``numpy.ndarray``
-        Azimuthal angles in radians. \n
+        Azimuthal angles in radians.
     t : ``float``
-        EPL slope exponent (``t = gamma - 1``). \n
+        EPL slope exponent (``t = gamma - 1``).
     q : ``float``
-        Axis ratio. \n
+        Axis ratio.
     niter_max : ``int``
         Maximum number of series terms. \n
         default: 200
@@ -169,18 +146,16 @@ def omega(phi, t, q, niter_max=200, tol=1e-16):
     Returns
     -------
     omegas : ``numpy.ndarray``
-        Complex Omega values at each angle. \n
+        Complex Omega values at each angle (same object as input buffer).
 
     Examples
     --------
     >>> import numpy as np
     >>> phi = np.linspace(0, 2 * np.pi, 100)
-    >>> omegas = omega(phi, t=1.0, q=0.8)
+    >>> result = np.empty_like(phi, dtype=np.complex128)
+    >>> omega(phi, t=1.0, q=0.8, omegas=result)
     """
     f = (1 - q) / (1 + q)
-    if f <= EPS:
-        return np.exp(1j * phi)
-        
     omegas = np.zeros_like(phi, dtype=np.complex128)
     niter = min(
         niter_max, int(np.log(tol) / np.log(f)) + 2
@@ -194,6 +169,24 @@ def omega(phi, t, q, niter_max=200, tol=1e-16):
 
     return omegas
 
+
+@njit(cache=True, fastmath=True)
+def omega_scalar(phi, t, q, niter_max=200, tol=1e-16):
+    """
+    Scalar version of ``omega`` that avoids temporary array allocation.
+    """
+    f = (1.0 - q) / (1.0 + q)
+    omega_sum = 0.0 + 0.0j
+    niter = min(niter_max, int(np.log(tol) / np.log(f)) + 2)
+    Omega = np.exp(1j * phi)
+    fact = -f * np.exp(2j * phi)
+
+    for n in range(1, niter):
+        omega_sum += Omega
+        Omega *= (2.0 * n - (2.0 - t)) / (2.0 * n + (2.0 - t)) * fact
+    omega_sum += Omega
+    return omega_sum
+
 @njit(cache=True, fastmath=True)
 def cdot(a, b):
     """
@@ -204,14 +197,14 @@ def cdot(a, b):
     Parameters
     ----------
     a : ``complex``
-        First complex number. \n
+        First complex number.
     b : ``complex``
-        Second complex number. \n
+        Second complex number.
 
     Returns
     -------
     result : ``float``
-        Real-valued dot product. \n
+        Real-valued dot product.
 
     Examples
     --------
@@ -220,7 +213,7 @@ def cdot(a, b):
     """
     return a.real * b.real + a.imag * b.imag
 
-@njit(cache=True, fastmath=True)
+@njit(cache=True)
 def _solvequadeq(a, b, c):
     """
     Solve a quadratic equation with numerically careful root selection.
@@ -231,18 +224,18 @@ def _solvequadeq(a, b, c):
     Parameters
     ----------
     a : ``numpy.ndarray``
-        Quadratic coefficient. \n
+        Quadratic coefficient.
     b : ``numpy.ndarray``
-        Linear coefficient. \n
+        Linear coefficient.
     c : ``numpy.ndarray``
-        Constant coefficient. \n
+        Constant coefficient.
 
     Returns
     -------
     x1 : ``numpy.ndarray``
-        First root. \n
+        First root.
     x2 : ``numpy.ndarray``
-        Second root. \n
+        Second root.
     """
     # # Clamp discriminant: angles with no real critical curve get a repeated root
     # # instead of NaN from sqrt(negative).
@@ -287,16 +280,16 @@ def pol_to_cart(r, th):
     Parameters
     ----------
     r : ``float`` or ``numpy.ndarray``
-        Radial coordinate. \n
+        Radial coordinate.
     th : ``float`` or ``numpy.ndarray``
-        Polar angle in radians. \n
+        Polar angle in radians.
 
     Returns
     -------
     x : ``float`` or ``numpy.ndarray``
-        Cartesian x-coordinate. \n
+        Cartesian x-coordinate.
     y : ``float`` or ``numpy.ndarray``
-        Cartesian y-coordinate. \n
+        Cartesian y-coordinate.
 
     Examples
     --------
@@ -304,43 +297,39 @@ def pol_to_cart(r, th):
     """
     return r * np.cos(th), r * np.sin(th)
 
-@njit(cache=True, fastmath=True)
+@njit(cache=True)
 def _alpha_epl_shear(x, y, b, q, t, gamma1, gamma2, Omega):
     """
     Compute the complex deflection of an EPL + external shear lens.
 
     alpha_EPL = (2 * b) / (1 + q) * (b / R)^t * R / b * Omega
     alpha_Shear = gamma1 * x + gamma2 * y + i * (gamma2 * x - gamma1 * y)
-
-    Parameters
-    ----------
-    x : ``numpy.ndarray``
-        Cartesian x-coordinate. \n
-    y : ``numpy.ndarray``
-        Cartesian y-coordinate. \n
-    b : ``float``
-        EPL scale radius. \n
-    q : ``float``
-        Axis ratio. \n
-    t : ``float``
-        EPL slope exponent (``t = gamma - 1``). \n
-    gamma1 : ``float``
-        First shear component. \n
-    gamma2 : ``float``
-        Second shear component. \n
-    Omega : ``numpy.ndarray``
-        Complex angular function Omega. \n
-
-    Returns
-    -------
-    alpha : ``numpy.ndarray``
-        Complex deflection array. \n
     """
     zz = x * q + 1j * y
     R = np.abs(zz)
     #alph = (2 * b) / (1 + q) * np.nan_to_num((b / R) ** t * R / b) * Omega
     alph = (2* b**t)/(1 + q) * R**(1-t) * Omega
 
+    return (
+        alph
+        + (gamma1 * x + gamma2 * y)
+        + 1j * (gamma2 * x - gamma1 * y)
+    )
+
+@njit(cache=True)
+def _alpha_epl_shear_scalar(x, y, b, q, t=1, gamma1=0, gamma2=0):
+    """
+    Scalar complex deflection for EPL + external shear. Same as _alpha_epl_shear but avoids temporary array allocation by calling the scalar omega function.
+
+    alpha_EPL = (2 * b) / (1 + q) * (b / R)^t * R / b * Omega
+    alpha_Shear = gamma1 * x + gamma2 * y + i * (gamma2 * x - gamma1 * y)
+    """
+    zz = x * q + 1j * y
+    R = np.abs(zz)
+    phi = np.angle(zz)
+    Omega = omega_scalar(phi, t, q)
+    # alph = (2 * b) / (1 + q) * np.nan_to_num((b / R) ** t * R / b) * Omega
+    alph = (2* b**t)/(1 + q) * R**(1-t) * Omega
     return (
         alph
         + (gamma1 * x + gamma2 * y)
@@ -357,16 +346,16 @@ def cart_to_pol(x, y):
     Parameters
     ----------
     x : ``float`` or ``numpy.ndarray``
-        Cartesian x-coordinate. \n
+        Cartesian x-coordinate.
     y : ``float`` or ``numpy.ndarray``
-        Cartesian y-coordinate. \n
+        Cartesian y-coordinate.
 
     Returns
     -------
     r : ``float`` or ``numpy.ndarray``
-        Radial coordinate. \n
+        Radial coordinate.
     theta : ``float`` or ``numpy.ndarray``
-        Polar angle in radians, wrapped to ``[0, 2π)``. \n
+        Polar angle in radians, wrapped to ``[0, 2π)``.
 
     Examples
     --------
@@ -374,7 +363,7 @@ def cart_to_pol(x, y):
     """
     return np.sqrt(x**2 + y**2), np.arctan2(y, x) % (2 * np.pi)
 
-@njit(cache=True, fastmath=True)
+@njit(cache=True)
 def _interp_periodic(x, xp, fp, period):
     """
     Perform numba-compatible periodic linear interpolation.
@@ -384,18 +373,18 @@ def _interp_periodic(x, xp, fp, period):
     Parameters
     ----------
     x : ``numpy.ndarray``
-        Query points. \n
+        Query points.
     xp : ``numpy.ndarray``
-        Known x-values, sorted and within ``[0, period)``. \n
+        Known x-values, sorted and within ``[0, period)``.
     fp : ``numpy.ndarray``
-        Known function values corresponding to ``xp``. \n
+        Known function values corresponding to ``xp``.
     period : ``float``
-        Period of the function. \n
+        Period of the function.
 
     Returns
     -------
     result : ``numpy.ndarray``
-        Interpolated values at query points. \n
+        Interpolated values at query points.
     """
     n = xp.shape[0]
     result = np.empty_like(x)
@@ -433,12 +422,12 @@ def _rotmat(th):
     Parameters
     ----------
     th : ``float``
-        Rotation angle in radians. \n
+        Rotation angle in radians.
 
     Returns
     -------
     M : ``numpy.ndarray``
-        2×2 rotation matrix. \n
+        2×2 rotation matrix.
     """
     return np.array([[np.cos(th), np.sin(th)], [-np.sin(th), np.cos(th)]])
 
@@ -452,39 +441,6 @@ def _helper_caustic_epl_shear(
     """
     Generates the unrotated radial boundaries of the EPL+shear caustic 
     and writes them into the provided workspace arrays.
-
-    Parameters
-    ----------
-    q : ``float``
-        Axis ratio. \n
-    phi : ``float``
-        Position angle of the lens major axis in radians. \n
-    gamma : ``float``
-        EPL slope exponent. \n
-    gamma1 : ``float``
-        First shear component. \n
-    gamma2 : ``float``
-        Second shear component. \n
-    theta_E : ``float``
-        Einstein radius. \n
-    theta : ``numpy.ndarray``
-        Array of angles. \n
-    cos_th : ``numpy.ndarray``
-        Array of cosine of angles. \n
-    sin_th : ``numpy.ndarray``
-        Array of sine of angles. \n
-    cos_2th : ``numpy.ndarray``
-        Array of cosine of 2*angles. \n
-    sin_2th : ``numpy.ndarray``
-        Array of sine of 2*angles. \n
-    maginf : ``float``
-        Magnification cut threshold. \n
-        default: -100.0
-
-    Returns
-    -------
-    pos_tosample : ``numpy.ndarray``
-        Cartesian coordinates of the radial boundaries. \n
     """
 
     t = gamma - 1.0
@@ -529,10 +485,9 @@ def _helper_caustic_epl_shear(
     bb = np.full_like(theta, -(2 - t))
     frac_roverR = r / R_theta_ell
     # internal shear contribution
-    # replace np.exp(2j * theta) with cos_2th + 1j*sin_2th and np.exp(1j * theta) with cos_th + 1j*sin_th 
     gammaint_fac = (
-        -(cos_2th + 1j * sin_2th) * (2 - t) / 2
-        + (1 - t) * (cos_th + 1j * sin_th) * 2 / (1 + q) * Omega / frac_roverR
+        -np.exp(2j * theta) * (2 - t) / 2
+        + (1 - t) * np.exp(1j * theta) * 2 / (1 + q) * Omega / frac_roverR
     ) # gamma_internal = gammaint_fac * u
     # external shear contribution to the linear term of the quadratic system
     bb -= 2 * cdot(gamma_ext, gammaint_fac)
@@ -541,7 +496,7 @@ def _helper_caustic_epl_shear(
     cc = (
         (1 - t)
         * (2 - t)
-        * (cdot(cos_th + 1j * sin_th, Omega))
+        * (cdot(np.exp(1j * theta), Omega))
         / frac_roverR
         * 2
         / (1 + q)
@@ -553,12 +508,12 @@ def _helper_caustic_epl_shear(
     # u = (R/r)^t is physically a positive radial ratio; negative roots are
     # unphysical (occur when cc < 0, aa > 0). np.abs preserves the correct
     # magnitude while keeping the result real.
-    x1_4, x2_4 = _solvequadeq(cc, bb, aa)
+    usol = np.stack(_solvequadeq(cc, bb, aa)).T
     # if usol[:, 1] < 1e-30:
     #     u4 = usol[:, 0]
     # else:
     #     u4 = usol[:, 1]
-    u4 = np.where(x2_4 > 0., x2_4, x1_4)
+    u4 = np.where(usol[:, 1] > 0., usol[:, 1], usol[:, 0])
     xcr_4, ycr_4 = pol_to_cart(
         b * u4 ** (-1 / t) * frac_roverR,
         theta
@@ -568,15 +523,15 @@ def _helper_caustic_epl_shear(
     if (
         t > 1
     ):  # If t>1, get the approximate outer caustic instead (where inverse magnification = maginf).
-        x1_cut, x2_cut = _solvequadeq(cc, bb, aa - maginf)
-        u_cut = np.where(x2_cut > 0., x2_cut, x1_cut)
+        usol = np.stack(_solvequadeq(cc, bb, aa - maginf)).T
+        u_cut = np.where(usol[:, 1] > 0., usol[:, 1], usol[:, 0])
         xcr_cut, ycr_cut = pol_to_cart(
             b * u_cut ** (-1 / t) * frac_roverR,
             theta
         )
     else:
-        x1_cut, x2_cut = _solvequadeq(cc, bb, aa + maginf)
-        u_cut = np.where(x1_cut > 0., x1_cut, x2_cut)
+        usol = np.stack(_solvequadeq(cc, bb, aa + maginf)).T
+        u_cut = np.where(usol[:, 1] > 0., usol[:, 1], usol[:, 0])
         xcr_cut, ycr_cut = pol_to_cart(
             b * u_cut ** (-1 / t) * frac_roverR,
             theta
@@ -629,36 +584,6 @@ def caustic_points_epl_shear(
     """
     Calculates the 2D coordinates of the double caustic for a SINGLE lens.
     Accepts scalar float values.
-
-    Parameters
-    ----------
-    theta_E : ``float``
-        Einstein radius. \n
-    q : ``float``
-        Axis ratio. \n
-    phi : ``float``
-        Position angle of the lens major axis in radians. \n
-    gamma : ``float``
-        EPL slope exponent. \n
-    gamma1 : ``float``
-        First shear component. \n
-    gamma2 : ``float``
-        Second shear component. \n
-    num_th : ``int``
-        Number of angular samples. \n
-        default: 500
-    maginf : ``float``
-        Magnification cut threshold. \n
-        default: -100.0
-
-    Returns
-    -------
-    rotated : ``numpy.ndarray``
-        Shape ``(2, num_th)`` Cartesian coordinates of the double caustic. \n
-
-    Examples
-    --------
-    >>> pts = caustic_points_epl_shear(theta_E=1.0, q=0.8, phi=0.0, gamma=2.0, gamma1=0.03, gamma2=-0.01)
     """
     theta = np.linspace(0, 2 * PI * (1.0 - 1.0 / num_th), num_th)
     
@@ -694,47 +619,8 @@ def caustic_area_epl_shear(
     maginf=-100.0
 ):
     """
-    Calculates the area of the double caustic for a SINGLE lens.
+    Calculates the 2D coordinates of the double caustic for a SINGLE lens.
     Accepts scalar float values.
-
-    Parameters
-    ----------
-    q : ``float``
-        Axis ratio. \n
-    phi : ``float``
-        Position angle of the lens major axis in radians. \n
-    gamma : ``float``
-        EPL slope exponent. \n
-    gamma1 : ``float``
-        First shear component. \n
-    gamma2 : ``float``
-        Second shear component. \n
-    theta_E : ``float``
-        Einstein radius. \n
-    theta : ``numpy.ndarray``
-        Array of angles. \n
-    cos_th : ``numpy.ndarray``
-        Array of cosine of angles. \n
-    sin_th : ``numpy.ndarray``
-        Array of sine of angles. \n
-    cos_2th : ``numpy.ndarray``
-        Array of cosine of 2*angles. \n
-    sin_2th : ``numpy.ndarray``
-        Array of sine of 2*angles. \n
-    maginf : ``float``
-        Magnification cut threshold. \n
-        default: -100.0
-
-    Returns
-    -------
-    area : ``float``
-        Area of the caustic. \n
-
-    Examples
-    --------
-    >>> import numpy as np
-    >>> theta = np.linspace(0, 2*np.pi, 500)
-    >>> area = caustic_area_epl_shear(0.8, 0.0, 2.0, 0.03, -0.01, 1.0, theta, np.cos(theta), np.sin(theta), np.cos(2*theta), np.sin(2*theta))
     """
     
     # Call the helper
@@ -754,23 +640,6 @@ def caustic_area_epl_shear(
 def polygon_area(xv, yv):
     """
     Compute the area of a simple polygon using the Shoelace formula.
-
-    Parameters
-    ----------
-    xv : ``numpy.ndarray``
-        x-coordinates of the polygon vertices. \n
-    yv : ``numpy.ndarray``
-        y-coordinates of the polygon vertices. \n
-
-    Returns
-    -------
-    area : ``float``
-        Area of the polygon. \n
-
-    Examples
-    --------
-    >>> import numpy as np
-    >>> area = polygon_area(np.array([0., 1., 0.]), np.array([0., 0., 1.]))
     """
     area = 0.0
     n = xv.shape[0]
@@ -781,32 +650,10 @@ def polygon_area(xv, yv):
     return abs(area) / 2.0
 
 def make_cross_section_area_reinit(Da_instance, num_th=500, maginf=-100.0):
-    """
-    Make a jitted function to compute double-caustic cross sections.
-
-    Drop-in replacement with trig arrays closed over (faster),
-    safe memory layout, and optional chunking for huge batches.
-
-    Parameters
-    ----------
-    Da_instance : ``callable``
-        Angular diameter distance function. \n
-    num_th : ``int``
-        Number of points to sample. \n
-        default: 500
-    maginf : ``float``
-        Magnification cut threshold. \n
-        default: -100.0
-
-    Returns
-    -------
-    cross_section_area : ``callable``
-        Jitted function to compute cross section areas. \n
-
-    Examples
-    --------
-    >>> cross_section_fn = make_cross_section_area_reinit(Da_instance)
-    """
+    """Drop-in replacement with:
+       - trig arrays closed over (faster)
+       - safe memory layout
+       - optional chunking for huge batches (no thread-ID hack)"""
     theta = np.linspace(0, 2 * np.pi * (1.0 - 1.0 / num_th), num_th)
     
     # Closed-over constants (no recomputation)
@@ -851,35 +698,6 @@ def cross_section_epl_shear_unit(
 ):
     """
     Compute double-caustic cross sections for batched lens parameters.
-
-    Parameters
-    ----------
-    e1 : ``numpy.ndarray``
-        First ellipticity component array. \n
-    e2 : ``numpy.ndarray``
-        Second ellipticity component array. \n
-    gamma : ``numpy.ndarray``
-        EPL slope exponent array. \n
-    gamma1 : ``numpy.ndarray``
-        First shear component array. \n
-    gamma2 : ``numpy.ndarray``
-        Second shear component array. \n
-    num_th : ``int``
-        Number of points to sample. \n
-        default: 500
-    maginf : ``float``
-        Magnification cut threshold. \n
-        default: -100.0
-
-    Returns
-    -------
-    cross_section_area : ``callable``
-        Jitted function to compute cross section areas. \n
-
-    Examples
-    --------
-    >>> import numpy as np
-    >>> calculate_area = cross_section_epl_shear_unit(np.array([0.1]), np.array([0.05]), np.array([2.0]), np.array([0.03]), np.array([-0.01]))
     """
     theta = np.linspace(0, 2 * np.pi * (1.0 - 1.0 / num_th), num_th)
 

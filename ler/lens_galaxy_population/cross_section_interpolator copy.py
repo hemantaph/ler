@@ -20,8 +20,8 @@ Key Features: \n
 Usage:
     Basic workflow example:
 
-    >>> from ler.lens_galaxy_population.cross_section_interpolator import make_cross_section_reinit
-    >>> cs_func = make_cross_section_reinit(e1_grid, e2_grid, gamma_grid, ...)
+    >>> from ler.lens_galaxy_population.cross_section_interpolator import make_cross_section_area_reinit
+    >>> cs_func = make_cross_section_area_reinit(e1_grid, e2_grid, gamma_grid, ...)
     >>> cross_sections = cs_func(zs, zl, sigma, q, phi, gamma, gamma1, gamma2)
 
 Copyright (C) 2024 Hemantakumar Phurailatpam. Distributed under MIT License.
@@ -31,7 +31,7 @@ import numpy as np
 from numba import njit, prange
 from scipy import ndimage
 
-from .lens_functions import phi_q2_ellipticity
+from ..image_properties.cross_section_njit import phi_q2_ellipticity
 
 C_LIGHT = 299792.458  # km/s
 
@@ -334,7 +334,7 @@ def _cross_section(
     return cs
 
 
-def make_cross_section_reinit(
+def make_cross_section_area_reinit(
     e1_grid,
     e2_grid,
     gamma_grid,
@@ -386,8 +386,8 @@ def make_cross_section_reinit(
 
     Examples
     --------
-    >>> from ler.lens_galaxy_population.cross_section_interpolator import make_cross_section_reinit
-    >>> cs_func = make_cross_section_reinit(
+    >>> from ler.lens_galaxy_population.cross_section_interpolator import make_cross_section_area_reinit
+    >>> cs_func = make_cross_section_area_reinit(
     ...     e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid,
     ...     cs_spline_coeff_grid, Da_instance
     ... )

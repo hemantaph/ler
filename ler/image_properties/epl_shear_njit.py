@@ -1,34 +1,170 @@
 """
-Module for semi-analytical image finding in EPL + external shear lens models.
+Numba-JIT-compiled EPL + external shear lensing solver.
 
-Provides a numba-accelerated solver that locates multiple lensed images,
-computes their magnifications, arrival times, and image types for an
-elliptical power-law (EPL) mass profile with external shear.
+Provides analytical image-position finding, magnification computation,
+Fermat-potential evaluation, and a parallel batch solver for
+elliptical power-law (EPL) lens models with external shear.
 
-Usage:
-    Solve for image positions of a single source:
+The module uses the 1-D lens-equation approach, reducing the 2-D vector
+equation to a scalar root-finding problem parameterised by the
+image-plane angle. All computationally intensive functions are compiled
+with ``# @njit`` (Numba) for performance.
 
-    >>> from ler.image_properties.epl_shear_njit import image_position_analytical_njit
-    >>> x_img, y_img, tau, mu, itype, n = image_position_analytical_njit(
-    ...     x=0.1, y=0.05, q=0.8, phi=0.3, gamma=2.0,
-    ...     gamma1=0.03, gamma2=-0.01
-    ... )
+The top-level entry points are: \n
+- :func:`image_position_analytical_njit` — single-system solver \n
+- :func:`create_epl_shear_solver` — factory for a parallel batch solver \n
 
-Copyright (C) 2026 Phurailatpam Hemantakumar. Distributed under MIT License.
+Copyright (C) 2026 Author Name. Distributed under MIT License.
 """
 
 import numpy as np
 from numba import njit, prange
 from .sample_caustic_points_njit import sample_source_from_double_caustic
-from .cross_section_njit import omega_scalar, cdot, pol_to_ell, _alpha_epl_shear_scalar
+from .cross_section_njit import cdot
 
 
-EPS = 1e-14
-MAX_ROOTS = 64
+EPS = 1e-16
+MAX_ROOTS = 16
 MAX_IMGS = 5
 C_LIGHT = 299792458.0  # m/s
 
-@njit(cache=True)
+# @njit(cache=True, fastmath=True)
+def pol_to_ell(r, theta, q):
+    """
+    Convert polar coordinates to elliptical coordinates.
+
+    Parameters
+    ----------
+    r : ``float``
+        Polar radial coordinate.
+    theta : ``float``
+        Polar angle in radians.
+    q : ``float``
+        Axis ratio of the ellipse (0 < q ≤ 1).
+
+    Returns
+    -------
+    rell : ``float``
+        Elliptical radial coordinate,
+        ``rell = r * sqrt(q^2*cos^2(theta) + sin^2(theta))``.
+    phi : ``float``
+        Elliptical angle in radians,
+        ``phi = arctan2(sin(theta), cos(theta)*q)``.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from ler.image_properties.epl_shear_njit import pol_to_ell
+    >>> rell, phi = pol_to_ell(1.0, np.pi / 4, 0.7)
+    """
+
+    phi = np.arctan2(np.sin(theta), np.cos(theta) * q)
+    rell = r * np.sqrt(q**2 * np.cos(theta) ** 2 + np.sin(theta) ** 2)
+    return rell, phi
+
+# @njit(cache=True, fastmath=True)
+def omega_scalar(phi, t, q, niter_max=200, tol=1e-16):
+    """
+    Scalar series expansion of the EPL deflection kernel Omega. 
+
+    Evaluates the convergent series for the EPL Omega function at a
+    single elliptical angle, avoiding temporary array allocation.
+    The series converges geometrically with ratio
+    ``f = (1-q)/(1+q)``.
+
+    Parameters
+    ----------
+    phi : ``float``
+        Elliptical angle in radians.
+    t : ``float``
+        EPL slope parameter (``t = gamma - 1``).
+    q : ``float``
+        Axis ratio (0 < q ≤ 1).
+    niter_max : ``int``
+        Maximum number of series iterations. 
+        default: 200
+    tol : ``float``
+        Convergence tolerance for series truncation. 
+        default: 1e-16
+
+    Returns
+    -------
+    omega_sum : ``complex``
+        Complex EPL deflection kernel value at angle ``phi``.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from ler.image_properties.epl_shear_njit import omega_scalar
+    >>> omega = omega_scalar(np.pi / 3, t=1.0, q=0.8)
+    """
+    f = (1.0 - q) / (1.0 + q)
+
+    # Floating-point safeguard: if q is extremely close to 1, f approaches 0.
+    # This prevents np.log(f) from evaluating to -inf and crashing the loop counter.
+    if f <= EPS:
+        return np.exp(1j * phi)
+
+    omega_sum = 0.0 + 0.0j
+    niter = min(niter_max, int(np.log(tol) / np.log(f)) + 2)
+    Omega = np.exp(1j * phi)
+    fact = -f * np.exp(2j * phi)
+
+    for n in range(1, niter):
+        omega_sum += Omega
+        Omega *= (2.0 * n - (2.0 - t)) / (2.0 * n + (2.0 - t)) * fact
+    omega_sum += Omega
+    return omega_sum
+
+# @njit(cache=True, fastmath=True)
+def _alpha_epl_shear_scalar(x, y, b, q, t=1, gamma1=0, gamma2=0):
+    """
+    Scalar complex deflection for EPL + external shear. 
+
+    Same as the array version but avoids temporary allocation by
+    calling the scalar :func:`omega_scalar`. 
+    ``alpha_EPL   = (2 b^t) / (1 + q) * R^(1-t) * Omega`` 
+    ``alpha_Shear = gamma1*x + gamma2*y + i*(gamma2*x - gamma1*y)``
+
+    Parameters
+    ----------
+    x : ``float``
+        Image-plane x-coordinate.
+    y : ``float``
+        Image-plane y-coordinate.
+    b : ``float``
+        EPL scale parameter (``b = theta_E * sqrt(q)``).
+    q : ``float``
+        Axis ratio (0 < q ≤ 1).
+    t : ``float``
+        EPL slope parameter (``t = gamma - 1``). 
+        default: 1
+    gamma1 : ``float``
+        External shear component 1. 
+        default: 0
+    gamma2 : ``float``
+        External shear component 2. 
+        default: 0
+
+    Returns
+    -------
+    alpha : ``complex``
+        Total complex deflection angle (EPL + shear).
+    """
+    zz = x * q + 1j * y
+    R = np.abs(zz)
+    phi = np.angle(zz)
+    Omega = omega_scalar(phi, t, q)
+    # alph = (2 * b) / (1 + q) * np.nan_to_num((b / R) ** t * R / b) * Omega
+    alph = (2* b**t)/(1 + q) * R**(1-t) * Omega
+    
+    return (
+        alph
+        + (gamma1 * x + gamma2 * y)
+        + 1j * (gamma2 * x - gamma1 * y)
+    )
+
+# @njit(cache=True, fastmath=True)
 def _image_type_name(code):
     """
     Return the integer image-type code unchanged.
@@ -49,10 +185,29 @@ def _image_type_name(code):
     return code
 
 
-@njit(cache=True)
+# @njit(cache=True, fastmath=True)
 def _unique_points(x, y, n, tol):
     """
-    Remove near-duplicate points in place.
+    Remove near-duplicate image positions in-place. 
+
+    Iterates over the first ``n`` entries of ``x`` and ``y``,
+    marking duplicates as inactive and compressing the arrays.
+
+    Parameters
+    ----------
+    x : ``numpy.ndarray``
+        Image x-coordinates (modified in place).
+    y : ``numpy.ndarray``
+        Image y-coordinates (modified in place).
+    n : ``int``
+        Number of active entries to check.
+    tol : ``float``
+        Distance threshold below which two points are considered identical.
+
+    Returns
+    -------
+    m : ``int``
+        Number of unique points remaining after deduplication.
     """
     keep = np.ones(n, dtype=np.uint8)
 
@@ -75,10 +230,28 @@ def _unique_points(x, y, n, tol):
     return m
 
 
-@njit(cache=True)
+# @njit(cache=True, fastmath=True)
 def _insertion_sort5(x, y, t, mu, itype, n):
     """
-    Sort first n elements by ascending arrival time t.
+    Sort the first ``n`` image records by ascending arrival time. 
+
+    Operates in-place on all five parallel arrays simultaneously
+    using insertion sort.
+
+    Parameters
+    ----------
+    x : ``numpy.ndarray``
+        Image x-coordinates.
+    y : ``numpy.ndarray``
+        Image y-coordinates.
+    t : ``numpy.ndarray``
+        Arrival times (Fermat potentials) used as the sort key.
+    mu : ``numpy.ndarray``
+        Signed magnifications.
+    itype : ``numpy.ndarray``
+        Image-type codes.
+    n : ``int``
+        Number of elements to sort.
     """
     for i in range(1, n):
         x0 = x[i]
@@ -103,10 +276,35 @@ def _insertion_sort5(x, y, t, mu, itype, n):
         itype[j + 1] = it0
 
 
-@njit(cache=True)
+# @njit(cache=True, fastmath=True)
 def _compress_keep5(mask, x, y, t, mu, itype, n):
     """
-    In-place compression using boolean-like uint8 mask.
+    Compress five parallel image arrays using a boolean mask in-place. 
+
+    Retains only entries where ``mask[i] == 1`` and shifts them to
+    the front of the arrays.
+
+    Parameters
+    ----------
+    mask : ``numpy.ndarray``
+        Boolean-like ``uint8`` array; 1 = keep, 0 = discard.
+    x : ``numpy.ndarray``
+        Image x-coordinates.
+    y : ``numpy.ndarray``
+        Image y-coordinates.
+    t : ``numpy.ndarray``
+        Arrival times (Fermat potentials).
+    mu : ``numpy.ndarray``
+        Signed magnifications.
+    itype : ``numpy.ndarray``
+        Image-type codes.
+    n : ``int``
+        Number of elements to process.
+
+    Returns
+    -------
+    m : ``int``
+        Number of retained entries after compression.
     """
     m = 0
     for i in range(n):
@@ -119,485 +317,7 @@ def _compress_keep5(mask, x, y, t, mu, itype, n):
             m += 1
     return m
 
-
-@njit(cache=True, fastmath=True)
-def _shear_function(x, y, gamma1, gamma2, ra_0=0.0, dec_0=0.0):
-    """
-    Compute the external shear lensing potential at a point.
-
-    Parameters
-    ----------
-    x : ``float``
-        Image-plane x-coordinate.
-    y : ``float``
-        Image-plane y-coordinate.
-    gamma1 : ``float``
-        External shear component 1.
-    gamma2 : ``float``
-        External shear component 2.
-    ra_0 : ``float``
-        Shear center x-coordinate.
-    dec_0 : ``float``
-        Shear center y-coordinate.
-
-    Returns
-    -------
-    psi_shear : ``float``
-        Shear potential value.
-    """
-    x_ = x - ra_0
-    y_ = y - dec_0
-    return 0.5 * (gamma1 * x_ * x_ + 2.0 * gamma2 * x_ * y_ - gamma1 * y_ * y_)
-
-
-@njit(cache=True, fastmath=True)
-def _shear_hessian(gamma1, gamma2):
-    """
-    Compute the Hessian matrix components of the external shear.
-
-    Parameters
-    ----------
-    gamma1 : ``float``
-        External shear component 1.
-    gamma2 : ``float``
-        External shear component 2.
-
-    Returns
-    -------
-    f_xx : ``float``
-        Second derivative d²ψ/dx².
-    f_xy : ``float``
-        Cross derivative d²ψ/dxdy.
-    f_yx : ``float``
-        Cross derivative d²ψ/dydx.
-    f_yy : ``float``
-        Second derivative d²ψ/dy².
-    """
-    f_xx = gamma1
-    f_yy = -gamma1
-    f_xy = gamma2
-    return f_xx, f_xy, f_xy, f_yy
-
-
-@njit(cache=True)
-def _param_transform(x, y, theta_E, gamma, q, phi, center_x=0.0, center_y=0.0):
-    """
-    Convert lenstronomy-like EPL parameters into the Tessore+ convention.
-
-    Parameters
-    ----------
-    x : ``float``
-        Image-plane x-coordinate.
-    y : ``float``
-        Image-plane y-coordinate.
-    theta_E : ``float``
-        Einstein radius.
-    gamma : ``float``
-        EPL power-law slope.
-    q : ``float``
-        Axis ratio.
-    phi : ``float``
-        Lens position angle in radians.
-    center_x : ``float``
-        Lens center x-coordinate.
-    center_y : ``float``
-        Lens center y-coordinate.
-
-    Returns
-    -------
-    z : ``complex``
-        Rotated complex coordinate.
-    b : ``float``
-        EPL strength parameter.
-    t : ``float``
-        EPL slope exponent.
-    q : ``float``
-        Axis ratio.
-    phi : ``float``
-        Position angle.
-    """
-    t = gamma - 1.0
-    x_shift = x - center_x
-    y_shift = y - center_y
-    z = np.exp(-1j * phi) * (x_shift + 1j * y_shift)
-    b = theta_E * np.sqrt(q)
-    return z, b, t, q, phi
-
-
-@njit(cache=True)
-def _alpha_epl(x, y, b, q, t):
-    """
-    Compute the complex EPL deflection in the rotated frame.
-
-    Parameters
-    ----------
-    x : ``float``
-        Rotated x-coordinate.
-    y : ``float``
-        Rotated y-coordinate.
-    b : ``float``
-        EPL strength parameter.
-    q : ``float``
-        Axis ratio.
-    t : ``float``
-        EPL slope exponent.
-
-    Returns
-    -------
-    alph : ``complex``
-        Complex deflection angle.
-    """
-    zz = x * q + 1j * y
-    R = np.abs(zz)
-    phi = np.angle(zz)
-    Omega = omega_scalar(phi, t, q)
-
-    if R < EPS:
-        return 0.0 + 0.0j
-
-    fac = (b / R) ** t * (R / b)
-    return (2.0 * b / (1.0 + q)) * fac * Omega
-
-
-@njit(cache=True)
-def _epl_function(x, y, theta_E, gamma, q, phi, center_x=0.0, center_y=0.0):
-    """
-    Compute the EPL lensing potential at a point.
-
-    Parameters
-    ----------
-    x : ``float``
-        Image-plane x-coordinate.
-    y : ``float``
-        Image-plane y-coordinate.
-    theta_E : ``float``
-        Einstein radius.
-    gamma : ``float``
-        EPL power-law slope.
-    q : ``float``
-        Axis ratio.
-    phi : ``float``
-        Lens position angle in radians.
-    center_x : ``float``
-        Lens center x-coordinate.
-    center_y : ``float``
-        Lens center y-coordinate.
-
-    Returns
-    -------
-    psi : ``float``
-        EPL potential value.
-    """
-    z, b, t, q_, _ = _param_transform(x, y, theta_E, gamma, q, phi, center_x, center_y)
-    alph = _alpha_epl(z.real, z.imag, b, q_, t)
-    return (z.real * alph.real + z.imag * alph.imag) / (2.0 - t)
-
-
-@njit(cache=True)
-def _epl_hessian(x, y, theta_E, gamma, q, phi, center_x=0.0, center_y=0.0):
-    """
-    Compute the EPL Hessian components at a point.
-
-    Parameters
-    ----------
-    x : ``float``
-        Image-plane x-coordinate.
-    y : ``float``
-        Image-plane y-coordinate.
-    theta_E : ``float``
-        Einstein radius.
-    gamma : ``float``
-        EPL power-law slope.
-    q : ``float``
-        Axis ratio.
-    phi : ``float``
-        Lens position angle in radians.
-    center_x : ``float``
-        Lens center x-coordinate.
-    center_y : ``float``
-        Lens center y-coordinate.
-
-    Returns
-    -------
-    f_xx : ``float``
-        Second derivative d²ψ/dx².
-    f_xy : ``float``
-        Cross derivative d²ψ/dxdy.
-    f_yx : ``float``
-        Cross derivative d²ψ/dydx.
-    f_yy : ``float``
-        Second derivative d²ψ/dy².
-    """
-    z, b, t, q_, ang_ell = _param_transform(x, y, theta_E, gamma, q, phi, center_x, center_y)
-
-    ang = np.angle(z)
-    zz_ell = z.real * q_ + 1j * z.imag
-    R = np.abs(zz_ell)
-    phi_ell = np.angle(zz_ell)
-
-    if R > EPS:
-        u = (b / R) ** t
-        if u > 1.0e10:
-            u = 1.0e10
-    else:
-        u = 1.0e10
-
-    kappa = 0.5 * (2.0 - t)
-    Roverr = np.sqrt((np.cos(ang) ** 2) * q_ * q_ + np.sin(ang) ** 2)
-
-    Omega = omega_scalar(phi_ell, t, q_)
-    alph = (2.0 / (1.0 + q_)) * Omega
-
-    gamma_shear = (
-        -np.exp(2j * (ang + ang_ell)) * kappa
-        + (1.0 - t) * np.exp(1j * (ang + 2.0 * ang_ell)) * alph * Roverr
-    )
-
-    f_xx = (kappa + gamma_shear.real) * u
-    f_yy = (kappa - gamma_shear.real) * u
-    f_xy = gamma_shear.imag * u
-
-    return f_xx, f_xy, f_xy, f_yy
-
-
-@njit(cache=True)
-def _potential_scalar(x, y, theta_E, gamma, gamma1, gamma2, q, phi,
-                     center_x=0.0, center_y=0.0, ra_0=0.0, dec_0=0.0):
-    """
-    Compute the total lensing potential (EPL + external shear).
-
-    Parameters
-    ----------
-    x : ``float``
-        Image-plane x-coordinate.
-    y : ``float``
-        Image-plane y-coordinate.
-    theta_E : ``float``
-        Einstein radius.
-    gamma : ``float``
-        EPL power-law slope.
-    gamma1 : ``float``
-        External shear component 1.
-    gamma2 : ``float``
-        External shear component 2.
-    q : ``float``
-        Axis ratio.
-    phi : ``float``
-        Lens position angle in radians.
-    center_x : ``float``
-        Lens center x-coordinate.
-    center_y : ``float``
-        Lens center y-coordinate.
-    ra_0 : ``float``
-        Shear center x-coordinate.
-    dec_0 : ``float``
-        Shear center y-coordinate.
-
-    Returns
-    -------
-    psi : ``float``
-        Total potential value.
-    """
-    return (
-        _epl_function(x, y, theta_E, gamma, q, phi, center_x, center_y)
-        + _shear_function(x, y, gamma1, gamma2, ra_0, dec_0)
-    )
-
-
-@njit(cache=True)
-def _hessian_scalar(x, y, theta_E, gamma, gamma1, gamma2, q, phi,
-                   center_x=0.0, center_y=0.0):
-    """
-    Compute the total Hessian (EPL + external shear).
-
-    Parameters
-    ----------
-    x : ``float``
-        Image-plane x-coordinate.
-    y : ``float``
-        Image-plane y-coordinate.
-    theta_E : ``float``
-        Einstein radius.
-    gamma : ``float``
-        EPL power-law slope.
-    gamma1 : ``float``
-        External shear component 1.
-    gamma2 : ``float``
-        External shear component 2.
-    q : ``float``
-        Axis ratio.
-    phi : ``float``
-        Lens position angle in radians.
-    center_x : ``float``
-        Lens center x-coordinate.
-    center_y : ``float``
-        Lens center y-coordinate.
-
-    Returns
-    -------
-    f_xx : ``float``
-        Total d²ψ/dx².
-    f_xy : ``float``
-        Total d²ψ/dxdy.
-    f_yx : ``float``
-        Total d²ψ/dydx.
-    f_yy : ``float``
-        Total d²ψ/dy².
-    """
-    f_xx_e, f_xy_e, f_yx_e, f_yy_e = _epl_hessian(
-        x, y, theta_E, gamma, q, phi, center_x, center_y
-    )
-    f_xx_s, f_xy_s, f_yx_s, f_yy_s = _shear_hessian(gamma1, gamma2)
-
-    return (
-        f_xx_e + f_xx_s,
-        f_xy_e + f_xy_s,
-        f_yx_e + f_yx_s,
-        f_yy_e + f_yy_s,
-    )
-
-
-@njit(cache=True)
-def lensing_diagnostics_scalar(x, y, theta_E, gamma, gamma1, gamma2, q, phi,
-                               center_x=0.0, center_y=0.0):
-    """
-    Compute all Hessian-derived local diagnostics at one image position.
-
-    Parameters
-    ----------
-    x : ``float``
-        Image-plane x-coordinate.
-    y : ``float``
-        Image-plane y-coordinate.
-    theta_E : ``float``
-        Einstein radius.
-    gamma : ``float``
-        EPL power-law slope.
-    gamma1 : ``float``
-        External shear component 1.
-    gamma2 : ``float``
-        External shear component 2.
-    q : ``float``
-        Axis ratio.
-    phi : ``float``
-        Lens position angle in radians.
-    center_x : ``float``
-        Lens center x-coordinate.
-    center_y : ``float``
-        Lens center y-coordinate.
-
-    Returns
-    -------
-    f_xx : ``float``
-        Hessian component d²ψ/dx².
-    f_xy : ``float``
-        Hessian component d²ψ/dxdy.
-    f_yx : ``float``
-        Hessian component d²ψ/dydx.
-    f_yy : ``float``
-        Hessian component d²ψ/dy².
-    detA : ``float``
-        Jacobian determinant.
-    traceA : ``float``
-        Jacobian trace.
-    mu : ``float``
-        Signed magnification.
-    image_type : ``int``
-        Image classification. \n
-        1 = Type I (minimum), 2 = Type II (saddle), \n
-        3 = Type III (maximum), 0 = undefined.
-
-    Examples
-    --------
-    >>> f_xx, f_xy, f_yx, f_yy, detA, traceA, mu, itype = lensing_diagnostics_scalar(
-    ...     x=0.5, y=0.3, theta_E=1.0, gamma=2.0,
-    ...     gamma1=0.03, gamma2=-0.01, q=0.8, phi=0.3
-    ... )
-    """
-    f_xx, f_xy, f_yx, f_yy = _hessian_scalar(
-        x, y, theta_E, gamma, gamma1, gamma2, q, phi, center_x, center_y
-    )
-
-    detA = (1.0 - f_xx) * (1.0 - f_yy) - f_xy * f_yx
-    traceA = 2.0 - f_xx - f_yy
-
-    if abs(detA) < EPS:
-        mu = np.inf
-        image_type = 0
-    else:
-        mu = 1.0 / detA
-
-        if detA < 0.0:
-            image_type = 2
-        elif traceA > 0.0:
-            image_type = 1
-        elif traceA < 0.0:
-            image_type = 3
-        else:
-            image_type = 0
-
-    return f_xx, f_xy, f_yx, f_yy, detA, traceA, mu, image_type
-
-
-@njit(cache=True)
-def fermat_potential_scalar(x_image, y_image, x_source, y_source,
-                            theta_E, gamma, gamma1, gamma2, q, phi,
-                            center_x=0.0, center_y=0.0, ra_0=0.0, dec_0=0.0):
-    """
-    Compute the Fermat potential (geometric delay minus lensing potential).
-
-    Parameters
-    ----------
-    x_image : ``float``
-        Image-plane x-coordinate.
-    y_image : ``float``
-        Image-plane y-coordinate.
-    x_source : ``float``
-        Source-plane x-coordinate.
-    y_source : ``float``
-        Source-plane y-coordinate.
-    theta_E : ``float``
-        Einstein radius.
-    gamma : ``float``
-        EPL power-law slope.
-    gamma1 : ``float``
-        External shear component 1.
-    gamma2 : ``float``
-        External shear component 2.
-    q : ``float``
-        Axis ratio.
-    phi : ``float``
-        Lens position angle in radians.
-    center_x : ``float``
-        Lens center x-coordinate.
-    center_y : ``float``
-        Lens center y-coordinate.
-    ra_0 : ``float``
-        Shear center x-coordinate.
-    dec_0 : ``float``
-        Shear center y-coordinate.
-
-    Returns
-    -------
-    tau : ``float``
-        Fermat potential value.
-
-    Examples
-    --------
-    >>> tau = fermat_potential_scalar(
-    ...     x_image=0.5, y_image=0.3, x_source=0.1, y_source=0.05,
-    ...     theta_E=1.0, gamma=2.0, gamma1=0.03, gamma2=-0.01, q=0.8, phi=0.3
-    ... )
-    """
-    pot = _potential_scalar(
-        x_image, y_image, theta_E, gamma, gamma1, gamma2, q, phi,
-        center_x, center_y, ra_0, dec_0
-    )
-    geom = 0.5 * ((x_image - x_source) ** 2 + (y_image - y_source) ** 2)
-    return geom - pot
-
-
-@njit(cache=True)
+# @njit(cache=True, fastmath=True)
 def _geomlinspace(a, b, N):
     """
     Generate a hybrid linear-geometric spacing array.
@@ -636,7 +356,7 @@ def _geomlinspace(a, b, N):
     return out
 
 
-@njit(cache=True)
+# @njit(cache=True, fastmath=True)
 def _ps(x, p):
     """
     Compute the signed power function ``|x|^p * sign(x)``.
@@ -656,7 +376,7 @@ def _ps(x, p):
     return np.abs(x) ** p * np.sign(x)
 
 
-@njit(cache=True)
+# @njit(cache=True, fastmath=True)
 def _ell_to_pol(rell, theta, q):
     """
     Convert elliptical coordinates to polar coordinates.
@@ -681,105 +401,46 @@ def _ell_to_pol(rell, theta, q):
     r = rell * np.sqrt((np.cos(theta) ** 2) / (q * q) + np.sin(theta) ** 2)
     return r, phi
 
-
-@njit(cache=True)
-def _one_dim_lens_eq_calcs(args, phi):
-    """
-    Intermediate quantities for the 1-D lens equation.
-    """
-    b, t, y1, y2, q, gamma1, gamma2 = args
-    y = y1 + 1j * y2
-
-    den = 1.0 - gamma1 * gamma1 - gamma2 * gamma2
-    if abs(den) < EPS:
-        den = EPS if den >= 0.0 else -EPS
-
-    c = np.cos(phi)
-    s = np.sin(phi)
-
-    rhat = (
-        ((1.0 + gamma1) * c + gamma2 * s)
-        + 1j * (gamma2 * c + (1.0 - gamma1) * s)
-    ) / den
-
-    thetahat = (
-        ((1.0 + gamma1) * s - gamma2 * c)
-        + 1j * (gamma2 * s - (1.0 - gamma1) * c)
-    ) / den
-
-    frac_Roverrsh, phiell = pol_to_ell(1.0, phi, q)
-    Omega = omega_scalar(phiell, t, q)
-    const = 2.0 * b / (1.0 + q)
-
-    if abs(t - 1.0) > 1e-4:
-        denom = const * cdot(Omega, thetahat)
-        if abs(denom) < EPS:
-            denom = EPS if denom >= 0.0 else -EPS
-
-        val = -cdot(y, thetahat) / denom
-        aval = abs(val)
-        if aval < EPS:
-            R = 0.0
-        else:
-            R = b * aval ** (1.0 / (1.0 - t)) * np.sign(val)
-    else:
-        Omega_ort = 1j * Omega
-        x = ((1.0 - gamma1) * c - gamma2 * s) + 1j * (
-            -gamma2 * c + (1.0 + gamma1) * s
-        )
-        denom = cdot(Omega_ort, x)
-        if abs(denom) < EPS:
-            denom = EPS if denom >= 0.0 else -EPS
-        R = cdot(Omega_ort, y) / denom * frac_Roverrsh
-
-    r, theta = _ell_to_pol(R, phiell, q)
-    return Omega, const, phiell, q, r, rhat, t, b, thetahat, y
-
-
-@njit(cache=True)
-def _one_dim_lens_eq(phi, args):
-    """
-    Smooth branch of the 1-D lens equation.
-    """
-    Omega, const, phiell, q, r, rhat, t, b, thetahat, y = _one_dim_lens_eq_calcs(args, phi)
-    rr, _ = _ell_to_pol(1.0, phiell, q)
-
-    ip = cdot(y, rhat) * cdot(Omega, thetahat) - cdot(Omega, rhat) * cdot(y, thetahat)
-
-    eq = (rr * b) ** (2.0 / t - 2.0) * _ps(cdot(y, thetahat) / const, 2.0 / t) * ip * ip
-    eq += _ps(ip, 2.0 / t) * (cdot(Omega, thetahat) ** 2)
-    return eq
-
-
-@njit(cache=True)
+# ----------------
+# Image Positions
+# ----------------
+# @njit(cache=True, fastmath=True)
 def _one_dim_lens_eq_unsmooth(phi, args):
     """
-    Non-smooth branch of the 1-D lens equation.
+    Non-smooth branch of the 1-D lens equation at a single angle. 
+
+    Used when the smooth branch is numerically unstable due to sign
+    ambiguity in the cross-product term ``ip``. The branch uses
+    ``|ip|^t`` instead of ``ps(ip, 2/t)`` to avoid fractional-power
+    sign issues.
+
+    Parameters
+    ----------
+    phi : ``float``
+        Trial image-plane angle in radians.
+    args : ``tuple``
+        Packed lens parameters ``(b, t, y1, y2, q, gamma1, gamma2)``.
+
+    Returns
+    -------
+    eq_notsmooth : ``float``
+        Residual of the non-smooth lens equation at angle ``phi``.
     """
-    Omega, const, phiell, q, r, rhat, t, b, thetahat, y = _one_dim_lens_eq_calcs(args, phi)
-    rr, _ = _ell_to_pol(1.0, phiell, q)
-
+    # lens eqn: y = (1-Gamma) r.rhat - lambda(R) Omega(phiell), where lambda(R) = const (R/b)^(1-t), b = theta_E * sqrt(q) 
+    # r = R * sqrt(cos^2(phiell)*q^2 + sin^2(phiell))
+    # phiell = arctan(sin(phi)*q/cos(phi))
+    Omega, const, phiell, q, r, rhat, t, b, thetahat, y = _one_dim_lens_eq_calcs(
+        args, phi
+    )
+    # rr = r * sqrt(cos^2(phiell)*q^2 + sin^2(phiell)); r=1
+    rr, thetaa = _ell_to_pol(1, phiell, q)
     ip = cdot(y, rhat) * cdot(Omega, thetahat) - cdot(Omega, rhat) * cdot(y, thetahat)
+    eq_notsmooth = _ps(rr * b, 1 - t) * (cdot(y, thetahat) / const) * np.abs(
+        ip
+    ) ** t + ip * np.abs(cdot(Omega, thetahat)) ** (+t)
+    return eq_notsmooth
 
-    eq = _ps(rr * b, 1.0 - t) * (cdot(y, thetahat) / const) * (np.abs(ip) ** t)
-    eq += ip * (np.abs(cdot(Omega, thetahat)) ** t)
-    return eq
-
-
-@njit(cache=True)
-def _one_dim_lens_eq_both(phi, args):
-    n = phi.shape[0]
-    y = np.empty(n, dtype=np.float64)
-    y_ns = np.empty(n, dtype=np.float64)
-
-    for i in range(n):
-        y[i] = _one_dim_lens_eq(phi[i], args)
-        y_ns[i] = _one_dim_lens_eq_unsmooth(phi[i], args)
-
-    return y, y_ns
-
-
-@njit(cache=True)
+# @njit(cache=True, fastmath=True)
 def _min_approx(x1, x2, x3, y1, y2, y3):
     """
     Estimate the location of a local extremum via parabolic interpolation.
@@ -811,7 +472,7 @@ def _min_approx(x1, x2, x3, y1, y2, y3):
     return num / div
 
 
-@njit(cache=True)
+# @njit(cache=True, fastmath=True)
 def _brentq_inline(f, xa, xb, xtol=2e-14, rtol=16 * np.finfo(np.float64).eps, maxiter=100, args=()):
     """
     Numba-compatible Brent root finder.
@@ -925,20 +586,283 @@ def _brentq_inline(f, xa, xb, xtol=2e-14, rtol=16 * np.finfo(np.float64).eps, ma
     return xcur
 
 
-@njit(cache=True)
+# @njit(cache=True, fastmath=True)
 def _getr(phi, args):
     """
-    Compute radius for a given image-plane angle phi.
+    Compute the image-plane radial distance for a trial angle ``phi``.
+
+    Parameters
+    ----------
+    phi : ``float``
+        Image-plane angle in radians.
+    args : ``tuple``
+        Packed lens parameters ``(b, t, y1, y2, q, gamma1, gamma2)``.
+
+    Returns
+    -------
+    r : ``float``
+        Estimated image-plane radial distance at angle ``phi``.
     """
     _, _, _, _, r, _, _, _, _, _ = _one_dim_lens_eq_calcs(args, phi)
     return r
 
 
-@njit(cache=True)
+# @njit(cache=True, fastmath=True)
+def _one_dim_lens_eq(phi, args):
+    """
+    Smooth branch of the 1-D lens equation at a single angle. 
+
+    Call chain:
+    ``_solvelenseq_majoraxis -> _getphi -> _one_dim_lens_eq_both -> _one_dim_lens_eq``.
+
+    The residual is: 
+    ``(rr*b)^(2/t-2) * ps(y.thetahat/const, 2/t) * ip^2
+    + ps(ip, 2/t) * (Omega.thetahat)^2 = 0``
+
+    Parameters
+    ----------
+    phi : ``float``
+        Trial image-plane angle in radians.
+    args : ``tuple``
+        Packed lens parameters ``(b, t, y1, y2, q, gamma1, gamma2)``.
+
+    Returns
+    -------
+    eq : ``float``
+        Residual of the smooth lens equation at angle ``phi``.
+    """
+    # lens eqn: y = (1-Gamma) r.rhat - lambda(R) Omega(phiell), where lambda(R) = const (R/b)^(1-t), b = theta_E * sqrt(q) 
+    # r = R * sqrt(cos^2(phiell)*q^2 + sin^2(phiell))
+    # phiell = arctan(sin(phi)*q/cos(phi))
+    Omega, const, phiell, q, r, rhat, t, b, thetahat, y = _one_dim_lens_eq_calcs(
+        args, phi
+    )
+    # rr = r * sqrt(cos^2(phiell)*q^2 + sin^2(phiell)); r=1
+    rr, _ = _ell_to_pol(1.0, phiell, q)
+
+    # multiply thetahat to eliminate the unknown image-plane radius in the lens equation, and get expression for lambda(R)
+    # multiply rhat to get the expression for the lens equation, get scaler image positions, and use lambda(R)
+    # ip = r. Omega . thetahat = (beta . rhat) * (Omega . thetahat) - (Omega . rhat) * (beta . thetahat) 
+    ip = cdot(y, rhat) * cdot(Omega, thetahat) - cdot(Omega, rhat) * cdot(y, thetahat)
+    # using lambda(R) = const (R/b)^(1-t), 
+    # (R/b)^(1-t) = - (beta . thetahat) / (const * Omega . thetahat)
+    # probably b is scaled with rr.
+    # A*ip^2 + B*ip^(2/t) = 0.
+    eq = (rr * b) ** (2 / t - 2) * _ps(
+        (cdot(y, thetahat) / const), 2 / t
+    ) * ip**2 + _ps(ip, 2 / t) * cdot(Omega, thetahat) ** 2
+
+    return eq
+
+# @njit(cache=True, fastmath=True)
+def _one_dim_lens_eq_calcs(args, phi):
+    """
+    Compute intermediate geometric quantities for the 1-D lens equation. 
+
+    Evaluates the shear-corrected unit vectors ``rhat`` and ``thetahat``,
+    the EPL deflection kernel ``Omega``, and the estimated image radius
+    ``r`` for a trial angle ``phi``. The function does not compute the
+    physical image radius; it only computes the geometric conversion
+    factors used in both smooth and non-smooth branches of the lens
+    equation. The actual image radius is computed separately in each
+    branch after eliminating the unknown radius via the dot product
+    with ``thetahat``. 
+
+    Call chain: 
+    ``_solvelenseq_majoraxis -> _getphi -> _one_dim_lens_eq_both
+    -> _one_dim_lens_eq -> _one_dim_lens_eq_calcs``.
+
+    Parameters
+    ----------
+    args : ``tuple``
+        Packed lens parameters ``(b, t, y1, y2, q, gamma1, gamma2)``.
+    phi : ``float``
+        Trial image-plane angle in radians.
+
+    Returns
+    -------
+    Omega : ``complex``
+        EPL deflection kernel value at the elliptical angle.
+    const : ``float``
+        EPL amplitude constant ``2*b/(1+q)``.
+    phiell : ``float``
+        Elliptical angle corresponding to ``phi``.
+    q : ``float``
+        Axis ratio.
+    r : ``float``
+        Estimated image-plane radial distance.
+    rhat : ``complex``
+        Shear-corrected radial unit vector.
+    t : ``float``
+        EPL slope parameter.
+    b : ``float``
+        EPL scale parameter.
+    thetahat : ``complex``
+        Shear-corrected tangential unit vector.
+    y : ``complex``
+        Source position as a complex number (``y1 + i*y2``).
+    """
+    b, t, y1, y2, q, gamma1, gamma2 = args
+    # Note: y1 and y2 are the source-plane coordinates in the rotated frame, not the original source-plane coordinates.
+    y = y1 + 1j * y2
+
+    # rhat' : with shear, rhat : without shear [cos(phi), sin(phi)]
+    # rhat' = M^-1 . rhat, where M^-1 = [[M22, -M12], [-M21, M11]] / det(M)
+    # M = [[1 + gamma1, gamma2], [gamma2, 1 - gamma1]]
+    # det(M) = 1 - gamma1^2 - gamma2^2 
+    den = 1.0 - gamma1 * gamma1 - gamma2 * gamma2 
+    # if abs(den) < EPS:
+    #     den = EPS if den >= 0.0 else -EPS
+    c = np.cos(phi)
+    s = np.sin(phi)
+
+    rhat = (
+        ((1.0 + gamma1) * c + gamma2 * s)
+        + 1j * (gamma2 * c + (1.0 - gamma1) * s)
+    ) / den
+
+    # construct an unit vector thetahat perpendicular to rhat, with the same shear transformation applied.
+    # thetahat is used to eliminate the unknown image-plane radius in the lens equation, by taking the dot product with the source-plane vector y and the deflection vector Omega.
+    # thetahat' : with shear, thetahat : without shear [-sin(phi), cos(phi)]
+    # but code uses [sin(phi), -cos(phi)]
+    thetahat = (
+        ((1.0 + gamma1) * s - gamma2 * c)
+        + 1j * (gamma2 * s - (1.0 - gamma1) * c)
+    ) / den
+
+    # convert the trial image angle phi into elliptical angle
+    # frac_Roverrsh = (R/r), r=1
+    # R = sqrt(cos^2(phi)*q^2 + sin^2(phi))
+    # phiell = arctan(sin(phi)*q/cos(phi))
+    frac_Roverrsh, phiell = pol_to_ell(1.0, phi, q)
+
+    # alpha_epl = (2.0*b/(1.0+q)) * (b/frac_Roverrsh)**(t-1) * Omega(phiell)
+    Omega = omega_scalar(phiell, t, q)
+    const = 2.0 * b / (1.0 + q)
+
+    if abs(t - 1.0) > 1e-4: # avoid numerical instability near isothermal, gamma = 2.0
+
+        # after taking the dot product with thetahat, the lens equation becomes a scalar equation in phi, with the unknown image-plane radius eliminated:
+        # R = b * |y . thetahat / (const * Omega . thetahat)|^(1/(1-t)) * sign(y . thetahat / (const * Omega . thetahat))
+        val = -cdot(y, thetahat) / (const * cdot(Omega, thetahat))
+        # aval = abs(val)
+        # if aval < EPS:
+        #     R = 0.0
+        # else:
+        # R = b * abs(val) ** (1.0 / (1.0 - t)) * np.sign(val)
+        R = b * _ps(val, 1.0 / (1.0 - t))
+    else:
+        # isothermal case, gamma = 2.0, t = 1.0, the lens equation becomes:
+        # construct an vector Omega_ort perpendicular to Omega, with the same shear transformation applied.
+        Omega_ort = 1j * Omega
+        x = ((1.0 - gamma1) * c - gamma2 * s) + 1j * (
+            -gamma2 * c + (1.0 + gamma1) * s
+        )
+        denom = cdot(Omega_ort, x)
+        if abs(denom) > EPS:
+            R = cdot(Omega_ort, y) / denom * frac_Roverrsh
+        else:
+            # Fallback for SIS (q ≈ 1): cdot(Omega_ort, x) → 0 because
+            # Omega_ort ⊥ x when the elliptical and polar angles coincide.
+            # Project the isothermal lens equation y = r·den·rhat − const·Omega
+            # onto rhat to solve for r directly, then convert to R.
+            rhat_sq = cdot(rhat, rhat)
+            if abs(rhat_sq) > EPS:
+                r_direct = (cdot(y, rhat) + const * cdot(Omega, rhat)) / (den * rhat_sq)
+                R = r_direct * frac_Roverrsh
+            else:
+                R = 0.0
+
+    # r = R * sqrt(cos^2(phiell)*q^2 + sin^2(phiell))
+    # phiell = arctan(sin(phiell)*q/cos(phiell))
+    r, _ = _ell_to_pol(R, phiell, q)
+
+    return Omega, const, phiell, q, r, rhat, t, b, thetahat, y
+
+# @njit(cache=True, fastmath=True)
+def _one_dim_lens_eq_both(phi, args):
+    """
+    Evaluate both branches of the 1-D lens equation on a phi grid. 
+
+    Computes the smooth and non-smooth residuals at every angle in
+    ``phi`` and returns them as two parallel arrays. 
+
+    Call chain:
+    ``_solvelenseq_majoraxis -> _getphi -> _one_dim_lens_eq_both``.
+
+    Parameters
+    ----------
+    phi : ``numpy.ndarray``
+        Array of trial image-plane angles in radians.
+    args : ``tuple``
+        Packed lens parameters ``(b, t, y1, y2, q, gamma1, gamma2)``.
+
+    Returns
+    -------
+    eq : ``numpy.ndarray``
+        Smooth-branch residuals at each angle.
+    eq_notsmooth : ``numpy.ndarray``
+        Non-smooth-branch residuals at each angle.
+    """
+    n = phi.shape[0]
+    eq = np.empty(n, dtype=np.float64)
+    eq_notsmooth = np.empty(n, dtype=np.float64)
+
+    for i in range(n):
+        # lens eqn: y = (1-Gamma) r.rhat - lambda(R) Omega(phiell), where lambda(R) = const (R/b)^(1-t), b = theta_E * sqrt(q) 
+        # r = R * sqrt(cos^2(phiell)*q^2 + sin^2(phiell))
+        # phiell = arctan(sin(phi)*q/cos(phi))
+        Omega, const, phiell, q, r, rhat, t, b, thetahat, y = _one_dim_lens_eq_calcs(args, phi[i])
+        # rr = r * sqrt(cos^2(phiell)*q^2 + sin^2(phiell)); r=1
+        rr, thetaa = _ell_to_pol(1.0, phiell, q)
+
+        # multiply thetahat to eliminate the unknown image-plane radius in the lens equation, and get expression for lambda(R)
+        # multiply rhat to get the expression for the lens equation, get scaler image positions, and use lambda(R)
+        # ip = r. Omega . thetahat = (beta . rhat) * (Omega . thetahat) - (Omega . rhat) * (beta . thetahat) 
+        ip = cdot(y, rhat) * cdot(Omega, thetahat) - cdot(Omega, rhat) * cdot(y, thetahat)
+        # using lambda(R) = const (R/b)^(1-t), 
+        # (R/b)^(1-t) = - (beta . thetahat) / (const * Omega . thetahat)
+        # probably b is scaled with rr.
+        # A*ip^2 + B*ip^(2/t) = 0.
+        eq[i] = (rr * b) ** (2.0 / t - 2.0) * _ps(cdot(y, thetahat) / const, 2.0 / t) * ip * ip + _ps(ip, 2.0 / t) * (cdot(Omega, thetahat) ** 2)
+
+        eq_notsmooth[i] = _ps(rr * b, 1 - t) * (cdot(y, thetahat) / const) * np.abs(
+            ip
+        ) ** t + ip * np.abs(cdot(Omega, thetahat)) ** (+t)
+
+    return eq, eq_notsmooth
+
+# @njit(cache=True, fastmath=True)
 def _getphi(thpl, args):
     """
-    Find all angular roots of the 1-D lens equation on the supplied grid.
+    Find all angular roots of the 1-D lens equation on the supplied grid. 
+
+    Scans both smooth and non-smooth branches for sign changes and
+    local extrema, then refines each bracket with
+    :func:`_brentq_inline`. Handles the case where a root sits at an
+    extremum (double root / tangent crossing) via parabolic
+    interpolation. 
+
+    Call chain: ``_solvelenseq_majoraxis -> _getphi``.
+
+    Parameters
+    ----------
+    thpl : ``numpy.ndarray``
+        Sorted array of trial angles in radians.
+    args : ``tuple``
+        Packed lens parameters ``(b, t, y1, y2, q, gamma1, gamma2)``.
+
+    Returns
+    -------
+    roots : ``numpy.ndarray``
+        Array of root angles (length ``MAX_ROOTS``; only first
+        ``nroots`` entries are valid).
+    nroots : ``int``
+        Number of valid roots found.
     """
+
+    # Evaluate both branches of the lens equation on the grid to find sign changes.
+    # y = A * ip^2 + B * ip^(2/t) = 0, where A and B are functions of phi, and ip is a function of phi. The non-smooth branch is the one with the absolute value of ip, which can have a different sign change pattern than the smooth branch.
     y, y_ns = _one_dim_lens_eq_both(thpl, args)
     nphi = thpl.shape[0]
 
@@ -946,25 +870,24 @@ def _getphi(thpl, args):
     nroots = 0
 
     for i in range(nphi - 1):
+        # Check for sign changes in both branches of the lens equation to identify root brackets.
         if y[i + 1] * y[i] <= 0.0:
-            r = _brentq_inline(_one_dim_lens_eq, thpl[i], thpl[i + 1], args=args)
-            if (not np.isnan(r)) and nroots < MAX_ROOTS:
-                roots[nroots] = r % (2.0 * np.pi)
+            if nroots < MAX_ROOTS:
+                roots[nroots] = _brentq_inline(_one_dim_lens_eq, thpl[i], thpl[i + 1], args=args) % (2 * np.pi)
                 nroots += 1
         elif y_ns[i + 1] * y_ns[i] <= 0.0:
-            r = _brentq_inline(_one_dim_lens_eq_unsmooth, thpl[i], thpl[i + 1], args=args)
-            if (not np.isnan(r)) and nroots < MAX_ROOTS:
-                roots[nroots] = r % (2.0 * np.pi)
+            if nroots < MAX_ROOTS:
+                roots[nroots] = _brentq_inline(_one_dim_lens_eq_unsmooth, thpl[i], thpl[i + 1], args=args) % (2 * np.pi)
                 nroots += 1
 
-    for i in range(1, nphi):
+    for i in range(1, nphi+1):
         y1 = y[i - 1]
-        y2 = y[i]
-        y3 = y[i + 1] if i + 1 < nphi else y[0]
+        y2 = y[i % nphi]
+        y3 = y[(i + 1) % nphi]
 
         y1n = y_ns[i - 1]
-        y2n = y_ns[i]
-        y3n = y_ns[i + 1] if i + 1 < nphi else y_ns[0]
+        y2n = y_ns[i % nphi]
+        y3n = y_ns[(i + 1) % nphi]
 
         if (y3 - y2) * (y2 - y1) <= 0.0 or (y3n - y2n) * (y2n - y1n) <= 0.0:
             if y3 * y2 <= 0.0 or y1 * y2 <= 0.0:
@@ -983,106 +906,112 @@ def _getphi(thpl, args):
             ymin_ns = _one_dim_lens_eq_unsmooth(xmin_ns, args)
 
             if ymin * y2 <= 0.0 and x2 <= xmin <= x3:
+
                 if nroots < MAX_ROOTS:
-                    r = _brentq_inline(_one_dim_lens_eq, x2, xmin, args=args)
-                    if not np.isnan(r):
-                        roots[nroots] = r % (2.0 * np.pi)
-                        nroots += 1
+                    roots[nroots] = _brentq_inline(_one_dim_lens_eq, x2, xmin, args=args) % (2.0 * np.pi)
+                    nroots += 1
                 if nroots < MAX_ROOTS:
-                    r = _brentq_inline(_one_dim_lens_eq, xmin, x3, args=args)
-                    if not np.isnan(r):
-                        roots[nroots] = r % (2.0 * np.pi)
-                        nroots += 1
+                    roots[nroots] = _brentq_inline(_one_dim_lens_eq, xmin, x3, args=args) % (2.0 * np.pi)
+                    nroots += 1
 
             elif ymin * y2 <= 0.0 and x1 <= xmin <= x2:
+
                 if nroots < MAX_ROOTS:
-                    r = _brentq_inline(_one_dim_lens_eq, x1, xmin, args=args)
-                    if not np.isnan(r):
-                        roots[nroots] = r % (2.0 * np.pi)
-                        nroots += 1
+                    roots[nroots] = _brentq_inline(_one_dim_lens_eq, x1, xmin, args=args) % (2.0 * np.pi)
+                    nroots += 1
                 if nroots < MAX_ROOTS:
-                    r = _brentq_inline(_one_dim_lens_eq, xmin, x2, args=args)
-                    if not np.isnan(r):
-                        roots[nroots] = r % (2.0 * np.pi)
-                        nroots += 1
+                    roots[nroots] = _brentq_inline(_one_dim_lens_eq, xmin, x2, args=args) % (2.0 * np.pi)
+                    nroots += 1
 
             elif ymin_ns * y2n <= 0.0 and x2 <= xmin_ns <= x3:
+
                 if nroots < MAX_ROOTS:
-                    r = _brentq_inline(_one_dim_lens_eq_unsmooth, x2, xmin_ns, args=args)
-                    if not np.isnan(r):
-                        roots[nroots] = r % (2.0 * np.pi)
-                        nroots += 1
+                    roots[nroots] = _brentq_inline(_one_dim_lens_eq_unsmooth, x2, xmin_ns, args=args) % (2.0 * np.pi)
+                    nroots += 1
                 if nroots < MAX_ROOTS:
-                    r = _brentq_inline(_one_dim_lens_eq_unsmooth, xmin_ns, x3, args=args)
-                    if not np.isnan(r):
-                        roots[nroots] = r % (2.0 * np.pi)
-                        nroots += 1
+                    roots[nroots] = _brentq_inline(_one_dim_lens_eq_unsmooth, xmin_ns, x3, args=args) % (2.0 * np.pi)
+                    nroots += 1
 
             elif ymin_ns * y2n <= 0.0 and x1 <= xmin_ns <= x2:
+
                 if nroots < MAX_ROOTS:
-                    r = _brentq_inline(_one_dim_lens_eq_unsmooth, x1, xmin_ns, args=args)
-                    if not np.isnan(r):
-                        roots[nroots] = r % (2.0 * np.pi)
-                        nroots += 1
+                    roots[nroots] = _brentq_inline(_one_dim_lens_eq_unsmooth, x1, xmin_ns, args=args) % (2.0 * np.pi)
+                    nroots += 1
                 if nroots < MAX_ROOTS:
-                    r = _brentq_inline(_one_dim_lens_eq_unsmooth, xmin_ns, x2, args=args)
-                    if not np.isnan(r):
-                        roots[nroots] = r % (2.0 * np.pi)
-                        nroots += 1
+                    roots[nroots] = _brentq_inline(_one_dim_lens_eq_unsmooth, xmin_ns, x2, args=args) % (2.0 * np.pi)
+                    nroots += 1
 
     return roots, nroots
 
 
-@njit(cache=True)
+# @njit(cache=True, fastmath=True)
 def _solvelenseq_majoraxis(b, t, y1, y2, q, gamma1, gamma2, Nmeas=200, Nmeas_extra=50):
     """
-    Solve the lens equation in the major-axis frame.
+    Solve the lens equation in the lens major-axis-aligned frame. 
+
+    Builds an angular grid with extra refinement near the source
+    direction, finds all angular roots via :func:`_getphi`, then
+    reconstructs 2-D image positions and verifies each candidate
+    against the full deflection equation.
 
     Parameters
     ----------
     b : ``float``
-        EPL strength parameter.
+        EPL scale parameter (``b = theta_E * sqrt(q)``).
     t : ``float``
-        EPL slope exponent.
+        EPL slope parameter (``t = gamma - 1``).
     y1 : ``float``
-        Source x-coordinate in the rotated frame.
+        Source x-coordinate in the axis-aligned frame.
     y2 : ``float``
-        Source y-coordinate in the rotated frame.
+        Source y-coordinate in the axis-aligned frame.
     q : ``float``
-        Axis ratio.
+        Axis ratio (0 < q ≤ 1).
     gamma1 : ``float``
-        Rotated shear component 1.
+        External shear component 1 (axis-aligned frame).
     gamma2 : ``float``
-        Rotated shear component 2.
+        External shear component 2 (axis-aligned frame).
     Nmeas : ``int``
-        Number of angular grid points.
+        Number of uniformly-spaced angle samples. 
+        default: 200
     Nmeas_extra : ``int``
-        Extra refinement points near the source angle.
+        Number of extra refinement samples near the source direction. 
+        default: 50
 
     Returns
     -------
     xsol : ``numpy.ndarray``
-        Image x-coordinates.
+        Image x-coordinates (length ``MAX_IMGS``).
     ysol : ``numpy.ndarray``
-        Image y-coordinates.
+        Image y-coordinates (length ``MAX_IMGS``).
     nimg : ``int``
-        Number of images found.
+        Number of valid images found.
     """
+    # alpha_shear = [[gamma1, gamma2], [gamma2, -gamma1]] * theta = Gamma * theta
+    # alpha_epl = lambda(R) * Omega(phi_ell)
+    # lens equation with shear:
+    # beta = (1-Gamma) * theta - alpha_epl(theta); (1-Gamma) = M
+    # M^-1 * beta = theta - M^-1 * alpha_epl(theta)
+    # beta_shear = [[1+gamma1, gamma2], [gamma2, 1-gamma1]] . [y1, y2] = r * exp(i*p1)
     p1 = np.arctan2(
         y2 * (1.0 - gamma1) + gamma2 * y1,
         y1 * (1.0 + gamma1) + gamma2 * y2
-    )
+    ) # direction angle of the effective source position after shear correction
 
+    # Create a grid of angles for root finding, with extra sampling near the source angle.
+    # 0 to 1e-4 for the linear part, then geometric spacing up to 0.1.
     geom = _geomlinspace(1e-4, 0.1, Nmeas_extra)
     ngeom = geom.shape[0]
+    # Use the actual geometric grid length (ngeom), which can exceed Nmeas_extra.
     ntot = Nmeas + 2 * ngeom
 
     thpl = np.empty(ntot, dtype=np.float64)
 
     for i in range(Nmeas):
+        # Uniformly spaced angles from 0 to pi.
+        # the equation has π-periodicity due to the quadratic nature of shear + EPL
         thpl[i] = np.pi * i / (Nmeas - 1)
 
-    pmod = p1 % np.pi
+    pmod = p1 % np.pi # mod by pi to get the angle in the range [0, pi)
     for i in range(ngeom):
         thpl[Nmeas + i] = pmod - geom[i]
         thpl[Nmeas + ngeom + i] = pmod + geom[i]
@@ -1107,10 +1036,12 @@ def _solvelenseq_majoraxis(b, t, y1, y2, q, gamma1, gamma2, Nmeas=200, Nmeas_ext
             xs = R * np.cos(th)
             ys = R * np.sin(th)
 
+            # alpha_epl = lambda(R) * Omega(phi_ell)
             diff = (-y1 - 1j * y2) + (xs + 1j * ys) - _alpha_epl_shear_scalar(
                 xs, ys, b, q, t, gamma1=gamma1, gamma2=gamma2
             )
 
+            # 1e-8 is a tight tolerance to ensure we only keep valid roots, it directly follows the lenstronomy code.
             if abs(diff) < 1e-8:
                 if nimg < MAX_IMGS:
                     xsol[nimg] = xs
@@ -1120,56 +1051,71 @@ def _solvelenseq_majoraxis(b, t, y1, y2, q, gamma1, gamma2, Nmeas=200, Nmeas_ext
     nimg = _unique_points(xsol, ysol, nimg, 1e-8)
     return xsol, ysol, nimg
 
-
-@njit(cache=True)
-def _solve_lenseq_pemd(xsrc, ysrc, q, phi, gamma, gamma1, gamma2,
-                      theta_E=1.0, Nmeas=400, Nmeas_extra=80):
+# @njit(cache=True, fastmath=True)
+def _solve_lenseq_pemd(xsrc, ysrc, q, phi, t, gamma1, gamma2,
+                      b, Nmeas=400, Nmeas_extra=80):
     """
-    Solve the lens equation in the rotated major-axis frame and rotate back.
+    Solve the EPL + shear lens equation in the rotated major-axis frame. 
+
+    Rotates source coordinates and shear components into the lens
+    major-axis frame, calls :func:`_solvelenseq_majoraxis`, then
+    rotates image positions back to the original sky frame.
 
     Parameters
     ----------
     xsrc : ``float``
-        Source x-coordinate.
+        Source x-coordinate in sky frame.
     ysrc : ``float``
-        Source y-coordinate.
+        Source y-coordinate in sky frame.
     q : ``float``
-        Axis ratio.
+        Axis ratio (0 < q ≤ 1).
     phi : ``float``
         Lens position angle in radians.
-    gamma : ``float``
-        EPL power-law slope.
+    t : ``float``
+        EPL slope parameter (``t = gamma - 1``).
     gamma1 : ``float``
         External shear component 1.
     gamma2 : ``float``
         External shear component 2.
-    theta_E : ``float``
-        Einstein radius.
+    b : ``float``
+        EPL scale parameter (``b = theta_E * sqrt(q)``).
     Nmeas : ``int``
-        Angular grid size.
+        Number of angle samples for root finding. 
+        default: 400
     Nmeas_extra : ``int``
-        Extra refinement points.
+        Number of extra refinement samples. 
+        default: 80
 
     Returns
     -------
     xout : ``numpy.ndarray``
-        Image x-coordinates in the original frame.
+        Image x-coordinates in sky frame (length ``MAX_IMGS``).
     yout : ``numpy.ndarray``
-        Image y-coordinates in the original frame.
+        Image y-coordinates in sky frame (length ``MAX_IMGS``).
     nimg : ``int``
-        Number of images found.
+        Number of valid images found.
     """
-    t = gamma - 1.0
-    b = theta_E * np.sqrt(q)
+    # t = gamma - 1.0
+    # b = theta_E * np.sqrt(q)
 
-    rot = np.exp(-1j * phi)
-    rot2 = rot * rot
-
-    p = (xsrc + 1j * ysrc) * rot
-    g = (gamma1 + 1j * gamma2) * rot2
+    # rotate source and shear into the axis-aligned frame
+    # p = (xsrc + 1j * ysrc) * np.exp(-1j * phi) # expand
+    # g = (gamma1 + 1j * gamma2) * np.exp(-1j * 2*phi) # expand
+    x_rot = xsrc * np.cos(-phi) - ysrc * np.sin(-phi)
+    y_rot = xsrc * np.sin(-phi) + ysrc * np.cos(-phi)
+    gamma1_rot = gamma1 * np.cos(-2*phi) - gamma2 * np.sin(-2*phi)
+    gamma2_rot = gamma1 * np.sin(-2*phi) + gamma2 * np.cos(-2*phi)
 
     xloc, yloc, nimg = _solvelenseq_majoraxis(
-        b, t, p.real, p.imag, q, g.real, g.imag, Nmeas, Nmeas_extra
+        b, # scale parameter for the lens
+        t, # power-law slope minus one
+        x_rot, # source position rotated into the lens frame
+        y_rot, # source position rotated into the lens frame
+        q, # axis ratio of the lens
+        gamma1_rot, # shear component 1 rotated into the lens frame
+        gamma2_rot, # shear component 2 rotated into the lens frame
+        Nmeas, # number of angular samples for root finding
+        Nmeas_extra # extra angular samples near the source angle for better root finding
     )
 
     xout = np.empty(MAX_IMGS, dtype=np.float64)
@@ -1182,12 +1128,396 @@ def _solve_lenseq_pemd(xsrc, ysrc, q, phi, gamma, gamma1, gamma2,
         yout[i] = z.imag
 
     return xout, yout, nimg
+# ---------------
 
+# ---------------
+# Magnifications
+# ---------------
+# @njit(cache=True, fastmath=True)
+def _shear_hessian(gamma1, gamma2):
+    """
+    Compute the Hessian matrix components of the external shear.
 
-@njit(cache=True)
+    Parameters
+    ----------
+    gamma1 : ``float``
+        External shear component 1.
+    gamma2 : ``float``
+        External shear component 2.
+
+    Returns
+    -------
+    f_xx : ``float``
+        Second derivative d²ψ/dx².
+    f_xy : ``float``
+        Cross derivative d²ψ/dxdy.
+    f_yx : ``float``
+        Cross derivative d²ψ/dydx.
+    f_yy : ``float``
+        Second derivative d²ψ/dy².
+    """
+    f_xx = gamma1
+    f_yy = -gamma1
+    f_xy = gamma2
+    # Gamma = [[gamma1, gamma2], [gamma2, -gamma1]]
+    return f_xx, f_xy, f_xy, f_yy
+
+# @njit(cache=True, fastmath=True)
+def _epl_hessian(z, b, t, q, phi, Omega):
+    """
+    Compute the EPL Hessian components at a complex image position. 
+
+    Returns the second derivatives of the EPL lensing potential
+    in the axis-aligned frame.
+
+    Parameters
+    ----------
+    z : ``complex``
+        Image position in the axis-aligned frame
+        (``z = exp(-i*phi) * (x + i*y)``).
+    b : ``float``
+        EPL scale parameter (``b = theta_E * sqrt(q)``).
+    t : ``float``
+        EPL slope parameter (``t = gamma - 1``).
+    q : ``float``
+        Axis ratio (0 < q ≤ 1).
+    phi : ``float``
+        Lens position angle in radians.
+    Omega : ``complex``
+        EPL deflection kernel at the image elliptical angle.
+
+    Returns
+    -------
+    f_xx : ``float``
+        Second derivative d²ψ/dx².
+    f_xy : ``float``
+        Cross derivative d²ψ/dxdy.
+    f_yx : ``float``
+        Cross derivative d²ψ/dydx.
+    f_yy : ``float``
+        Second derivative d²ψ/dy².
+    """
+
+    # t = gamma - 1.0
+    # z = np.exp(-1j * phi) * (x + 1j * y); rotated complex coordinate
+    # b = theta_E * np.sqrt(q)
+
+    # Return the angle of the complex argument.
+    # ang is the angle of z, at the axis aligned frame.
+    ang = np.angle(z)
+    # z in elliptical frame coordinates
+    zz_ell = z.real * q + 1j * z.imag
+    # R is the elliptical radius
+    # R = np.sqrt((z.real * q) ** 2 + z.imag**2)
+    # R = r * np.sqrt(cos^2(phi)*q^2 + sin^2(phi)); phi not phiell
+    R = np.abs(zz_ell)
+    # phi_ell is the angle in the elliptical frame
+    # phi_ell = np.angle(zz_ell)
+
+    # x, y are scalars
+    # The deflection magnitude factor u = (b/R)^t is computed with safeguards to prevent overflow when R is very small.
+    if R > EPS:
+        u = (b / R) ** t
+        if u > 1.0e10:
+            u = 1.0e10
+    else:
+        u = 1.0e10
+    
+    # lensing convergence kappa
+    #  ∇²ψ = 2 * kappa; kappa = 0.5 * (2 - t) * (b/R)^(t)
+    # ψ_xx + ψ_yy = 2 * kappa; kappa = 0.5 * (2 - t) * u
+    kappa = 0.5 * (2.0 - t)
+    # R/r = sqrt(cos^2(phi)*q^2 + sin^2(phi)); phi not phiell
+    Roverr = np.sqrt((np.cos(ang) ** 2) * q * q + np.sin(ang) ** 2)
+
+    # Omega = omega_scalar(phi_ell, t, q)
+    # deflection: alpha_EPL = (2 b)/(1+q) * (b/R)^t * (R/b) * Omega = (2 b)/(1+q) * u * Roverr * Omega
+    alph = (2.0 / (1.0 + q)) * Omega
+
+    # internal shear 
+    gamma_shear = (
+        -np.exp(2j * (ang + phi)) * kappa
+        + (1.0 - t) * np.exp(1j * (ang + 2.0 * phi)) * alph * Roverr
+    )
+
+    f_xx = (kappa + gamma_shear.real) * u
+    f_yy = (kappa - gamma_shear.real) * u
+    f_xy = gamma_shear.imag * u
+
+    return f_xx, f_xy, f_xy, f_yy
+
+# @njit(cache=True, fastmath=True)
+def _hessian_scalar(z, b, t, gamma1, gamma2, q, phi, Omega):
+    """
+    Compute the total lensing Hessian (EPL + external shear) at one point.
+
+    Parameters
+    ----------
+    z : ``complex``
+        Image position in the axis-aligned frame.
+    b : ``float``
+        EPL scale parameter (``b = theta_E * sqrt(q)``).
+    t : ``float``
+        EPL slope parameter (``t = gamma - 1``).
+    gamma1 : ``float``
+        External shear component 1.
+    gamma2 : ``float``
+        External shear component 2.
+    q : ``float``
+        Axis ratio (0 < q ≤ 1).
+    phi : ``float``
+        Lens position angle in radians.
+    Omega : ``complex``
+        EPL deflection kernel at the image elliptical angle.
+
+    Returns
+    -------
+    f_xx : ``float``
+        Total d²ψ/dx².
+    f_xy : ``float``
+        Total d²ψ/dxdy.
+    f_yx : ``float``
+        Total d²ψ/dydx.
+    f_yy : ``float``
+        Total d²ψ/dy².
+    """
+    # Jacobian matrix
+    # A = I - Gamma - H
+    # H is the Hessian of the EPL potential
+    # H = [[f_xx_e, f_xy_e], [f_yx_e, f_yy_e]]
+    f_xx_e, f_xy_e, f_yx_e, f_yy_e = _epl_hessian(
+        z, b, t, q, phi, Omega
+    )
+    # Gamma = [[gamma1, gamma2], [gamma2, -gamma1]]
+    f_xx_s, f_xy_s, f_yx_s, f_yy_s = _shear_hessian(gamma1, gamma2)
+
+    return (
+        f_xx_e + f_xx_s,
+        f_xy_e + f_xy_s,
+        f_yx_e + f_yx_s,
+        f_yy_e + f_yy_s,
+    )
+
+# @njit(cache=True, fastmath=True)
+def lensing_diagnostics_scalar(z, b, t, gamma1, gamma2, q, phi, Omega):
+    """
+    Compute magnification and image type at one image position. 
+
+    Evaluates the total Hessian of the lensing potential (EPL +
+    external shear), then derives the Jacobian determinant and trace
+    to classify the image and compute its signed magnification.
+    Inputs ``z``, ``b``, ``t``, ``q``, ``phi``, and ``Omega`` are all
+    scalars, not arrays.
+
+    Image type convention: 
+    - 1: Type I  (minimum of the Fermat potential) 
+    - 2: Type II (saddle point) 
+    - 3: Type III (maximum of the Fermat potential) 
+    - 0: undefined / degenerate (on a critical curve)
+
+    Parameters
+    ----------
+    z : ``complex``
+        Image position in the axis-aligned frame
+        (``z = exp(-i*phi) * (x + i*y)``).
+    b : ``float``
+        EPL scale parameter (``b = theta_E * sqrt(q)``).
+    t : ``float``
+        EPL slope parameter (``t = gamma - 1``).
+    gamma1 : ``float``
+        External shear component 1.
+    gamma2 : ``float``
+        External shear component 2.
+    q : ``float``
+        Axis ratio (0 < q ≤ 1).
+    phi : ``float``
+        Lens position angle in radians.
+    Omega : ``complex``
+        EPL deflection kernel at the image elliptical angle.
+
+    Returns
+    -------
+    mu : ``float``
+        Signed magnification ``1/det(A)``; ``np.inf`` on a critical curve.
+    image_type : ``int``
+        Image-type code (0, 1, 2, or 3).
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from ler.image_properties.epl_shear_njit import (
+    ...     lensing_diagnostics_scalar, omega_scalar
+    ... )
+    >>> z = np.exp(-1j * 0.0) * (0.8 + 1j * 0.3)
+    >>> phi_ell = np.angle(z.real * 0.8 + 1j * z.imag)
+    >>> Omega = omega_scalar(phi_ell, t=1.0, q=0.8)
+    >>> mu, itype = lensing_diagnostics_scalar(
+    ...     z, b=0.894, t=1.0, gamma1=0.0, gamma2=0.0, q=0.8, phi=0.0, Omega=Omega
+    ... )
+    """
+    # Jacobian matrix
+    # A = I - Gamma - H
+    # hessian_scalar returns the total Hessian (EPL + external shear)
+    f_xx, f_xy, f_yx, f_yy = _hessian_scalar(
+        z, b, t, gamma1, gamma2, q, phi, Omega
+    )
+    # determinant and trace of the Jacobian
+    detA = (1.0 - f_xx) * (1.0 - f_yy) - f_xy * f_yx
+    traceA = 2.0 - f_xx - f_yy
+
+    if abs(detA) < EPS:
+        mu = np.inf
+        image_type = 0
+    else:
+        mu = 1.0 / detA
+
+        if detA < 0.0:
+            image_type = 2
+        elif traceA > 0.0:
+            image_type = 1
+        elif traceA < 0.0:
+            image_type = 3
+        else:
+            image_type = 0
+
+    # return f_xx, f_xy, f_yx, f_yy, detA, traceA, mu, image_type
+    return mu, image_type
+# -------------------------------------------------
+
+# ------------------
+# Fermat potentials
+# ------------------
+# @njit(cache=True, fastmath=True)
+def _shear_function(x, y, gamma1, gamma2):
+    """
+    Compute the external shear lensing potential at a point.
+
+    Parameters
+    ----------
+    x : ``float``
+        Image-plane x-coordinate.
+    y : ``float``
+        Image-plane y-coordinate.
+    gamma1 : ``float``
+        External shear component 1.
+    gamma2 : ``float``
+        External shear component 2.
+
+    Returns
+    -------
+    psi_shear : ``float``
+        Shear potential value.
+    """
+
+    return 0.5 * (gamma1 * x * x + 2.0 * gamma2 * x * y - gamma1 * y * y)
+
+# @njit(cache=True, fastmath=True)
+def _epl_function(x, y, b, t, q, phi, Omega):
+    """
+    Compute the EPL lensing potential at a point in the axis-aligned frame.
+
+    Parameters
+    ----------
+    x : ``float``
+        Image x-coordinate in the axis-aligned frame.
+    y : ``float``
+        Image y-coordinate in the axis-aligned frame.
+    b : ``float``
+        EPL scale parameter (``b = theta_E * sqrt(q)``).
+    t : ``float``
+        EPL slope parameter (``t = gamma - 1``).
+    q : ``float``
+        Axis ratio (0 < q ≤ 1).
+    phi : ``float``
+        Lens position angle in radians (unused; retained for interface symmetry).
+    Omega : ``complex``
+        EPL deflection kernel at the image elliptical angle.
+
+    Returns
+    -------
+    psi_epl : ``float``
+        EPL lensing potential value.
+    """
+    # t = gamma - 1.0
+    # z = np.exp(-1j * phi) * (x + 1j * y)
+    # b = theta_E * np.sqrt(q)
+
+    # R is the elliptical radius
+    # R = np.sqrt((z.real * q) ** 2 + z.imag**2)
+    # R = r * np.sqrt(cos^2(phi)*q^2 + sin^2(phi)); phi not phiell
+
+    # this x and y are in the axis-aligned frame
+    R = np.abs(x * q + 1j * y)
+
+    if R < EPS:
+        return 0.0
+
+    alph = (2.0 / (1.0 + q)) * (b / R) ** t * R * Omega
+
+    return (x * alph.real + y * alph.imag) / (2.0 - t)
+
+# @njit(cache=True, fastmath=True)
+def fermat_potential_scalar(z, x, y, x_source, y_source,
+                            b, t, gamma1, gamma2, q, phi, Omega):
+    """
+    Compute the Fermat potential at one image position. 
+
+    Returns the geometric minus gravitational time-delay contribution: 
+    ``tau = 0.5*|theta - beta|^2 - psi_EPL(theta) - psi_shear(theta)``
+
+    Parameters
+    ----------
+    z : ``complex``
+        Image position in the axis-aligned frame
+        (``z = exp(-i*phi) * (x + i*y)``).
+    x : ``float``
+        Image x-coordinate in sky frame.
+    y : ``float``
+        Image y-coordinate in sky frame.
+    x_source : ``float``
+        Source x-coordinate in sky frame.
+    y_source : ``float``
+        Source y-coordinate in sky frame.
+    b : ``float``
+        EPL scale parameter (``b = theta_E * sqrt(q)``).
+    t : ``float``
+        EPL slope parameter (``t = gamma - 1``).
+    gamma1 : ``float``
+        External shear component 1.
+    gamma2 : ``float``
+        External shear component 2.
+    q : ``float``
+        Axis ratio (0 < q ≤ 1).
+    phi : ``float``
+        Lens position angle in radians.
+    Omega : ``complex``
+        EPL deflection kernel at the image elliptical angle.
+
+    Returns
+    -------
+    tau : ``float``
+        Fermat potential (dimensionless; proportional to arrival-time delay).
+    """
+
+    # x, y in axis-aligned frame
+    x_rot = z.real
+    y_rot = z.imag
+    # Gravitational time delay 
+    # EPL potential 
+    tau_grav = (
+        _epl_function(x_rot, y_rot, b, t, q, phi, Omega)
+        + _shear_function(x, y, gamma1, gamma2)
+    )
+    # Geometric time delay
+    tau_geom = 0.5 * ((x - x_source) ** 2 + (y - y_source) ** 2)
+
+    return tau_geom - tau_grav
+# ------------------------------------------------
+
+# @njit(cache=True, fastmath=True)
 def image_position_analytical_njit(
-    x,
-    y,
+    x_src,
+    y_src,
     q,
     phi,
     gamma,
@@ -1200,112 +1530,133 @@ def image_position_analytical_njit(
     Nmeas_extra=80,
 ):
     """
-    Standalone EPL + shear analytical image finder.
+    Standalone EPL + external shear analytical image finder. 
 
-    Locates lensed images for a given source position, computes their
-    magnifications, Fermat potential (arrival time proxy), and image
-    types. Results are sorted by ascending arrival time and filtered
-    by a minimum magnification threshold.
+    Locates all lensed images for a given source position, computes
+    signed magnifications, Fermat potentials (arrival-time proxies),
+    and image types. Results are sorted by ascending arrival time and
+    filtered by a minimum magnification threshold.
 
     Parameters
     ----------
-    x : ``float``
-        Source-plane x-coordinate.
-    y : ``float``
-        Source-plane y-coordinate.
+    x_src : ``float``
+        Source x-coordinate (normalised to Einstein radius).
+    y_src : ``float``
+        Source y-coordinate (normalised to Einstein radius).
     q : ``float``
-        Lens axis ratio.
+        Lens axis ratio (0 < q ≤ 1).
     phi : ``float``
         Lens position angle in radians.
     gamma : ``float``
-        EPL power-law slope (lenstronomy convention). \n
-        The Tessore exponent is ``t = gamma - 1``.
+        EPL power-law slope (``gamma = 2`` for isothermal).
     gamma1 : ``float``
         External shear component 1.
     gamma2 : ``float``
         External shear component 2.
     theta_E : ``float``
-        Einstein radius. \n
+        Einstein radius. 
         default: 1.0
     alpha_scaling : ``float``
-        Deflection scaling factor applied to theta_E. \n
+        Deflection scaling applied as
+        ``theta_E_eff = theta_E * alpha_scaling^(1/(gamma-1))``. 
         default: 1.0
     magnification_limit : ``float``
-        Minimum |mu| threshold; images below this are discarded. \n
+        Minimum ``|mu|`` for an image to be retained. 
         default: 0.01
     Nmeas : ``int``
-        Angular root-finding grid size. \n
+        Number of uniformly-spaced angle samples for root finding. 
         default: 400
     Nmeas_extra : ``int``
-        Extra refinement points near the source angle. \n
+        Number of extra refinement samples near the source angle. 
         default: 80
 
     Returns
     -------
     x_img : ``numpy.ndarray``
-        Image x-positions sorted by arrival time.
+        Image x-coordinates.
     y_img : ``numpy.ndarray``
-        Image y-positions sorted by arrival time.
-    arrival_time : ``numpy.ndarray``
-        Fermat potential values in increasing order.
+        Image y-coordinates.
+    fermat_pot : ``numpy.ndarray``
+        Fermat potentials at each image.
     magnification : ``numpy.ndarray``
-        Signed magnifications.
+        Signed magnifications at each image.
     image_type : ``numpy.ndarray``
-        Image classification codes (int64). \n
-        1 = Type I (minimum), 2 = Type II (saddle), \n
-        3 = Type III (maximum), 0 = undefined.
+        Image-type codes (1 = min, 2 = saddle, 3 = max, 0 = degenerate).
     nimg : ``int``
-        Number of images returned.
+        Number of valid images retained.
 
     Examples
     --------
-    >>> x_img, y_img, tau, mu, itype, n = image_position_analytical_njit(
-    ...     x=0.1, y=0.05, q=0.8, phi=0.3, gamma=2.0,
-    ...     gamma1=0.03, gamma2=-0.01
+    >>> from ler.image_properties.epl_shear_njit import image_position_analytical_njit
+    >>> x_img, y_img, fermat_pot, mu, itype, nimg = image_position_analytical_njit(
+    ...     x_src=0.1, y_src=0.05,
+    ...     q=0.8, phi=0.3, gamma=2.0,
+    ...     gamma1=0.05, gamma2=0.02,
     ... )
+    >>> print(nimg)
     """
     theta_E_eff = theta_E * alpha_scaling ** (1.0 / (gamma - 1.0))
 
+    t = gamma - 1.0
+    b = theta_E_eff * np.sqrt(q)
+
     x_img, y_img, nimg = _solve_lenseq_pemd(
-        x, y, q, phi, gamma, gamma1, gamma2,
-        theta_E=theta_E_eff,
+        x_src, y_src, q, phi, t, gamma1, gamma2,
+        b=b,
         Nmeas=Nmeas,
         Nmeas_extra=Nmeas_extra,
     )
 
-    arrival_time = np.empty(MAX_IMGS, dtype=np.float64)
+    fermat_pot = np.empty(MAX_IMGS, dtype=np.float64)
     magnification = np.empty(MAX_IMGS, dtype=np.float64)
     image_type = np.empty(MAX_IMGS, dtype=np.int64)
 
+    # Rotate source position and shear to the axis-aligned (major-axis) frame.
+    # fermat_potential_scalar works with image position z = exp(-i*phi)*(x+iy),
+    # so the source and shear must also be in the same axis-aligned frame.
+    # z_src = np.exp(-1j * phi) * (x_src + 1j * y_src)
+    # x_src_rot = z_src.real
+    # y_src_rot = z_src.imag
+    # g_rot = (gamma1 + 1j * gamma2) * np.exp(-2j * phi)
+    # gamma1_rot = g_rot.real
+    # gamma2_rot = g_rot.imag
+
     for i in range(nimg):
-        _, _, _, _, _, _, mu, itype = lensing_diagnostics_scalar(
-            x_img[i], y_img[i],
-            theta_E_eff, gamma, gamma1, gamma2, q, phi
+        # z is in axis-aligned frame
+        z = np.exp(-1j * phi) * (x_img[i] + 1j * y_img[i])
+        # angle in the elliptical frame
+        phi_ell = np.angle(z.real * q + 1j * z.imag)
+        # Omega is calculated only once per image, and reused for both magnification and Fermat potential calculations.
+        Omega = omega_scalar(phi_ell, t, q)
+        mu, itype = lensing_diagnostics_scalar(
+            z, b, t, gamma1, gamma2, q, phi, Omega
         )
 
         magnification[i] = mu
         image_type[i] = itype
 
-        arrival_time[i] = fermat_potential_scalar(
-            x_img[i], y_img[i], x, y,
-            theta_E_eff, gamma, gamma1, gamma2, q, phi
+        fermat_pot[i] = fermat_potential_scalar(
+            z, x_img[i], y_img[i], x_src, y_src,
+            b, t, gamma1, gamma2, q, phi, Omega
         )
 
-    _insertion_sort5(x_img, y_img, arrival_time, magnification, image_type, nimg)
+    # sort by arrival time (Fermat potential)
+    _insertion_sort5(x_img, y_img, fermat_pot, magnification, image_type, nimg)
 
     keep = np.zeros(MAX_IMGS, dtype=np.uint8)
     for i in range(nimg):
-        if np.isinf(magnification[i]) or abs(magnification[i]) >= magnification_limit:
+        if not np.isfinite(magnification[i]) or abs(magnification[i]) >= magnification_limit:
             keep[i] = 1
 
+    # compress results to keep only valid images, and return the count of valid images.
     nimg = _compress_keep5(
-        keep, x_img, y_img, arrival_time, magnification, image_type, nimg
+        keep, x_img, y_img, fermat_pot, magnification, image_type, nimg
     )
 
     return (
         x_img[:nimg],
         y_img[:nimg],
-        arrival_time[:nimg],
+        fermat_pot[:nimg],
         magnification[:nimg],
         image_type[:nimg],
         nimg,
@@ -1316,7 +1667,6 @@ def create_epl_shear_solver(
     max_img=4,
     num_th=500,
     maginf=-100.0,
-    max_tries=100,
     alpha_scaling=1.0,
     magnification_limit=0.01,
     Nmeas=400,
@@ -1343,9 +1693,6 @@ def create_epl_shear_solver(
     maginf : ``float``
         Magnification cutoff for caustic boundary. \n
         default: -100.0
-    max_tries : ``int``
-        Maximum rejection-sampling attempts per source. \n
-        default: 100
     alpha_scaling : ``float``
         Deflection scaling factor. \n
         default: 1.0
@@ -1372,7 +1719,7 @@ def create_epl_shear_solver(
     >>> results = solver(theta_E, D_dt, q, phi, gamma, gamma1, gamma2)
     """
 
-    @njit(parallel=True, cache=True)
+    # @njit(parallel=True, cache=True, fastmath=True)
     def solve_epl_shear_multithreaded(theta_E, D_dt, q, phi, gamma, gamma1, gamma2):
         """
         Solve EPL + shear lens systems in parallel for a batch of parameters.
@@ -1425,29 +1772,24 @@ def create_epl_shear_solver(
         beta_x_arr = np.full((size,), np.nan)
         beta_y_arr = np.full((size,), np.nan)
 
-        ok_arr = np.zeros(size, dtype=np.uint8)
-
         # find source position for each lens system and sample caustic points
         for i in prange(size):
-            beta, pts = sample_source_from_double_caustic(
-                q[i],
-                phi[i],
-                gamma[i],
-                gamma1[i],
-                gamma2[i],
+            beta_x, beta_y = sample_source_from_double_caustic(
                 theta_E=1.0,
+                q=q[i],
+                phi=phi[i],
+                gamma=gamma[i],
+                gamma1=gamma1[i],
+                gamma2=gamma2[i],
                 num_th=num_th,
                 maginf=maginf,
-                max_tries=max_tries,
             )
-            beta_x, beta_y, ok = beta
 
-            ok_arr[i] = ok
             beta_x_arr[i] = beta_x
             beta_y_arr[i] = beta_y
 
         # solve for image positions in systems with valid source samples
-        idx = np.where(ok_arr == 1)[0]
+        idx = np.where(np.isfinite(beta_x_arr) & np.isfinite(beta_y_arr))[0]
 
         for i in prange(idx.size):
 
@@ -1455,9 +1797,9 @@ def create_epl_shear_solver(
 
             theta_E_val = theta_E[idx_i]
 
-            x, y, arrival_time, mu, image_type, n = image_position_analytical_njit(
-                x=beta_x_arr[idx_i], 
-                y=beta_y_arr[idx_i], 
+            x, y, fermat_pot, mu, image_type, n = image_position_analytical_njit(
+                x_src=beta_x_arr[idx_i], 
+                y_src=beta_y_arr[idx_i], 
                 q=q[idx_i], 
                 phi=phi[idx_i], 
                 gamma=gamma[idx_i], 
@@ -1470,6 +1812,8 @@ def create_epl_shear_solver(
                 Nmeas_extra=Nmeas_extra,
             )
 
+            n = min(n, max_img)  # enforce max_img limit
+
             nimg[idx_i] = n
             mu_arr[idx_i, :n] = mu[:n]
 
@@ -1480,7 +1824,7 @@ def create_epl_shear_solver(
             beta_y_arr[idx_i] = beta_y_arr[idx_i] * theta_E_val
 
             # rescale time delays
-            tau_hat = arrival_time[:n]
+            tau_hat = fermat_pot[:n]
             # Fermat potential rescales as theta_E^2
             tau_phys = tau_hat * (theta_E_val * theta_E_val)
             # physical time delays in days: Δt = (D_dt/c) * Δtau
