@@ -37,7 +37,7 @@ from ler.utils import FunctionConditioning
 N_SAMPLES = 10
 
 DEFAULT_CONFIG = dict(
-    npool=6,
+    npool=1,
     z_min=0.0,
     z_max=10.0,
     create_new_interpolator=False,
@@ -101,7 +101,7 @@ def lens_epl_shear(interpolator_dir):
     Initialization can be expensive due to cached interpolator setup; this fixture
     reuses the same instance for multiple tests in this module.
     """
-    cfg = _make_config(interpolator_dir, npool=6)
+    cfg = _make_config(interpolator_dir)
     return LensGalaxyParameterDistribution(lens_type="epl_shear_galaxy", **cfg)
 
 
@@ -109,6 +109,13 @@ def lens_epl_shear(interpolator_dir):
 def lens_epl_shear_npool1(interpolator_dir):
     """Same as `lens_epl_shear` but with `npool=1` (speed/warmup comparisons)."""
     cfg = _make_config(interpolator_dir, npool=1)
+    return LensGalaxyParameterDistribution(lens_type="epl_shear_galaxy", **cfg)
+
+
+@pytest.fixture(scope="module")
+def lens_epl_shear_npool6(interpolator_dir):
+    """EPL+shear instance with `npool=6`; used only by slow timing tests."""
+    cfg = _make_config(interpolator_dir, npool=6)
     return LensGalaxyParameterDistribution(lens_type="epl_shear_galaxy", **cfg)
 
 
@@ -155,7 +162,8 @@ class TestLensGalaxyParameterDistribution(CommonTestUtils):
         assert lens.lens_type == "epl_shear_galaxy", f"lens_type: expected 'epl_shear_galaxy', got {lens.lens_type}"
         assert lens.z_min == DEFAULT_CONFIG["z_min"], f"z_min: expected {DEFAULT_CONFIG['z_min']}, got {lens.z_min}"
         assert lens.z_max == DEFAULT_CONFIG["z_max"], f"z_max: expected {DEFAULT_CONFIG['z_max']}, got {lens.z_max}"
-        assert lens.npool == 6, f"npool: expected 6, got {lens.npool}"
+        assert lens.npool == DEFAULT_CONFIG["npool"], \
+            f"npool: expected {DEFAULT_CONFIG['npool']}, got {lens.npool}"
 
         assert np.isfinite(lens.normalization_pdf_z_lensed), f"normalization_pdf_z_lensed is not finite: {lens.normalization_pdf_z_lensed}"
         assert lens.normalization_pdf_z_lensed > 0.0, f"normalization_pdf_z_lensed must be positive, got {lens.normalization_pdf_z_lensed}"
@@ -251,7 +259,7 @@ class TestLensGalaxyParameterDistribution(CommonTestUtils):
             f"q must be in (0, 1]: min={params['q'].min():.3f}, max={params['q'].max():.3f}"
 
     @pytest.mark.slow
-    def test_njit_speed(self, interpolator_dir, lens_epl_shear_npool1, lens_epl_shear):
+    def test_njit_speed(self, interpolator_dir, lens_epl_shear_npool1, lens_epl_shear_npool6):
         """
         Tests
         -----
@@ -335,7 +343,7 @@ class TestLensGalaxyParameterDistribution(CommonTestUtils):
             )
 
         t_njit_1 = _time_sampler(lens_epl_shear_npool1)
-        t_njit_6 = _time_sampler(lens_epl_shear)
+        t_njit_6 = _time_sampler(lens_epl_shear_npool6)
 
         assert t_no_jit > 0.0 and t_njit_1 > 0.0 and t_njit_6 > 0.0, \
             f"invalid timings: t_no_jit={t_no_jit}, t_njit_1={t_njit_1}, t_njit_6={t_njit_6}"

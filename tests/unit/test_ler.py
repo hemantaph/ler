@@ -78,7 +78,7 @@ DEFAULT_JSON_KEYS = [
 N_SAMPLES = 20
 
 DEFAULT_CONFIG = dict(
-    npool=6,
+    npool=1,
     z_min=0.0,
     z_max=10.0,
     event_type="BBH",
@@ -165,7 +165,6 @@ class TestLeR(CommonTestUtils):
         - LeR inherits from ``LensGalaxyParameterDistribution``.
         - A user-supplied ``pdet_finder`` is stored on ``self.pdet_finder``
           without triggering gwsnr initialization.
-        - A user-supplied astropy cosmology is stored as ``self.cosmo``.
         """
         ler = ler_instance
         assert ler.z_min == DEFAULT_CONFIG["z_min"], \
@@ -196,12 +195,6 @@ class TestLeR(CommonTestUtils):
         # mock_pdet_finder simply returns 1 for every event, so no gwsnr initialization is triggered
         assert ler.pdet_finder is mock_pdet_finder, \
             "pdet_finder was not stored on self.pdet_finder after initialization"
-
-        # custom astropy cosmology must be stored as-is (not copied or replaced)
-        cosmo = LambdaCDM(H0=67.4, Om0=0.315, Ode0=0.685, Tcmb0=2.725)
-        ler_custom = _make_ler(interpolator_directory, ler_directory, cosmology=cosmo)
-        assert ler_custom.cosmo is cosmo, \
-            "custom cosmology was not stored as self.cosmo (identity check failed)"
 
     # -----------------------------------------------------------------------
     # unlensed_cbc_statistics

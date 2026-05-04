@@ -71,7 +71,7 @@ N_SAMPLES = 10
 N_PROP_FAST = 50
 
 DEFAULT_LENS_CONFIG = dict(
-    npool=6,
+    npool=1,
     z_min=0.0,
     z_max=10.0,
     create_new_interpolator=False,

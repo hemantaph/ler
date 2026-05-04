@@ -18,8 +18,12 @@ jobs:
       MPLCONFIGDIR: ${{ github.workspace }}/tests/.cache/matplotlib
       LER_TEST_INTERPOLATOR_CACHE_DIR: ${{ github.workspace }}/tests/.cache/interpolators
     steps:
+      # ler/rates/ler_data/*.zip are Git LFS; without LFS fetch the checkout
+      # contains pointer text and ZipFile raises BadZipFile in conftest fixtures.
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - name: Set up Python
         uses: actions/setup-python@v5
