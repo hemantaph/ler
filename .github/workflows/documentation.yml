@@ -1,4 +1,5 @@
 # Simple workflow for deploying Sphinx documentation to GitHub Pages
+# Install the current package (.) with the docs optional dependencies (in docs brackets, in project's pyproject.toml).
 name: Deploy Sphinx Docs to Pages
 
 on:

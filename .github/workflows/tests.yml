@@ -1,0 +1,37 @@
+# Unit and integration tests (default pytest run omits ``slow`` benchmarks).
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: tests-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    env:
+      NUMBA_CACHE_DIR: ${{ github.workspace }}/tests/.cache/numba
+      MPLCONFIGDIR: ${{ github.workspace }}/tests/.cache/matplotlib
+      LER_TEST_INTERPOLATOR_CACHE_DIR: ${{ github.workspace }}/tests/.cache/interpolators
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install package and test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Run tests (default excludes slow)
+        run: |
+          python -m pytest tests/ --tb=short -q
