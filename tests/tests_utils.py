@@ -6,9 +6,41 @@ multiple unit test files. It mirrors the pattern used in gwsnr for shared test h
 """
 
 import inspect
+import os
 import time
 
 import numpy as np
+
+
+def clamp_npool_for_numba(desired: int, *, fallback_cap: int = 4) -> int:
+    """
+    Return an integer ``npool`` that ``numba.set_num_threads()`` will accept.
+
+    LeR binds ``npool`` to ``set_num_threads`` during initialization / setters.
+    GitHub-hosted runners often expose only four logical CPUs; requesting six
+    threads raises ``ValueError`` from Numba on those hosts.
+
+    We cap to ``os.cpu_count()`` when available (typical workstations then keep
+    ``desired`` unchanged up to hardware). If ``cpu_count()`` is unavailable,
+    ``fallback_cap`` is used instead.
+
+    Parameters
+    ----------
+    desired : int
+        Requested parallel pool size (tests often use ``6`` on large desktops).
+    fallback_cap : int, optional
+        Upper bound used when ``os.cpu_count()`` is ``None`` or non-positive.
+
+    Returns
+    -------
+    int
+        ``max(1, min(int(desired), cap))``.
+    """
+    n = max(1, int(desired))
+    cap = os.cpu_count()
+    if cap is None or cap < 1:
+        cap = int(fallback_cap)
+    return min(n, int(cap))
 
 from ler.utils import FunctionConditioning
 

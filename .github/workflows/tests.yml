@@ -28,14 +28,15 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-          cache: "pip"
+          python-version-file: ".python-version"
 
-      - name: Install package and test dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -e ".[dev]"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Sync environment from lockfile
+        run: uv sync --locked --extra dev
 
       - name: Run tests (default excludes slow)
-        run: |
-          python -m pytest tests/ --tb=short -q
+        run: uv run pytest tests/ --tb=short -q

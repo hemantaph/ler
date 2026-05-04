@@ -23,7 +23,7 @@ Test Coverage:
 import numpy as np
 import time
 import pytest
-from tests_utils import CommonTestUtils
+from tests_utils import CommonTestUtils, clamp_npool_for_numba
 from ler.lens_galaxy_population import OpticalDepth
 
 
@@ -38,7 +38,7 @@ N_SAMPLES = 10
 LENS_TYPES = ["epl_shear_galaxy", "sie_galaxy", "sis_galaxy"]
 
 DEFAULT_CONFIG = dict(
-    npool=6,
+    npool=clamp_npool_for_numba(6),
     z_min=0.0,
     z_max=10.0,
     create_new_interpolator=False,

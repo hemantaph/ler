@@ -28,7 +28,7 @@ import sys
 import numpy as np
 import pytest
 from astropy.cosmology import LambdaCDM
-from tests_utils import CommonTestUtils, median_call_time
+from tests_utils import CommonTestUtils, clamp_npool_for_numba, median_call_time
 from ler.gw_source_population import CBCSourceRedshiftDistribution
 
 # ---------------------------------------------------------------------------
@@ -40,7 +40,7 @@ N_SAMPLES = 10
 
 # Default configuration – uses existing cached interpolators for speed
 DEFAULT_CONFIG = dict(
-    npool=6,
+    npool=clamp_npool_for_numba(6),
     z_min=0.0,
     z_max=10.0,
     create_new_interpolator=False,

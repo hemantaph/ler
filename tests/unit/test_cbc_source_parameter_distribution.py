@@ -17,18 +17,22 @@ Test Coverage:
 - Fixed-parameter overrides via ``param`` in ``sample_gw_parameters``
 - Invalid ``event_type`` rejection via ``ValueError``
 - ``gw_parameters_rvs_njit`` output sanity (structure and valid ranges) for BBH with ``spin_zero=True``
-- Optional ``slow`` test: ``gw_parameters_rvs_njit`` no-JIT subprocess vs in-process JIT (``npool=1`` and ``npool=6``).
+- Optional ``slow`` test: ``gw_parameters_rvs_njit`` no-JIT subprocess vs in-process JIT (``npool=1`` and clamped parallel ``npool``, typically ``6``).
 """
 
 import numpy as np
 import pytest
+from ler.gw_source_population import CBCSourceParameterDistribution
 from tests_utils import (
     CommonTestUtils,
     EXPECTED_SPIN_PRECESSING_KEYS,
     EXPECTED_SPIN_ZERO_FORBIDDEN_BBH_KEYS,
+    clamp_npool_for_numba,
     median_call_time,
 )
-from ler.gw_source_population import CBCSourceParameterDistribution
+
+# Matches ``desired=6`` on large hosts; clamps for Numba on low-vCPU CI runners.
+NPOOL_PARALLEL = clamp_npool_for_numba(6)
 
 # ---------------------------------------------------------------------------
 # Test configuration
@@ -39,7 +43,7 @@ N_SAMPLES = 30
 
 # Shared configuration
 DEFAULT_CONFIG = dict(
-    npool=6,
+    npool=NPOOL_PARALLEL,
     z_min=0.0,
     z_max=10.0,
     create_new_interpolator=False,
@@ -591,7 +595,7 @@ class TestCBCSourceParameterDistribution(CommonTestUtils):
         Tests
         -----
         - Compare wall time of ``gw_parameters_rvs_njit`` in three modes:
-          i) njit with ``npool=6`` (in-process, JIT enabled)
+          i) njit with parallel ``npool`` (``clamp_npool_for_numba(6)``, in-process JIT)
           ii) njit with ``npool=1`` (in-process, JIT enabled)
           iii) no-JIT baseline: subprocess with ``NUMBA_DISABLE_JIT=1`` and ``npool=1``
         - The no-JIT baseline runs in a subprocess so the env var is set before
@@ -652,7 +656,7 @@ class TestCBCSourceParameterDistribution(CommonTestUtils):
         t_no_jit = float(proc.stderr.strip().splitlines()[-1])
 
         # ------------------------------------------------------------------
-        # Test 2/3: njit-backed sampler (in-process), npool=1 and npool=6
+        # Test 2/3: njit-backed sampler (in-process), npool=1 and parallel npool
         # ------------------------------------------------------------------
         def _time_gw_parameters_rvs_njit(npool):
             cfg = _make_config(interpolator_dir, npool=npool)
@@ -668,21 +672,25 @@ class TestCBCSourceParameterDistribution(CommonTestUtils):
             )
 
         t_njit_1 = _time_gw_parameters_rvs_njit(1)
-        t_njit_6 = _time_gw_parameters_rvs_njit(6)
+        t_njit_hi = _time_gw_parameters_rvs_njit(NPOOL_PARALLEL)
 
-        assert t_no_jit > 0.0 and t_njit_1 > 0.0 and t_njit_6 > 0.0, \
-            f"invalid timings: t_no_jit={t_no_jit}, t_njit_1={t_njit_1}, t_njit_6={t_njit_6}"
+        assert t_no_jit > 0.0 and t_njit_1 > 0.0 and t_njit_hi > 0.0, (
+            f"invalid timings: t_no_jit={t_no_jit}, t_njit_1={t_njit_1}, "
+            f"t_njit_hi={t_njit_hi} (npool={NPOOL_PARALLEL})"
+        )
 
         speedup_1 = t_no_jit / t_njit_1
-        speedup_6 = t_no_jit / t_njit_6
+        speedup_hi = t_no_jit / t_njit_hi
 
-        assert np.isfinite(speedup_1) and np.isfinite(speedup_6), \
-            f"invalid speedups: speedup_1={speedup_1}, speedup_6={speedup_6}"
+        assert np.isfinite(speedup_1) and np.isfinite(speedup_hi), (
+            f"invalid speedups: speedup_1={speedup_1}, speedup_hi={speedup_hi}"
+        )
         assert speedup_1 >= min_speedup, (
             f"Expected njit (npool=1) to be faster after warm-up, but got speedup={speedup_1:.2f}x "
             f"(no-JIT={t_no_jit:.6f}s, njit npool=1={t_njit_1:.6f}s)."
         )
-        assert speedup_6 >= min_speedup, (
-            f"Expected njit (npool=6) to be faster after warm-up, but got speedup={speedup_6:.2f}x "
-            f"(no-JIT={t_no_jit:.6f}s, njit npool=6={t_njit_6:.6f}s)."
+        assert speedup_hi >= min_speedup, (
+            f"Expected njit (npool={NPOOL_PARALLEL}) to be faster after warm-up, "
+            f"but got speedup={speedup_hi:.2f}x "
+            f"(no-JIT={t_no_jit:.6f}s, njit npool={NPOOL_PARALLEL} wall={t_njit_hi:.6f}s)."
         )

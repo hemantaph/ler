@@ -30,16 +30,14 @@ from tests_utils import (
     CommonTestUtils,
     EXPECTED_UNLENSED_GW_KEYS_NO_SPIN,
     EXPECTED_UNLENSED_GW_KEYS_PRECESSING_SPIN,
+    clamp_npool_for_numba,
 )
 
-# ---------------------------------------------------------------------------
-# Test configuration
-# ---------------------------------------------------------------------------
+# Prefer six workers where Numba permits; clamps on four-vCPU GitHub-hosted runners.
+NPOOL = clamp_npool_for_numba(6)
 
 SIZE = 20000
 BATCH_SIZE = 10000
-
-NPOOL = 6
 
 Z_MIN = 0.0
 Z_MAX = 10.0

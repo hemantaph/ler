@@ -31,11 +31,8 @@ from tests_utils import (
     EXPECTED_LENSED_PARAM_KEYS_ALIGNED_SPIN,
     EXPECTED_SOURCE_POS_KEYS,
     EXPECTED_UNLENSED_GW_KEYS_ALIGNED_SPIN,
+    clamp_npool_for_numba,
 )
-
-# ---------------------------------------------------------------------------
-# Test configuration
-# ---------------------------------------------------------------------------
 
 # Monte Carlo sample size (same for unlensed and lensed draws).
 SIZE = 20000
@@ -43,7 +40,7 @@ SIZE = 20000
 BATCH_SIZE = 10000
 
 # Worker count for multiprocessing inside LeR.
-NPOOL = 6
+NPOOL = clamp_npool_for_numba(6)
 
 # Source redshift range for CBC sampling and optical-depth integrals.
 Z_MIN = 0.0

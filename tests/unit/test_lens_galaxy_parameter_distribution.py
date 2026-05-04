@@ -18,16 +18,21 @@ Test Coverage:
     slower samplers — ``rejection_sampler_full``, ``importance_sampler_full``,
     ``rejection_sampler_partial`` — same output assertions as the fast test.
   - ``test_njit_speed`` *(slow)*: no-JIT subprocess vs in-process njit for
-    ``importance_sampler_partial`` with ``npool=1`` and ``npool=6``.
+    ``importance_sampler_partial`` with ``npool=1`` and parallel ``npool``
+    (``clamp_npool_for_numba(6)``, often 6 on workstations).
 - Intrinsic lens-parameter sampling (no strong-lensing weighting):
   - ``sample_all_routine_epl_shear_intrinsic`` returns finite samples with expected keys.
 """
 
 import numpy as np
 import pytest
-from tests_utils import CommonTestUtils, median_call_time
+from tests_utils import CommonTestUtils, clamp_npool_for_numba, median_call_time
 from ler.lens_galaxy_population import LensGalaxyParameterDistribution
 from ler.utils import FunctionConditioning
+
+
+# ``npool=6`` intent on workstations; clamps for Numba on low-thread CI runners.
+NPOOL_PARALLEL = clamp_npool_for_numba(6)
 
 
 # ---------------------------------------------------------------------------
@@ -114,8 +119,8 @@ def lens_epl_shear_npool1(interpolator_dir):
 
 @pytest.fixture(scope="module")
 def lens_epl_shear_npool6(interpolator_dir):
-    """EPL+shear instance with `npool=6`; used only by slow timing tests."""
-    cfg = _make_config(interpolator_dir, npool=6)
+    """EPL+shear with high ``npool`` (``clamp_npool_for_numba(6)``); ``slow`` timing tests only."""
+    cfg = _make_config(interpolator_dir, npool=NPOOL_PARALLEL)
     return LensGalaxyParameterDistribution(lens_type="epl_shear_galaxy", **cfg)
 
 
@@ -266,7 +271,7 @@ class TestLensGalaxyParameterDistribution(CommonTestUtils):
         - Compare wall time of cross-section-based ``epl_shear_sl_parameters_rvs``
           with ``importance_sampler_partial`` (same sampler as the default
           fast test ``test_cross_section_based_sampler_variants``) in three modes:
-          i) njit-backed sampler with npool=6
+          i) njit-backed sampler with parallel ``npool`` (typically 6)
           ii) njit-backed sampler with npool=1
           iii) no-JIT baseline (NUMBA_DISABLE_JIT=1) with npool=1
         - The no-JIT baseline is executed in a subprocess so that
@@ -343,21 +348,24 @@ class TestLensGalaxyParameterDistribution(CommonTestUtils):
             )
 
         t_njit_1 = _time_sampler(lens_epl_shear_npool1)
-        t_njit_6 = _time_sampler(lens_epl_shear_npool6)
+        t_njit_hi = _time_sampler(lens_epl_shear_npool6)
 
-        assert t_no_jit > 0.0 and t_njit_1 > 0.0 and t_njit_6 > 0.0, \
-            f"invalid timings: t_no_jit={t_no_jit}, t_njit_1={t_njit_1}, t_njit_6={t_njit_6}"
+        assert t_no_jit > 0.0 and t_njit_1 > 0.0 and t_njit_hi > 0.0, (
+            f"invalid timings: t_no_jit={t_no_jit}, t_njit_1={t_njit_1}, t_njit_hi={t_njit_hi}"
+        )
 
         speedup_1 = t_no_jit / t_njit_1
-        speedup_6 = t_no_jit / t_njit_6
+        speedup_hi = t_no_jit / t_njit_hi
 
-        assert np.isfinite(speedup_1) and np.isfinite(speedup_6), \
-            f"invalid speedups: speedup_1={speedup_1}, speedup_6={speedup_6}"
+        assert np.isfinite(speedup_1) and np.isfinite(speedup_hi), (
+            f"invalid speedups: speedup_1={speedup_1}, speedup_hi={speedup_hi}"
+        )
         assert speedup_1 >= min_speedup, (
             f"Expected njit (npool=1) to be faster after warm-up, but got speedup={speedup_1:.2f}x "
             f"(no-JIT={t_no_jit:.6f}s, njit npool=1={t_njit_1:.6f}s)."
         )
-        assert speedup_6 >= min_speedup, (
-            f"Expected njit (npool=6) to be faster after warm-up, but got speedup={speedup_6:.2f}x "
-            f"(no-JIT={t_no_jit:.6f}s, njit npool=6={t_njit_6:.6f}s)."
+        assert speedup_hi >= min_speedup, (
+            f"Expected njit (npool={NPOOL_PARALLEL}) to be faster after warm-up, "
+            f"but got speedup={speedup_hi:.2f}x "
+            f"(no-JIT={t_no_jit:.6f}s, njit npool={NPOOL_PARALLEL} wall={t_njit_hi:.6f}s)."
         )

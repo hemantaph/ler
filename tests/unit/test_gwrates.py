@@ -32,6 +32,7 @@ from tests_utils import (
     CommonTestUtils,
     EXPECTED_UNLENSED_GW_KEYS_ALIGNED_SPIN,
     EXPECTED_UNLENSED_PARAM_KEYS,
+    clamp_npool_for_numba,
 )
 
 from ler.rates import GWRATES
@@ -56,7 +57,8 @@ EXPECTED_PARAM_KEYS = EXPECTED_UNLENSED_PARAM_KEYS
 N_SAMPLES = 20
 
 DEFAULT_CONFIG = dict(
-    npool=6,
+    # Preferred high npool on big machines (6); clamp so Numba succeeds on slim CI VMs.
+    npool=clamp_npool_for_numba(6),
     z_min=0.0,
     z_max=10.0,
     event_type="BBH",

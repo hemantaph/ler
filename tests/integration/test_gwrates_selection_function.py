@@ -29,7 +29,7 @@ import pytest
 from ler.rates import GWRATES
 from ler.gw_source_population import broken_powerlaw_plus_2peaks_rvs
 
-from tests_utils import CommonTestUtils, EXPECTED_ALIGNED_MODE_SPIN_KEYS
+from tests_utils import CommonTestUtils, EXPECTED_ALIGNED_MODE_SPIN_KEYS, clamp_npool_for_numba
 
 # ---------------------------------------------------------------------------
 # Test configuration
@@ -40,7 +40,7 @@ from tests_utils import CommonTestUtils, EXPECTED_ALIGNED_MODE_SPIN_KEYS
 SIZE = 8000
 BATCH_SIZE = 4000
 
-NPOOL = 6
+NPOOL = clamp_npool_for_numba(6)
 
 Z_MIN = 0.0
 Z_MAX = 10.0

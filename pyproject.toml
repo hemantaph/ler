@@ -76,6 +76,17 @@ version = {attr = "ler._version.__version__"}
 "ler.rates" = ["ler_data/*"]
 "ler.rates.ler_data" = ["*.zip"]
 
+[tool.pytest.ini_options]
+pythonpath = ["tests"]
+markers = [
+    "slow: wall-clock / JIT benchmarks and other heavy tests; skipped in default runs (run all including these: pytest --run-slow; only slow: pytest -m slow)",
+]
+
 [tool.ruff]
 # Ignore E731: Do not assign a lambda expression, use a def
 lint.ignore = ["E731", "E402"]
+
+[tool.uv]
+# Default project layout: `uv sync` creates or updates `.venv` at the repo root.
+# Typical dev workflow: `uv sync --extra dev`, then `uv run pytest …` / `python -m ler …`.
+managed = true

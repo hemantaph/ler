@@ -1,5 +1,5 @@
 """
-Integration benchmark: JIT ``LeR`` (``npool=6``) vs no-JIT subprocess.
+Integration benchmark: JIT ``LeR`` (parallel ``npool``, intent ``~6``, clamped per host) vs no-JIT subprocess.
 
 The no-JIT branch mirrors the slow backend configuration used by the speed
 comparison example:
@@ -46,6 +46,8 @@ import sys
 import numpy as np
 import pytest
 
+from tests_utils import clamp_npool_for_numba
+
 
 @pytest.mark.slow
 class TestLeRSpeedBenchmark:
@@ -56,7 +58,7 @@ class TestLeRSpeedBenchmark:
     LENSED_SIZE = 10
     LENSED_BATCH = 10
     N_AVG = 3
-    NPOOL_JIT = 6
+    NPOOL_JIT = clamp_npool_for_numba(6)
 
     @classmethod
     def _numba_threading_layer_for_subprocess_env(cls):
