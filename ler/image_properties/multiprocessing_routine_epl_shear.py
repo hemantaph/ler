@@ -10,7 +10,7 @@ the ImageProperties class.
 Usage:
     Basic workflow example:
 
-    >>> from ler.image_properties.multiprocessing_routine import solve_lens_equation
+    >>> from ler.image_properties.multiprocessing_routine_epl_shear import solve_lens_equation
     >>> import numpy as np
     >>> from multiprocessing import Pool
     >>> lens_params = np.array([2, 0.02, -0.01, 1.9, 0.1, 0.09, 0.25, 0.94, 1e-6, 0, 'EPL_NUMBA', 'SHEAR'], dtype=object)
@@ -155,7 +155,7 @@ def solve_lens_equation(lens_parameters):
 
     Examples
     --------
-    >>> from ler.image_properties.multiprocessing_routine import solve_lens_equation, _init_worker_multiprocessing
+    >>> from ler.image_properties.multiprocessing_routine_epl_shear import solve_lens_equation, _init_worker_multiprocessing
     >>> import numpy as np
     >>> from multiprocessing import Pool
     >>> lens_parameters1 = np.array([0.024, -0.016, 1.89, 0.10, 0.09, 0.25, 0.94, 2.5e-06, 0])
@@ -258,6 +258,8 @@ def solve_lens_equation(lens_parameters):
         * (theta_E_nImages * radian_to_arcseconds) ** 2
         * days_to_seconds
     )
+
+    time_delays = time_delays - np.min(time_delays)  # Convert to positive time delays relative to first arrival
 
     # Compute hessian properties for image type classification
     hessian = lensModel.hessian(x0_image_position, x1_image_position, kwargs_lens)

@@ -1,8 +1,10 @@
 """
-ler: LVK (LIGO-Virgo-KAGRA collaboration) Event (compact-binary mergers) Rate calculator and simulator
+Gravitational-wave lensed-event rate code for LVK compact binary coalescences.
+
+``import ler`` only configures lightweight threading defaults; the main classes
+``LeR`` and ``GWRATES`` are loaded on first access (see ``__getattr__``).
 """
 
-# In your package __init__.py
 import os
 import multiprocessing as mp
 import warnings
@@ -24,14 +26,17 @@ os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
 
 def set_multiprocessing_start_method():
     """
-    Set the multiprocessing start method based on OS and environment variables.
-    Defaults:
-    - macOS: 'spawn' (safer with threaded native libraries)
-    - Linux/other POSIX: 'fork'
+    Set ``multiprocessing`` start method once per process when explicitly called.
 
-    Overrides:
-    - LER_USE_SPAWN=True forces 'spawn'
-    - LER_USE_FORK=True forces 'fork'
+    Default choices: ``spawn`` on macOS, ``fork`` on other POSIX systems. Windows
+    is left unchanged (``spawn``).
+
+    Environment overrides (POSIX): ``LER_USE_SPAWN=True`` or ``LER_USE_FORK=True``
+    (if both are set, ``spawn`` is used and a warning is issued).
+
+    Returns
+    -------
+    None
     """
     method = None
 
@@ -89,18 +94,17 @@ def set_multiprocessing_start_method():
         pass
 
 
-# Call the function on package import
-set_multiprocessing_start_method()
-
-import warnings
 import logging
-from . import rates
-from .rates import LeR
-from .rates import GWRATES
 from ._version import __version__
 
 # Package metadata
-__all__ = ["LeR", "rates"]
+__all__ = [
+    "LeR",
+    "GWRATES",
+    "rates",
+    "set_multiprocessing_start_method",
+    "__version__",
+]
 __author__ = "Hemantakumar Phurailatpam <hemantaphurailatpam@gmail.com>"
 __license__ = "MIT"
 __email__ = "hemantaphurailatpam@gmail.com"
@@ -113,27 +117,46 @@ __version_info__ = tuple(map(int, __version__.split(".")))
 warnings.filterwarnings("ignore", "Wswiglal-redir-stdio")
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
+def __getattr__(name):
+    """
+    Resolve ``LeR``, ``GWRATES``, or the ``rates`` subpackage on first use.
 
-"""
-Where multiprocessing is used:
-1. ler.lens_galaxy_population.optical_depth.cross_section_epl_shear_numerical_mp
-  - uses lenstronomy.LensModel.Solver.epl_shear_solver.caustics_epl_shear for generate double caustic boundary
-2. ler.lens_galaxy_population.optical_depth._lens_redshift_multiprocessing
-  - uses njitted sampling functions (see ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_mp)
+    Parameters
+    ----------
+    name : str
+        Attribute name on the ``ler`` package.
 
-Where njitted prange is used:
-1. ler.image_properties.cross_section_njit.make_cross_section_area_reinit
-  - lenstronomy style njitted cross section calculation
-2. ler.image_properties.epl_shear_njit.create_epl_shear_solver
-  - lenstronomy style njitted lens equation solver
-3. ler.image_properties.sample_caustic_points_njit._points_in_poly_precomp
-  - 
-4. ler.lens_galaxy_population.cross_section_interpolator._map_coordinates_5d_cubic_nearest
-  - cross section interpolator 
-5. ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_njit
-  - JIT-compiled parallel computation of differential optical dept (lens redshift)
-6. ler.lens_galaxy_population.sampler_functions.importance_sampler
-  - importance sampling for lens galaxy parameters
+    Returns
+    -------
+    type or module
+        ``LeR`` or ``GWRATES`` from ``ler.rates``, or the ``ler.rates`` package.
 
-There can be nested prange in the code, but I believe that Numba would silently serialize nested prange.
-"""
+    Raises
+    ------
+    AttributeError
+        If ``name`` is not one of the names exported via this hook.
+    """
+    if name == "rates":
+        from . import rates as _rates
+        globals()[name] = _rates
+        return _rates
+    if name == "LeR":
+        from .rates import LeR as _LeR
+        globals()[name] = _LeR
+        return _LeR
+    if name == "GWRATES":
+        from .rates import GWRATES as _GWRATES
+        globals()[name] = _GWRATES
+        return _GWRATES
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+
+# Multiprocessing entry points (see package internals):
+# - ler.lens_galaxy_population.optical_depth.cross_section_epl_shear_numerical_mp
+#   (lenstronomy EPL+shear caustics for double-image region).
+# - ler.lens_galaxy_population.optical_depth._lens_redshift_multiprocessing
+#   (ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_mp).
+# Numba prange is used in, e.g., ler.image_properties.cross_section_njit,
+# epl_shear_njit, sample_caustic_points_njit; cross_section_interpolator;
+# lens_galaxy_population.mp / sampler_functions. Nested prange may serialize
+# inside Numba depending on build and runtime.

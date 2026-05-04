@@ -1,8 +1,6 @@
 import os
 import numpy as np
-import matplotlib.pyplot as plt
 import contextlib
-from gwsnr import GWSNR
 from .utils import append_json, get_param_from_json
 
 class TrainingDataGenerator():
@@ -56,9 +54,12 @@ class TrainingDataGenerator():
         trim_to_size=False, 
         verbose=True, 
         replace=False, 
-        data_distribution_range = [0, 2, 4, 6, 8, 10, 12, 14, 16, 100],
+        data_distribution_range=None,
         output_jsonfile="gw_parameters.json",
     ):
+
+        if data_distribution_range is None:
+            data_distribution_range = [0, 2, 4, 6, 8, 10, 12, 14, 16, 100]
 
         args = self.ler_init_args.copy()
         if snr_recalculation:
@@ -198,11 +199,14 @@ class TrainingDataGenerator():
         file_name_list=None,
         path_list=None, 
         detector='L1',
-        parameter_list=['mass_1', 'mass_2', 'luminosity_distance', 'theta_jn', 'psi', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2'],
+        parameter_list=None,
         output_jsonfile="combined_data.json",
     ):
 
-        parameter_list += [detector]
+        if parameter_list is None:
+            parameter_list = ['mass_1', 'mass_2', 'luminosity_distance', 'theta_jn', 'psi', 'geocent_time', 'ra', 'dec', 'a_1', 'a_2', 'tilt_1', 'tilt_2']
+
+        parameter_list = list(parameter_list) + [detector]
         combined_dict = {}
 
         if file_name_list is not None:

@@ -12,7 +12,7 @@ Key Features: \n
 - Multiprocessing-compatible wrapper functions for optical depth \n
 - Cross-section calculation using EPL+Shear lens models \n
 
-Copyright (C) 2026 Phurailatpam Hemantakumar. Distributed under MIT License.
+Copyright (C) 2024 Hemantakumar Phurailatpam. Distributed under MIT License.
 """
 
 import numpy as np
@@ -24,12 +24,8 @@ from .lens_functions import cross_section
 # This avoids pickling large data for each work item — only once per worker.
 _worker_shared_data = {}
 
-# Constants for cross-section unit scaling (1/pi and numerical offset)
-CS_UNIT_SLOPE = 0.31830988618379075
-CS_UNIT_INTERCEPT = -3.2311742677852644e-27
 
-
-@njit(parallel=True, cache=True)
+@njit(parallel=True)
 def lens_redshift_strongly_lensed_njit(
     zs_array,
     zl_scaled,
@@ -38,14 +34,15 @@ def lens_redshift_strongly_lensed_njit(
     q_rvs,
     phi_rvs,
     gamma_rvs,
-    shear_rvs,
+    shear1_rvs,
+    shear2_rvs,
     number_density,
     cross_section,
     dVcdz_function,
     integration_size,
 ):
     """
-    JIT-compiled parallel computation of differential optical dept (lens redshift).
+    JIT-compiled parallel computation of differential optical depth.
 
     Computes the differential optical depth for strong lensing as a function
     of source and lens redshifts using Monte Carlo integration with parallel
@@ -67,8 +64,10 @@ def lens_redshift_strongly_lensed_njit(
         Function to sample axis rotation angles.
     gamma_rvs : ``callable``
         Function to sample density profile slopes.
-    shear_rvs : ``callable``
-        Function to sample external shear components (gamma1, gamma2).
+    shear1_rvs : ``callable``
+        Function to sample external shear component 1 (gamma1).
+    shear2_rvs : ``callable``
+        Function to sample external shear component 2 (gamma2).
     number_density : ``callable``
         Function to compute velocity dispersion number density.
     cross_section : ``callable``
@@ -85,11 +84,14 @@ def lens_redshift_strongly_lensed_njit(
     """
     size_zs = zs_array.shape[0]
     size_zl = zl_scaled.shape[1]
+    
     result_array = np.zeros((size_zs, size_zl))
 
     for i in prange(size_zs):
         # Unscale lens redshifts for this source redshift
         zl_array = zl_scaled[i] * zs_array[i]
+        # Differential comoving volume
+        dVcdz = dVcdz_function(zl_array)
 
         for j in range(size_zl):
             # Monte Carlo integration setup
@@ -102,7 +104,11 @@ def lens_redshift_strongly_lensed_njit(
             q = q_rvs(integration_size, sigma)
             phi = phi_rvs(integration_size)
             gamma = gamma_rvs(integration_size)
-            gamma1, gamma2 = shear_rvs(integration_size)
+            gamma1 = shear1_rvs(integration_size)
+            gamma2 = shear2_rvs(integration_size)
+
+            # Compute number density weights
+            p_sigma = number_density(sigma, zl_) * dVcdz[j]
 
             # Compute cross-sections
             area_array = cross_section(zs_, zl_, sigma, q, phi, gamma, gamma1, gamma2)
@@ -114,16 +120,10 @@ def lens_redshift_strongly_lensed_njit(
                 result_array[i, j] = 0.0
                 continue
 
-            # Compute number density weights
-            phi_sigma = number_density(sigma, zl_)
-
-            # Differential comoving volume
-            dVcdz = dVcdz_function(np.array([zl]))[0]
-
             # Compute optical depth contribution
             result = (
                 (sigma_max - sigma_min)
-                * np.average(area_array[idx] * phi_sigma[idx] * dVcdz)
+                * np.average(area_array[idx] * p_sigma[idx])
                 / (4 * np.pi)
             )
             result_array[i, j] = result
@@ -138,7 +138,8 @@ def _init_lens_redshift_worker(
     q_rvs,
     phi_rvs,
     gamma_rvs,
-    shear_rvs,
+    shear1_rvs,
+    shear2_rvs,
     dVcdz_function,
     cs_function,
     integration_size,
@@ -165,8 +166,10 @@ def _init_lens_redshift_worker(
         Axis rotation angle sampler.
     gamma_rvs : ``callable``
         Density slope sampler.
-    shear_rvs : ``callable``
-        External shear sampler.
+    shear1_rvs : ``callable``
+        External shear component 1 (gamma1) sampler.
+    shear2_rvs : ``callable``
+        External shear component 2 (gamma2) sampler.
     dVcdz_function : ``callable``
         Differential comoving volume function.
     cs_function : ``callable``
@@ -175,13 +178,16 @@ def _init_lens_redshift_worker(
         Number of Monte Carlo samples per (zs, zl) pair.
     """
     global _worker_shared_data
+    # Limit to 1 Numba thread per worker — parallelism comes from the process pool
+    set_num_threads(1)
     _worker_shared_data["sigma_min"] = sigma_min
     _worker_shared_data["sigma_max"] = sigma_max
     _worker_shared_data["sigma_function"] = sigma_function
     _worker_shared_data["q_rvs"] = q_rvs
     _worker_shared_data["phi_rvs"] = phi_rvs
     _worker_shared_data["gamma_rvs"] = gamma_rvs
-    _worker_shared_data["shear_rvs"] = shear_rvs
+    _worker_shared_data["shear1_rvs"] = shear1_rvs
+    _worker_shared_data["shear2_rvs"] = shear2_rvs
     _worker_shared_data["dVcdz_function"] = dVcdz_function
     _worker_shared_data["cs_function"] = cs_function
     _worker_shared_data["integration_size"] = integration_size
@@ -189,7 +195,7 @@ def _init_lens_redshift_worker(
 
 def lens_redshift_strongly_lensed_mp(params):
     """
-    Multiprocessing worker for computation of differential optical dept (lens redshift).
+    Multiprocessing worker for computation of differential optical depth.
 
     Computes the differential optical depth for a single source redshift
     across multiple lens redshifts. Designed to be called via multiprocessing
@@ -224,7 +230,8 @@ def lens_redshift_strongly_lensed_mp(params):
     q_rvs = _worker_shared_data["q_rvs"]
     phi_rvs = _worker_shared_data["phi_rvs"]
     gamma_rvs = _worker_shared_data["gamma_rvs"]
-    shear_rvs = _worker_shared_data["shear_rvs"]
+    shear1_rvs = _worker_shared_data["shear1_rvs"]
+    shear2_rvs = _worker_shared_data["shear2_rvs"]
     dVcdz_function = _worker_shared_data["dVcdz_function"]
     cs_function = _worker_shared_data["cs_function"]
     integration_size = _worker_shared_data["integration_size"]
@@ -234,6 +241,9 @@ def lens_redshift_strongly_lensed_mp(params):
 
     # Unscale lens redshifts
     zl_array = params[1] * zs
+
+    # Differential comoving volume
+    dVcdz = dVcdz_function(zl_array)
 
     result_array = np.zeros(len(zl_array))
     for i, zl in enumerate(zl_array):
@@ -250,11 +260,15 @@ def lens_redshift_strongly_lensed_mp(params):
         gamma = gamma_rvs(integration_size)
 
         # Sample external shear components (gamma1, gamma2)
-        gamma1, gamma2 = shear_rvs(integration_size)
+        gamma1 = shear1_rvs(integration_size)
+        gamma2 = shear2_rvs(integration_size)
+
+        # Compute number density weights (velocity dispersion distribution)
+        zl_arr = zl * np.ones(integration_size)
+        p_sigma = sigma_function(sigma, zl_arr) * dVcdz[i]
 
         # Compute cross-section
         zs_arr = zs * np.ones(integration_size)
-        zl_arr = zl * np.ones(integration_size)
         area_array = cs_function(zs_arr, zl_arr, sigma, q, phi, gamma, gamma1, gamma2)
 
         # Filter out invalid values (inf, non-positive)
@@ -264,16 +278,12 @@ def lens_redshift_strongly_lensed_mp(params):
             result_array[i] = 0.0
             continue
 
-        # Compute number density weights (velocity dispersion distribution)
-        phi_sigma = sigma_function(sigma, zl_arr)
-
-        # Differential comoving volume
-        dVcdz = dVcdz_function(np.array([zl]))[0]
+        
 
         # Compute optical depth contribution (importance sampling correction)
         result = (
             (sigma_max - sigma_min)
-            * np.average(area_array[valid_idx] * phi_sigma[valid_idx] * dVcdz)
+            * np.average(area_array[valid_idx] * p_sigma[valid_idx])
             / (4 * np.pi)
         )
         result_array[i] = result
@@ -281,6 +291,7 @@ def lens_redshift_strongly_lensed_mp(params):
     return worker_idx, np.array(result_array)
 
 
+@njit(parallel=True)
 def cross_section_unit_mp(params):
     """
     Multiprocessing worker for unit Einstein radius cross-section.

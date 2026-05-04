@@ -10,9 +10,8 @@ import json
 from scipy.interpolate import interp1d
 from scipy.interpolate import CubicSpline
 from scipy.integrate import quad
-from numba import njit
+from numba import njit, prange
 from importlib import resources
-
 # import datetime
 from numba.core.registry import CPUDispatcher
 
@@ -20,53 +19,16 @@ from numba.core.registry import CPUDispatcher
 def is_njitted(func):
     return isinstance(func, CPUDispatcher)
 
-
-class NumpyEncoder(json.JSONEncoder):
-    """
-    Class for storing a numpy.ndarray or any nested-list composition as JSON file. This is required for dealing np.nan and np.inf.
-
-    Parameters
-    ----------
-    json.JSONEncoder : `class`
-        class for encoding JSON file
-
-    Returns
-    ----------
-    json.JSONEncoder.default : `function`
-        function for encoding JSON file
-
-    Example
-    ----------
-    >>> import numpy as np
-    >>> import json
-    >>> from ler import helperroutines as hr
-    >>> # create a dictionary
-    >>> param = {'a': np.array([1,2,3]), 'b': np.array([4,5,6])}
-    >>> # save the dictionary as json file
-    >>> with open('param.json', 'w') as f:
-    >>>     json.dump(param, f, cls=hr.NumpyEncoder)
-    >>> # load the dictionary from json file
-    >>> with open('param.json', 'r') as f:
-    >>>     param = json.load(f)
-    >>> # print the dictionary
-    >>> print(param)
-    {'a': [1, 2, 3], 'b': [4, 5, 6]}
-    """
-
-    def default(self, obj):
-        """function for encoding JSON file"""
-        if isinstance(obj, np.ndarray):
-            return obj.tolist()
-        return json.JSONEncoder.default(self, obj)
-
-
+# ---------------------
+# IO bound functions
+# ---------------------
 def remove_file(file_name):
     """Remove a file."""
     print(f"removing {file_name} if it exists")
     if os.path.exists(file_name):
         os.remove(file_name)
 
-
+# pickle
 def load_pickle(file_name):
     """Load a pickle file.
 
@@ -91,7 +53,6 @@ def load_pickle(file_name):
 
     return param
 
-
 def save_pickle(file_name, param):
     """Save a dictionary as a pickle file.
 
@@ -112,7 +73,6 @@ def save_pickle(file_name, param):
     with open(file_name, "wb") as handle:
         dill.dump(param, handle, protocol=dill.HIGHEST_PROTOCOL)
 
-
 # hdf5
 def load_hdf5(file_name):
     """Load a hdf5 file.
@@ -129,7 +89,6 @@ def load_hdf5(file_name):
 
     return h5py.File(file_name, "r")
 
-
 def save_hdf5(file_name, param):
     """Save a dictionary as a hdf5 file.
 
@@ -144,6 +103,44 @@ def save_hdf5(file_name, param):
         for key, value in param.items():
             f.create_dataset(key, data=value)
 
+# json
+class NumpyEncoder(json.JSONEncoder):
+    """
+    Class for storing a numpy.ndarray or any nested-list composition as JSON file. This is required for dealing np.nan and np.inf.
+
+    Parameters
+    ----------
+    json.JSONEncoder : `class`
+        class for encoding JSON file
+
+    Returns
+    ----------
+    json.JSONEncoder.default : `function`
+        function for encoding JSON file
+
+    Example
+    ----------
+    >>> import numpy as np
+    >>> import json
+    >>> from ler.utils import NumpyEncoder
+    >>> # create a dictionary
+    >>> param = {'a': np.array([1,2,3]), 'b': np.array([4,5,6])}
+    >>> # save the dictionary as json file
+    >>> with open('param.json', 'w') as f:
+    >>>     json.dump(param, f, cls=NumpyEncoder)
+    >>> # load the dictionary from json file
+    >>> with open('param.json', 'r') as f:
+    >>>     param = json.load(f)
+    >>> # print the dictionary
+    >>> print(param)
+    {'a': [1, 2, 3], 'b': [4, 5, 6]}
+    """
+
+    def default(self, obj):
+        """function for encoding JSON file"""
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return json.JSONEncoder.default(self, obj)
 
 def load_json(file_name):
     """Load a json file.
@@ -183,7 +180,7 @@ def save_json(file_name, param):
     try:
         with open(file_name, "w", encoding="utf-8") as write_file:
             json.dump(param, write_file)
-    except:
+    except TypeError:
         with open(file_name, "w", encoding="utf-8") as write_file:
             json.dump(param, write_file, indent=4, cls=NumpyEncoder)
 
@@ -226,6 +223,10 @@ def append_json(file_name, new_dictionary, old_dictionary=None, replace=False):
         # print("getting data from file")
         with open(file_name, "r", encoding="utf-8") as f:
             data = json.load(f)
+        # json.load returns lists; convert to numpy arrays for compatibility
+        for key, value in data.items():
+            if isinstance(value, list):
+                data[key] = np.array(value)
     # end = datetime.datetime.now()
     # print(f"Time taken to load the json file: {end-start}")
 
@@ -249,30 +250,6 @@ def append_json(file_name, new_dictionary, old_dictionary=None, replace=False):
 
     return data
 
-
-def concatenate_dict_values(dict1, dict2):
-    """Adds the values of two dictionaries together.
-
-    Parameters
-    ----------
-    dict1 : `dict`
-        dictionary to be added.
-    dict2 : `dict`
-        dictionary to be added.
-
-    Returns
-    ----------
-    dict1 : `dict`
-        dictionary with added values.
-    """
-    data_key = dict1.keys()
-    for key, value in dict2.items():
-        if key in data_key:
-            dict1[key] = np.concatenate((dict1[key], value))
-
-    return dict1
-
-
 def get_param_from_json(json_file):
     """
     Function to get the parameters from json file.
@@ -293,7 +270,126 @@ def get_param_from_json(json_file):
         param[key] = np.array(value)
     return param
 
+# # dictionary handling
+# def concatenate_dict_values(dict1, dict2):
+#     """Adds the values of two dictionaries together.
 
+#     Parameters
+#     ----------
+#     dict1 : `dict`
+#         dictionary to be added.
+#     dict2 : `dict`
+#         dictionary to be added.
+
+#     Returns
+#     ----------
+#     dict1 : `dict`
+#         dictionary with added values.
+#     """
+#     data_key = dict1.keys()
+#     for key, value in dict2.items():
+#         if key in data_key:
+#             dict1[key] = np.concatenate((dict1[key], value))
+
+#     return dict1
+
+def add_dictionaries_together(dictionary1, dictionary2):
+    """
+    Adds two dictionaries with the same keys together.
+
+    Parameters
+    ----------
+    dictionary1 : `dict`
+        dictionary to be added.
+    dictionary2 : `dict`
+        dictionary to be added.
+
+    Returns
+    ----------
+    dictionary : `dict`
+        dictionary with added values.
+    """
+    dictionary = {}
+    # Check if either dictionary empty, in which case only return the dictionary with values
+    if len(dictionary1) == 0:
+        return dictionary2
+    elif len(dictionary2) == 0:
+        return dictionary1
+    # Check if the keys are the same
+    if dictionary1.keys() != dictionary2.keys():
+        raise ValueError("The dictionaries have different keys.")
+    for key in dictionary1.keys():
+        value1 = dictionary1[key]
+        value2 = dictionary2[key]
+
+        # check if the value is empty
+        len1 = value1.shape[0]
+        len2 = value2.shape[0]
+        bool0 = len1 == 0 or len2 == 0
+        # check if the value is an ndarray or a list
+        bool1 = isinstance(value1, np.ndarray) and isinstance(value2, np.ndarray)
+        bool2 = isinstance(value1, list) and isinstance(value2, list)
+        bool3 = isinstance(value1, np.ndarray) and isinstance(value2, list)
+        bool4 = isinstance(value1, list) and isinstance(value2, np.ndarray)
+        bool4 = bool4 or bool3
+        bool5 = isinstance(value1, dict) and isinstance(value2, dict)
+
+        if bool0:
+            if len1 == 0 and len2 == 0:
+                dictionary[key] = np.array([])
+            elif len1 != 0 and len2 == 0:
+                dictionary[key] = np.array(value1)
+            elif len1 == 0 and len2 != 0:
+                dictionary[key] = np.array(value2)
+        elif bool1:
+            dictionary[key] = np.concatenate((value1, value2))
+        elif bool2:
+            dictionary[key] = value1 + value2
+        elif bool4:
+            dictionary[key] = np.concatenate((np.array(value1), np.array(value2)))
+        elif bool5:
+            dictionary[key] = add_dictionaries_together(
+                dictionary1[key], dictionary2[key]
+            )
+        else:
+            raise ValueError(
+                "The dictionary contains an item which is neither an ndarray nor a dictionary."
+            )
+    return dictionary
+
+
+def trim_dictionary(dictionary, size):
+    """
+    Filters an event dictionary to only contain the size.
+
+    Parameters
+    ----------
+    dictionary : `dict`
+        dictionary to be trimmed.
+    size : `int`
+        size to trim the dictionary to.
+
+    Returns
+    ----------
+    dictionary : `dict`
+        trimmed dictionary.
+    """
+    for key in dictionary.keys():
+        # Check if the item is an ndarray
+        if isinstance(dictionary[key], np.ndarray):
+            dictionary[key] = dictionary[key][:size]  # Trim the array
+        # Check if the item is a nested dictionary
+        elif isinstance(dictionary[key], dict):
+            dictionary[key] = trim_dictionary(
+                dictionary[key], size
+            )  # Trim the nested dictionary
+        else:
+            raise ValueError(
+                "The dictionary contains an item which is neither an ndarray nor a dictionary."
+            )
+    return dictionary
+
+# module loading
 def load_txt_from_module(package, directory, filename):
     """
     Function to load a specific dataset from a .txt file within the package
@@ -316,7 +412,9 @@ def load_txt_from_module(package, directory, filename):
     with resources.path(package + "." + directory, filename) as txt_path:
         return np.loadtxt(txt_path)
 
-
+# ----------------------
+# Rejection sampling 
+# ----------------------
 def rejection_sample(pdf, xmin, xmax, size=100, chunk_size=10000):
     """
     Helper function for rejection sampling from a pdf with maximum and minimum arguments.
@@ -363,7 +461,6 @@ def rejection_sample(pdf, xmin, xmax, size=100, chunk_size=10000):
     x_sample = np.array(x_sample).flatten()
     # Return the correct number of samples
     return x_sample[:size]
-
 
 def rejection_sample2d(pdf, xmin, xmax, ymin, ymax, size=100, chunk_size=10000):
     """
@@ -420,184 +517,87 @@ def rejection_sample2d(pdf, xmin, xmax, ymin, ymax, size=100, chunk_size=10000):
     # Return the correct number of samples
     return x_sample[:size], y_sample[:size]
 
+# def create_func_pdf_invcdf(x, y, category="function"):
+#     """
+#     Function to create a interpolated function, inverse function or inverse cdf from the input x and y.
 
-def add_dictionaries_together(dictionary1, dictionary2):
-    """
-    Adds two dictionaries with the same keys together.
+#     Parameters
+#     ----------
+#     x : `numpy.ndarray`
+#         x values. This has to sorted in ascending order.
+#     y : `numpy.ndarray`
+#         y values. Corresponding to the x values.
+#     category : `str`, optional
+#         category of the function. Default is "function". Other options are "function_inverse", "pdf" and "inv_cdf".
 
-    Parameters
-    ----------
-    dictionary1 : `dict`
-        dictionary to be added.
-    dictionary2 : `dict`
-        dictionary to be added.
+#     Returns
+#     ----------
+#     pdf : `pdf function`
+#         interpolated pdf function.
+#     inv_pdf : `function inverse`
+#         interpolated inverse pdf function.
+#     inv_cdf : `function`
+#         interpolated inverse cdf.
+#     """
 
-    Returns
-    ----------
-    dictionary : `dict`
-        dictionary with added values.
-    """
-    dictionary = {}
-    # Check if either dictionary empty, in which case only return the dictionary with values
-    if len(dictionary1) == 0:
-        return dictionary2
-    elif len(dictionary2) == 0:
-        return dictionary1
-    # Check if the keys are the same
-    if dictionary1.keys() != dictionary2.keys():
-        raise ValueError("The dictionaries have different keys.")
-    for key in dictionary1.keys():
-        value1 = dictionary1[key]
-        value2 = dictionary2[key]
+#     idx = np.argwhere(np.isnan(y))
+#     x = np.delete(x, idx)
+#     y = np.delete(y, idx)
 
-        # check if the value is empty
-        bool0 = len(value1) == 0 or len(value2) == 0
-        # check if the value is an ndarray or a list
-        bool1 = isinstance(value1, np.ndarray) and isinstance(value2, np.ndarray)
-        bool2 = isinstance(value1, list) and isinstance(value2, list)
-        bool3 = isinstance(value1, np.ndarray) and isinstance(value2, list)
-        bool4 = isinstance(value1, list) and isinstance(value2, np.ndarray)
-        bool4 = bool4 or bool3
-        bool5 = isinstance(value1, dict) and isinstance(value2, dict)
+#     # create pdf with interpolation
+#     pdf_unorm = interp1d(x, y, kind="cubic", fill_value="extrapolate")
+#     if category == "function":
+#         return pdf_unorm
+#     if category == "function_inverse":
+#         # create inverse function
+#         return interp1d(y, x, kind="cubic", fill_value="extrapolate")
 
-        if bool0:
-            if len(value1) == 0 and len(value2) == 0:
-                dictionary[key] = np.array([])
-            elif len(value1) != 0 and len(value2) == 0:
-                dictionary[key] = np.array(value1)
-            elif len(value1) == 0 and len(value2) != 0:
-                dictionary[key] = np.array(value2)
-        elif bool1:
-            dictionary[key] = np.concatenate((value1, value2))
-        elif bool2:
-            dictionary[key] = value1 + value2
-        elif bool4:
-            dictionary[key] = np.concatenate((np.array(value1), np.array(value2)))
-        elif bool5:
-            dictionary[key] = add_dictionaries_together(
-                dictionary1[key], dictionary2[key]
-            )
-        else:
-            raise ValueError(
-                "The dictionary contains an item which is neither an ndarray nor a dictionary."
-            )
-    return dictionary
+#     min_, max_ = min(x), max(x)
+#     norm = quad(pdf_unorm, min_, max_)[0]
+#     y = y / norm
+#     if category == "pdf" or category is None:
+#         # normalize the pdf
+#         pdf = interp1d(x, y, kind="cubic", fill_value="extrapolate")
+#         return pdf
+#     # cdf
+#     cdf_values, x, _ = cumulative_trapezoid(y, x, initial=0)
 
+#     inv_cdf = interp1d(cdf_values, x, kind="cubic", fill_value="extrapolate")
+#     if category == "inv_cdf":
+#         return inv_cdf
+#     if category == "all":
+#         return [pdf, inv_cdf]
 
-def trim_dictionary(dictionary, size):
-    """
-    Filters an event dictionary to only contain the size.
+# def create_conditioned_pdf_invcdf(x, conditioned_y, pdf_func, category):
+#     """
+#     pdf_func is the function to calculate the pdf of x given y
+#     x is an array and the output of pdf_func is an array
+#     y is the condition
+#     we consider parameter plane of x and y
 
-    Parameters
-    ----------
-    dictionary : `dict`
-        dictionary to be trimmed.
-    size : `int`
-        size to trim the dictionary to.
+#     Parameters
+#     ----------
+#     x : `numpy.ndarray`
+#         x values.
+#     conditioned_y : `numpy.ndarray`
+#         conditioned y values.
+#     pdf_func : `function`
+#         function to calculate the pdf of x given y.
+#     category : `str`, optional
+#         category of the function. Default is "function". Other options are "function_inverse", "pdf" and "inv_cdf".
+#     """
 
-    Returns
-    ----------
-    dictionary : `dict`
-        trimmed dictionary.
-    """
-    for key in dictionary.keys():
-        # Check if the item is an ndarray
-        if isinstance(dictionary[key], np.ndarray):
-            dictionary[key] = dictionary[key][:size]  # Trim the array
-        # Check if the item is a nested dictionary
-        elif isinstance(dictionary[key], dict):
-            dictionary[key] = trim_dictionary(
-                dictionary[key], size
-            )  # Trim the nested dictionary
-        else:
-            raise ValueError(
-                "The dictionary contains an item which is neither an ndarray nor a dictionary."
-            )
-    return dictionary
+#     list_ = []
+#     for y in conditioned_y:
+#         phi = pdf_func(x, y)
+#         # append pdf for each y along the x-axis
+#         list_.append(create_func_pdf_invcdf(x, phi, category=category))
 
+#     return list_
 
-def create_func_pdf_invcdf(x, y, category="function"):
-    """
-    Function to create a interpolated function, inverse function or inverse cdf from the input x and y.
-
-    Parameters
-    ----------
-    x : `numpy.ndarray`
-        x values. This has to sorted in ascending order.
-    y : `numpy.ndarray`
-        y values. Corresponding to the x values.
-    category : `str`, optional
-        category of the function. Default is "function". Other options are "function_inverse", "pdf" and "inv_cdf".
-
-    Returns
-    ----------
-    pdf : `pdf function`
-        interpolated pdf function.
-    inv_pdf : `function inverse`
-        interpolated inverse pdf function.
-    inv_cdf : `function`
-        interpolated inverse cdf.
-    """
-
-    idx = np.argwhere(np.isnan(y))
-    x = np.delete(x, idx)
-    y = np.delete(y, idx)
-
-    # create pdf with interpolation
-    pdf_unorm = interp1d(x, y, kind="cubic", fill_value="extrapolate")
-    if category == "function":
-        return pdf_unorm
-    if category == "function_inverse":
-        # create inverse function
-        return interp1d(y, x, kind="cubic", fill_value="extrapolate")
-
-    min_, max_ = min(x), max(x)
-    norm = quad(pdf_unorm, min_, max_)[0]
-    y = y / norm
-    if category == "pdf" or category is None:
-        # normalize the pdf
-        pdf = interp1d(x, y, kind="cubic", fill_value="extrapolate")
-        return pdf
-    # cdf
-    cdf_values = cumulative_trapezoid(y, x, initial=0)
-    idx = np.argwhere(cdf_values > 0)[0][0]
-    cdf_values = cdf_values[idx:]
-    x = x[idx:]
-    inv_cdf = interp1d(cdf_values, x, kind="cubic", fill_value="extrapolate")
-    if category == "inv_cdf":
-        return inv_cdf
-    if category == "all":
-        return [pdf, inv_cdf]
-
-
-def create_conditioned_pdf_invcdf(x, conditioned_y, pdf_func, category):
-    """
-    pdf_func is the function to calculate the pdf of x given y
-    x is an array and the output of pdf_func is an array
-    y is the condition
-    we consider parameter plane of x and y
-
-    Parameters
-    ----------
-    x : `numpy.ndarray`
-        x values.
-    conditioned_y : `numpy.ndarray`
-        conditioned y values.
-    pdf_func : `function`
-        function to calculate the pdf of x given y.
-    category : `str`, optional
-        category of the function. Default is "function". Other options are "function_inverse", "pdf" and "inv_cdf".
-    """
-
-    list_ = []
-    for y in conditioned_y:
-        phi = pdf_func(x, y)
-        # append pdf for each y along the x-axis
-        list_.append(create_func_pdf_invcdf(x, phi, category=category))
-
-    return list_
-
-
+# ------------------------
+# interpolator creation
+# ------------------------
 def create_func(x, y):
     """
     Function to create a spline interpolated function from the input x and y.
@@ -620,7 +620,6 @@ def create_func(x, y):
     y = np.delete(y, idx)
     return CubicSpline(x, y).c, x
 
-
 def create_func_inv(x, y):
     """
     Function to create a spline interpolated inverse function from the input x and y.
@@ -642,7 +641,6 @@ def create_func_inv(x, y):
     x = np.delete(x, idx)
     y = np.delete(y, idx)
     return CubicSpline(y, x).c, y
-
 
 def create_pdf(x, y):
     """
@@ -669,7 +667,6 @@ def create_pdf(x, y):
     y = y / norm
     return CubicSpline(x, y).c, x
 
-
 def create_inv_cdf_array(x, y):
     """
     Function to create a spline interpolated inverse cdf from the input x and y.
@@ -690,8 +687,7 @@ def create_inv_cdf_array(x, y):
     idx = np.argwhere(np.isnan(y))
     x = np.delete(x, idx)
     y = np.delete(y, idx)
-    cdf_values = cumulative_trapezoid(y, x, initial=0)
-    cdf_values = cdf_values / cdf_values[-1]
+    cdf_values, x, _ = cumulative_spline(y=y, x=x, initial=0)
     # to remove duplicate values on x-axis before interpolation
     # idx = np.argwhere(cdf_values > 0)[0][0]
     # cdf_values = cdf_values[idx:]
@@ -699,7 +695,6 @@ def create_inv_cdf_array(x, y):
     # cdf_values = np.insert(cdf_values, 0, 0)
     # x = np.insert(x, 0, x[idx-1])
     return np.array([cdf_values, x])
-
 
 def create_conditioned_pdf(x, conditioned_y, pdf_func):
     """
@@ -726,7 +721,6 @@ def create_conditioned_pdf(x, conditioned_y, pdf_func):
 
     return np.array(list_)
 
-
 def create_conditioned_inv_cdf_array(x, conditioned_y, pdf_func):
     """
     Function to create a conditioned inv_cdf from the input x and y.
@@ -747,13 +741,12 @@ def create_conditioned_inv_cdf_array(x, conditioned_y, pdf_func):
     """
 
     list_ = []
-    size = len(x)
+    size = x.shape[0]
     for y in conditioned_y:
         phi = pdf_func(x, y * np.ones(size))
         list_.append(create_inv_cdf_array(x, phi))
 
     return np.array(list_)
-
 
 def interpolator_from_json(
     identifier_dict,
@@ -849,7 +842,6 @@ def interpolator_from_json(
         save_json(path_inv_cdf, interpolator)
         return interpolator
 
-
 def interpolator_json_path(
     identifier_dict,
     directory,
@@ -944,7 +936,893 @@ def interpolator_json_path(
 
 #     return interpolator_list[idx](x)
 
+# ------------------------
+# Integration
+# ------------------------
+# NOTE: cache=True intentionally NOT set here. ``function`` and
+# ``uniform_prior`` are first-class Numba dispatchers, whose types vary
+# per call site, so Numba cannot persist a stable cache key for this
+# function across processes.
+@njit(fastmath=True)
+def monte_carlo_integration(function, uniform_prior, size=10000):
+    """
+    Function to perform Monte Carlo integration.
 
+    Parameters
+    ----------
+    function : `function`
+        function to be integrated.
+    uniform_prior : `function`
+        uniform prior function.
+
+    Returns
+    ----------
+    integral : `float`
+        integral value.
+    """
+
+    # sample from the prior
+    x = uniform_prior(size=size)
+    # calculate the function
+    y = np.array([function(x[i]) for i in range(size)])
+    # calculate the integral
+    integral = np.mean(y) * (np.max(x) - np.min(x))
+    return integral
+
+# ------------------------
+# Interpolation
+# ------------------------
+@njit(cache=True, fastmath=True)
+def cubic_spline_interpolator(xnew, coefficients, x):
+    """
+    Function to interpolate using cubic spline.
+
+    Parameters
+    ----------
+    xnew : `numpy.ndarray`
+        new x values.
+    coefficients : `numpy.ndarray`
+        coefficients of the cubic spline.
+    x : `numpy.ndarray`
+        x values.
+
+    Returns
+    ----------
+    result : `numpy.ndarray`
+        interpolated values.
+    """
+
+    # Handling extrapolation
+    i = np.searchsorted(x, xnew) - 1
+    idx1 = xnew <= x[0]
+    idx2 = xnew > x[-1]
+    i[idx1] = 0
+    i[idx2] = x.shape[0] - 2
+
+    # Calculate the relative position within the interval
+    dx = xnew - x[i]
+
+    # Calculate the interpolated value
+    # Cubic polynomial: a + b*dx + c*dx^2 + d*dx^3
+    a, b, c, d = coefficients[:, i]
+    # result = a + b*dx + c*dx**2 + d*dx**3
+    result = d + c * dx + b * dx**2 + a * dx**3
+
+    return result
+
+@njit(cache=True, fastmath=True)
+def cubic_spline_interpolator_scalar(xnew, coefficients, x):
+    """
+    Function to interpolate using cubic spline.
+
+    Parameters
+    ----------
+    xnew : `float`
+        new x value.
+    coefficients : `numpy.ndarray`
+        coefficients of the cubic spline.
+    x : `numpy.ndarray`
+        x values.
+
+    Returns
+    ----------
+    result : `float`
+        interpolated value.
+    """
+
+    # Handling extrapolation
+    i = np.searchsorted(x, xnew) - 1
+
+    if xnew <= x[0]:
+        i = 0
+    elif xnew > x[-1]:
+        i = x.shape[0] - 2
+
+    # Calculate the relative position within the interval
+    dx = xnew - x[i]
+
+    # Calculate the interpolated value
+    a, b, c, d = coefficients[:, i]
+    # result = a + b*dx + c*dx**2 + d*dx**3
+    result = d + c * dx + b * dx**2 + a * dx**3
+    return result
+
+@njit(cache=True, fastmath=True)
+def pdf_cubic_spline_interpolator(xnew, norm_const, coefficients, x):
+    """
+    Function to interpolate pdf using cubic spline.
+
+    Parameters
+    ----------
+    xnew : `numpy.ndarray`
+        new x values.
+    norm_const : `float`
+        normalization constant.
+    coefficients : `numpy.ndarray`
+        coefficients of the cubic spline.
+    x : `numpy.ndarray`
+        x values.
+
+    Returns
+    ----------
+    result : `numpy.ndarray`
+        interpolated values.
+    """
+
+    # Handling extrapolation
+    i = np.searchsorted(x, xnew) - 1
+    idx1 = xnew <= x[0]
+    idx2 = xnew > x[-1]
+    i[idx1] = 0
+    i[idx2] = x.shape[0] - 2
+
+    # Calculate the relative position within the interval
+    dx = xnew - x[i]
+
+    # Calculate the interpolated value
+    # Cubic polynomial: a + b*dx + c*dx^2 + d*dx^3
+    a, b, c, d = coefficients[:, i]
+    result = d + c * dx + b * dx**2 + a * dx**3
+    
+    return result / norm_const
+
+@njit(cache=True, fastmath=True)
+def cubic_hermite_interpolation(x, x_array, y_array):
+    """
+    Function to perform cubic hermite interpolation to find y.
+    This is a scalar function.
+
+    Parameters
+    ----------
+    x : `float`
+        x value to find the corresponding y value.
+    x_array : `numpy.ndarray`
+        x-axis values of the known 4 points with x_array[1] <= x <= x_array[2].
+    y_array : `numpy.ndarray`
+        y-axis values of the known 4 points.
+
+    Returns
+    -------
+    y : `float`
+        Interpolated y value.
+    """
+    x0, x1, x2, x3 = x_array
+    y0, y1, y2, y3 = y_array
+
+    # Compute tangents (derivatives) at x1 and x2 using finite differences
+    m1 = ((y2 - y1) / (x2 - x1)) * ((x1 - x0) / (x2 - x0)) + ((y1 - y0) / (x1 - x0)) * ((x2 - x1) / (x2 - x0))
+    m2 = ((y3 - y2) / (x3 - x2)) * ((x2 - x1) / (x3 - x1)) + ((y2 - y1) / (x2 - x1)) * ((x3 - x2) / (x3 - x1))  
+
+    # Compute the relative position within the interval
+    denom = x2 - x1
+    t = (x - x1) / denom
+
+    # Hermite basis polynomials
+    h00 = 2.0 * t**3 - 3.0 * t**2 + 1.0
+    h10 = t**3 - 2.0 * t**2 + t
+    h01 = -2.0 * t**3 + 3.0 * t**2
+    h11 = t**3 - t**2
+
+    # Final interpolated value
+    y = h00 * y1 + h10 * m1 * denom + h01 * y2 + h11 * m2 * denom
+    return y
+
+@njit(cache=True, fastmath=True)
+def cubic_spline_interpolator2d(xnew_array, ynew_array, coefficients, x, y):
+    """
+    Function to calculate the interpolated value given the conditioned variable (ynew) and primary variable (xnew). This is based off 2D bicubic spline interpolation.
+
+    Parameters
+    ----------
+    xnew_array : `numpy.ndarray`
+        New x values at which to interpolate.
+    ynew_array : `numpy.ndarray`
+        New y values (conditioned variable) at which to interpolate.
+    coefficients : `numpy.ndarray`
+        Array of coefficients for the cubic spline interpolation.
+    x : `numpy.ndarray`
+        Array of x values for the coefficients.
+    y : `numpy.ndarray`
+        Array of y values (conditioned variable) for the coefficients.
+
+    Returns
+    -------
+    result : `numpy.ndarray`
+        Interpolated values.
+    """
+    n_samples = xnew_array.shape[0]
+    result_array = np.empty(n_samples, dtype=np.float64)
+    y_idx_arr = np.searchsorted(y, ynew_array) - 1 # left side index
+    len_y = y.shape[0]
+    y_idx_arr = np.clip(y_idx_arr, 0, len_y - 2) # clip to ensure valid index range
+    
+    for i in range(n_samples):
+        xnew = xnew_array[i]
+        ynew = ynew_array[i]
+        xnew_single = np.empty(1, dtype=np.float64)  # local per-thread to avoid race condition
+        xnew_single[0] = xnew
+
+        y_idx = y_idx_arr[i]
+        condi = (y_idx == 0) or (y_idx == len_y - 2)
+
+        if not condi:
+            y_idx1 = y_idx - 1
+            y_idx2 = y_idx
+            y_idx3 = y_idx + 1
+            y_idx4 = y_idx + 2
+            # print(f"d) idx1, idx2, idx3, idx4 = {y_idx1}, {y_idx2}, {y_idx3}, {y_idx4}")
+            y1, y2, y3, y4 = y[y_idx1], y[y_idx2], y[y_idx3], y[y_idx4]
+            z1 = cubic_spline_interpolator(
+                xnew_single, coefficients[y_idx1], x[y_idx1]
+            )[0]
+            z2 = cubic_spline_interpolator(
+                xnew_single, coefficients[y_idx2], x[y_idx2]
+            )[0]
+            z3 = cubic_spline_interpolator(
+                xnew_single, coefficients[y_idx3], x[y_idx3]
+            )[0]
+            z4 = cubic_spline_interpolator(
+                xnew_single, coefficients[y_idx4], x[y_idx4]
+            )[0]
+
+            # # ---------------------------------------------------------
+            # # Cubic Spline Interpolation with Coefficients (LER method)
+            # # ---------------------------------------------------------
+            # coeff_low, coeff_high = 4, 8
+            # coeff = coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4)
+            # matrixD = coeff[coeff_low:coeff_high]
+            # matrixB = np.array([ynew**3, ynew**2, ynew, 1.0])
+            # result_array[i] = np.dot(matrixB, matrixD)
+
+            # ---------------------------------------------------------
+            # Cubic Hermite Interpolation (no coefficients needed, but requires tangents)
+            # ---------------------------------------------------------
+            result_array[i] = cubic_hermite_interpolation(ynew, np.array([y1, y2, y3, y4]), np.array([z1, z2, z3, z4]))
+        # lower or upper point
+        else:
+            if y_idx == 0:  # lower end point
+                y_idx1 = y_idx 
+                y_idx2 = y_idx + 1
+            else:  # upper end point
+                y_idx1 = y_idx - 1
+                y_idx2 = y_idx
+
+            y1, y2 = y[y_idx1], y[y_idx2]
+            z1 = cubic_spline_interpolator(
+                xnew_single, coefficients[y_idx1], x[y_idx1]
+            )[0]
+            z2 = cubic_spline_interpolator(
+                xnew_single, coefficients[y_idx2], x[y_idx2]
+            )[0]
+            # use linear interpolation for the lower end point
+            result_array[i] = z1 + (z2 - z1) * (ynew - y1) / (y2 - y1)
+
+    return result_array
+
+@njit(cache=True, fastmath=True)
+def pdf_cubic_spline_interpolator2d(
+    xnew_array, ynew_array, norm_array, coefficients, x, y
+):
+    """
+    Function to calculate the interpolated PDF value given the conditioned variable (ynew) and primary variable (xnew). This is based off 2D bicubic spline interpolation with per-slice normalization.
+
+    Parameters
+    ----------
+    xnew_array : `numpy.ndarray`
+        New x values at which to interpolate.
+    ynew_array : `numpy.ndarray`
+        New y values (conditioned variable) at which to interpolate.
+    norm_array : `numpy.ndarray`
+        Array of normalization constants for each y slice.
+    coefficients : `numpy.ndarray`
+        Array of coefficients for the cubic spline interpolation.
+    x : `numpy.ndarray`
+        Array of x values for the coefficients.
+    y : `numpy.ndarray`
+        Array of y values (conditioned variable) for the coefficients.
+
+    Returns
+    -------
+    result : `numpy.ndarray`
+        Interpolated PDF values (clipped to non-negative).
+    """
+    n_samples = xnew_array.shape[0]
+    result_array = np.empty(n_samples, dtype=np.float64)
+    y_idx_arr = np.searchsorted(y, ynew_array) - 1 # left side index
+    len_y = y.shape[0]
+    y_idx_arr = np.clip(y_idx_arr, 0, len_y - 2) # clip to ensure valid index range
+    
+    for i in range(n_samples):
+        xnew = xnew_array[i]
+        ynew = ynew_array[i]
+        xnew_single = np.empty(1, dtype=np.float64)  # local per-thread to avoid race condition
+        xnew_single[0] = xnew
+
+        # find the index nearest to the ynew in y
+        # y_idx = np.searchsorted(y, ynew) - 1 if ynew > y[0] else 0
+        y_idx = y_idx_arr[i]
+
+        condi = (y_idx == 0) or (y_idx == len_y - 2)
+
+        if not condi:
+            y_idx1 = y_idx - 1
+            y_idx2 = y_idx
+            y_idx3 = y_idx + 1
+            y_idx4 = y_idx + 2
+            # print(f"d) idx1, idx2, idx3, idx4 = {y_idx1}, {y_idx2}, {y_idx3}, {y_idx4}")
+            y1, y2, y3, y4 = y[y_idx1], y[y_idx2], y[y_idx3], y[y_idx4]
+            z1 = pdf_cubic_spline_interpolator(
+                xnew_single, norm_array[y_idx1], coefficients[y_idx1], x[y_idx1]
+            )[0]
+            z2 = pdf_cubic_spline_interpolator(
+                xnew_single, norm_array[y_idx2], coefficients[y_idx2], x[y_idx2]
+            )[0]
+            z3 = pdf_cubic_spline_interpolator(
+                xnew_single, norm_array[y_idx3], coefficients[y_idx3], x[y_idx3]
+            )[0]
+            z4 = pdf_cubic_spline_interpolator(
+                xnew_single, norm_array[y_idx4], coefficients[y_idx4], x[y_idx4]
+            )[0]
+
+            # # ---------------------------------------------------------
+            # # Cubic Spline Interpolation with Coefficients (LER method)
+            # # ---------------------------------------------------------
+            # coeff_low, coeff_high = 4, 8
+            # coeff = coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4)
+            # matrixD = coeff[coeff_low:coeff_high]
+            # matrixB = np.array([ynew**3, ynew**2, ynew, 1.0])
+            # result_array[i] = np.dot(matrixB, matrixD)
+
+            # ---------------------------------------------------------
+            # Cubic Hermite Interpolation (no coefficients needed, but requires tangents)
+            # ---------------------------------------------------------
+            result_array[i] = cubic_hermite_interpolation(ynew, np.array([y1, y2, y3, y4]), np.array([z1, z2, z3, z4]))
+        # lower or upper point
+        else:
+            if y_idx == 0:  # lower end point
+                y_idx1 = y_idx 
+                y_idx2 = y_idx + 1
+            else:  # upper end point
+                y_idx1 = y_idx - 1
+                y_idx2 = y_idx
+
+            y1, y2 = y[y_idx1], y[y_idx2]
+            z1 = pdf_cubic_spline_interpolator(
+                xnew_single, norm_array[y_idx1], coefficients[y_idx1], x[y_idx1]
+            )[0]
+            z2 = pdf_cubic_spline_interpolator(
+                xnew_single, norm_array[y_idx2], coefficients[y_idx2], x[y_idx2]
+            )[0]
+            # use linear interpolation for the lower end point
+            result_array[i] = z1 + (z2 - z1) * (ynew - y1) / (y2 - y1)
+
+    # Clip negative values to zero
+    result_array = np.clip(result_array, a_min=0, a_max=None)
+
+    return result_array
+
+# @njit
+# def coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4):
+#     """
+#     Function to generate the coefficients for the cubic spline interpolation of fn(y)=z.
+
+#     Parameters
+#     ----------
+#     y1, y2, y3, y4, z1, z2, z3, z4: `float`
+#         Values of y and z for the cubic spline interpolation.
+
+#     Returns
+#     -------
+#     coefficients: `numpy.ndarray`
+#         Coefficients for the cubic spline interpolation.
+#     """
+#     matrixA = np.array(
+#         [
+#             [y1**3, y1**2, y1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+#             [y2**3, y2**2, y2, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, y2**3, y2**2, y2, 1, 0, 0, 0, 0],
+#             [0, 0, 0, 0, y3**3, y3**2, y3, 1, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 0, 0, 0, 0, y3**3, y3**2, y3, 1],
+#             [0, 0, 0, 0, 0, 0, 0, 0, y4**3, y4**2, y4, 1],
+#             [3 * y2**2, 2 * y2, 1, 0, -3 * y2**2, -2 * y2, -1, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 3 * y3**2, 2 * y3, 1, 0, -3 * y3**2, -2 * y3, -1, 0],
+#             [6 * y2, 2, 0, 0, -6 * y2, -2, 0, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 6 * y3, 2, 0, 0, -6 * y3, -2, 0, 0],
+#             [6 * y1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 0, 0, 0, 0, 6 * y4, 2, 0, 0],
+#         ]
+#     )
+#     matrixC = np.array([z1, z2, z2, z3, z3, z4, 0, 0, 0, 0, 0, 0])
+#     return np.dot(np.linalg.inv(matrixA), matrixC)
+
+@njit(parallel=True)
+def inverse_transform_sampler2d(size, conditioned_y, cdf2d, x2d, y1d, trim=True):
+    """
+    Function to find sampler interpolator coefficients from the conditioned y.
+
+    Parameters
+    ----------
+    size: `int`
+        Size of the sample.
+    conditioned_y: `float`
+        Conditioned y value.
+    cdf2d: `numpy.ndarray`
+        2D array of cdf values.
+    x2d: `numpy.ndarray`
+        2D array of x values.
+    y1d: `numpy.ndarray`
+        1D array of y values.
+    trim: `bool`
+        Whether to trim the CDF and x values. This trims leading zeros and trailing ones from the cdf.
+
+    Returns
+    -------
+    samples: `numpy.ndarray`
+        Samples of the conditioned y.
+    """
+
+    samples = np.zeros(size)
+
+    n_y = y1d.shape[0]
+    n_x = x2d.shape[1]
+    y_idx_arr = np.searchsorted(y1d, conditioned_y)
+    y_idx_arr = np.clip(y_idx_arr, 1, n_y - 1)
+
+    # for i, y in enumerate(conditioned_y):
+    for i in prange(size):
+        
+        y = conditioned_y[i]
+        # find the index nearest to the conditioned_y in y1d
+        y_idx = y_idx_arr[i]
+        
+
+        # linear scaling
+        # new cdf values
+        y1, y0, z1, z0 = y1d[y_idx], y1d[y_idx - 1], cdf2d[y_idx], cdf2d[y_idx - 1]
+        cdf1d = z0 + (z1 - z0) * (y - y0) / (y1 - y0)
+        # new x values
+        # x=x2d[0], if all rows are same
+        x1, x0 = x2d[y_idx], x2d[y_idx - 1]
+        x1d = x0 + (x1 - x0) * (y - y0) / (y1 - y0)
+
+        # sampling part
+        if trim:
+            cdf1d, x1d = trim_cdf(cdf1d, x1d)
+
+        while True:
+            u = np.random.uniform(0, 1)
+            idx = np.searchsorted(cdf1d, u)
+            len_cdf = cdf1d.shape[0]
+            # Clamp idx to valid range (np.clip on scalar int is not supported by Numba)
+            if idx < 1:
+                idx = 1
+            elif idx > len_cdf - 1:
+                idx = len_cdf - 1
+
+            cdf_idx_hi, cdf_idx_lo = cdf1d[idx], cdf1d[idx - 1]
+            x_idx_hi, x_idx_lo = x1d[idx], x1d[idx - 1]
+
+            samples[i] = x_idx_lo + (x_idx_hi - x_idx_lo) * (u - cdf_idx_lo) / (cdf_idx_hi - cdf_idx_lo)
+
+            if not np.isnan(samples[i]):
+                break
+
+    return samples
+
+@njit(parallel=True)
+def inverse_transform_sampler2d_spline(size, conditioned_y, cdf2d, x2d, y1d, trim=True):
+    """
+    Sample from a 2D inverse transform with spline interpolation in both dimensions.
+
+    Performs 1D inverse transform sampling for a set of conditioned y values by \n
+    interpolating the 2D CDF surface and using cubic spline-based inverse sampling.
+
+    Parameters
+    ----------
+    size : `int`
+        Number of samples to generate.
+    conditioned_y : `numpy.ndarray`
+        Conditioned y values (1D array of length size).
+    cdf2d : `numpy.ndarray`
+        2D array of CDF values (shape: len(y1d), len(x2d[0])).
+    x2d : `numpy.ndarray`
+        2D array of x-axis points (shape: len(y1d), len(x2d[0])).
+    y1d : `numpy.ndarray`
+        1D array of y-axis conditioning points.
+    trim : `bool`, optional
+        Whether to trim CDF leading zeros and trailing ones. Default is True.
+
+    Returns
+    -------
+    samples : `numpy.ndarray`
+        Generated samples (1D array of length size).
+    """
+
+    samples = np.zeros(size)
+    n_y = y1d.shape[0]
+    n_x = x2d.shape[1]
+    
+    y_idx_arr = np.searchsorted(y1d, conditioned_y) - 1  # left side index
+    y_idx_arr = np.clip(y_idx_arr, 0, n_y - 2)  # clip to ensure valid index range
+    
+    for i in prange(size):
+        y_i = conditioned_y[i]
+        y_idx = y_idx_arr[i]
+        
+
+        condi = (y_idx == 0) or (y_idx == n_y - 2)
+
+        if not condi:
+            # Hermite interpolation for y direction (using 4 points)
+            y_idx_list = np.array([y_idx - 1, y_idx, y_idx + 1, y_idx + 2], dtype=np.int64)
+            y_arr = y1d[y_idx_list]
+
+            cdf_new = np.zeros(n_x)
+            for j in range(n_x):
+                cdf_arr = cdf2d[y_idx_list, j]
+                cdf_new[j] = cubic_hermite_interpolation(y_i, y_arr, cdf_arr)
+
+            # new x values
+            x1d = x2d[y_idx] + (x2d[y_idx + 1] - x2d[y_idx]) * (y_i - y_arr[1]) / (y_arr[2] - y_arr[1])
+        else:
+            # linear interpolation
+            if y_idx == 0:  # lower end point
+                y1 = y1d[y_idx]
+                y2 = y1d[y_idx + 1]
+                z1 = cdf2d[y_idx]
+                z2 = cdf2d[y_idx + 1]
+            else:  # upper end point
+                y1 = y1d[y_idx - 1]
+                y2 = y1d[y_idx]
+                z1 = cdf2d[y_idx - 1]
+                z2 = cdf2d[y_idx]
+
+            # z1,z2 are 1d array, while y1,y2 are floats
+            cdf_new = z1 + (z2 - z1) * (y_i - y1) / (y2 - y1)
+
+            # new x values; keep interpolation consistent with the selected y bracket
+            if y_idx == 0:
+                x1d = x2d[y_idx] + (x2d[y_idx + 1] - x2d[y_idx]) * (y_i - y1) / (y2 - y1)
+            else:
+                x1d = x2d[y_idx - 1] + (x2d[y_idx] - x2d[y_idx - 1]) * (y_i - y1) / (y2 - y1)
+
+        # Sample using spline-based inverse transform
+        if trim:
+            cdf_new, x = trim_cdf(cdf_new, x1d)
+        else:
+            x = x1d
+        
+        # inverse cdf spline (cdf → x)
+        coeff = get_pchip_spline_coeffs(x=cdf_new, y=x)
+        
+        # Sample one point using the spline
+        u = np.random.uniform(0, 1)
+        x_sample = cubic_spline_interpolator_scalar(u, coeff, cdf_new)
+        samples[i] = x_sample
+    
+    return samples
+
+@njit(cache=True, fastmath=True)
+def inverse_transform_sampler(size, cdf, x, trim=True):
+    """
+    Function to sample from the inverse transform method.
+
+    Parameters
+    ----------
+    size : `int`
+        number of samples.
+    cdf : `numpy.ndarray`
+        cdf values.
+    x : `numpy.ndarray`
+        x values.
+
+    Returns
+    ----------
+    samples : `numpy.ndarray`
+        samples from the cdf.
+    """
+
+    if trim:
+        cdf, x = trim_cdf(cdf, x)
+
+    u = np.random.uniform(0, 1, size)
+    idx = np.searchsorted(cdf, u)
+
+    # Clip idx to valid range to prevent boundary issues:
+    # - When idx=0 (u <= cdf[0]), idx-1 would wrap to -1 (last element)
+    # - When idx=len(cdf) (u > cdf[-1]), idx would be out of bounds
+    idx = np.clip(idx, 1, len(cdf) - 1)
+    x1, x0, y1, y0 = cdf[idx], cdf[idx - 1], x[idx], x[idx - 1]
+    samples = y0 + (y1 - y0) * (u - x0) / (x1 - x0)
+
+    return samples
+
+@njit(cache=True, fastmath=True)
+def inverse_transform_sampler_spline(size, cdf, x, trim=True):
+    """
+    Function to sample from the inverse transform method using spline interpolation.
+
+    Parameters
+    ----------
+    size : `int`
+        number of samples.
+    cdf : `numpy.ndarray`
+        cdf values.
+    x : `numpy.ndarray`
+        x values corresponding to the cdf.
+    trim : `bool`
+        Whether to trim leading zeros and trailing ones from the cdf.
+
+    Returns
+    ----------
+    samples : `numpy.ndarray`
+        samples from the cdf.
+    """
+
+    if trim:
+        cdf, x = trim_cdf(cdf, x)
+
+    cdf_new = np.random.uniform(0, 1, size)
+
+    inv_coeff = get_pchip_spline_coeffs(x=cdf, y=x)
+    
+    x_new = cubic_spline_interpolator(cdf_new, inv_coeff, cdf)
+
+    return x_new
+
+@njit(cache=True, fastmath=True)
+def trim_cdf(cdf, x):
+    """
+    Function to trim leading zeros and trailing ones from the cdf, but guarantee at least 2 points for downstream spline interpolation.
+
+    Parameters
+    ----------
+    cdf : `numpy.ndarray`
+        CDF values.
+    x : `numpy.ndarray`
+        x values corresponding to the CDF values.
+
+    Returns
+    -------
+    trimmed_cdf : `numpy.ndarray`
+        Trimmed CDF values.
+    trimmed_x : `numpy.ndarray`
+        x values corresponding to the trimmed CDF values.
+    """
+
+    zeros = np.where(cdf <= 0)[0]
+    ones = np.where(cdf >= 1)[0]
+    idx_lower = zeros[-1] if zeros.shape[0] > 0 else 0
+    idx_upper = (ones[0] + 1) if ones.shape[0] > 0 else len(cdf)
+    
+    # Safety: ensure at least 2 output points for downstream spline interpolation
+    if idx_upper - idx_lower < 2:
+        idx_lower = 0
+        idx_upper = cdf.shape[0]
+
+    return cdf[idx_lower:idx_upper], x[idx_lower:idx_upper]
+
+# ----------------------
+# Normal PDF
+# ----------------------
+# 1D normal PDF
+@njit(cache=True, fastmath=True)
+def normal_pdf(x, mean=0.0, std=0.05):
+    """
+    Calculate the value of a normal probability density function.
+
+    Parameters
+    ----------
+    x : `float` or `numpy.ndarray`
+        The value(s) at which to evaluate the PDF.
+    mean : `float`, optional
+        The mean of the normal distribution. Default is 0.
+    std : `float`, optional
+        The standard deviation of the normal distribution. Default is 0.05.
+    
+    Returns
+    -------
+    pdf : `float` or `numpy.ndarray`
+        The probability density function value(s) at x.
+    """
+
+    return (1 / (std * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((x - mean) / std) ** 2)
+
+# 2D normal PDF
+@njit(cache=True, fastmath=True)
+def normal_pdf_2d(x, y, mean_x=0.0, std_x=0.05, mean_y=0.0, std_y=0.05):
+    """
+    Calculate the value of a 2D normal probability density function.
+
+    Parameters
+    ----------
+    x : `float`
+        The x-coordinate for which the PDF is evaluated.
+    y : `float`
+        The y-coordinate for which the PDF is evaluated.
+    mean_x : `float`, optional
+        The mean of the normal distribution along the x-axis. Default is 0.
+    std_x : `float`, optional
+        The standard deviation of the normal distribution along the x-axis. Default is 0.05.
+    mean_y : `float`, optional
+        The mean of the normal distribution along the y-axis. Default is 0.
+    std_y : `float`, optional
+        The standard deviation of the normal distribution along the y-axis. Default is 0.05.
+
+    Returns
+    -------
+    `float`
+        The probability density function value at the given x and y coordinates.
+    """
+
+    factor_x = (1 / (std_x * np.sqrt(2 * np.pi))) * np.exp(
+        -0.5 * ((x - mean_x) / std_x) ** 2
+    )
+    factor_y = (1 / (std_y * np.sqrt(2 * np.pi))) * np.exp(
+        -0.5 * ((y - mean_y) / std_y) ** 2
+    )
+    return factor_x * factor_y
+
+# def load_txt_from_module(package, directory, filename):
+#     """ """
+
+#     with resources.path(package + "." + directory, filename) as txt_path:
+#         return np.loadtxt(txt_path)
+
+# ----------------------
+# CDF from PDF
+# ----------------------
+@njit(parallel=True, fastmath=True)
+def cumulative_spline(x, y, initial=0.0):
+    """
+    Compute CDF from a PDF array using cubic spline + analytical integration.
+    """
+    n = x.shape[0]
+    m = n - 1
+    cs = get_pchip_spline_coeffs(x, y)  # Get coefficients for each interval
+
+    # 1. Array to store the independent area of each interval
+    integrals = np.zeros(n, dtype=np.float64)
+    
+    # Set the starting value
+    integrals[0] = initial
+    
+    # 2. Parallel loop: Compute each interval's integral independently
+    for i in prange(m):
+        h = x[i + 1] - x[i]
+        # Integrate S_i(u) = d[i] + c[i]*u + b[i]*u^2 + a[i]*u^3 from 0 to h
+        integrals[i+1] = cs[3, i] * h + cs[2, i] * h**2 / 2.0 + cs[1, i] * h**3 / 3.0 + cs[0, i] * h**4 / 4.0
+
+    # 3. Sequential cumulative sum
+    cdf = np.cumsum(integrals)
+    norm = cdf[m]
+    cdf /= norm  # Normalize to ensure the last value is 1.0
+
+    return cdf, x, norm
+
+@njit(cache=True, fastmath=True)
+def cumulative_trapezoid(y, x, initial=0.0):
+    """
+    Compute the cumulative integral using the trapezoidal rule. The output is conditioned to be between 0 and 1, and the leading zeros and trailing ones are trimmed. This is used for computing the inverse CDF coefficients. 
+
+    Parameters
+    ----------
+    y : ``numpy.ndarray``
+        Function values to integrate.
+    x : ``numpy.ndarray``
+        x-coordinates corresponding to y values.
+    initial : ``float``
+        Initial value for the cumulative sum. \n
+        default: 0.0
+
+    Returns
+    -------
+    cumsum : ``numpy.ndarray``
+        Cumulative integral values.
+    """
+
+    n = x.shape[0]
+    m = int(n-1)
+    cdf = np.zeros(n, dtype=np.float64)
+    cdf[0] = initial
+    # for i in range(1, len(y)):
+    #   cdf[i] = cdf[i - 1] + (y[i - 1] + y[i]) * (x[i] - x[i - 1]) / 2.0
+    dx = np.diff(x)
+    cdf[1:] = np.cumsum((y[:m] + y[1:]) * dx / 2.0) + initial
+
+    norm = cdf[m]
+    cdf /= norm  # Normalize to ensure the last value is 1.0
+
+    return cdf, x, norm
+
+@njit(parallel=True, fastmath=True)
+def get_pchip_spline_coeffs(x, y):
+    """
+    Computes the PCHIP cubic spline coefficients for 1D arrays x and y.
+    Returns a (4, N-1) array matching SciPy's PchipInterpolator(x, y).c
+    """
+    n = len(x)
+    c = np.empty((4, n - 1), dtype=np.float64)
+    
+    if n < 2:
+        raise ValueError("At least 2 points are required for interpolation.")
+        
+    h = np.empty(n - 1, dtype=np.float64)
+    s = np.empty(n - 1, dtype=np.float64)
+    d = np.empty(n, dtype=np.float64)
+
+    # 1. Compute secant slopes
+    for i in range(n - 1):
+        h[i] = x[i + 1] - x[i]
+        s[i] = (y[i + 1] - y[i]) / h[i]
+
+    # 2. Compute PCHIP derivatives at each point
+    # Interior points (weighted harmonic mean)
+    for i in range(1, n - 1):
+        # If secant slopes change sign or either is zero, derivative is zero
+        if s[i - 1] * s[i] <= 0.0:
+            d[i] = 0.0
+        else:
+            w1 = 2.0 * h[i] + h[i - 1]
+            w2 = h[i] + 2.0 * h[i - 1]
+            d[i] = (w1 + w2) / (w1 / s[i - 1] + w2 / s[i])
+
+    # Endpoints (Shape-preserving 3-point extrapolation)
+    if n == 2:
+        d[0] = s[0]
+        d[1] = s[0]
+    else:
+        # Left endpoint
+        d0 = ((2.0 * h[0] + h[1]) * s[0] - h[0] * s[1]) / (h[0] + h[1])
+        if np.sign(d0) != np.sign(s[0]):
+            d[0] = 0.0
+        elif np.sign(s[0]) != np.sign(s[1]) and abs(d0) > 3.0 * abs(s[0]):
+            d[0] = 3.0 * s[0]
+        else:
+            d[0] = d0
+
+        # Right endpoint
+        dN = ((2.0 * h[-1] + h[-2]) * s[-1] - h[-1] * s[-2]) / (h[-1] + h[-2])
+        if np.sign(dN) != np.sign(s[-1]):
+            d[-1] = 0.0
+        elif np.sign(s[-1]) != np.sign(s[-2]) and abs(dN) > 3.0 * abs(s[-1]):
+            d[-1] = 3.0 * s[-1]
+        else:
+            d[-1] = dN
+
+    # 3. Compute the coefficients for each interval
+    # P(x) = c0*(x-xi)^3 + c1*(x-xi)^2 + c2*(x-xi) + c3
+    for i in prange(n - 1):
+        c[0, i] = (d[i] + d[i + 1] - 2.0 * s[i]) / (h[i] * h[i])
+        c[1, i] = (3.0 * s[i] - 2.0 * d[i] - d[i + 1]) / h[i]
+        c[2, i] = d[i]
+        c[3, i] = y[i]
+        
+    return c
+
+# ----------------------
+# batch sampling
+# ----------------------
 def batch_handler(
     size,
     batch_size,
@@ -981,7 +1859,12 @@ def batch_handler(
     """
 
     # sampling in batches
-    if resume and os.path.exists(output_jsonfile):
+    if not output_jsonfile:
+        # no output file requested — skip all file I/O
+        save_batch = False
+        resume = False
+        dict_buffer = None
+    elif resume and os.path.exists(output_jsonfile):
         # get sample from json file
         dict_buffer = get_param_from_json(output_jsonfile)
     else:
@@ -1002,6 +1885,7 @@ def batch_handler(
     else:
         frac_batches = size
     track_batches = 0  # to track the number of batches
+    freshly_sampled = False  # track whether initial batch was just sampled
 
     if not resume:
         # create new first batch with the frac_batches
@@ -1013,6 +1897,7 @@ def batch_handler(
             output_jsonfile,
             track_batches=track_batches,
         )
+        freshly_sampled = True
     else:
         # check where to resume from
         # identify the last batch and assign current batch number
@@ -1021,7 +1906,7 @@ def batch_handler(
             print(f"resuming from {output_jsonfile}")
             len_ = len(list(dict_buffer.values())[0])
             track_batches = (len_ - frac_batches) // batch_size + 1
-        except:
+        except (IndexError, TypeError, KeyError, AttributeError):
             # create new first batch with the frac_batches
             track_batches, dict_buffer = create_batch_params(
                 sampling_routine,
@@ -1031,14 +1916,19 @@ def batch_handler(
                 output_jsonfile,
                 track_batches=track_batches,
             )
+            freshly_sampled = True
 
     # loop over the remaining batches
     min_, max_ = track_batches, num_batches
     # print(f"min_ = {min_}, max_ = {max_}")
     save_param = False
     if min_ == max_:
-        print(f"{param_name} already sampled.")
-        save_param = True
+        if freshly_sampled and not save_batch:
+            # Data was just sampled in the initial batch but not yet written to file
+            save_param = True
+        else:
+            print(f"{param_name} already sampled.")
+            save_param = False
     elif min_ > max_:
         len_ = len(list(dict_buffer.values())[0])
         print(
@@ -1066,13 +1956,12 @@ def batch_handler(
             # this if condition is required if there is nothing to save
             save_param = True
 
-    if save_param:
+    if save_param and output_jsonfile:
         # store all params in json file
         print(f"saving all {param_name} in {output_jsonfile} ")
         append_json(output_jsonfile, dict_buffer, replace=True)
 
     return dict_buffer
-
 
 def create_batch_params(
     sampling_routine,
@@ -1144,584 +2033,82 @@ def create_batch_params(
     return track_batches, dict_buffer
 
 
-def monte_carlo_integration(function, uniform_prior, size=10000):
-    """
-    Function to perform Monte Carlo integration.
-
-    Parameters
-    ----------
-    function : `function`
-        function to be integrated.
-    prior : `function`
-        prior function.
-
-    Returns
-    ----------
-    integral : `float`
-        integral value.
-    """
-
-    # sample from the prior
-    x = uniform_prior(size=size)
-    # calculate the function
-    y = np.array([function(x[i]) for i in range(size)])
-    # calculate the integral
-    integral = np.mean(y) * (np.max(x) - np.min(x))
-    return integral
-
-
-@njit(cache=True, fastmath=True)
-def cubic_spline_interpolator(xnew, coefficients, x):
-    """
-    Function to interpolate using cubic spline.
-
-    Parameters
-    ----------
-    xnew : `numpy.ndarray`
-        new x values.
-    coefficients : `numpy.ndarray`
-        coefficients of the cubic spline.
-    x : `numpy.ndarray`
-        x values.
-
-    Returns
-    ----------
-    result : `numpy.ndarray`
-        interpolated values.
-    """
-
-    # Handling extrapolation
-    i = np.searchsorted(x, xnew) - 1
-    idx1 = xnew <= x[0]
-    idx2 = xnew > x[-1]
-    i[idx1] = 0
-    i[idx2] = len(x) - 2
-    # i = np.array(i, dtype=np.int32)
-    # x = np.array(x, dtype=np.float64)
-
-    # Calculate the relative position within the interval
-    # print(f"i = {i}\n xnew = {xnew}\n x = {x}")
-    # print(x[i])
-    dx = xnew - x[i]
-
-    # Calculate the interpolated value
-    # Cubic polynomial: a + b*dx + c*dx^2 + d*dx^3
-    # coefficients = np.array(coefficients, dtype=np.float64)
-    # print(f"coefficients = {coefficients}")
-    a, b, c, d = coefficients[:, i]
-    # result = a + b*dx + c*dx**2 + d*dx**3
-    result = d + c * dx + b * dx**2 + a * dx**3
-    return result
-
-
-@njit(cache=True, fastmath=True)
-def pdf_cubic_spline_interpolator(xnew, norm_const, coefficients, x):
-    """
-    Function to interpolate pdf using cubic spline.
-
-    Parameters
-    ----------
-    xnew : `numpy.ndarray`
-        new x values.
-    coefficients : `numpy.ndarray`
-        coefficients of the cubic spline.
-    x : `numpy.ndarray`
-        x values.
-
-    Returns
-    ----------
-    result : `numpy.ndarray`
-        interpolated values.
-    """
-
-    # Handling extrapolation
-    i = np.searchsorted(x, xnew) - 1
-    idx1 = xnew <= x[0]
-    idx2 = xnew > x[-1]
-    i[idx1] = 0
-    i[idx2] = len(x) - 2
-    # i = np.array(i, dtype=np.int32)
-    # x = np.array(x, dtype=np.float64)
-
-    # Calculate the relative position within the interval
-    # print(f"i = {i}\n xnew = {xnew}\n x = {x}")
-    # print(x[i])
-    dx = xnew - x[i]
-
-    # Calculate the interpolated value
-    # Cubic polynomial: a + b*dx + c*dx^2 + d*dx^3
-    # coefficients = np.array(coefficients, dtype=np.float64)
-    # print(f"coefficients = {coefficients}")
-    a, b, c, d = coefficients[:, i]
-    # result = a + b*dx + c*dx**2 + d*dx**3
-    result = d + c * dx + b * dx**2 + a * dx**3
-    return result / norm_const
-
-
-@njit(cache=True, fastmath=True)
-def pdf_cubic_spline_interpolator2d_array(
-    xnew_array, ynew_array, norm_array, coefficients, x, y
+def KStest(
+    lens_param1: dict,
+    lens_param2: dict,
+    *,
+    keys=None,
+    alternative: str = "two-sided",
+    mode: str = "auto",
+    nan_policy: str = "omit",
+    return_pvalue: bool = True,
 ):
-    """
-    Function to calculate the interpolated value of snr_partialscaled given the mass ratio (ynew) and total mass (xnew). This is based off 2D bicubic spline interpolation.
+    """Two-sample Kolmogorov-Smirnov tests for lens-parameter dictionaries.
+
+    For each key in common (or the keys you pass), the samples are compared
+    with ``scipy.stats.ks_2samp``. The KS test is non-parametric: it does not
+    assume a parametric form for the parent distribution(s).
+
+    The reported statistic ``D`` (SciPy's ``statistic``) is the maximum absolute
+    gap between the two empirical cumulative distribution functions. It ranges
+    from 0 to 1. Smaller ``D`` means the two empirical CDFs track each other
+    more closely; under the null hypothesis that both samples are i.i.d. draws
+    from the same *continuous* distribution, large ``D`` implies a small
+    p-value (evidence against that null). Interpretation depends on sample size
+    and on whether the two-sided or one-sided ``alternative`` you choose is
+    appropriate for your science question.
 
     Parameters
     ----------
-    xnew_array : `numpy.ndarray`
-        Total mass of the binary.
-    ynew_array : `numpy.ndarray`
-        Mass ratio of the binary.
-    coefficients : `numpy.ndarray`
-        Array of coefficients for the cubic spline interpolation.
-    x : `numpy.ndarray`
-        Array of total mass values for the coefficients.
-    y : `numpy.ndarray`
-        Array of mass ratio values for the coefficients.
+    lens_param1, lens_param2 : dict
+        Dicts like the output of `ler.sample_lens_parameters`, mapping parameter
+        names -> array-like samples.
+    keys : iterable[str] | None
+        Which keys to test. If None, uses the intersection of keys.
+    alternative : str
+        Passed to `scipy.stats.ks_2samp`.
+    mode : str
+        Passed to `scipy.stats.ks_2samp`.
+    nan_policy : {'omit','propagate'}
+        If 'omit', drops non-finite values before testing.
+    return_pvalue : bool
+        If True, return both KS statistic and p-value.
 
     Returns
     -------
-    result : `float`
-        Interpolated value of snr_partialscaled.
+    out : dict
+        out[key] = {'D': <ks statistic>, 'pvalue': <pvalue>, 'n1': <int>, 'n2': <int>}
+        If return_pvalue=False, 'pvalue' is omitted.
     """
-    n_samples = len(xnew_array)
-    result_array = np.empty(n_samples, dtype=np.float64)
-    xnew_single = np.empty(1, dtype=np.float64)
-    
-    for i in range(n_samples):
-        xnew = xnew_array[i]
-        ynew = ynew_array[i]
-        xnew_single[0] = xnew
+    try:
+        from scipy.stats import ks_2samp
+    except Exception as e:
+        raise ImportError(
+            "KStest requires scipy. Install it (e.g. `pip install scipy`)."
+        ) from e
 
-        len_y = len(y)
-        # find the index nearest to the ynew in y
-        y_idx = np.searchsorted(y, ynew) - 1 if ynew > y[0] else 0
+    if keys is None:
+        keys = sorted(set(lens_param1.keys()).intersection(lens_param2.keys()))
 
-        if (ynew > y[0]) and (ynew < y[1]):
-            if ynew > y[y_idx] + (y[y_idx + 1] - y[y_idx]) / 2:
-                y_idx = y_idx + 1
-            result = pdf_cubic_spline_interpolator(
-                xnew_single, norm_array[y_idx], coefficients[y_idx], x[y_idx]
-            )[0]
-        elif y_idx == 0:  # lower end point
-            result = pdf_cubic_spline_interpolator(
-                xnew_single, norm_array[0], coefficients[0], x[0]
-            )[0]
-            # print("a")
-        elif y_idx + 1 == len_y:  # upper end point
-            result = pdf_cubic_spline_interpolator(
-                xnew_single, norm_array[-1], coefficients[-1], x[-1]
-            )[0]
-            # print("b")
-        elif y_idx + 2 == len_y:  # upper end point
-            result = pdf_cubic_spline_interpolator(
-                xnew_single, norm_array[-1], coefficients[-1], x[-1]
-            )[0]
-            # print("b")
+    out = {}
+    for k in keys:
+        x = np.asarray(lens_param1[k])
+        y = np.asarray(lens_param2[k])
+
+        if nan_policy == "omit":
+            x = x[np.isfinite(x)]
+            y = y[np.isfinite(y)]
+
+        n1 = int(x.size)
+        n2 = int(y.size)
+        if n1 == 0 or n2 == 0:
+            out[k] = {"D": np.nan, "pvalue": np.nan, "n1": n1, "n2": n2} if return_pvalue else {"D": np.nan, "n1": n1, "n2": n2}
+            continue
+
+        res = ks_2samp(x, y, alternative=alternative, mode=mode)
+        if return_pvalue:
+            out[k] = {"D": float(res.statistic), "pvalue": float(res.pvalue), "n1": n1, "n2": n2}
         else:
-            y_idx1 = y_idx - 1
-            y_idx2 = y_idx
-            y_idx3 = y_idx + 1
-            y_idx4 = y_idx + 2
-            
-            # print("c")
-            y1, y2, y3, y4 = y[y_idx1], y[y_idx2], y[y_idx3], y[y_idx4]
-            z1 = pdf_cubic_spline_interpolator(
-                xnew_single, norm_array[y_idx1], coefficients[y_idx1], x[y_idx1]
-            )[0]
-            z2 = pdf_cubic_spline_interpolator(
-                xnew_single, norm_array[y_idx2], coefficients[y_idx2], x[y_idx2]
-            )[0]
-            z3 = pdf_cubic_spline_interpolator(
-                xnew_single, norm_array[y_idx3], coefficients[y_idx3], x[y_idx3]
-            )[0]
-            z4 = pdf_cubic_spline_interpolator(
-                xnew_single, norm_array[y_idx4], coefficients[y_idx4], x[y_idx4]
-            )[0]
+            out[k] = {"D": float(res.statistic), "n1": n1, "n2": n2}
 
-            # # ---------------------------------------------------------
-            # # Lagrange Interpolation (requires 4 coefficients)
-            # # ---------------------------------------------------------
-            # coeff_low, coeff_high = 4, 8
-            # coeff = coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4)
-            # matrixD = coeff[coeff_low:coeff_high]
-            # matrixB = np.array([ynew**3, ynew**2, ynew, 1.0])
-            # result = np.dot(matrixB, matrixD)
-
-            # ---------------------------------------------------------
-            # Cubic Hermite Interpolation (no coefficients needed, but requires tangents)
-            # ---------------------------------------------------------
-            denom = y3 - y2
-            t = (ynew - y2) / denom
-            
-            # Compute tangents (derivatives) at y2 and y3 using finite differences
-            m2 = ((z3 - z2) / (y3 - y2)) * ((y2 - y1) / (y3 - y1)) + ((z2 - z1) / (y2 - y1)) * ((y3 - y2) / (y3 - y1))
-                 
-            m3 = ((z4 - z3) / (y4 - y3)) * ((y3 - y2) / (y4 - y2)) + ((z3 - z2) / (y3 - y2)) * ((y4 - y3) / (y4 - y2))
-            
-            # Hermite basis polynomials
-            h00 = 2.0 * t**3 - 3.0 * t**2 + 1.0
-            h10 = t**3 - 2.0 * t**2 + t
-            h01 = -2.0 * t**3 + 3.0 * t**2
-            h11 = t**3 - t**2
-            
-            # Final interpolated value
-            result_array[i] = h00 * z2 + h10 * m2 * denom + h01 * z3 + h11 * m3 * denom
-
-        result_array[i] = result
-
-    # Clip negative values to zero
-    for i in range(n_samples):
-        if result_array[i] < 0.0:
-            result_array[i] = 0.0
-
-    return result_array
-
-
-@njit(cache=True, fastmath=True)
-def cubic_spline_interpolator2d_array(xnew_array, ynew_array, coefficients, x, y):
-    """
-    Function to calculate the interpolated value of snr_partialscaled given the mass ratio (ynew) and total mass (xnew). This is based off 2D bicubic spline interpolation.
-
-    Parameters
-    ----------
-    xnew_array : `numpy.ndarray`
-        Total mass of the binary.
-    ynew_array : `numpy.ndarray`
-        Mass ratio of the binary.
-    coefficients : `numpy.ndarray`
-        Array of coefficients for the cubic spline interpolation.
-    x : `numpy.ndarray`
-        Array of total mass values for the coefficients.
-    y : `numpy.ndarray`
-        Array of mass ratio values for the coefficients.
-
-    Returns
-    -------
-    result : `float`
-        Interpolated value of snr_partialscaled.
-    """
-    n_samples = len(xnew_array)
-    result_array = np.empty(n_samples, dtype=np.float64)
-    xnew_single = np.empty(1, dtype=np.float64)
-    
-    for i in range(n_samples):
-        xnew = xnew_array[i]
-        ynew = ynew_array[i]
-        xnew_single[0] = xnew
-
-        len_y = len(y)
-        # find the index nearest to the ynew in y
-        y_idx = np.searchsorted(y, ynew) - 1 if ynew > y[0] else 0
-
-        if (ynew > y[0]) and (ynew < y[1]):
-            if ynew > y[y_idx] + (y[y_idx + 1] - y[y_idx]) / 2:
-                y_idx = y_idx + 1
-            result_array[i] = cubic_spline_interpolator(
-                xnew_single, coefficients[y_idx], x[y_idx]
-            )[0]
-            # print(f"a) idx = {y_idx}")
-        elif y_idx == 0:  # lower end point
-            result_array[i] = cubic_spline_interpolator(
-                xnew_single, coefficients[0], x[0]
-            )[0]
-            # print(f"a) idx = {y_idx}")
-        elif y_idx + 1 == len_y:  # upper end point
-            result_array[i] = cubic_spline_interpolator(
-                xnew_single, coefficients[-1], x[-1]
-            )[0]
-            # print(f"b) idx = {y_idx}")
-        elif y_idx + 2 == len_y:  # upper end point
-            result_array[i] = cubic_spline_interpolator(
-                xnew_single, coefficients[-1], x[-1]
-            )[0]
-            # print(f"c) idx = {y_idx}")
-        else:
-            y_idx1 = y_idx - 1
-            y_idx2 = y_idx
-            y_idx3 = y_idx + 1
-            y_idx4 = y_idx + 2
-            # print(f"d) idx1, idx2, idx3, idx4 = {y_idx1}, {y_idx2}, {y_idx3}, {y_idx4}")
-            y1, y2, y3, y4 = y[y_idx1], y[y_idx2], y[y_idx3], y[y_idx4]
-            z1 = cubic_spline_interpolator(
-                xnew_single, coefficients[y_idx1], x[y_idx1]
-            )[0]
-            z2 = cubic_spline_interpolator(
-                xnew_single, coefficients[y_idx2], x[y_idx2]
-            )[0]
-            z3 = cubic_spline_interpolator(
-                xnew_single, coefficients[y_idx3], x[y_idx3]
-            )[0]
-            z4 = cubic_spline_interpolator(
-                xnew_single, coefficients[y_idx4], x[y_idx4]
-            )[0]
-
-            # # ---------------------------------------------------------
-            # # Cubic Spline Interpolation with Coefficients (LER method)
-            # # ---------------------------------------------------------
-            # coeff_low, coeff_high = 4, 8
-            # coeff = coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4)
-            # matrixD = coeff[coeff_low:coeff_high]
-            # matrixB = np.array([ynew**3, ynew**2, ynew, 1.0])
-            # result_array[i] = np.dot(matrixB, matrixD)
-
-            # ---------------------------------------------------------
-            # Cubic Hermite Interpolation (no coefficients needed, but requires tangents)
-            # ---------------------------------------------------------
-            denom = y3 - y2
-            t = (ynew - y2) / denom
-            
-            # Compute tangents (derivatives) at y2 and y3 using finite differences
-            m2 = ((z3 - z2) / (y3 - y2)) * ((y2 - y1) / (y3 - y1)) + ((z2 - z1) / (y2 - y1)) * ((y3 - y2) / (y3 - y1))
-                 
-            m3 = ((z4 - z3) / (y4 - y3)) * ((y3 - y2) / (y4 - y2)) + ((z3 - z2) / (y3 - y2)) * ((y4 - y3) / (y4 - y2))
-            
-            # Hermite basis polynomials
-            h00 = 2.0 * t**3 - 3.0 * t**2 + 1.0
-            h10 = t**3 - 2.0 * t**2 + t
-            h01 = -2.0 * t**3 + 3.0 * t**2
-            h11 = t**3 - t**2
-            
-            # Final interpolated value
-            result_array[i] = h00 * z2 + h10 * m2 * denom + h01 * z3 + h11 * m3 * denom
-
-    return result_array
-
-
-@njit(cache=True)
-def coefficients_generator_ler(y1, y2, y3, y4, z1, z2, z3, z4):
-    """
-    Function to generate the coefficients for the cubic spline interpolation of fn(y)=z.
-
-    Parameters
-    ----------
-    y1, y2, y3, y4, z1, z2, z3, z4: `float`
-        Values of y and z for the cubic spline interpolation.
-
-    Returns
-    -------
-    coefficients: `numpy.ndarray`
-        Coefficients for the cubic spline interpolation.
-    """
-    matrixA = np.array(
-        [
-            [y1**3, y1**2, y1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-            [y2**3, y2**2, y2, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, y2**3, y2**2, y2, 1, 0, 0, 0, 0],
-            [0, 0, 0, 0, y3**3, y3**2, y3, 1, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, y3**3, y3**2, y3, 1],
-            [0, 0, 0, 0, 0, 0, 0, 0, y4**3, y4**2, y4, 1],
-            [3 * y2**2, 2 * y2, 1, 0, -3 * y2**2, -2 * y2, -1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 3 * y3**2, 2 * y3, 1, 0, -3 * y3**2, -2 * y3, -1, 0],
-            [6 * y2, 2, 0, 0, -6 * y2, -2, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 6 * y3, 2, 0, 0, -6 * y3, -2, 0, 0],
-            [6 * y1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 6 * y4, 2, 0, 0],
-        ]
-    )
-    matrixC = np.array([z1, z2, z2, z3, z3, z4, 0, 0, 0, 0, 0, 0])
-    return np.dot(np.linalg.inv(matrixA), matrixC)
-
-
-@njit(cache=True)
-def inverse_transform_sampler2d(size, conditioned_y, cdf2d, x2d, y1d):
-    """
-    Function to find sampler interpolator coefficients from the conditioned y.
-
-    Parameters
-    ----------
-    size: `int`
-        Size of the sample.
-    conditioned_y: `float`
-        Conditioned y value.
-    cdf2d: `numpy.ndarray`
-        2D array of cdf values.
-    x2d: `numpy.ndarray`
-        2D array of x values.
-    y1d: `numpy.ndarray`
-        1D array of y values.
-
-    Returns
-    -------
-    samples: `numpy.ndarray`
-        Samples of the conditioned y.
-    """
-
-    samples = np.zeros(size)
-    for i, y in enumerate(conditioned_y):
-        # find the index nearest to the conditioned_y in y1d
-        y_idx = np.searchsorted(y1d, y) - 1 if y > y1d[0] else 0
-        if y > y1d[y_idx] + (y1d[y_idx + 1] - y1d[y_idx]) / 2:
-            y_idx = y_idx + 1
-
-        # linear scaling
-        # new cdf values
-        x1, x0, y1, y0 = y1d[y_idx], y1d[y_idx - 1], cdf2d[y_idx], cdf2d[y_idx - 1]
-        cdf = y0 + (y1 - y0) * (y - x0) / (x1 - x0)
-        # new x values
-        # x=x2d[0], if all rows are same
-        x1, x0, y1, y0 = y1d[y_idx], y1d[y_idx - 1], x2d[y_idx], x2d[y_idx - 1]
-        x = y0 + (y1 - y0) * (y - x0) / (x1 - x0)
-
-        while True:
-            u = np.random.uniform(0, 1)
-            idx = np.searchsorted(cdf, u)
-            x1, x0, y1, y0 = cdf[idx], cdf[idx - 1], x[idx], x[idx - 1]
-            samples[i] = y0 + (y1 - y0) * (u - x0) / (x1 - x0)
-            if not np.isnan(samples[i]):
-                break
-    return samples
-
-
-@njit(cache=True)
-def inverse_transform_sampler(size, cdf, x):
-    """
-    Function to sample from the inverse transform method.
-
-    Parameters
-    ----------
-    size : `int`
-        number of samples.
-    cdf : `numpy.ndarray`
-        cdf values.
-    x : `numpy.ndarray`
-        x values.
-
-    Returns
-    ----------
-    samples : `numpy.ndarray`
-        samples from the cdf.
-    """
-
-    u = np.random.uniform(0, 1, size)
-    idx = np.searchsorted(cdf, u)
-    # Clip idx to valid range to prevent boundary issues:
-    # - When idx=0 (u <= cdf[0]), idx-1 would wrap to -1 (last element)
-    # - When idx=len(cdf) (u > cdf[-1]), idx would be out of bounds
-    idx = np.clip(idx, 1, len(cdf) - 1)
-    x1, x0, y1, y0 = cdf[idx], cdf[idx - 1], x[idx], x[idx - 1]
-    samples = y0 + (y1 - y0) * (u - x0) / (x1 - x0)
-    return samples
-
-
-@njit(cache=True, fastmath=True)
-def normal_pdf(x, mean=0.0, std=0.05):
-    """
-    Calculate the value of a normal probability density function.
-
-    Parameters
-    ----------
-    x : `float` or `numpy.ndarray`
-        The value(s) at which to evaluate the PDF.
-    mean : `float`, optional
-        The mean of the normal distribution. Default is 0.
-    std : `float`, optional
-        The standard deviation of the normal distribution. Default is 0.05.
-    
-    Returns
-    -------
-    pdf : `float` or `numpy.ndarray`
-        The probability density function value(s) at x.
-    """
-
-    return (1 / (std * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((x - mean) / std) ** 2)
-
-
-@njit(cache=True, fastmath=True)
-def normal_pdf_2d(x, y, mean_x=0.0, std_x=0.05, mean_y=0.0, std_y=0.05):
-    """
-    Calculate the value of a 2D normal probability density function.
-
-    Parameters
-    ----------
-    x : `float`
-        The x-coordinate for which the PDF is evaluated.
-    y : `float`
-        The y-coordinate for which the PDF is evaluated.
-    mean_x : `float`, optional
-        The mean of the normal distribution along the x-axis. Default is 0.
-    std_x : `float`, optional
-        The standard deviation of the normal distribution along the x-axis. Default is 0.05.
-    mean_y : `float`, optional
-        The mean of the normal distribution along the y-axis. Default is 0.
-    std_y : `float`, optional
-        The standard deviation of the normal distribution along the y-axis. Default is 0.05.
-
-    Returns
-    -------
-    `float`
-        The probability density function value at the given x and y coordinates.
-    """
-
-    factor_x = (1 / (std_x * np.sqrt(2 * np.pi))) * np.exp(
-        -0.5 * ((x - mean_x) / std_x) ** 2
-    )
-    factor_y = (1 / (std_y * np.sqrt(2 * np.pi))) * np.exp(
-        -0.5 * ((y - mean_y) / std_y) ** 2
-    )
-    return factor_x * factor_y
-
-
-# def load_txt_from_module(package, directory, filename):
-#     """ """
-
-#     with resources.path(package + "." + directory, filename) as txt_path:
-#         return np.loadtxt(txt_path)
-
-
-@njit(cache=True, fastmath=True)
-def cumulative_trapezoid(y, x=None, dx=1.0, initial=0.0):
-    """
-    Compute the cumulative integral of a function using the trapezoidal rule.
-    """
-    if x is None:
-        x = np.arange(len(y)) * dx
-
-    # Calculate the cumulative integral using trapezoidal rule
-    cumsum = np.zeros_like(y)
-    cumsum[0] = initial
-    for i in range(1, len(y)):
-        cumsum[i] = cumsum[i - 1] + (y[i - 1] + y[i]) * (x[i] - x[i - 1]) / 2.0
-
-    return cumsum
-
-
-@njit(cache=True, fastmath=True)
-def sample_from_powerlaw_distribution(size, alphans, mminns, mmaxns):
-    """
-    Inverse transform sampling for a power-law mass distribution:
-    p(m) ∝ m^{-alphans}, m in [mminns, mmaxns]
-
-    Parameters
-    ----------
-    size : int
-        Number of samples to generate.
-    alphans : float
-        Power-law index (alpha).
-    mminns : float
-        Minimum neutron star mass (lower bound).
-    mmaxns : float
-        Maximum neutron star mass (upper bound).
-    random_state : int, np.random.Generator, or None
-        Seed or random generator for reproducibility.
-
-    Returns
-    -------
-    m : ndarray
-        Array of sampled neutron star masses.
-    """
-
-    u = np.random.uniform(0, 1, size)
-
-    if alphans == 1.0:
-        # Special case α=1
-        m = mminns * (mmaxns / mminns) ** u
-    elif alphans == 0.0:
-        # Special case α=0 (uniform distribution)
-        m = mminns + (mmaxns - mminns) * u
-    else:
-        pow1 = 1.0 - alphans
-        mmin_pow = mminns**pow1
-        mmax_pow = mmaxns**pow1
-        m = (u * (mmax_pow - mmin_pow) + mmin_pow) ** (1.0 / pow1)
-
-    return m
+    return out

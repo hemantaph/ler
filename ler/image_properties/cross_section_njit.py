@@ -277,8 +277,6 @@ def _solvequadeq(a, b, c):
         )
     )
 
-    
-
 @njit(cache=True, fastmath=True)
 def pol_to_cart(r, th):
     """
@@ -447,7 +445,7 @@ def _rotmat(th):
 def _helper_caustic_epl_shear(
     q, phi, gamma, gamma1, gamma2, theta_E,
     theta, cos_th, sin_th, cos_2th, sin_2th,
-    maginf=-100.0
+    maginf=-100.0, quad=False, half_only=False
 ):
     """
     Generates the unrotated radial boundaries of the EPL+shear caustic 
@@ -601,17 +599,41 @@ def _helper_caustic_epl_shear(
     # Interpolate cut radius onto caustic angles for boundary composition
     rcut, thcut = cart_to_pol(xca_cut, yca_cut)
     r, th = cart_to_pol(xca_4, yca_4)
-    # Sort cut data by angle for interpolation
-    sort_idx = np.argsort(thcut)
-    thcut_sorted = thcut[sort_idx]
-    rcut_sorted = rcut[sort_idx]
+    # Sort cut data by angle for interpolation.
+    # When half_only=True the input theta covers only [0, π).  Both caustic
+    # branches have inversion symmetry: rcut[i+h] == rcut[i] and
+    # thcut[i+h] == (thcut[i] + π) % 2π.  Mirror the half cut-branch to
+    # reconstruct full-circle coverage before the periodic interpolation.
+    if half_only:
+        nh = thcut.shape[0]
+        # Compute mirrored angles via Cartesian negation: arctan2(-y,-x) is
+        # more numerically stable than (arctan2(y,x) + π) % 2π, especially
+        # near 0 and π where modular arithmetic can lose a ULP.
+        thcut_mir = np.empty(2 * nh)
+        rcut_mir = np.empty(2 * nh)
+        for i in range(nh):
+            th_i = thcut[i]
+            thcut_mir[i] = th_i
+            th_shift = th_i + PI
+            if th_shift >= TWO_PI:
+                th_shift -= TWO_PI
+            thcut_mir[i + nh] = th_shift
+            rcut_mir[i] = rcut[i]
+            rcut_mir[i + nh] = rcut[i]
+        sort_idx = np.argsort(thcut_mir)
+        thcut_sorted = thcut_mir[sort_idx]
+        rcut_sorted = rcut_mir[sort_idx]
+    else:
+        sort_idx = np.argsort(thcut)
+        thcut_sorted = thcut[sort_idx]
+        rcut_sorted = rcut[sort_idx]
     r2 = _interp_periodic(th, thcut_sorted, rcut_sorted, 2.0 * np.pi)
 
     # Build either the double-image or quad-image sampling boundary
-    # if return_which == "double":
-    r = np.fmax(r, r2)
-    # else:  # Quad
-    #     r = np.fmin(r, r2)
+    if quad:
+        r = np.fmin(r, r2)
+    else:
+        r = np.fmax(r, r2)
 
     # Convert the selected radial boundary back to Cartesian samples
     num_th = theta.shape[0]
@@ -624,10 +646,10 @@ def _helper_caustic_epl_shear(
 # 3. THE POINT CALCULATOR
 @njit(cache=True, fastmath=True)
 def caustic_points_epl_shear(
-    theta_E, q, phi, gamma, gamma1, gamma2, num_th=500, maginf=-100.0
+    theta_E, q, phi, gamma, gamma1, gamma2, num_th=500, maginf=-100.0, quad=False
 ):
     """
-    Calculates the 2D coordinates of the double caustic for a SINGLE lens.
+    Calculates the 2D coordinates of the caustic for a SINGLE lens.
     Accepts scalar float values.
 
     Parameters
@@ -650,31 +672,45 @@ def caustic_points_epl_shear(
     maginf : ``float``
         Magnification cut threshold. \n
         default: -100.0
+    quad : ``bool``
+        If True, return the quad (inner) caustic. If False, return the double (outer) caustic. \n
+        default: False
 
     Returns
     -------
     rotated : ``numpy.ndarray``
-        Shape ``(2, num_th)`` Cartesian coordinates of the double caustic. \n
+        Shape ``(2, num_th)`` Cartesian coordinates of the caustic. \n
 
     Examples
     --------
     >>> pts = caustic_points_epl_shear(theta_E=1.0, q=0.8, phi=0.0, gamma=2.0, gamma1=0.03, gamma2=-0.01)
+    >>> pts_quad = caustic_points_epl_shear(theta_E=1.0, q=0.8, phi=0.0, gamma=2.0, gamma1=0.03, gamma2=-0.01, quad=True)
     """
-    theta = np.linspace(0, 2 * PI * (1.0 - 1.0 / num_th), num_th)
-    
-    # Pre-compute trig
-    cos_th, sin_th = np.cos(theta), np.sin(theta)
-    cos_2th, sin_2th = np.cos(2.0 * theta), np.sin(2.0 * theta)
-    
-    # Call the helper
-    pos_tosample = _helper_caustic_epl_shear(
+    # Exploit exact 2-fold symmetry C(θ+π) = -C(θ): only compute the first
+    # half of the boundary (theta in [0, π)) and mirror to reconstruct the
+    # second half.  half_only=True makes _helper extend the cut-branch angles
+    # to [0, 2π) for correct _interp_periodic coverage even though the input
+    # only covers [0, π).  The full (2, num_th) output has exactly the same
+    # values as calling the helper with all num_th angles.
+    h = num_th // 2
+    theta_h = np.arange(h) * (2.0 * PI / num_th)
+
+    cos_th, sin_th = np.cos(theta_h), np.sin(theta_h)
+    cos_2th, sin_2th = np.cos(2.0 * theta_h), np.sin(2.0 * theta_h)
+
+    pos_half = _helper_caustic_epl_shear(
         q, phi, gamma, gamma1, gamma2, theta_E,
-        theta, cos_th, sin_th, cos_2th, sin_2th,
-        maginf=maginf
+        theta_h, cos_th, sin_th, cos_2th, sin_2th,
+        maginf=maginf, quad=quad, half_only=True
     )
 
+    # Reconstruct full (2, num_th) output: second half is the antipodal of the first
+    pos_full = np.empty((2, num_th))
+    pos_full[:, :h] = pos_half
+    pos_full[:, h:] = -pos_half
+
     M = _rotmat(-phi)
-    return M @ pos_tosample
+    return M @ pos_full
     # # Numba-friendly explicit 2D rotation (equivalent to _rotmat(-phi) @ pos_tosample)
     # c = np.cos(phi)
     # s = np.sin(phi)
@@ -733,22 +769,55 @@ def caustic_area_epl_shear(
     Examples
     --------
     >>> import numpy as np
-    >>> theta = np.linspace(0, 2*np.pi, 500)
+    >>> num_th = 500
+    >>> theta = np.linspace(0, 2*np.pi*(num_th//2 - 1)/num_th, num_th//2)
     >>> area = caustic_area_epl_shear(0.8, 0.0, 2.0, 0.03, -0.01, 1.0, theta, np.cos(theta), np.sin(theta), np.cos(2*theta), np.sin(2*theta))
     """
     
-    # Call the helper
-    # pos_tosample = np.empty((2, num_th))
-    pos_tosample = _helper_caustic_epl_shear(
+    # theta, cos_th, sin_th, cos_2th, sin_2th must cover [0, π) with num_th//2
+    # points — i.e. the first half of the full linspace.  The caller is
+    # responsible for pre-building half-size arrays so that no slicing or
+    # extra allocation is needed here.  Close the half-polygon via the
+    # antipodal of the start point (exact by 2-fold symmetry) and multiply
+    # the area by 2.
+    h = theta.shape[0]
+    pos_half = _helper_caustic_epl_shear(
         q, phi, gamma, gamma1, gamma2, theta_E,
         theta, cos_th, sin_th, cos_2th, sin_2th,
-        maginf=maginf
+        maginf=maginf, half_only=True
     )
+    return half_symmetric_polygon_area(pos_half[0], pos_half[1])
 
-    # M = _rotmat(-phi) # no rotation needed for area calculation
-    # return area
-    
-    return polygon_area(pos_tosample[0, :], pos_tosample[1, :])
+
+@njit(cache=True, fastmath=True)
+def half_symmetric_polygon_area(xh, yh):
+    """
+    Area of a centrally symmetric closed polygon from half-boundary samples.
+
+    The full boundary is [v_0, ..., v_{h-1}, -v_0, ..., -v_{h-1}],
+    so the total area is twice the area of the half polygon closed by -v_0.
+    This avoids allocating temporary arrays of length h+1.
+    """
+    h = xh.shape[0]
+    if h < 2:
+        return 0.0
+
+    area2_half = 0.0
+
+    x_prev = xh[0]
+    y_prev = yh[0]
+    for i in range(1, h):
+        x_i = xh[i]
+        y_i = yh[i]
+        area2_half += x_prev * y_i - x_i * y_prev
+        x_prev = x_i
+        y_prev = y_i
+
+    area2_half += x_prev * (-yh[0]) - (-xh[0]) * y_prev
+
+    if area2_half < 0.0:
+        return -area2_half
+    return area2_half
 
 @njit(cache=True, fastmath=True)
 def polygon_area(xv, yv):
@@ -807,15 +876,20 @@ def make_cross_section_area_reinit(Da_instance, num_th=500, maginf=-100.0):
     --------
     >>> cross_section_fn = make_cross_section_area_reinit(Da_instance)
     """
-    theta = np.linspace(0, 2 * np.pi * (1.0 - 1.0 / num_th), num_th)
-    
+    # Build only the first half of the theta grid — covers [0, π).
+    # This halves memory for all five trig arrays (closed over by the inner
+    # function) and removes the [:h] slicing overhead on every call to
+    # caustic_area_epl_shear.
+    h = num_th // 2
+    theta = np.arange(h) * (2.0 * np.pi / num_th)
+
     # Closed-over constants (no recomputation)
     cos_th = np.cos(theta)
     sin_th = np.sin(theta)
     cos_2th = np.cos(2.0 * theta)
     sin_2th = np.sin(2.0 * theta)
 
-    @njit(parallel=True, cache=True, fastmath=True)
+    @njit(parallel=True, cache=False, fastmath=True)
     def cross_section_area(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):
         size = zs.shape[0]
         cs_area = np.empty(size)
@@ -839,7 +913,7 @@ def make_cross_section_area_reinit(Da_instance, num_th=500, maginf=-100.0):
 
     return cross_section_area
 
-@njit(parallel=True, cache=True, fastmath=True)
+@njit(parallel=True, cache=False, fastmath=True)
 def cross_section_epl_shear_unit(
     e1, 
     e2,
@@ -881,32 +955,31 @@ def cross_section_epl_shear_unit(
     >>> import numpy as np
     >>> calculate_area = cross_section_epl_shear_unit(np.array([0.1]), np.array([0.05]), np.array([2.0]), np.array([0.03]), np.array([-0.01]))
     """
-    theta = np.linspace(0, 2 * np.pi * (1.0 - 1.0 / num_th), num_th)
+    # Build only the first half of the theta grid — covers [0, π).
+    # Halves memory for all five trig arrays and removes [:h] slicing overhead
+    # on every caustic_area_epl_shear call inside the serial loop.
+    h = num_th // 2
+    theta = np.arange(h) * (2.0 * np.pi / num_th)
 
     phi, q = ellipticity2phi_q(e1, e2)
-    
-    # Closed-over constants (no recomputation)
+
     cos_th = np.cos(theta)
     sin_th = np.sin(theta)
     cos_2th = np.cos(2.0 * theta)
     sin_2th = np.sin(2.0 * theta)
 
-    @njit(parallel=True, cache=True, fastmath=True)
-    def cross_section_area(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):
-        size = zs.shape[0]
-        cs_area = np.empty(size)
+    size = e1.shape[0]
+    cs_area = np.empty(size)
+    theta_E = 1.0
 
-        for i in prange(size):
-            theta_E = 1.0
+    for i in prange(size):
 
-            area = caustic_area_epl_shear(
-                q[i], phi[i], gamma[i], gamma1[i], gamma2[i], theta_E,
-                theta, cos_th, sin_th, cos_2th, sin_2th,
-                maginf
-            )
+        area = caustic_area_epl_shear(
+            q[i], phi[i], gamma[i], gamma1[i], gamma2[i], theta_E,
+            theta, cos_th, sin_th, cos_2th, sin_2th,
+            maginf
+        )
 
-            cs_area[i] = area if np.isfinite(area) else 0.0
+        cs_area[i] = area if np.isfinite(area) else 0.0
 
-        return cs_area
-
-    return cross_section_area
+    return cs_area

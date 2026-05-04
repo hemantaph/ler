@@ -28,46 +28,14 @@ from ..utils import (
     generate_mixed_grid,
 )
 
-
-def available_sampler_list():
-    """
-    Return list of available lens parameter samplers.
-
-    Returns
-    -------
-    sampler_list : ``list``
-        List of available sampler function names.
-
-    Examples
-    --------
-    >>> samplers = available_sampler_list()
-    >>> print(samplers)
-    ['lens_redshift_strongly_lensed_sis_haris', 'velocity_dispersion_gengamma', 'axis_ratio_rayleigh', 'axis_ratio_padilla_strauss']
-    """
-    return [
-        "lens_redshift_strongly_lensed_sis_haris_pdf",
-        "lens_redshift_strongly_lensed_sis_haris_rvs",
-        "velocity_dispersion_ewoud_denisty_function",
-        "velocity_dispersion_bernardi_denisty_function",
-        "velocity_dispersion_gengamma_density_function",
-        "velocity_dispersion_gengamma_pdf",
-        "velocity_dispersion_gengamma_rvs",
-        "axis_ratio_rayleigh_rvs",
-        "axis_ratio_rayleigh_pdf",
-        "axis_ratio_padilla_strauss_rvs",
-        "axis_ratio_padilla_strauss_pdf",
-        "bounded_normal_sample",
-        "rejection_sampler",
-        "importance_sampler",
-        "importance_sampler_mp",
-    ]
-
-
 # ---------------------------------
 # Lens redshift sampler functions
 # ---------------------------------
-@njit(cache=True)
-def lens_redshift_strongly_lensed_sis_haris_pdf(
+# NOTE: cache=True intentionally NOT set. ``cosmo.comoving_distance`` is
+# an astropy method, not a Numba-compatible call, so this function only
+# runs in object-mode fallback and is not cacheable.
+@njit(fastmath=True)
+def lens_redshift_strongly_lensed_sis_analytical_pdf(
     zl,
     zs,
     cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0),
@@ -98,7 +66,7 @@ def lens_redshift_strongly_lensed_sis_haris_pdf(
     --------
     >>> from astropy.cosmology import LambdaCDM
     >>> cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
-    >>> pdf = lens_redshift_strongly_lensed_sis_haris_pdf(zl=0.5, zs=1.0, cosmo=cosmo)
+    >>> pdf = lens_redshift_strongly_lensed_sis_analytical_pdf(zl=0.5, zs=1.0, cosmo=cosmo)
     >>> print(f"PDF at zl=0.5: {pdf:.4f}")
     PDF at zl=0.5: 1.8750
     """
@@ -108,7 +76,7 @@ def lens_redshift_strongly_lensed_sis_haris_pdf(
     return 30 * x**2 * (1 - x) ** 2
 
 
-def lens_redshift_strongly_lensed_sis_haris_rvs(
+def lens_redshift_strongly_lensed_sis_analytical_rvs(
     size,
     zs,
     z_min=0.001,
@@ -146,7 +114,7 @@ def lens_redshift_strongly_lensed_sis_haris_rvs(
     --------
     >>> from astropy.cosmology import LambdaCDM
     >>> cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
-    >>> zl_samples = lens_redshift_strongly_lensed_sis_haris_rvs(
+    >>> zl_samples = lens_redshift_strongly_lensed_sis_analytical_rvs(
     ...     size=1000,
     ...     zs=1.5,
     ...     z_min=0.001,
@@ -176,7 +144,7 @@ def lens_redshift_strongly_lensed_sis_haris_rvs(
 # ---------------------------------------
 # Velocity dispersion sampler functions
 # ---------------------------------------
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def _gamma(x):
     """
     Compute the gamma function using the Lanczos approximation.
@@ -217,7 +185,7 @@ def _gamma(x):
         return np.sqrt(2 * np.pi) * t ** (x + 0.5) * np.exp(-t) * y
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def _cvdf_fit(log_vd, redshift):
     """
     Compute the cumulative velocity dispersion function fit.
@@ -253,7 +221,7 @@ def _cvdf_fit(log_vd, redshift):
     return coeffs[0] + coeffs[1] * mstar + coeffs[2] * mstar**2 - np.exp(mstar)
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def _cvdf_derivative(log_vd, redshift, dx):
     """
     Compute the numerical derivative of the CVDF fit function.
@@ -277,7 +245,7 @@ def _cvdf_derivative(log_vd, redshift, dx):
     )
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def _pdf_phi_z_ratio(sigma, z):
     """
     Compute the PDF ratio of velocity dispersion function at redshift z to z=0.
@@ -304,12 +272,17 @@ def _pdf_phi_z_ratio(sigma, z):
     return phi_sim_z / phi_sim_0
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def velocity_dispersion_ewoud_denisty_function(
     sigma, z, alpha=0.94, beta=1.85, phistar=2.099e-2, sigmastar=113.78
 ):
     """
     Calculate the lens galaxy velocity dispersion function at redshift z (Oguri et al. (2018b) + Wempe et al. (2022)).
+
+    Notes
+    -----
+    The function name contains the misspelling ``denisty`` for backward
+    compatibility with existing serialized configuration dictionaries.
 
     Parameters
     ----------
@@ -343,7 +316,7 @@ def velocity_dispersion_ewoud_denisty_function(
     return result
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def velocity_dispersion_bernardi_denisty_function(
     sigma, alpha, beta, phistar, sigmastar
 ):
@@ -351,6 +324,17 @@ def velocity_dispersion_bernardi_denisty_function(
     Calculate the local universe velocity dispersion function.
 
     This implements the velocity dispersion function from Bernardi et al. (2010).
+
+    .. math::
+
+        \\phi(\\sigma) = \\phi_* \\left(\\frac{\\sigma}{\\sigma_*}\\right)^\\alpha
+        \\exp\\left[-\\left(\\frac{\\sigma}{\\sigma_*}\\right)^\\beta\\right]
+        \\frac{\\beta}{\\Gamma(\\alpha/\\beta)\\sigma}.
+
+    Notes
+    -----
+    The function name contains the misspelling ``denisty`` for backward
+    compatibility with existing serialized configuration dictionaries.
 
     Parameters
     ----------
@@ -389,7 +373,7 @@ def velocity_dispersion_bernardi_denisty_function(
     return philoc
 
 
-def velocity_dispersion_gengamma_density_function(
+def gengamma_function(
     sigma,
     alpha=0.94,
     beta=1.85,
@@ -429,7 +413,7 @@ def velocity_dispersion_gengamma_density_function(
     --------
     >>> import numpy as np
     >>> sigma = np.array([150.0, 200.0, 250.0])
-    >>> density = velocity_dispersion_gengamma_density_function(sigma)
+    >>> density = gengamma_function(sigma)
     >>> print(f"Density at sigma=200 km/s: {density[1]:.6f}")
     """
     from scipy.stats import gengamma
@@ -443,7 +427,7 @@ def velocity_dispersion_gengamma_density_function(
     return density
 
 
-def velocity_dispersion_gengamma_pdf(
+def gengamma_pdf(
     sigma,
     sigma_min=100.0,
     sigma_max=400.0,
@@ -484,7 +468,7 @@ def velocity_dispersion_gengamma_pdf(
 
     Examples
     --------
-    >>> pdf = velocity_dispersion_gengamma_pdf(
+    >>> pdf = gengamma_pdf(
     ...     sigma=200.0,
     ...     sigma_min=100.0,
     ...     sigma_max=400.0,
@@ -493,7 +477,7 @@ def velocity_dispersion_gengamma_pdf(
     """
     # Compute normalization constant
     sigma_array = np.linspace(sigma_min, sigma_max, 500)
-    density = velocity_dispersion_gengamma_density_function(
+    density = gengamma_function(
         sigma=sigma_array,
         alpha=alpha,
         beta=beta,
@@ -502,7 +486,7 @@ def velocity_dispersion_gengamma_pdf(
     norm_const = np.trapz(density, sigma_array)
 
     pdf = (
-        velocity_dispersion_gengamma_density_function(
+        gengamma_function(
             sigma=sigma,
             alpha=alpha,
             beta=beta,
@@ -551,7 +535,7 @@ def _truncated_gengamma_rvs(size, a, c, loc, scale, lower_bound, upper_bound):
     return np.array(total_samples[:size])
 
 
-def velocity_dispersion_gengamma_rvs(
+def gengamma_rvs(
     size,
     sigma_min=100.0,
     sigma_max=400.0,
@@ -592,7 +576,7 @@ def velocity_dispersion_gengamma_rvs(
 
     Examples
     --------
-    >>> sigma_samples = velocity_dispersion_gengamma(
+    >>> sigma_samples = gengamma_rvs(
     ...     size=1000,
     ...     sigma_min=100.0,
     ...     sigma_max=400.0,
@@ -615,8 +599,8 @@ def velocity_dispersion_gengamma_rvs(
 # ------------------------------
 # Axis ratio sampler functions
 # ------------------------------
-@njit(cache=True)
-def axis_ratio_rayleigh_rvs(size, sigma, q_min=0.2, q_max=1.0):
+@njit(cache=True, fastmath=True)
+def rayleigh_rvs(size, sigma, q_min=0.2, q_max=1.0):
     """
     Sample axis ratios from velocity-dependent Rayleigh distribution.
 
@@ -646,7 +630,7 @@ def axis_ratio_rayleigh_rvs(size, sigma, q_min=0.2, q_max=1.0):
     --------
     >>> import numpy as np
     >>> sigma = np.random.uniform(100, 300, 1000)
-    >>> q_samples = axis_ratio_rayleigh_rvs(size=1000, sigma=sigma, q_min=0.2, q_max=1.0)
+    >>> q_samples = rayleigh_rvs(size=1000, sigma=sigma, q_min=0.2, q_max=1.0)
     >>> print(f"Mean axis ratio: {q_samples.mean():.2f}")
     >>> print(f"Range: [{q_samples.min():.2f}, {q_samples.max():.2f}]")
     """
@@ -674,8 +658,8 @@ def axis_ratio_rayleigh_rvs(size, sigma, q_min=0.2, q_max=1.0):
     return q
 
 
-@njit(parallel=True, cache=True)
-def axis_ratio_rayleigh_pdf(q, sigma, q_min=0.2, q_max=1.0):
+@njit(parallel=True, fastmath=True)
+def rayleigh_pdf(q, sigma, q_min=0.2, q_max=1.0):
     """
     Compute truncated Rayleigh PDF for axis ratio.
 
@@ -706,7 +690,7 @@ def axis_ratio_rayleigh_pdf(q, sigma, q_min=0.2, q_max=1.0):
     >>> import numpy as np
     >>> q = np.array([0.5, 0.7, 0.9])
     >>> sigma = np.array([150.0, 200.0, 250.0])
-    >>> pdf = axis_ratio_rayleigh_pdf(q, sigma)
+    >>> pdf = rayleigh_pdf(q, sigma)
     >>> print(f"PDF values: {pdf}")
     """
     out = np.zeros_like(q)
@@ -739,7 +723,7 @@ def axis_ratio_rayleigh_pdf(q, sigma, q_min=0.2, q_max=1.0):
     return out
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def _axis_ratio_padilla_strauss_data():
     """
     Return axis ratio PDF data points from Padilla & Strauss (2008).
@@ -808,7 +792,7 @@ def _axis_ratio_padilla_strauss_data():
     return q_array, pdf
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def axis_ratio_padilla_strauss_rvs(size):
     """
     Sample axis ratios from Padilla & Strauss (2008) distribution.
@@ -841,7 +825,10 @@ def axis_ratio_padilla_strauss_rvs(size):
     return inverse_transform_sampler(size, cdf_values, q_array)
 
 
-@njit(cache=True)
+# NOTE: cache=True intentionally NOT set. This function calls
+# ``scipy.interpolate.CubicSpline``, which is not Numba-compatible and
+# falls back to object mode, so the compiled version cannot be cached.
+@njit(fastmath=True)
 def axis_ratio_padilla_strauss_pdf(q):
     """
     Compute axis ratio PDF from Padilla & Strauss (2008).
@@ -871,932 +858,1788 @@ def axis_ratio_padilla_strauss_pdf(q):
     return spline(q)
 
 
-@njit(cache=True)
-def bounded_normal_sample(size, mean, std, low, high):
-    """
-    Sample from truncated normal distribution via rejection.
+# @njit
+# def bounded_normal_sample(size, mean, std, low, high):
+#     """
+#     Sample from truncated normal distribution via rejection.
 
-    Generates samples from a normal distribution with specified mean and
-    standard deviation, rejecting samples outside the specified bounds.
+#     Generates samples from a normal distribution with specified mean and
+#     standard deviation, rejecting samples outside the specified bounds.
 
-    Parameters
-    ----------
-    size : ``int``
-        Number of samples to draw.
-    mean : ``float``
-        Mean of the normal distribution.
-    std : ``float``
-        Standard deviation of the normal distribution.
-    low : ``float``
-        Lower bound for samples.
-    high : ``float``
-        Upper bound for samples.
+#     Parameters
+#     ----------
+#     size : ``int``
+#         Number of samples to draw.
+#     mean : ``float``
+#         Mean of the normal distribution.
+#     std : ``float``
+#         Standard deviation of the normal distribution.
+#     low : ``float``
+#         Lower bound for samples.
+#     high : ``float``
+#         Upper bound for samples.
 
-    Returns
-    -------
-    samples : ``numpy.ndarray``
-        Bounded normal samples with shape (size,).
+#     Returns
+#     -------
+#     samples : ``numpy.ndarray``
+#         Bounded normal samples with shape (size,).
 
-    Examples
-    --------
-    >>> samples = bounded_normal_sample(size=1000, mean=2.0, std=0.2, low=1.5, high=2.5)
-    >>> print(f"Mean: {samples.mean():.2f}, Std: {samples.std():.2f}")
-    >>> print(f"Range: [{samples.min():.2f}, {samples.max():.2f}]")
-    """
-    samples = np.empty(size)
-    for i in range(size):
-        while True:
-            sample = np.random.normal(mean, std)
-            if low <= sample <= high:
-                break
-        samples[i] = sample
+#     Examples
+#     --------
+#     >>> samples = bounded_normal_sample(size=1000, mean=2.0, std=0.2, low=1.5, high=2.5)
+#     >>> print(f"Mean: {samples.mean():.2f}, Std: {samples.std():.2f}")
+#     >>> print(f"Range: [{samples.min():.2f}, {samples.max():.2f}]")
+#     """
+#     samples = np.empty(size)
+#     for i in range(size):
+#         while True:
+#             sample = np.random.normal(mean, std)
+#             if low <= sample <= high:
+#                 break
+#         samples[i] = sample
 
-    return samples
+#     return samples
 
 
 # -------------------------------------------------
-# Rejection sampling of strongly lensed parameters
+# Cross-section sampler helpers
 # -------------------------------------------------
-def rejection_sampler(
-    zs,
-    zl,
-    sigma_max,
-    sigma_rvs,
-    q_rvs,
-    phi_rvs,
-    gamma_rvs,
-    shear_rvs,
-    cross_section,
-    safety_factor=1.2,
-):
-    """
-    Core rejection sampling algorithm for lens parameters.
-
-    Parameters
-    ----------
-    zs : ``numpy.ndarray``
-        Source redshifts.
-    zl : ``numpy.ndarray``
-        Lens redshifts.
-    sigma_max : ``float``
-        Maximum velocity dispersion (km/s) for computing upper bound.
-    sigma_rvs : ``callable``
-        Function to sample velocity dispersion: sigma_rvs(n, zl) -> array.
-    q_rvs : ``callable``
-        Function to sample axis ratio: q_rvs(n, sigma) -> array.
-    phi_rvs : ``callable``
-        Function to sample orientation angle: phi_rvs(n) -> array.
-    gamma_rvs : ``callable``
-        Function to sample power-law index: gamma_rvs(n) -> array.
-    shear_rvs : ``callable``
-        Function to sample external shear: shear_rvs(n) -> (gamma1, gamma2).
-    cross_section : ``callable``
-        Function to compute lensing cross section.
-    safety_factor : ``float``
-        Multiplicative safety factor for the upper bound. \n
-        default: 1.2
-
-    Returns
-    -------
-    sigma_array : ``numpy.ndarray``
-        Sampled velocity dispersions (km/s).
-    q_array : ``numpy.ndarray``
-        Sampled axis ratios.
-    phi_array : ``numpy.ndarray``
-        Sampled orientation angles (rad).
-    gamma_array : ``numpy.ndarray``
-        Sampled power-law indices.
-    gamma1_array : ``numpy.ndarray``
-        Sampled external shear component 1.
-    gamma2_array : ``numpy.ndarray``
-        Sampled external shear component 2.
-    """
-    n_samples = zl.size
-
-    sigma_array = np.zeros(n_samples)
-    q_array = np.zeros(n_samples)
-    phi_array = np.zeros(n_samples)
-    gamma_array = np.zeros(n_samples)
-    gamma1_array = np.zeros(n_samples)
-    gamma2_array = np.zeros(n_samples)
-    idx_remaining = np.arange(n_samples)
-
-    # Compute maximum cross section for rejection bound
-    cs_max = (
-        cross_section(
-            zs=zs,
-            zl=zl,
-            sigma=sigma_max * np.ones(n_samples),
-            q=0.9 * np.ones(n_samples),
-            phi=np.zeros(n_samples),
-            gamma=2.645 * np.ones(n_samples),
-            gamma1=np.zeros(n_samples),
-            gamma2=np.zeros(n_samples),
-        )
-        * safety_factor
-    )
-
-    while len(idx_remaining) > 0:
-        n_remaining = len(idx_remaining)
-        sigma_samples = sigma_rvs(n_remaining, zl[idx_remaining])
-        q_samples = q_rvs(n_remaining, sigma_samples)
-        phi_samples = phi_rvs(n_remaining)
-        gamma_samples = gamma_rvs(n_remaining)
-        gamma1_samples, gamma2_samples = shear_rvs(n_remaining)
-
-        cs = cross_section(
-            zs=zs[idx_remaining],
-            zl=zl[idx_remaining],
-            sigma=sigma_samples,
-            q=q_samples,
-            phi=phi_samples,
-            gamma=gamma_samples,
-            gamma1=gamma1_samples,
-            gamma2=gamma2_samples,
-        )
-
-        accept = np.random.random(n_remaining) < (cs / cs_max[idx_remaining])
-
-        accepted_indices = idx_remaining[accept]
-        sigma_array[accepted_indices] = sigma_samples[accept]
-        q_array[accepted_indices] = q_samples[accept]
-        phi_array[accepted_indices] = phi_samples[accept]
-        gamma_array[accepted_indices] = gamma_samples[accept]
-        gamma1_array[accepted_indices] = gamma1_samples[accept]
-        gamma2_array[accepted_indices] = gamma2_samples[accept]
-
-        idx_remaining = idx_remaining[~accept]
-
-    return sigma_array, q_array, phi_array, gamma_array, gamma1_array, gamma2_array
-
-
-def create_rejection_sampler(
-    sigma_max,
-    sigma_rvs,
-    q_rvs,
-    phi_rvs,
-    gamma_rvs,
-    shear_rvs,
-    cross_section,
-    safety_factor=1.2,
-    use_njit_sampler=True,
-):
-    """
-    Create a rejection sampler for cross-section weighted lens parameters.
-
-    Returns a callable that samples lens parameters using rejection sampling,
-    weighting by the gravitational lensing cross section. Optionally uses
-    Numba JIT compilation for improved performance.
-
-    Parameters
-    ----------
-    sigma_max : ``float``
-        Maximum velocity dispersion (km/s) for computing upper bound.
-    sigma_rvs : ``callable``
-        Function to sample velocity dispersion: sigma_rvs(n, zl) -> array.
-    q_rvs : ``callable``
-        Function to sample axis ratio: q_rvs(n, sigma) -> array.
-    phi_rvs : ``callable``
-        Function to sample orientation angle: phi_rvs(n) -> array.
-    gamma_rvs : ``callable``
-        Function to sample power-law index: gamma_rvs(n) -> array.
-    shear_rvs : ``callable``
-        Function to sample external shear: shear_rvs(n) -> (gamma1, gamma2).
-    cross_section : ``callable``
-        Function to compute lensing cross section.
-    safety_factor : ``float``
-        Multiplicative safety factor for the upper bound. \n
-        default: 1.2
-    use_njit_sampler : ``bool``
-        If True, uses Numba JIT compilation for faster execution. \n
-        default: True
-
-    Returns
-    -------
-    rejection_sampler_wrapper : ``callable``
-        Function with signature (zs, zl) -> (sigma, q, phi, gamma, gamma1, gamma2).
-
-    Examples
-    --------
-    >>> import numpy as np
-    >>> from numba import njit
-    >>> @njit
-    ... def sigma_rvs(n, zl):
-    ...     return 100 + 200 * np.random.random(n)
-    >>> @njit
-    ... def q_rvs(n, sigma):
-    ...     return 0.5 + 0.5 * np.random.random(n)
-    >>> @njit
-    ... def phi_rvs(n):
-    ...     return np.pi * np.random.random(n)
-    >>> @njit
-    ... def gamma_rvs(n):
-    ...     return 2.0 + 0.2 * np.random.randn(n)
-    >>> @njit
-    ... def shear_rvs(n):
-    ...     return 0.05 * np.random.randn(n), 0.05 * np.random.randn(n)
-    >>> @njit
-    ... def cross_section(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):
-    ...     return sigma**4
-    >>> sampler = create_rejection_sampler(
-    ...     sigma_max=400.0,
-    ...     sigma_rvs=sigma_rvs,
-    ...     q_rvs=q_rvs,
-    ...     phi_rvs=phi_rvs,
-    ...     gamma_rvs=gamma_rvs,
-    ...     shear_rvs=shear_rvs,
-    ...     cross_section=cross_section,
-    ... )
-    >>> zs = np.array([1.0, 1.5, 2.0])
-    >>> zl = np.array([0.3, 0.5, 0.7])
-    >>> sigma, q, phi, gamma, gamma1, gamma2 = sampler(zs, zl)
-    """
-    if use_njit_sampler:
-        _base_sampler = njit(rejection_sampler)
-        print(
-            "Faster, njitted and rejection sampling based lens parameter sampler will be used."
-        )
-
-        @njit(cache=True)
-        def rejection_sampler_wrapper(zs, zl):
-            return _base_sampler(
-                zs=zs,
-                zl=zl,
-                sigma_max=sigma_max,
-                sigma_rvs=sigma_rvs,
-                q_rvs=q_rvs,
-                phi_rvs=phi_rvs,
-                gamma_rvs=gamma_rvs,
-                shear_rvs=shear_rvs,
-                cross_section=cross_section,
-                safety_factor=safety_factor,
-            )
-
-    else:
-        print(
-            "Slower, non-njit and rejection sampling based lens parameter sampler will be used."
-        )
-
-        def rejection_sampler_wrapper(zs, zl):
-            return rejection_sampler(
-                zs=zs,
-                zl=zl,
-                sigma_max=sigma_max,
-                sigma_rvs=sigma_rvs,
-                q_rvs=q_rvs,
-                phi_rvs=phi_rvs,
-                gamma_rvs=gamma_rvs,
-                shear_rvs=shear_rvs,
-                cross_section=cross_section,
-                safety_factor=safety_factor,
-            )
-
-    return rejection_sampler_wrapper
-
-
-@njit(cache=True)
-def _weighted_choice_1d(weights):
-    """
-    Draw an index with probability proportional to weights.
-
-    Numba-safe replacement for np.random.choice(n, p=weights).
-
-    Parameters
-    ----------
-    weights : ``numpy.ndarray``
-        Non-negative weights (need not be normalized).
-
-    Returns
-    -------
-    idx : ``int``
-        Randomly selected index.
-    """
-    total = 0.0
-    for i in range(weights.size):
-        total += weights[i]
-
-    if not (total > 0.0):
-        return np.random.randint(weights.size)
-
-    u = np.random.random() * total
-    c = 0.0
-    for i in range(weights.size):
-        c += weights[i]
-        if u <= c:
-            return i
-    return weights.size - 1
-
-@njit(parallel=True, cache=True)
-def importance_sampler(
-    zs,
-    zl,
-    sigma_min,
-    sigma_max,
-    q_rvs,
-    phi_rvs,
-    gamma_rvs,
-    shear_rvs,
-    number_density,
-    cross_section,
-    n_prop,
-):
-    """
-    Core importance sampling algorithm for lens parameters.
-
-    This function samples lens galaxy parameters weighted by their lensing
-    cross sections using importance sampling with a uniform proposal distribution
-    for velocity dispersion.
-
-    Algorithm
-    ---------
-    For each lens-source pair (zl_i, zs_i):
-
-    1. **Draw proposal samples** (n_prop samples per lens):
-       - sigma_k ~ Uniform(sigma_min, sigma_max)  with proposal density q(sigma) = 1/(sigma_max - sigma_min)
-       - q_k ~ p(q|sigma_k)  (axis ratio conditioned on velocity dispersion)
-       - φ_k ~ p(φ)  (orientation angle prior)
-       - gamma_k ~ p(gamma)  (power-law index prior)
-       - (gamma1_k, gamma2_k) ~ p(gamma1, gamma2)  (external shear prior)
-
-    2. **Compute lensing cross sections**:
-       - cs_k = CrossSection(zs_i, zl_i, sigma_k, q_k, φ_k, gamma_k, gamma1_k, gamma2_k)
-       - Normalize: cs_k ← cs_k / Σ_k cs_k
-
-    3. **Compute importance weights**:
-       - The target distribution is: p(θ|zl) ∝ p(sigma|zl) x CrossSection(θ)
-       - The proposal distribution is: q(θ) ∝ Uniform(sigma) x p(q|sigma) x p(φ) x p(gamma) x p(shear)
-       - Importance weight: w_k = cs_k x [p(sigma_k|zl) / q(sigma)]
-       - Normalize: w_k ← w_k / Σ_k w_k
-
-    4. **Resample**:
-       - Draw one sample index from {1, ..., n_prop} with probabilities {w_1, ..., w_n_prop}
-       - Return the corresponding parameter values as the posterior sample
-
-    The algorithm produces samples from the posterior distribution of lens
-    parameters weighted by their contribution to the strong lensing cross section.
-
-    Parameters
-    ----------
-    zs : ``numpy.ndarray``
-        Source redshifts.
-    zl : ``numpy.ndarray``
-        Lens redshifts.
-    sigma_min : ``float``
-        Minimum velocity dispersion (km/s) for uniform proposal.
-    sigma_max : ``float``
-        Maximum velocity dispersion (km/s) for uniform proposal.
-    q_rvs : ``callable``
-        Function to sample axis ratio: q_rvs(n, sigma) -> array.
-    phi_rvs : ``callable``
-        Function to sample orientation angle: phi_rvs(n) -> array.
-    gamma_rvs : ``callable``
-        Function to sample power-law index: gamma_rvs(n) -> array.
-    shear_rvs : ``callable``
-        Function to sample external shear: shear_rvs(n) -> (gamma1, gamma2).
-    number_density : ``callable``
-        Number density or velocity dispersion function: number_density(sigma, zl) -> array.
-    cross_section : ``callable``
-        Function to compute lensing cross section.
-    n_prop : ``int``
-        Number of proposal samples per lens.
-
-    Returns
-    -------
-    sigma_post : ``numpy.ndarray``
-        Sampled velocity dispersions (km/s).
-    q_post : ``numpy.ndarray``
-        Sampled axis ratios.
-    phi_post : ``numpy.ndarray``
-        Sampled orientation angles (rad).
-    gamma_post : ``numpy.ndarray``
-        Sampled power-law indices.
-    gamma1_post : ``numpy.ndarray``
-        Sampled external shear component 1.
-    gamma2_post : ``numpy.ndarray``
-        Sampled external shear component 2.
-    """
-    n_samples = zl.size
-
-    sigma_post = np.zeros(n_samples)
-    q_post = np.zeros(n_samples)
-    phi_post = np.zeros(n_samples)
-    gamma_post = np.zeros(n_samples)
-    gamma1_post = np.zeros(n_samples)
-    gamma2_post = np.zeros(n_samples)
-    # Compute cross sections
-    zs_arr = np.broadcast_to(zs[:n_samples, None], (n_samples, n_prop))
-    zl_arr = np.broadcast_to(zl[:n_samples, None], (n_samples, n_prop))
-
-    p0 = 1.0 / (sigma_max - sigma_min)
-
-    for i in prange(n_samples):  # for each (zl, zs) pair
-        # Draw proposals from uniform distribution
-        sigma_prop = sigma_min + (sigma_max - sigma_min) * np.random.random(n_prop)
-
-        # Draw other parameters from their priors
-        q_prop = q_rvs(n_prop, sigma_prop)
-        phi_prop = phi_rvs(n_prop)
-        gamma_prop = gamma_rvs(n_prop)
-        gamma1_prop, gamma2_prop = shear_rvs(n_prop)
-
-        cs = cross_section(
-            zs_arr[i],
-            zl_arr[i],
-            sigma_prop,
-            q_prop,
-            phi_prop,
-            gamma_prop,
-            gamma1_prop,
-            gamma2_prop,
-        )
-
-        # Compute importance weights
-        sigma_function = number_density(sigma_prop, zl_arr[i])
-
-        w = cs * (sigma_function / p0)
-        w = np.where(w > 0.0, w, 0.0)
-        w_sum = np.sum(w)
-
-        # Normalize weights
-        if w_sum > 0.0:
-            w = w / w_sum
-        else:
-            w = np.ones(n_prop) / n_prop
-
-        # Draw posterior sample via weighted choice
-        idx = _weighted_choice_1d(w)
-
-        sigma_post[i] = sigma_prop[idx]
-        q_post[i] = q_prop[idx]
-        phi_post[i] = phi_prop[idx]
-        gamma_post[i] = gamma_prop[idx]
-        gamma1_post[i] = gamma1_prop[idx]
-        gamma2_post[i] = gamma2_prop[idx]
-
-    return sigma_post, q_post, phi_post, gamma_post, gamma1_post, gamma2_post
-
-
-# --------------------------------------
-# Importance sampling (multiprocessing)
-# --------------------------------------
-# Global variable to hold shared data in importance sampler worker processes.
-_importance_sampler_shared = {}
-
-
-def _init_importance_sampler_worker(
-    sigma_min,
-    sigma_max,
-    q_rvs,
-    phi_rvs,
-    gamma_rvs,
-    shear_rvs,
-    number_density,
-    cross_section,
-    n_prop,
-):
-    """
-    Initialize worker process with shared data for importance sampling.
-
-    Called once per worker process when the pool is created.
-
-    Parameters
-    ----------
-    sigma_min : ``float``
-        Minimum velocity dispersion (km/s).
-    sigma_max : ``float``
-        Maximum velocity dispersion (km/s).
-    q_rvs : ``callable``
-        Axis ratio sampler.
-    phi_rvs : ``callable``
-        Orientation angle sampler.
-    gamma_rvs : ``callable``
-        power-law index sampler.
-    shear_rvs : ``callable``
-        External shear sampler.
-    number_density : ``callable``
-        Velocity dispersion number density function.
-    cross_section : ``callable``
-        Cross-section function.
-    n_prop : ``int``
-        Number of proposal samples per lens.
-    """
-    global _importance_sampler_shared
-    _importance_sampler_shared["sigma_min"] = sigma_min
-    _importance_sampler_shared["sigma_max"] = sigma_max
-    _importance_sampler_shared["q_rvs"] = q_rvs
-    _importance_sampler_shared["phi_rvs"] = phi_rvs
-    _importance_sampler_shared["gamma_rvs"] = gamma_rvs
-    _importance_sampler_shared["shear_rvs"] = shear_rvs
-    _importance_sampler_shared["number_density"] = number_density
-    _importance_sampler_shared["cross_section"] = cross_section
-    _importance_sampler_shared["n_prop"] = n_prop
-
-
-def _importance_sampler_worker(params):
-    """
-    Worker function for multiprocessing importance sampling.
-
-    Parameters
-    ----------
-    params : ``tuple``
-        Packed parameters: (zs_i, zl_i, worker_idx).
-
-    Returns
-    -------
-    worker_idx : ``int``
-        Worker index for result ordering.
-    result : ``tuple``
-        (sigma, q, phi, gamma, gamma1, gamma2) for this sample.
-    """
-    zs_i, zl_i, worker_idx = params
-
-    # Re-seed RNG from OS entropy so forked workers don't share the parent's state
-    np.random.seed()
-
-    # Limit to 1 Numba thread per worker — parallelism comes from the process pool
-    set_num_threads(1)
-
-    # Retrieve shared data set by _init_importance_sampler_worker
-    sigma_min = _importance_sampler_shared["sigma_min"]
-    sigma_max = _importance_sampler_shared["sigma_max"]
-    q_rvs = _importance_sampler_shared["q_rvs"]
-    phi_rvs = _importance_sampler_shared["phi_rvs"]
-    gamma_rvs = _importance_sampler_shared["gamma_rvs"]
-    shear_rvs = _importance_sampler_shared["shear_rvs"]
-    number_density = _importance_sampler_shared["number_density"]
-    cross_section = _importance_sampler_shared["cross_section"]
-    n_prop = _importance_sampler_shared["n_prop"]
-
-    p0 = 1.0 / (sigma_max - sigma_min)
-
-    # Draw proposals
-    sigma_prop = np.random.uniform(sigma_min, sigma_max, n_prop)
-
-    # Draw other parameters from their priors
-    q_prop = q_rvs(n_prop, sigma_prop)
-    phi_prop = phi_rvs(n_prop)
-    gamma_prop = gamma_rvs(n_prop)
-    gamma1_prop, gamma2_prop = shear_rvs(n_prop)
-
-    # Compute cross sections
-    zs_arr = zs_i * np.ones(n_prop)
-    zl_arr = zl_i * np.ones(n_prop)
-
-    cs = cross_section(
-        zs_arr,
-        zl_arr,
-        sigma_prop,
-        q_prop,
-        phi_prop,
-        gamma_prop,
-        gamma1_prop,
-        gamma2_prop,
-    ) / (4.0 * np.pi)
-
-    # Compute importance weights
-    sigma_function = number_density(sigma_prop, zl_arr)
-
-    w = cs * (sigma_function / p0)
-    w = np.where(w > 0.0, w, 0.0)
-    w_sum = np.sum(w)
-
-    # Normalize weights
-    if w_sum > 0.0:
-        w = w / w_sum
-    else:
-        w = np.ones(n_prop) / n_prop
-
-    # Draw posterior sample via weighted choice
-    idx = np.random.choice(n_prop, p=w)
-
-    result = (
-        sigma_prop[idx],
-        q_prop[idx],
-        phi_prop[idx],
-        gamma_prop[idx],
-        gamma1_prop[idx],
-        gamma2_prop[idx],
-    )
-
-    return worker_idx, result
-
-
-def importance_sampler_mp(
-    zs,
-    zl,
-    sigma_min,
-    sigma_max,
-    q_rvs,
-    phi_rvs,
-    gamma_rvs,
-    shear_rvs,
-    number_density,
-    cross_section,
-    n_prop,
-    npool=4,
-):
-    """
-    Multiprocessing version of importance sampling for lens parameters.
-
-    Parameters
-    ----------
-    zs : ``numpy.ndarray``
-        Source redshifts.
-    zl : ``numpy.ndarray``
-        Lens redshifts.
-    sigma_min : ``float``
-        Minimum velocity dispersion (km/s) for uniform proposal.
-    sigma_max : ``float``
-        Maximum velocity dispersion (km/s) for uniform proposal.
-    q_rvs : ``callable``
-        Function to sample axis ratio: q_rvs(n, sigma) -> array.
-    phi_rvs : ``callable``
-        Function to sample orientation angle: phi_rvs(n) -> array.
-    gamma_rvs : ``callable``
-        Function to sample power-law index: gamma_rvs(n) -> array.
-    shear_rvs : ``callable``
-        Function to sample external shear: shear_rvs(n) -> (gamma1, gamma2).
-    number_density : ``callable``
-        Number density or velocity dispersion function: number_density(sigma, zl) -> array.
-    cross_section : ``callable``
-        Function to compute lensing cross section.
-    n_prop : ``int``
-        Number of proposal samples per lens.
-    npool : ``int``
-        Number of parallel processes to use. \n
-        default: 4
-
-    Returns
-    -------
-    sigma_post : ``numpy.ndarray``
-        Sampled velocity dispersions (km/s).
-    q_post : ``numpy.ndarray``
-        Sampled axis ratios.
-    phi_post : ``numpy.ndarray``
-        Sampled orientation angles (rad).
-    gamma_post : ``numpy.ndarray``
-        Sampled power-law indices.
-    gamma1_post : ``numpy.ndarray``
-        Sampled external shear component 1.
-    gamma2_post : ``numpy.ndarray``
-        Sampled external shear component 2.
-    """
-    n_samples = zl.size
-
-    # Prepare input parameters for workers
-    input_params = [(zs[i], zl[i], i) for i in range(n_samples)]
-
-    # Initialize output arrays
-    sigma_post = np.zeros(n_samples)
-    q_post = np.zeros(n_samples)
-    phi_post = np.zeros(n_samples)
-    gamma_post = np.zeros(n_samples)
-    gamma1_post = np.zeros(n_samples)
-    gamma2_post = np.zeros(n_samples)
-
-    # Run multiprocessing with progress bar
-    with Pool(
-        processes=npool,
-        initializer=_init_importance_sampler_worker,
-        initargs=(
-            sigma_min,
-            sigma_max,
-            q_rvs,
-            phi_rvs,
-            gamma_rvs,
-            shear_rvs,
-            number_density,
-            cross_section,
-            n_prop,
-        ),
-    ) as pool:
-        for worker_idx, result in tqdm(
-            pool.imap_unordered(_importance_sampler_worker, input_params),
-            total=n_samples,
-            ncols=100,
-            desc="Importance sampling",
-        ):
-            sigma_post[worker_idx] = result[0]
-            q_post[worker_idx] = result[1]
-            phi_post[worker_idx] = result[2]
-            gamma_post[worker_idx] = result[3]
-            gamma1_post[worker_idx] = result[4]
-            gamma2_post[worker_idx] = result[5]
-
-    return sigma_post, q_post, phi_post, gamma_post, gamma1_post, gamma2_post
-
-
-def create_importance_sampler(
-    sigma_min,
-    sigma_max,
-    q_rvs,
-    phi_rvs,
-    gamma_rvs,
-    shear_rvs,
-    number_density,
-    cross_section,
-    n_prop,
-    use_njit_sampler=True,
-    npool=4,
-):
-    """
-    Create an importance sampler for cross-section weighted lens parameters.
-
-    Returns a callable that samples lens parameters using importance sampling
-    with uniform proposal distribution, optionally JIT-compiled for improved
-    performance.
-
-    Parameters
-    ----------
-    sigma_min : ``float``
-        Minimum velocity dispersion (km/s) for uniform proposal.
-    sigma_max : ``float``
-        Maximum velocity dispersion (km/s) for uniform proposal.
-    q_rvs : ``callable``
-        Function to sample axis ratio: q_rvs(n, sigma) -> array.
-    phi_rvs : ``callable``
-        Function to sample orientation angle: phi_rvs(n) -> array.
-    gamma_rvs : ``callable``
-        Function to sample power-law index: gamma_rvs(n) -> array.
-    shear_rvs : ``callable``
-        Function to sample external shear: shear_rvs(n) -> (gamma1, gamma2).
-    number_density : ``callable``
-        Number density or velocity dispersion function: number_density(sigma, zl) -> array.
-    cross_section : ``callable``
-        Function to compute lensing cross section.
-    n_prop : ``int``
-        Number of proposal samples per lens.
-    use_njit_sampler : ``bool``
-        If True, uses Numba JIT compilation for faster execution. \n
-        default: True
-    npool : ``int``
-        Number of parallel processes (only used when use_njit_sampler=False). \n
-        default: 4
-
-    Returns
-    -------
-    importance_sampler_wrapper : ``callable``
-        Function with signature (zs, zl) -> (sigma, q, phi, gamma, gamma1, gamma2).
-    """
-    if use_njit_sampler:
-        print(
-            "Faster, njitted and importance sampling based lens parameter sampler will be used."
-        )
-        @njit(parallel=True, cache=True)
-        def _base_sampler(zs, zl):
-            return importance_sampler(
-                zs=zs,
-                zl=zl,
-                sigma_min=sigma_min,
-                sigma_max=sigma_max,
-                q_rvs=q_rvs,
-                phi_rvs=phi_rvs,
-                gamma_rvs=gamma_rvs,
-                shear_rvs=shear_rvs,
-                number_density=number_density,
-                cross_section=cross_section,
-                n_prop=n_prop,
-            )
-
-        def importance_sampler_wrapper(zs, zl):
-            # Set Numba threads to npool before entering prange
-            set_num_threads(npool)
-            return _base_sampler(
-                zs=zs,
-                zl=zl,
-            )
-
-    else:
-        print(
-            "Slower, non-njit and importance sampling based lens parameter sampler will be used."
-        )
-
-        def importance_sampler_wrapper(zs, zl):
-            return importance_sampler_mp(
-                zs=zs,
-                zl=zl,
-                sigma_min=sigma_min,
-                sigma_max=sigma_max,
-                q_rvs=q_rvs,
-                phi_rvs=phi_rvs,
-                gamma_rvs=gamma_rvs,
-                shear_rvs=shear_rvs,
-                number_density=number_density,
-                cross_section=cross_section,
-                n_prop=n_prop,
-                npool=npool,
-            )
-
-    return importance_sampler_wrapper
-
-
 def _njit_checks(
-    sigma_rvs_,
-    q_rvs_,
-    phi_rvs,
-    gamma_rvs,
-    shear_rvs,
-    sigma_pdf_,
-    number_density_,
-    cross_section_,
+    zs_pdf=None,
+    zs_rvs=None,
+    zl_pdf=None,
+    zl_rvs=None,
+    sigma_pdf=None,
+    sigma_rvs=None,
+    q_pdf=None,
+    q_rvs=None,
+    phi_pdf=None,
+    phi_rvs=None,
+    gamma_pdf=None,
+    gamma_rvs=None,
+    shear1_pdf=None,
+    shear1_rvs=None,
+    shear2_pdf=None,
+    shear2_rvs=None,
+    cross_section_function=None,
+    number_density_function=None,
+    dVcdz_function=None,
+    create_njit_sampler=False,
 ):
-    """
-    Check and wrap sampler functions for JIT compatibility.
+    """Normalize callable signatures used by the lens redshift integrators."""
 
-    Parameters
-    ----------
-    sigma_rvs_ : ``callable``
-        Function to sample velocity dispersion.
-    q_rvs_ : ``callable``
-        Function to sample axis ratio.
-    phi_rvs : ``callable``
-        Function to sample orientation angle.
-    gamma_rvs : ``callable``
-        Function to sample power-law index.
-    shear_rvs : ``callable``
-        Function to sample external shear.
-    sigma_pdf_ : ``callable``
-        PDF of velocity dispersion.
-    number_density_ : ``callable``
-        Number density function of lens galaxies.
-    cross_section_ : ``callable``
-        Function to compute lensing cross section.
+    def _arg_count(function):
+        if function is None:
+            return 0
+        if hasattr(function, "__code__"):
+            return function.__code__.co_argcount
+        if hasattr(function, "py_func"):
+            return function.py_func.__code__.co_argcount
+        return 0
 
-    Returns
-    -------
-    use_njit_sampler : ``bool``
-        True if all functions are JIT compiled, False otherwise.
-    dict_ : ``dict``
-        Dictionary containing wrapped/compiled versions of all functions.
-    """
-    # Wrap cross_section function based on argument count
-    if cross_section_.__code__.co_argcount == 4:
-        @njit(cache=True)
-        def cross_section_function(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):
-            return cross_section_(zs, zl, sigma, q)
-    elif cross_section_.__code__.co_argcount == 3:
-        @njit(cache=True)
-        def cross_section_function(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):
-            return cross_section_(zs, zl, sigma)
-    else:
-        cross_section_function = cross_section_
+    def _one_arg_pdf(pdf):
+        return pdf
 
-    # Wrap samplers and PDFs based on argument count
-    if sigma_rvs_.__code__.co_argcount == 1:
-        if is_njitted(sigma_rvs_):
-            @njit(cache=True)
-            def sigma_rvs(size, zl):
-                return sigma_rvs_(size)
+    def _two_arg_pdf(pdf):
+        if pdf is None or _arg_count(pdf) != 1:
+            return pdf
 
-            @njit(cache=True)
-            def sigma_pdf(sigma, zl):
-                return sigma_pdf_(sigma)
+        def wrapped(x, y=None):
+            return pdf(x)
 
-            @njit(cache=True)
-            def number_density(sigma, zl):
-                return number_density_(sigma)
+        if is_njitted(pdf) and create_njit_sampler:
+            wrapped = njit(wrapped)
+        return wrapped
+
+    def _two_arg_rvs(rvs):
+        if rvs is None or _arg_count(rvs) != 1:
+            return rvs
+
+        def wrapped(size, y=None):
+            return rvs(size)
+
+        if is_njitted(rvs) and create_njit_sampler:
+            wrapped = njit(wrapped)
+        return wrapped
+
+    def _cross_section(cross_section):
+        if cross_section is None:
+            return None
+        arg_count = _arg_count(cross_section)
+        if arg_count == 3:
+
+            def wrapped(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):
+                return cross_section(zs, zl, sigma)
+
+        elif arg_count == 4:
+
+            def wrapped(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):
+                return cross_section(zs, zl, sigma, q)
+
         else:
-            def sigma_rvs(size, zl):
-                return sigma_rvs_(size)
+            return cross_section
 
-            def sigma_pdf(sigma, zl):
-                return sigma_pdf_(sigma)
+        if is_njitted(cross_section) and create_njit_sampler:
+            wrapped = njit(wrapped)
+        return wrapped
 
-            def number_density(sigma, zl):
-                return number_density_(sigma)
-    else:
-        sigma_rvs = sigma_rvs_
-        sigma_pdf = sigma_pdf_
-        number_density = number_density_
+    dict_ = dict(
+        zs_pdf=_one_arg_pdf(zs_pdf),
+        zs_rvs=zs_rvs,
+        zl_pdf=_two_arg_pdf(zl_pdf),
+        zl_rvs=_two_arg_rvs(zl_rvs),
+        sigma_pdf=_two_arg_pdf(sigma_pdf),
+        sigma_rvs=_two_arg_rvs(sigma_rvs),
+        q_pdf=_two_arg_pdf(q_pdf),
+        q_rvs=_two_arg_rvs(q_rvs),
+        phi_pdf=_one_arg_pdf(phi_pdf),
+        phi_rvs=phi_rvs,
+        gamma_pdf=gamma_pdf,
+        gamma_rvs=gamma_rvs,
+        shear1_pdf=shear1_pdf,
+        shear1_rvs=shear1_rvs,
+        shear2_pdf=shear2_pdf,
+        shear2_rvs=shear2_rvs,
+        cross_section_function=_cross_section(cross_section_function),
+        number_density_function=_two_arg_pdf(number_density_function),
+        dVcdz_function=_one_arg_pdf(dVcdz_function),
+    )
 
-    if q_rvs_.__code__.co_argcount == 1:
-        if is_njitted(q_rvs_):
-            @njit(cache=True)
-            def q_rvs(size, sigma):
-                return q_rvs_(size)
-        else:
-            def q_rvs(size, sigma):
-                return q_rvs_(size)
-    else:
-        q_rvs = q_rvs_
-
-    # Build dictionary of wrapped functions
-    dict_ = {
-        "sigma_rvs": sigma_rvs,
-        "q_rvs": q_rvs,
-        "phi_rvs": phi_rvs,
-        "gamma_rvs": gamma_rvs,
-        "shear_rvs": shear_rvs,
-        "sigma_pdf": sigma_pdf,
-        "number_density": number_density,
-        "cross_section_function": cross_section_function,
-    }
-
-    # Check if all functions are JIT compiled
-    use_njit_sampler = True
-    for key, value in dict_.items():
-        if not is_njitted(value):
-            print(f"Warning: {key} is not njitted.")
-            use_njit_sampler = False
+    use_njit_sampler = False
+    if create_njit_sampler:
+        use_njit_sampler = True
+        for key, value in dict_.items():
+            if value is not None and not is_njitted(value):
+                print(f"Warning: {key} is not njitted.")
+                use_njit_sampler = False
 
     return use_njit_sampler, dict_
+
+
+# -------------------------------------------------
+# Simple uniform proposal samplers
+# -------------------------------------------------
+# def _wrap_cross_section(cross_section):
+#     """Return an 8-argument cross-section function."""
+#     if hasattr(cross_section, "__code__"):
+#         arg_count = cross_section.__code__.co_argcount
+#     elif hasattr(cross_section, "py_func"):
+#         arg_count = cross_section.py_func.__code__.co_argcount
+#     else:
+#         arg_count = 8
+
+#     if arg_count == 3:
+#         return lambda zs, zl, sigma, q, phi, gamma, gamma1, gamma2: cross_section(
+#             zs, zl, sigma
+#         )
+#     if arg_count == 4:
+#         return lambda zs, zl, sigma, q, phi, gamma, gamma1, gamma2: cross_section(
+#             zs, zl, sigma, q
+#         )
+#     return cross_section
+
+# -------------------------------------------------
+# Main rejection sampler function
+# -------------------------------------------------
+@njit(cache=True, fastmath=True)
+def _uniform_pdf(x_min, x_max):
+    if x_max > x_min:
+        return 1.0 / (x_max - x_min)
+    return 1.0
+
+
+@njit(cache=True, fastmath=True)
+def _chunk_bounds(i, size, npool):
+    size_i = size // npool
+    start = i * size_i
+    end = start + size_i
+    if i == npool - 1:
+        end += size % npool
+    return start, end
+
+
+@njit(cache=True, fastmath=True)
+def _weighted_sample_index(w, n_prop):
+    w_sum = np.sum(w)
+    if w_sum <= 0.0:
+        idx = int(np.random.random() * n_prop)
+        if idx >= n_prop:
+            idx = n_prop - 1
+        return idx
+
+    cdf = 0.0
+    r = np.random.random() * w_sum
+    for i in range(n_prop):
+        cdf += w[i]
+        if r <= cdf:
+            return i
+
+    return n_prop - 1
+
+
+# @njit(parallel=True, fastmath=True)
+def rejection_sampler_full(
+    size,
+    zs_pdf,
+    number_density,
+    q_pdf,
+    phi_pdf,
+    gamma_pdf,
+    shear1_pdf,
+    shear2_pdf,
+    cross_section,
+    dVdz,
+    ranges,
+    threshold_factor=1e-4,
+    n_prop=1000,
+    lens_type="epl_shear_galaxy",
+    npool=4,
+):
+    """
+    Joint rejection sample over (zs, zl, sigma, nuisance).
+
+    Intrinsic target (before cross section) uses ``p(zs) * dV/dz_l * n(sigma,zl) * ...``;
+    ``z_l`` is proposed uniform in ``[z_min, z_s)`` — no separate ``p(zl|zs)``
+    factor (see ``importance_sampler_full`` docstring).
+    """
+    zs_post = np.zeros(size)
+    zl_post = np.zeros(size)
+    sigma_post = np.zeros(size)
+    q_post = np.ones(size)
+    phi_post = np.zeros(size)
+    gamma_post = np.ones(size) * 2.0
+    gamma1_post = np.zeros(size)
+    gamma2_post = np.zeros(size)
+
+    z_min, z_max, sigma_min, sigma_max, q_min, q_max, phi_min, phi_max, gamma_min, gamma_max, shear_min, shear_max = ranges
+
+    proposal_pdf = 1.0
+    proposal_pdf *= _uniform_pdf(z_min, z_max)
+    proposal_pdf *= _uniform_pdf(sigma_min, sigma_max)
+
+    if lens_type in ["epl_shear_galaxy"]:
+
+        proposal_pdf *= _uniform_pdf(q_min, q_max)
+        proposal_pdf *= _uniform_pdf(phi_min, phi_max)
+        proposal_pdf *= _uniform_pdf(gamma_min, gamma_max)
+        proposal_pdf *= _uniform_pdf(shear_min, shear_max)
+        proposal_pdf *= _uniform_pdf(shear_min, shear_max)
+
+        for i in prange(npool):
+
+            start, end = _chunk_bounds(i, size, npool)
+
+            size_i = end - start
+
+            zs_collected = np.zeros(size_i)
+            zl_collected = np.zeros(size_i)
+            sigma_collected = np.zeros(size_i)
+            q_collected = np.zeros(size_i)
+            phi_collected = np.zeros(size_i)
+            gamma_collected = np.zeros(size_i)
+            gamma1_collected = np.zeros(size_i)
+            gamma2_collected = np.zeros(size_i)
+
+            count = 0
+            w_max = 0.0
+
+            while count < size_i:
+
+                zs_prop = z_min + (z_max - z_min) * np.random.random(n_prop)
+                zl_prop = z_min + (zs_prop - z_min) * np.random.random(n_prop)
+
+                proposal_pdf_i = proposal_pdf / (zs_prop - z_min)
+
+                sigma_prop = sigma_min + (sigma_max - sigma_min) * np.random.random(n_prop)
+                q_prop = q_min + (q_max - q_min) * np.random.random(n_prop)
+                phi_prop = phi_min + (phi_max - phi_min) * np.random.random(n_prop)
+                gamma_prop = gamma_min + (gamma_max - gamma_min) * np.random.random(n_prop)
+                gamma1_prop = shear_min + (shear_max - shear_min) * np.random.random(n_prop)
+                gamma2_prop = shear_min + (shear_max - shear_min) * np.random.random(n_prop)
+
+                intrinsic_pdf = (
+                    zs_pdf(zs_prop)
+                    * dVdz(zl_prop)
+                    * number_density(sigma_prop, zl_prop)
+                    * q_pdf(q_prop, sigma_prop)
+                    * phi_pdf(phi_prop)
+                    * gamma_pdf(gamma_prop)
+                    * shear1_pdf(gamma1_prop)
+                    * shear2_pdf(gamma2_prop)
+                )
+
+                valid = (
+                    np.isfinite(proposal_pdf_i)
+                    & (proposal_pdf_i > 0.0)
+                    & np.isfinite(intrinsic_pdf)
+                    & (intrinsic_pdf > 0.0)
+                )
+                intrinsic_by_proposal = np.zeros(n_prop)
+                intrinsic_by_proposal[valid] = intrinsic_pdf[valid] / proposal_pdf_i[valid]
+
+                if threshold_factor <= 0.0:
+                    cs = cross_section(
+                        zs_prop,
+                        zl_prop,
+                        sigma_prop,
+                        q_prop,
+                        phi_prop,
+                        gamma_prop,
+                        gamma1_prop,
+                        gamma2_prop,
+                    )
+                else:
+                    w_filter = sigma_prop**4 * intrinsic_by_proposal
+                    max_filter = np.max(w_filter)
+
+                    cs = np.zeros(n_prop)
+                    if max_filter > 0.0:
+                        threshold = max_filter * threshold_factor
+                        idx_filter = w_filter > threshold
+                        if np.any(idx_filter):
+                            cs[idx_filter] = cross_section(
+                                zs_prop[idx_filter],
+                                zl_prop[idx_filter],
+                                sigma_prop[idx_filter],
+                                q_prop[idx_filter],
+                                phi_prop[idx_filter],
+                                gamma_prop[idx_filter],
+                                gamma1_prop[idx_filter],
+                                gamma2_prop[idx_filter],
+                            )
+
+                w = np.zeros(n_prop)
+                idx_weight = valid & np.isfinite(cs) & (cs > 0.0)
+                w[idx_weight] = cs[idx_weight] * intrinsic_by_proposal[idx_weight] / (4.0 * np.pi)
+
+                batch_max = np.max(w)
+                if batch_max <= 0.0:
+                    continue
+
+                if batch_max > w_max:
+                    if w_max > 0.0:
+                        keep_prob = w_max / batch_max
+                        new_count = 0
+
+                        for j in range(count):
+                            if np.random.random() < keep_prob:
+                                zs_collected[new_count] = zs_collected[j]
+                                zl_collected[new_count] = zl_collected[j]
+                                sigma_collected[new_count] = sigma_collected[j]
+                                q_collected[new_count] = q_collected[j]
+                                phi_collected[new_count] = phi_collected[j]
+                                gamma_collected[new_count] = gamma_collected[j]
+                                gamma1_collected[new_count] = gamma1_collected[j]
+                                gamma2_collected[new_count] = gamma2_collected[j]
+                                new_count += 1
+
+                        count = new_count
+
+                    w_max = batch_max
+
+                for j in range(n_prop):
+                    if count >= size_i:
+                        break
+
+                    if np.random.random() < (w[j] / w_max):
+                        zs_collected[count] = zs_prop[j]
+                        zl_collected[count] = zl_prop[j]
+                        sigma_collected[count] = sigma_prop[j]
+                        q_collected[count] = q_prop[j]
+                        phi_collected[count] = phi_prop[j]
+                        gamma_collected[count] = gamma_prop[j]
+                        gamma1_collected[count] = gamma1_prop[j]
+                        gamma2_collected[count] = gamma2_prop[j]
+                        count += 1
+
+            zs_post[start:end] = zs_collected
+            zl_post[start:end] = zl_collected
+            sigma_post[start:end] = sigma_collected
+            q_post[start:end] = q_collected
+            phi_post[start:end] = phi_collected
+            gamma_post[start:end] = gamma_collected
+            gamma1_post[start:end] = gamma1_collected
+            gamma2_post[start:end] = gamma2_collected
+
+    if lens_type in ["sie_galaxy"]:
+
+        proposal_pdf *= _uniform_pdf(q_min, q_max)
+        proposal_pdf *= _uniform_pdf(phi_min, phi_max)
+
+        gamma_prop = np.ones(n_prop) * 2.0
+        gamma1_prop = np.zeros(n_prop)
+        gamma2_prop = np.zeros(n_prop)
+
+        for i in prange(npool):
+
+            start, end = _chunk_bounds(i, size, npool)
+
+            size_i = end - start
+
+            zs_collected = np.zeros(size_i)
+            zl_collected = np.zeros(size_i)
+            sigma_collected = np.zeros(size_i)
+            q_collected = np.zeros(size_i)
+            phi_collected = np.zeros(size_i)
+
+            count = 0
+            w_max = 0.0
+
+            while count < size_i:
+
+                zs_prop = z_min + (z_max - z_min) * np.random.random(n_prop)
+                zl_prop = z_min + (zs_prop - z_min) * np.random.random(n_prop)
+
+                proposal_pdf_i = proposal_pdf / (zs_prop - z_min)
+
+                sigma_prop = sigma_min + (sigma_max - sigma_min) * np.random.random(n_prop)
+                q_prop = q_min + (q_max - q_min) * np.random.random(n_prop)
+                phi_prop = phi_min + (phi_max - phi_min) * np.random.random(n_prop)
+
+                intrinsic_pdf = (
+                    zs_pdf(zs_prop)
+                    * dVdz(zl_prop)
+                    * number_density(sigma_prop, zl_prop)
+                    * q_pdf(q_prop, sigma_prop)
+                    * phi_pdf(phi_prop)
+                )
+
+                valid = (
+                    np.isfinite(proposal_pdf_i)
+                    & (proposal_pdf_i > 0.0)
+                    & np.isfinite(intrinsic_pdf)
+                    & (intrinsic_pdf > 0.0)
+                )
+                intrinsic_by_proposal = np.zeros(n_prop)
+                intrinsic_by_proposal[valid] = intrinsic_pdf[valid] / proposal_pdf_i[valid]
+
+                if threshold_factor <= 0.0:
+                    cs = cross_section(
+                        zs_prop,
+                        zl_prop,
+                        sigma_prop,
+                        q_prop,
+                        phi_prop,
+                        gamma_prop,
+                        gamma1_prop,
+                        gamma2_prop,
+                    )
+                else:
+                    w_filter = sigma_prop**4 * intrinsic_by_proposal
+                    max_filter = np.max(w_filter)
+
+                    cs = np.zeros(n_prop)
+                    if max_filter > 0.0:
+                        threshold = max_filter * threshold_factor
+                        idx_filter = w_filter > threshold
+                        if np.any(idx_filter):
+                            cs[idx_filter] = cross_section(
+                                zs_prop[idx_filter],
+                                zl_prop[idx_filter],
+                                sigma_prop[idx_filter],
+                                q_prop[idx_filter],
+                                phi_prop[idx_filter],
+                                gamma_prop[idx_filter],
+                                gamma1_prop[idx_filter],
+                                gamma2_prop[idx_filter],
+                            )
+
+                w = np.zeros(n_prop)
+                idx_weight = valid & np.isfinite(cs) & (cs > 0.0)
+                w[idx_weight] = cs[idx_weight] * intrinsic_by_proposal[idx_weight] / (4.0 * np.pi)
+
+                batch_max = np.max(w)
+                if batch_max <= 0.0:
+                    continue
+
+                if batch_max > w_max:
+                    if w_max > 0.0:
+                        keep_prob = w_max / batch_max
+                        new_count = 0
+
+                        for j in range(count):
+                            if np.random.random() < keep_prob:
+                                zs_collected[new_count] = zs_collected[j]
+                                zl_collected[new_count] = zl_collected[j]
+                                sigma_collected[new_count] = sigma_collected[j]
+                                q_collected[new_count] = q_collected[j]
+                                phi_collected[new_count] = phi_collected[j]
+                                new_count += 1
+
+                        count = new_count
+
+                    w_max = batch_max
+
+                for j in range(n_prop):
+                    if count >= size_i:
+                        break
+
+                    if np.random.random() < (w[j] / w_max):
+                        zs_collected[count] = zs_prop[j]
+                        zl_collected[count] = zl_prop[j]
+                        sigma_collected[count] = sigma_prop[j]
+                        q_collected[count] = q_prop[j]
+                        phi_collected[count] = phi_prop[j]
+                        count += 1
+
+            zs_post[start:end] = zs_collected
+            zl_post[start:end] = zl_collected
+            sigma_post[start:end] = sigma_collected
+            q_post[start:end] = q_collected
+            phi_post[start:end] = phi_collected
+
+    if lens_type in ["sis_galaxy"]:
+
+        q_prop = np.ones(n_prop)
+        phi_prop = np.zeros(n_prop)
+        gamma_prop = np.ones(n_prop) * 2.0
+        gamma1_prop = np.zeros(n_prop)
+        gamma2_prop = np.zeros(n_prop)
+
+        for i in prange(npool):
+
+            start, end = _chunk_bounds(i, size, npool)
+
+            size_i = end - start
+
+            zs_collected = np.zeros(size_i)
+            zl_collected = np.zeros(size_i)
+            sigma_collected = np.zeros(size_i)
+
+            count = 0
+            w_max = 0.0
+
+            while count < size_i:
+
+                zs_prop = z_min + (z_max - z_min) * np.random.random(n_prop)
+                zl_prop = z_min + (zs_prop - z_min) * np.random.random(n_prop)
+
+                proposal_pdf_i = proposal_pdf / (zs_prop - z_min)
+
+                sigma_prop = sigma_min + (sigma_max - sigma_min) * np.random.random(n_prop)
+
+                intrinsic_pdf = (
+                    zs_pdf(zs_prop)
+                    * dVdz(zl_prop)
+                    * number_density(sigma_prop, zl_prop)
+                )
+
+                valid = (
+                    np.isfinite(proposal_pdf_i)
+                    & (proposal_pdf_i > 0.0)
+                    & np.isfinite(intrinsic_pdf)
+                    & (intrinsic_pdf > 0.0)
+                )
+                intrinsic_by_proposal = np.zeros(n_prop)
+                intrinsic_by_proposal[valid] = intrinsic_pdf[valid] / proposal_pdf_i[valid]
+
+                if threshold_factor <= 0.0:
+                    cs = cross_section(
+                        zs_prop,
+                        zl_prop,
+                        sigma_prop,
+                        q_prop,
+                        phi_prop,
+                        gamma_prop,
+                        gamma1_prop,
+                        gamma2_prop,
+                    )
+                else:
+                    w_filter = sigma_prop**4 * intrinsic_by_proposal
+                    max_filter = np.max(w_filter)
+
+                    cs = np.zeros(n_prop)
+                    if max_filter > 0.0:
+                        threshold = max_filter * threshold_factor
+                        idx_filter = w_filter > threshold
+                        if np.any(idx_filter):
+                            cs[idx_filter] = cross_section(
+                                zs_prop[idx_filter],
+                                zl_prop[idx_filter],
+                                sigma_prop[idx_filter],
+                                q_prop[idx_filter],
+                                phi_prop[idx_filter],
+                                gamma_prop[idx_filter],
+                                gamma1_prop[idx_filter],
+                                gamma2_prop[idx_filter],
+                            )
+
+                w = np.zeros(n_prop)
+                idx_weight = valid & np.isfinite(cs) & (cs > 0.0)
+                w[idx_weight] = cs[idx_weight] * intrinsic_by_proposal[idx_weight] / (4.0 * np.pi)
+
+                batch_max = np.max(w)
+                if batch_max <= 0.0:
+                    continue
+
+                if batch_max > w_max:
+                    if w_max > 0.0:
+                        keep_prob = w_max / batch_max
+                        new_count = 0
+
+                        for j in range(count):
+                            if np.random.random() < keep_prob:
+                                zs_collected[new_count] = zs_collected[j]
+                                zl_collected[new_count] = zl_collected[j]
+                                sigma_collected[new_count] = sigma_collected[j]
+                                new_count += 1
+
+                        count = new_count
+
+                    w_max = batch_max
+
+                for j in range(n_prop):
+                    if count >= size_i:
+                        break
+
+                    if np.random.random() < (w[j] / w_max):
+                        zs_collected[count] = zs_prop[j]
+                        zl_collected[count] = zl_prop[j]
+                        sigma_collected[count] = sigma_prop[j]
+                        count += 1
+
+            zs_post[start:end] = zs_collected
+            zl_post[start:end] = zl_collected
+            sigma_post[start:end] = sigma_collected
+
+    return zs_post, zl_post, sigma_post, q_post, phi_post, gamma_post, gamma1_post, gamma2_post
+
+# @njit(parallel=True, fastmath=True)
+def rejection_sampler_partial(
+    size,
+    zs,
+    zl,
+    number_density,
+    q_pdf,
+    phi_pdf,
+    gamma_pdf,
+    shear1_pdf,
+    shear2_pdf,
+    cross_section,
+    ranges,
+    threshold_factor=1e-4,
+    n_prop=1000,
+    lens_type="epl_shear_galaxy",
+    npool=4,
+):
+    sigma_post = np.zeros(size)
+    q_post = np.ones(size)
+    phi_post = np.zeros(size)
+    gamma_post = np.ones(size) * 2.0
+    gamma1_post = np.zeros(size)
+    gamma2_post = np.zeros(size)
+
+    z_min, z_max, sigma_min, sigma_max, q_min, q_max, phi_min, phi_max, gamma_min, gamma_max, shear_min, shear_max = ranges
+
+    proposal_pdf = 1.0
+    proposal_pdf *= _uniform_pdf(sigma_min, sigma_max)
+
+    if lens_type in ["epl_shear_galaxy"]:
+
+        proposal_pdf *= _uniform_pdf(q_min, q_max)
+        proposal_pdf *= _uniform_pdf(phi_min, phi_max)
+        proposal_pdf *= _uniform_pdf(gamma_min, gamma_max)
+        proposal_pdf *= _uniform_pdf(shear_min, shear_max)
+        proposal_pdf *= _uniform_pdf(shear_min, shear_max)
+
+        for i in prange(npool):
+
+            start, end = _chunk_bounds(i, size, npool)
+
+            for k in range(start, end):
+
+                zs_i = np.ones(n_prop) * zs[k]
+                zl_i = np.ones(n_prop) * zl[k]
+
+                sigma_sample = 0.0
+                q_sample = 1.0
+                phi_sample = 0.0
+                gamma_sample = 2.0
+                gamma1_sample = 0.0
+                gamma2_sample = 0.0
+
+                count = 0
+                w_max = 0.0
+
+                while count < 1:
+
+                    sigma_prop = sigma_min + (sigma_max - sigma_min) * np.random.random(n_prop)
+                    q_prop = q_min + (q_max - q_min) * np.random.random(n_prop)
+                    phi_prop = phi_min + (phi_max - phi_min) * np.random.random(n_prop)
+                    gamma_prop = gamma_min + (gamma_max - gamma_min) * np.random.random(n_prop)
+                    gamma1_prop = shear_min + (shear_max - shear_min) * np.random.random(n_prop)
+                    gamma2_prop = shear_min + (shear_max - shear_min) * np.random.random(n_prop)
+
+                    intrinsic_pdf = (
+                        number_density(sigma_prop, zl_i)
+                        * q_pdf(q_prop, sigma_prop)
+                        * phi_pdf(phi_prop)
+                        * gamma_pdf(gamma_prop)
+                        * shear1_pdf(gamma1_prop)
+                        * shear2_pdf(gamma2_prop)
+                    )
+
+                    valid = (
+                        np.isfinite(proposal_pdf)
+                        & (proposal_pdf > 0.0)
+                        & np.isfinite(intrinsic_pdf)
+                        & (intrinsic_pdf > 0.0)
+                    )
+                    intrinsic_by_proposal = np.zeros(n_prop)
+                    intrinsic_by_proposal[valid] = intrinsic_pdf[valid] / proposal_pdf
+
+                    if threshold_factor <= 0.0:
+                        cs = cross_section(
+                            zs_i,
+                            zl_i,
+                            sigma_prop,
+                            q_prop,
+                            phi_prop,
+                            gamma_prop,
+                            gamma1_prop,
+                            gamma2_prop,
+                        )
+                    else:
+                        w_filter = sigma_prop**4 * intrinsic_by_proposal
+                        max_filter = np.max(w_filter)
+
+                        cs = np.zeros(n_prop)
+                        if max_filter > 0.0:
+                            threshold = max_filter * threshold_factor
+                            idx_filter = w_filter > threshold
+                            if np.any(idx_filter):
+                                cs[idx_filter] = cross_section(
+                                    zs_i[idx_filter],
+                                    zl_i[idx_filter],
+                                    sigma_prop[idx_filter],
+                                    q_prop[idx_filter],
+                                    phi_prop[idx_filter],
+                                    gamma_prop[idx_filter],
+                                    gamma1_prop[idx_filter],
+                                    gamma2_prop[idx_filter],
+                                )
+
+                    w = np.zeros(n_prop)
+                    idx_weight = valid & np.isfinite(cs) & (cs > 0.0)
+                    w[idx_weight] = cs[idx_weight] * intrinsic_by_proposal[idx_weight] / (4.0 * np.pi)
+
+                    batch_max = np.max(w)
+                    if batch_max <= 0.0:
+                        continue
+
+                    if batch_max > w_max:
+                        if w_max > 0.0 and count == 1:
+                            if np.random.random() >= (w_max / batch_max):
+                                count = 0
+
+                        w_max = batch_max
+
+                    for j in range(n_prop):
+                        if count >= 1:
+                            break
+
+                        if np.random.random() < (w[j] / w_max):
+                            sigma_sample = sigma_prop[j]
+                            q_sample = q_prop[j]
+                            phi_sample = phi_prop[j]
+                            gamma_sample = gamma_prop[j]
+                            gamma1_sample = gamma1_prop[j]
+                            gamma2_sample = gamma2_prop[j]
+                            count = 1
+
+                sigma_post[k] = sigma_sample
+                q_post[k] = q_sample
+                phi_post[k] = phi_sample
+                gamma_post[k] = gamma_sample
+                gamma1_post[k] = gamma1_sample
+                gamma2_post[k] = gamma2_sample
+
+    if lens_type in ["sie_galaxy"]:
+
+        proposal_pdf *= _uniform_pdf(q_min, q_max)
+        proposal_pdf *= _uniform_pdf(phi_min, phi_max)
+
+        gamma_prop = np.ones(n_prop) * 2.0
+        gamma1_prop = np.zeros(n_prop)
+        gamma2_prop = np.zeros(n_prop)
+
+        for i in prange(npool):
+
+            start, end = _chunk_bounds(i, size, npool)
+
+            for k in range(start, end):
+
+                zs_i = np.ones(n_prop) * zs[k]
+                zl_i = np.ones(n_prop) * zl[k]
+
+                sigma_sample = 0.0
+                q_sample = 1.0
+                phi_sample = 0.0
+
+                count = 0
+                w_max = 0.0
+
+                while count < 1:
+
+                    sigma_prop = sigma_min + (sigma_max - sigma_min) * np.random.random(n_prop)
+                    q_prop = q_min + (q_max - q_min) * np.random.random(n_prop)
+                    phi_prop = phi_min + (phi_max - phi_min) * np.random.random(n_prop)
+
+                    intrinsic_pdf = (
+                        number_density(sigma_prop, zl_i)
+                        * q_pdf(q_prop, sigma_prop)
+                        * phi_pdf(phi_prop)
+                    )
+
+                    valid = (
+                        np.isfinite(proposal_pdf)
+                        & (proposal_pdf > 0.0)
+                        & np.isfinite(intrinsic_pdf)
+                        & (intrinsic_pdf > 0.0)
+                    )
+                    intrinsic_by_proposal = np.zeros(n_prop)
+                    intrinsic_by_proposal[valid] = intrinsic_pdf[valid] / proposal_pdf
+
+                    if threshold_factor <= 0.0:
+                        cs = cross_section(
+                            zs_i,
+                            zl_i,
+                            sigma_prop,
+                            q_prop,
+                            phi_prop,
+                            gamma_prop,
+                            gamma1_prop,
+                            gamma2_prop,
+                        )
+                    else:
+                        w_filter = sigma_prop**4 * intrinsic_by_proposal
+                        max_filter = np.max(w_filter)
+
+                        cs = np.zeros(n_prop)
+                        if max_filter > 0.0:
+                            threshold = max_filter * threshold_factor
+                            idx_filter = w_filter > threshold
+                            if np.any(idx_filter):
+                                cs[idx_filter] = cross_section(
+                                    zs_i[idx_filter],
+                                    zl_i[idx_filter],
+                                    sigma_prop[idx_filter],
+                                    q_prop[idx_filter],
+                                    phi_prop[idx_filter],
+                                    gamma_prop[idx_filter],
+                                    gamma1_prop[idx_filter],
+                                    gamma2_prop[idx_filter],
+                                )
+
+                    w = np.zeros(n_prop)
+                    idx_weight = valid & np.isfinite(cs) & (cs > 0.0)
+                    w[idx_weight] = cs[idx_weight] * intrinsic_by_proposal[idx_weight] / (4.0 * np.pi)
+
+                    batch_max = np.max(w)
+                    if batch_max <= 0.0:
+                        continue
+
+                    if batch_max > w_max:
+                        if w_max > 0.0 and count == 1:
+                            if np.random.random() >= (w_max / batch_max):
+                                count = 0
+
+                        w_max = batch_max
+
+                    for j in range(n_prop):
+                        if count >= 1:
+                            break
+
+                        if np.random.random() < (w[j] / w_max):
+                            sigma_sample = sigma_prop[j]
+                            q_sample = q_prop[j]
+                            phi_sample = phi_prop[j]
+                            count = 1
+
+                sigma_post[k] = sigma_sample
+                q_post[k] = q_sample
+                phi_post[k] = phi_sample
+
+    if lens_type in ["sis_galaxy"]:
+
+        q_prop = np.ones(n_prop)
+        phi_prop = np.zeros(n_prop)
+        gamma_prop = np.ones(n_prop) * 2.0
+        gamma1_prop = np.zeros(n_prop)
+        gamma2_prop = np.zeros(n_prop)
+
+        for i in prange(npool):
+
+            start, end = _chunk_bounds(i, size, npool)
+
+            for k in range(start, end):
+
+                zs_i = np.ones(n_prop) * zs[k]
+                zl_i = np.ones(n_prop) * zl[k]
+
+                sigma_sample = 0.0
+
+                count = 0
+                w_max = 0.0
+
+                while count < 1:
+
+                    sigma_prop = sigma_min + (sigma_max - sigma_min) * np.random.random(n_prop)
+
+                    intrinsic_pdf = number_density(sigma_prop, zl_i)
+
+                    valid = (
+                        np.isfinite(proposal_pdf)
+                        & (proposal_pdf > 0.0)
+                        & np.isfinite(intrinsic_pdf)
+                        & (intrinsic_pdf > 0.0)
+                    )
+                    intrinsic_by_proposal = np.zeros(n_prop)
+                    intrinsic_by_proposal[valid] = intrinsic_pdf[valid] / proposal_pdf
+
+                    w_filter = sigma_prop**4 * intrinsic_by_proposal
+                    max_filter = np.max(w_filter)
+
+                    cs = np.zeros(n_prop)
+                    if max_filter > 0.0:
+                        threshold = max_filter * threshold_factor
+                        idx_filter = w_filter > threshold
+                        if np.any(idx_filter):
+                            cs[idx_filter] = cross_section(
+                                zs_i[idx_filter],
+                                zl_i[idx_filter],
+                                sigma_prop[idx_filter],
+                                q_prop[idx_filter],
+                                phi_prop[idx_filter],
+                                gamma_prop[idx_filter],
+                                gamma1_prop[idx_filter],
+                                gamma2_prop[idx_filter],
+                            )
+
+                    w = np.zeros(n_prop)
+                    idx_weight = valid & np.isfinite(cs) & (cs > 0.0)
+                    w[idx_weight] = cs[idx_weight] * intrinsic_by_proposal[idx_weight] / (4.0 * np.pi)
+
+                    batch_max = np.max(w)
+                    if batch_max <= 0.0:
+                        continue
+
+                    if batch_max > w_max:
+                        if w_max > 0.0 and count == 1:
+                            if np.random.random() >= (w_max / batch_max):
+                                count = 0
+
+                        w_max = batch_max
+
+                    for j in range(n_prop):
+                        if count >= 1:
+                            break
+
+                        if np.random.random() < (w[j] / w_max):
+                            sigma_sample = sigma_prop[j]
+                            count = 1
+
+                sigma_post[k] = sigma_sample
+
+    return sigma_post, q_post, phi_post, gamma_post, gamma1_post, gamma2_post
+
+# -------------------------------------------------
+# Main importance sampler function
+# -------------------------------------------------
+# @njit(parallel=True, fastmath=True)
+def importance_sampler_partial(
+    size,
+    zs,
+    zl,
+    number_density,
+    q_pdf,
+    phi_pdf,
+    gamma_pdf,
+    shear1_pdf,
+    shear2_pdf,
+    cross_section,
+    ranges,
+    threshold_factor=1e-4,
+    n_prop=100, 
+    lens_type="epl_shear_galaxy", 
+):
+    """
+    Importance/resampling for lens nuisance parameters at fixed (zs, zl).
+
+    Redshifts are fixed (typically drawn from ``zs_sl`` and ``lens_redshift_sl``).
+    Conditional weights target ``p(sigma,lambda|zs,zl,SL)`` up to a constant:
+    proportional to ``n(sigma,zl)``, axis-ratio / shear / slope PDFs, and the
+    strong-lensing cross section. Terms that depend only on ``(zs,zl)`` ---
+    e.g. ``P(zs|SL)``, ``P(zl|zs,SL)``, ``dV/dz_l`` --- are omitted (constant
+    for fixed redshifts and identical scale across sigma proposals).
+    """
+
+    sigma_post = np.zeros(size)
+    q_post = np.ones(size)
+    phi_post = np.zeros(size)
+    gamma_post = np.ones(size) * 2.0
+    gamma1_post = np.zeros(size)
+    gamma2_post = np.zeros(size)
+
+    z_min, z_max, sigma_min, sigma_max, q_min, q_max, phi_min, phi_max, gamma_min, gamma_max, shear_min, shear_max = ranges
+
+    # wi = (cs/4*pi) * (number_density(sigma, zl) * shape PDFs) / proposal_pdf
+
+    proposal_pdf = np.ones(n_prop)
+    # sigma
+    proposal_pdf *= _uniform_pdf(sigma_min, sigma_max)
+
+    if lens_type in ["epl_shear_galaxy"]:
+        # q
+        proposal_pdf *= _uniform_pdf(q_min, q_max)
+        # phi
+        proposal_pdf *= _uniform_pdf(phi_min, phi_max)
+        # gamma
+        proposal_pdf *= _uniform_pdf(gamma_min, gamma_max)
+        # shear1
+        proposal_pdf *= _uniform_pdf(shear_min, shear_max)
+        # shear2
+        proposal_pdf *= _uniform_pdf(shear_min, shear_max)
+
+        for i in prange(size):  # for each (zl, zs) pair
+
+            zs_i = np.ones(n_prop) * zs[i]
+            zl_i = np.ones(n_prop) * zl[i]
+            
+            # Draw proposals from uniform distribution
+            sigma_prop = sigma_min + (sigma_max - sigma_min) * np.random.random(n_prop)
+            q_prop = q_min + (q_max - q_min) * np.random.random(n_prop)
+            phi_prop = phi_min + (phi_max - phi_min) * np.random.random(n_prop)
+            gamma_prop = gamma_min + (gamma_max - gamma_min) * np.random.random(n_prop)
+            gamma1_prop = shear_min + (shear_max - shear_min) * np.random.random(n_prop)
+            gamma2_prop = shear_min + (shear_max - shear_min) * np.random.random(n_prop)
+
+            # Target factors that vary with proposals (n(sigma,zl) and shape PDFs)
+            intrinsic_pdf = (
+                number_density(sigma_prop, zl_i)
+                * q_pdf(q_prop, sigma_prop)
+                * phi_pdf(phi_prop)
+                * gamma_pdf(gamma_prop)
+                * shear1_pdf(gamma1_prop)
+                * shear2_pdf(gamma2_prop)
+            )
+
+            # Early filtering: only compute cross-section for proposals with significant intrinsic PDF
+            # This can reduce cross-section calls by 50-90% with negligible effect on ESS
+
+            # filter out proposals with based on sis cross-section (\propto sigma_prop**4) and intrinsic pdf, which are cheap to compute
+            valid = (
+                np.isfinite(proposal_pdf)
+                & (proposal_pdf > 0.0)
+                & np.isfinite(intrinsic_pdf)
+                & (intrinsic_pdf > 0.0)
+            )
+            intrinsic_by_proposal = np.zeros(n_prop)
+            intrinsic_by_proposal[valid] = intrinsic_pdf[valid] / proposal_pdf[valid]
+
+            if threshold_factor <= 0.0:
+                cs = cross_section(
+                    zs_i,
+                    zl_i,
+                    sigma_prop,
+                    q_prop,
+                    phi_prop,
+                    gamma_prop,
+                    gamma1_prop,
+                    gamma2_prop,
+                )
+            else:
+                w_filter = sigma_prop**4 * intrinsic_by_proposal
+                # w_filter[(~np.isfinite(w_filter)) | (w_filter < 0.0)] = 0.0
+                max_filter = np.max(w_filter)
+
+                cs = np.zeros(n_prop)
+                if max_filter > 0.0:
+                    threshold = max_filter * threshold_factor
+                    idx_filter = w_filter > threshold
+
+                    if np.any(idx_filter):
+                        cs[idx_filter] = cross_section(
+                            zs_i[idx_filter],
+                            zl_i[idx_filter],
+                            sigma_prop[idx_filter],
+                            q_prop[idx_filter],
+                            phi_prop[idx_filter],
+                            gamma_prop[idx_filter],
+                            gamma1_prop[idx_filter],
+                            gamma2_prop[idx_filter],
+                        )
+
+            w = np.zeros(n_prop)
+            idx_weight = valid & np.isfinite(cs) & (cs > 0.0)
+
+            w[idx_weight] = (
+                cs[idx_weight]
+                * intrinsic_by_proposal[idx_weight]
+                / (4.0 * np.pi)
+            )
+
+            idx = _weighted_sample_index(w, n_prop)
+
+            sigma_post[i] = sigma_prop[idx]
+            q_post[i] = q_prop[idx]
+            phi_post[i] = phi_prop[idx]
+            gamma_post[i] = gamma_prop[idx]
+            gamma1_post[i] = gamma1_prop[idx]
+            gamma2_post[i] = gamma2_prop[idx]
+
+    if lens_type in ["sie_galaxy"]:
+
+        # q
+        proposal_pdf *= _uniform_pdf(q_min, q_max)
+        # phi
+        proposal_pdf *= _uniform_pdf(phi_min, phi_max)
+
+        gamma_prop = np.ones(n_prop) * 2.0
+        gamma1_prop = np.zeros(n_prop)
+        gamma2_prop = np.zeros(n_prop)
+
+        for i in prange(size):  # for each (zl, zs) pair
+
+            zs_i = np.ones(n_prop) * zs[i]
+            zl_i = np.ones(n_prop) * zl[i]
+            
+            # Draw proposals from uniform distribution
+            sigma_prop = sigma_min + (sigma_max - sigma_min) * np.random.random(n_prop)
+            q_prop = q_min + (q_max - q_min) * np.random.random(n_prop)
+            phi_prop = phi_min + (phi_max - phi_min) * np.random.random(n_prop)
+
+            intrinsic_pdf = (
+                number_density(sigma_prop, zl_i)
+                * q_pdf(q_prop, sigma_prop)
+                * phi_pdf(phi_prop)
+            )
+
+            valid = (
+                np.isfinite(proposal_pdf)
+                & (proposal_pdf > 0.0)
+                & np.isfinite(intrinsic_pdf)
+                & (intrinsic_pdf > 0.0)
+            )
+            intrinsic_by_proposal = np.zeros(n_prop)
+            intrinsic_by_proposal[valid] = intrinsic_pdf[valid] / proposal_pdf[valid]
+
+            if threshold_factor <= 0.0:
+                cs = cross_section(
+                    zs_i,
+                    zl_i,
+                    sigma_prop,
+                    q_prop,
+                    phi_prop,
+                    gamma_prop,
+                    gamma1_prop,
+                    gamma2_prop,
+                )
+            else:
+                w_filter = sigma_prop**4 * intrinsic_by_proposal
+                max_filter = np.max(w_filter)
+
+                cs = np.zeros(n_prop)
+                if max_filter > 0.0:
+                    threshold = max_filter * threshold_factor
+                    idx_filter = w_filter > threshold
+
+                    if np.any(idx_filter):
+                        cs[idx_filter] = cross_section(
+                            zs_i[idx_filter],
+                            zl_i[idx_filter],
+                            sigma_prop[idx_filter],
+                            q_prop[idx_filter],
+                            phi_prop[idx_filter],
+                            gamma_prop[idx_filter],
+                            gamma1_prop[idx_filter],
+                            gamma2_prop[idx_filter],
+                        )
+
+            # Compute importance weights
+            w = np.zeros(n_prop)
+            idx_weight = valid & np.isfinite(cs) & (cs > 0.0)
+            w[idx_weight] = cs[idx_weight] * intrinsic_by_proposal[idx_weight] / (4.0 * np.pi)
+            # Draw posterior sample via weighted choice
+            idx = _weighted_sample_index(w, n_prop)
+
+            sigma_post[i] = sigma_prop[idx]
+            q_post[i] = q_prop[idx]
+            phi_post[i] = phi_prop[idx]
+
+    if lens_type in ["sis_galaxy"]:
+
+        q_prop = np.ones(n_prop)
+        phi_prop = np.zeros(n_prop)
+        gamma_prop = np.ones(n_prop) * 2.0
+        gamma1_prop = np.zeros(n_prop)
+        gamma2_prop = np.zeros(n_prop)
+
+        for i in prange(size):  # for each (zl, zs) pair
+
+            zs_i = np.ones(n_prop) * zs[i]
+            zl_i = np.ones(n_prop) * zl[i]
+            
+            # Draw proposals from uniform distribution
+            sigma_prop = sigma_min + (sigma_max - sigma_min) * np.random.random(n_prop)
+
+            intrinsic_pdf = number_density(sigma_prop, zl_i)
+
+            valid = (
+                np.isfinite(proposal_pdf)
+                & (proposal_pdf > 0.0)
+                & np.isfinite(intrinsic_pdf)
+                & (intrinsic_pdf > 0.0)
+            )
+            intrinsic_by_proposal = np.zeros(n_prop)
+            intrinsic_by_proposal[valid] = intrinsic_pdf[valid] / proposal_pdf[valid]
+
+            if threshold_factor <= 0.0:
+                cs = cross_section(
+                    zs_i,
+                    zl_i,
+                    sigma_prop,
+                    q_prop,
+                    phi_prop,
+                    gamma_prop,
+                    gamma1_prop,
+                    gamma2_prop,
+                )
+            else:
+                w_filter = sigma_prop**4 * intrinsic_by_proposal
+                max_filter = np.max(w_filter)
+
+                cs = np.zeros(n_prop)
+                if max_filter > 0.0:
+                    threshold = max_filter * threshold_factor
+                    idx_filter = w_filter > threshold
+
+                    if np.any(idx_filter):
+                        cs[idx_filter] = cross_section(
+                            zs_i[idx_filter],
+                            zl_i[idx_filter],
+                            sigma_prop[idx_filter],
+                            q_prop[idx_filter],
+                            phi_prop[idx_filter],
+                            gamma_prop[idx_filter],
+                            gamma1_prop[idx_filter],
+                            gamma2_prop[idx_filter],
+                        )
+
+            # Compute importance weights
+            w = np.zeros(n_prop)
+            idx_weight = valid & np.isfinite(cs) & (cs > 0.0)
+            w[idx_weight] = cs[idx_weight] * intrinsic_by_proposal[idx_weight] / (4.0 * np.pi)
+            # Draw posterior sample via weighted choice
+            idx = _weighted_sample_index(w, n_prop)
+
+            sigma_post[i] = sigma_prop[idx]
+
+    return sigma_post, q_post, phi_post, gamma_post, gamma1_post, gamma2_post
+
+# @njit(parallel=True, fastmath=True)
+def importance_sampler_full(
+    size,
+    zs_pdf,
+    number_density,
+    q_pdf,
+    phi_pdf,
+    gamma_pdf,
+    shear1_pdf,
+    shear2_pdf,
+    cross_section,
+    dVdz,
+    ranges,
+    threshold_factor=1e-4,
+    n_prop=50, 
+    lens_type="epl_shear_galaxy", 
+):
+    """
+    Full joint importance sample over (zs, zl, sigma, nuisance).
+
+    Target for lens+source intrinsic factors (before cross section) is taken as
+
+        p(zs) * (dV_c/dz_l) * n(sigma, zl) * (axis ratio, shear, slope PDFs),
+
+    i.e. **no separate** ``p(zl|zs)`` factor: ``z_l`` is proposed uniformly in
+    ``[z_min, z_s)`` and the comoving volume and Schechter-style ``n(sigma,zl)``
+    carry the lens-redshift abundance. This matches
+    ``P(SL|...) p(zs) n(sigma,zl|...) dV/dz_l ...`` up to overall normalisation.
+    """
+
+    zs_post = np.zeros(size)
+    zl_post = np.zeros(size)
+    sigma_post = np.zeros(size)
+    q_post = np.ones(size)
+    phi_post = np.zeros(size)
+    gamma_post = np.ones(size) * 2.0
+    gamma1_post = np.zeros(size)
+    gamma2_post = np.zeros(size)
+
+    z_min, z_max, sigma_min, sigma_max, q_min, q_max, phi_min, phi_max, gamma_min, gamma_max, shear_min, shear_max = ranges
+
+    # wi = (cs/4*pi) * ( zs_pdf(zs) * dVdz(zl) * number_density(sigma, zl) * ... ) / proposal_pdf
+
+    proposal_pdf = np.ones(n_prop)
+    # zs
+    proposal_pdf *= _uniform_pdf(z_min, z_max)
+    # sigma
+    proposal_pdf *= _uniform_pdf(sigma_min, sigma_max)
+
+    if lens_type in ["epl_shear_galaxy"]:
+        # q
+        proposal_pdf *= _uniform_pdf(q_min, q_max)
+        # phi
+        proposal_pdf *= _uniform_pdf(phi_min, phi_max)
+        # gamma
+        proposal_pdf *= _uniform_pdf(gamma_min, gamma_max)
+        # shear1
+        proposal_pdf *= _uniform_pdf(shear_min, shear_max)
+        # shear2
+        proposal_pdf *= _uniform_pdf(shear_min, shear_max)
+
+        for i in prange(size):  # for each (zl, zs) pair
+
+            # Draw proposals from uniform distribution
+            zs_prop = z_min + (z_max - z_min) * np.random.random(n_prop)
+
+            # zl
+            zl_prop = z_min + (zs_prop - z_min) * np.random.random(n_prop)
+            proposal_pdf_i = proposal_pdf / (zs_prop - z_min)
+
+            sigma_prop = sigma_min + (sigma_max - sigma_min) * np.random.random(n_prop)
+            q_prop = q_min + (q_max - q_min) * np.random.random(n_prop)
+            phi_prop = phi_min + (phi_max - phi_min) * np.random.random(n_prop)
+            gamma_prop = gamma_min + (gamma_max - gamma_min) * np.random.random(n_prop)
+            gamma1_prop = shear_min + (shear_max - shear_min) * np.random.random(n_prop)
+            gamma2_prop = shear_min + (shear_max - shear_min) * np.random.random(n_prop)
+
+            # intrinsic pdfs
+            intrinsic_pdf = (zs_pdf(zs_prop) * dVdz(zl_prop) * number_density(sigma_prop, zl_prop) * q_pdf(q_prop, sigma_prop) * phi_pdf(phi_prop) * gamma_pdf(gamma_prop) * shear1_pdf(gamma1_prop) * shear2_pdf(gamma2_prop))
+
+            valid = (
+                np.isfinite(proposal_pdf_i)
+                & (proposal_pdf_i > 0.0)
+                & np.isfinite(intrinsic_pdf)
+                & (intrinsic_pdf > 0.0)
+            )
+            intrinsic_by_proposal = np.zeros(n_prop)
+            intrinsic_by_proposal[valid] = intrinsic_pdf[valid] / proposal_pdf_i[valid]
+
+            if threshold_factor <= 0.0:
+                cs = cross_section(
+                    zs_prop,
+                    zl_prop,
+                    sigma_prop,
+                    q_prop,
+                    phi_prop,
+                    gamma_prop,
+                    gamma1_prop,
+                    gamma2_prop,
+                )
+            else:
+                w_filter = sigma_prop**4 * intrinsic_by_proposal
+                max_filter = np.max(w_filter)
+
+                cs = np.zeros(n_prop)
+                if max_filter > 0.0:
+                    threshold = max_filter * threshold_factor
+                    idx_filter = w_filter > threshold
+                    if np.any(idx_filter):
+                        cs[idx_filter] = cross_section(
+                            zs_prop[idx_filter],
+                            zl_prop[idx_filter],
+                            sigma_prop[idx_filter],
+                            q_prop[idx_filter],
+                            phi_prop[idx_filter],
+                            gamma_prop[idx_filter],
+                            gamma1_prop[idx_filter],
+                            gamma2_prop[idx_filter],
+                        )
+
+            # Compute importance weights
+            w = np.zeros(n_prop)
+            idx_weight = valid & np.isfinite(cs) & (cs > 0.0)
+            w[idx_weight] = cs[idx_weight] * intrinsic_by_proposal[idx_weight] / (4.0 * np.pi)
+            # Draw posterior sample via weighted choice
+            idx = _weighted_sample_index(w, n_prop)
+
+            zs_post[i] = zs_prop[idx]
+            zl_post[i] = zl_prop[idx]
+            sigma_post[i] = sigma_prop[idx]
+            q_post[i] = q_prop[idx]
+            phi_post[i] = phi_prop[idx]
+            gamma_post[i] = gamma_prop[idx]
+            gamma1_post[i] = gamma1_prop[idx]
+            gamma2_post[i] = gamma2_prop[idx]
+
+    if lens_type in ["sie_galaxy"]:
+
+        # q
+        proposal_pdf *= _uniform_pdf(q_min, q_max)
+        # phi
+        proposal_pdf *= _uniform_pdf(phi_min, phi_max)
+
+        gamma_prop = np.ones(n_prop) * 2.0
+        gamma1_prop = np.zeros(n_prop)
+        gamma2_prop = np.zeros(n_prop)
+
+        for i in prange(size):  # for each (zl, zs) pair
+
+            # Draw proposals from uniform distribution
+            zs_prop = z_min + (z_max - z_min) * np.random.random(n_prop)
+
+            # zl
+            zl_prop = z_min + (zs_prop - z_min) * np.random.random(n_prop)
+            proposal_pdf_i = proposal_pdf / (zs_prop - z_min)
+
+            sigma_prop = sigma_min + (sigma_max - sigma_min) * np.random.random(n_prop)
+            q_prop = q_min + (q_max - q_min) * np.random.random(n_prop)
+            phi_prop = phi_min + (phi_max - phi_min) * np.random.random(n_prop)
+
+            # intrinsic pdfs
+            intrinsic_pdf = (zs_pdf(zs_prop) * dVdz(zl_prop) * number_density(sigma_prop, zl_prop) * q_pdf(q_prop, sigma_prop) * phi_pdf(phi_prop) )
+
+            valid = (
+                np.isfinite(proposal_pdf_i)
+                & (proposal_pdf_i > 0.0)
+                & np.isfinite(intrinsic_pdf)
+                & (intrinsic_pdf > 0.0)
+            )
+            intrinsic_by_proposal = np.zeros(n_prop)
+            intrinsic_by_proposal[valid] = intrinsic_pdf[valid] / proposal_pdf_i[valid]
+
+            if threshold_factor <= 0.0:
+                cs = cross_section(
+                    zs_prop,
+                    zl_prop,
+                    sigma_prop,
+                    q_prop,
+                    phi_prop,
+                    gamma_prop,
+                    gamma1_prop,
+                    gamma2_prop,
+                )
+            else:
+                w_filter = sigma_prop**4 * intrinsic_by_proposal
+                max_filter = np.max(w_filter)
+
+                cs = np.zeros(n_prop)
+                if max_filter > 0.0:
+                    threshold = max_filter * threshold_factor
+                    idx_filter = w_filter > threshold
+                    if np.any(idx_filter):
+                        cs[idx_filter] = cross_section(
+                            zs_prop[idx_filter],
+                            zl_prop[idx_filter],
+                            sigma_prop[idx_filter],
+                            q_prop[idx_filter],
+                            phi_prop[idx_filter],
+                            gamma_prop[idx_filter],
+                            gamma1_prop[idx_filter],
+                            gamma2_prop[idx_filter],
+                        )
+
+            # Compute importance weights
+            w = np.zeros(n_prop)
+            idx_weight = valid & np.isfinite(cs) & (cs > 0.0)
+            w[idx_weight] = cs[idx_weight] * intrinsic_by_proposal[idx_weight] / (4.0 * np.pi)
+            # Draw posterior sample via weighted choice
+            idx = _weighted_sample_index(w, n_prop)
+
+            zs_post[i] = zs_prop[idx]
+            zl_post[i] = zl_prop[idx]
+            sigma_post[i] = sigma_prop[idx]
+            q_post[i] = q_prop[idx]
+            phi_post[i] = phi_prop[idx]
+
+    if lens_type in ["sis_galaxy"]:
+
+        q_prop = np.ones(n_prop)
+        phi_prop = np.zeros(n_prop)
+        gamma_prop = np.ones(n_prop) * 2.0
+        gamma1_prop = np.zeros(n_prop)
+        gamma2_prop = np.zeros(n_prop)
+
+        for i in prange(size):  # for each (zl, zs) pair
+
+            # Draw proposals from uniform distribution
+            zs_prop = z_min + (z_max - z_min) * np.random.random(n_prop)
+
+            # zl
+            zl_prop = z_min + (zs_prop - z_min) * np.random.random(n_prop)
+            proposal_pdf_i = proposal_pdf / (zs_prop - z_min)
+
+            sigma_prop = sigma_min + (sigma_max - sigma_min) * np.random.random(n_prop)
+
+            # intrinsic pdfs
+            intrinsic_pdf = (zs_pdf(zs_prop) * dVdz(zl_prop) * number_density(sigma_prop, zl_prop) )
+
+            valid = (
+                np.isfinite(proposal_pdf_i)
+                & (proposal_pdf_i > 0.0)
+                & np.isfinite(intrinsic_pdf)
+                & (intrinsic_pdf > 0.0)
+            )
+            intrinsic_by_proposal = np.zeros(n_prop)
+            intrinsic_by_proposal[valid] = intrinsic_pdf[valid] / proposal_pdf_i[valid]
+
+            if threshold_factor <= 0.0:
+                cs = cross_section(
+                    zs_prop,
+                    zl_prop,
+                    sigma_prop,
+                    q_prop,
+                    phi_prop,
+                    gamma_prop,
+                    gamma1_prop,
+                    gamma2_prop,
+                )
+            else:
+                w_filter = sigma_prop**4 * intrinsic_by_proposal
+                max_filter = np.max(w_filter)
+
+                cs = np.zeros(n_prop)
+                if max_filter > 0.0:
+                    threshold = max_filter * threshold_factor
+                    idx_filter = w_filter > threshold
+                    if np.any(idx_filter):
+                        cs[idx_filter] = cross_section(
+                            zs_prop[idx_filter],
+                            zl_prop[idx_filter],
+                            sigma_prop[idx_filter],
+                            q_prop[idx_filter],
+                            phi_prop[idx_filter],
+                            gamma_prop[idx_filter],
+                            gamma1_prop[idx_filter],
+                            gamma2_prop[idx_filter],
+                        )
+
+            # Compute importance weights
+            w = np.zeros(n_prop)
+            idx_weight = valid & np.isfinite(cs) & (cs > 0.0)
+            w[idx_weight] = cs[idx_weight] * intrinsic_by_proposal[idx_weight] / (4.0 * np.pi)
+            # Draw posterior sample via weighted choice
+            idx = _weighted_sample_index(w, n_prop)
+
+            zs_post[i] = zs_prop[idx]
+            zl_post[i] = zl_prop[idx]
+            sigma_post[i] = sigma_prop[idx]
+
+    return zs_post, zl_post, sigma_post, q_post, phi_post, gamma_post, gamma1_post, gamma2_post
+
+def _range_dict(
+    z_min=0.0,
+    z_max=10.0,
+    sigma_min=100.0,
+    sigma_max=400.0,
+    q_min=0.2,
+    q_max=1.0,
+    phi_min=0.0,
+    phi_max=2 * np.pi,
+    gamma_min=1.5,
+    gamma_max=2.5,
+    shear_min=-0.2,
+    shear_max=0.2,
+):
+    return (
+        z_min,
+        z_max,
+        sigma_min,
+        sigma_max,
+        q_min,
+        q_max,
+        phi_min,
+        phi_max,
+        gamma_min,
+        gamma_max,
+        shear_min,
+        shear_max,
+    )
+
+importance_sampler_partial_njit = njit(parallel=True, fastmath=True)(importance_sampler_partial)
+importance_sampler_full_njit = njit(parallel=True, fastmath=True)(importance_sampler_full)
+rejection_sampler_partial_njit = njit(parallel=True, fastmath=True)(rejection_sampler_partial)
+rejection_sampler_full_njit = njit(parallel=True, fastmath=True)(rejection_sampler_full)
+
+def create_sampler(
+    number_density,
+    q_pdf,
+    phi_pdf,
+    gamma_pdf,
+    shear1_pdf,
+    shear2_pdf,
+    cross_section,
+    dVdz,
+    zs_pdf=None,
+    use_njit_sampler=True,
+    sampler_type="importance_sampler_partial",
+    threshold_factor=1e-4,
+    n_prop=50, 
+    lens_type="epl_shear_galaxy",
+    npool=4, 
+    **range_kwargs
+):
+    """
+    Build a closure that runs one of the cross-section-weighted lens samplers.
+
+    ``use_njit_sampler`` selects the implementation, not only a print message:
+
+    - ``True`` (default): Numba ``njit`` kernels. ``cross_section`` and other
+      callables must be Numba-compatible (e.g. ``@njit`` cross sections).
+    - ``False``: interpreted Python samplers, which accept ordinary callables
+      (e.g. numerical / SciPy-backed cross sections).
+    """
+    set_num_threads(npool) # Centralize Numba thread setting
+
+    # min max
+    ranges = _range_dict(**range_kwargs)
+
+    if sampler_type == "importance_sampler_partial":
+
+        _imp_partial = (
+            importance_sampler_partial_njit
+            if use_njit_sampler
+            else importance_sampler_partial
+        )
+
+        def sampler_wrapper(size, zs, zl):
+            return _imp_partial(
+                size=size,
+                zs=zs,
+                zl=zl,
+                threshold_factor=threshold_factor,
+                n_prop=n_prop,
+                lens_type=lens_type,
+                number_density=number_density,
+                q_pdf=q_pdf,
+                phi_pdf=phi_pdf,
+                gamma_pdf=gamma_pdf,
+                shear1_pdf=shear1_pdf,
+                shear2_pdf=shear2_pdf,
+                cross_section=cross_section,
+                ranges=ranges,
+            )
+
+        if use_njit_sampler:
+            print(
+                "Faster, njitted and importance sampling based lens parameter sampler will be used."
+            )
+        else: 
+            print(
+                "Slower, non-njit and importance sampling based lens parameter sampler will be used."
+            )
+
+    elif sampler_type == "importance_sampler_full":
+
+        _imp_full = (
+            importance_sampler_full_njit
+            if use_njit_sampler
+            else importance_sampler_full
+        )
+
+        def sampler_wrapper(size):
+            return _imp_full(
+                size=size,
+                zs_pdf=zs_pdf,
+                threshold_factor=threshold_factor,
+                n_prop=n_prop,
+                lens_type=lens_type,
+                number_density=number_density,
+                q_pdf=q_pdf,
+                phi_pdf=phi_pdf,
+                gamma_pdf=gamma_pdf,
+                shear1_pdf=shear1_pdf,
+                shear2_pdf=shear2_pdf,
+                cross_section=cross_section,
+                dVdz=dVdz,
+                ranges=ranges,
+            )
+
+        if use_njit_sampler:
+            print(
+                "Faster, njitted and importance sampling based lens parameter sampler will be used."
+            )
+        else:
+            print(
+                "Slower, non-njit and importance sampling based lens parameter sampler will be used."
+            )
+
+    elif sampler_type == "rejection_sampler_partial":
+
+        _rej_partial = (
+            rejection_sampler_partial_njit
+            if use_njit_sampler
+            else rejection_sampler_partial
+        )
+
+        def sampler_wrapper(size, zs, zl):
+            return _rej_partial(
+                size=size,
+                zs=zs,
+                zl=zl,
+                threshold_factor=threshold_factor,
+                n_prop=n_prop,
+                lens_type=lens_type,
+                npool=npool,
+                number_density=number_density,
+                q_pdf=q_pdf,
+                phi_pdf=phi_pdf,
+                gamma_pdf=gamma_pdf,
+                shear1_pdf=shear1_pdf,
+                shear2_pdf=shear2_pdf,
+                cross_section=cross_section,
+                ranges=ranges,
+            )
+
+        if use_njit_sampler:
+            print(
+                "Faster, njitted and rejection sampling based lens parameter sampler will be used."
+            )
+        else:
+            print(
+                "Slower, non-njit and rejection sampling based lens parameter sampler will be used."
+            )
+
+    elif sampler_type == "rejection_sampler_full":
+
+        _rej_full = (
+            rejection_sampler_full_njit
+            if use_njit_sampler
+            else rejection_sampler_full
+        )
+
+        def sampler_wrapper(size):
+            return _rej_full(
+                size=size,
+                zs_pdf=zs_pdf,
+                threshold_factor=threshold_factor,
+                n_prop=n_prop,
+                lens_type=lens_type,
+                npool=npool,
+                number_density=number_density,
+                q_pdf=q_pdf,
+                phi_pdf=phi_pdf,
+                gamma_pdf=gamma_pdf,
+                shear1_pdf=shear1_pdf,
+                shear2_pdf=shear2_pdf,
+                cross_section=cross_section,
+                dVdz=dVdz,
+                ranges=ranges,
+            )
+
+        if use_njit_sampler:
+            print(
+                "Faster, njitted and rejection sampling based lens parameter sampler will be used."
+            )
+        else:
+            print(
+                "Slower, non-njit and rejection sampling based lens parameter sampler will be used."
+            )
+
+    else:
+        raise ValueError(
+            f"Invalid cross_section_based_sampler: {sampler_type}. Available options are 'rejection_sampler_full', 'importance_sampler_full', 'rejection_sampler_partial' and 'importance_sampler_partial'."
+        )
+
+    return sampler_wrapper

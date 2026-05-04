@@ -35,6 +35,10 @@ from .multiprocessing_routine_epl_shear import (
     _init_worker_multiprocessing,
 )
 from ..image_properties.cross_section_njit import phi_q2_ellipticity
+from ..utils.cosmological_conversions import (
+    angular_diameter_distance,
+    angular_diameter_distance_z1z2,
+)
 
 Mpc_to_m = 3.085677581491367e+22 # from astropy. But lenstronomy uses 3.08567758e22. As a result time delays are slightly different at milisecond precision.
 
@@ -65,8 +69,8 @@ class ImageProperties:
         Maximum number of images to consider per event. \n
         default: 4
     time_window : ``float``
-        Time window for lensed events from min(geocent_time) (units: seconds). \n
-        default: 365*24*3600*2 (2 years)
+        Time window between lensed images (units: seconds). \n
+        default: 365*24*3600*1 (1 years)
     include_effective_parameters : ``bool``
         Whether to include effective parameters (effective_phase, effective_ra, effective_dec) in the output. \n
         default: True
@@ -77,6 +81,17 @@ class ImageProperties:
         Cosmology for distance calculations. \n
         If None, uses default LambdaCDM. \n
         default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
+    directory : ``str``
+        Interpolator JSON path (used only if this class builds Da interpolators). \n
+        default: './interpolator_json'
+    z_min : ``float``
+        default: 0.0
+    z_max : ``float``
+        default: 10.0
+    create_new_interpolator : ``bool`` or ``dict``
+        Bool or decision dict like ``OpticalDepth``; unused if ``angular_diameter_distance`` \n
+        is already set (e.g. ``OpticalDepth`` initialized first). \n
+        default: False
     spin_zero : ``bool``
         If True, spin parameters are set to zero (no spin sampling). \n
         default: False
@@ -163,10 +178,14 @@ class ImageProperties:
         n_min_images=2,
         n_max_images=4,
         lens_model_list=["EPL_NUMBA", "SHEAR"],
-        image_properties_function="image_properties_epl_shear",
+        image_properties_function="image_properties_epl_shear_njit",
         image_properties_function_params=None,
         cosmology=None,
-        time_window=365 * 24 * 3600 * 2,  # 2 years
+        directory="./interpolator_json",
+        z_min=0.0,
+        z_max=10.0,
+        create_new_interpolator=False,
+        time_window=365. * 24. * 3600. * 1.,  # 1 year
         spin_zero=True,
         spin_precession=False,
         pdet_finder=None,
@@ -191,6 +210,13 @@ class ImageProperties:
                 H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0
             )
         )
+
+        # ``image_properties_epl_shear_njit`` needs Da, D_ls; OpticalDepth already sets these on LeR / LensGalaxyParameterDistribution.
+        if not hasattr(self, "angular_diameter_distance"):
+            self._initialize_angular_diameter_distances(
+                z_min, z_max, directory, create_new_interpolator
+            )
+
         self.pdet_finder = pdet_finder
         self.pdet_finder_output_keys = None
         self.include_effective_parameters = include_effective_parameters
@@ -201,6 +227,9 @@ class ImageProperties:
             self.image_properties_function_params.update(image_properties_function_params)
 
         if image_properties_function == "image_properties_epl_shear_njit":
+            if self.lens_model_list != ["EPL_NUMBA", "SHEAR"]:
+                raise ValueError("For image_properties_epl_shear_njit, lens_model_list should be ['EPL_NUMBA', 'SHEAR']")
+
             from .epl_shear_njit import create_epl_shear_solver
 
             print("initializing epl shear njit solver")
@@ -214,6 +243,64 @@ class ImageProperties:
                 Nmeas=self.image_properties_function_params["Nmeas"],
                 Nmeas_extra=self.image_properties_function_params["Nmeas_extra"],
             )
+
+    def _initialize_angular_diameter_distances(
+        self, z_min, z_max, directory, create_new_interpolator
+    ):
+        """
+        Create ``angular_diameter_distance`` and ``angular_diameter_distance_z1z2``
+        interpolators for standalone ``ImageProperties`` (same bool/dict convention
+        as ``OpticalDepth``). Caller must ensure these attributes are not already set.
+        """
+        if isinstance(create_new_interpolator, dict):
+            self.angular_diameter_distance = angular_diameter_distance(
+                z_min=z_min,
+                z_max=z_max,
+                cosmo=self.cosmo,
+                directory=directory,
+                create_new=create_new_interpolator["angular_diameter_distance"][
+                    "create_new"
+                ],
+                resolution=create_new_interpolator["angular_diameter_distance"][
+                    "resolution"
+                ],
+                get_attribute=True,
+            )
+            self.angular_diameter_distance_z1z2 = angular_diameter_distance_z1z2(
+                z_min=z_min,
+                z_max=z_max,
+                cosmo=self.cosmo,
+                directory=directory,
+                create_new=create_new_interpolator["angular_diameter_distance_z1z2"][
+                    "create_new"
+                ],
+                resolution=create_new_interpolator["angular_diameter_distance_z1z2"][
+                    "resolution"
+                ],
+                get_attribute=True,
+            )
+        else:
+            self.angular_diameter_distance = angular_diameter_distance(
+                z_min=z_min,
+                z_max=z_max,
+                cosmo=self.cosmo,
+                directory=directory,
+                create_new=create_new_interpolator,
+                resolution=500,
+                get_attribute=True,
+            )
+            self.angular_diameter_distance_z1z2 = angular_diameter_distance_z1z2(
+                z_min=z_min,
+                z_max=z_max,
+                cosmo=self.cosmo,
+                directory=directory,
+                create_new=create_new_interpolator,
+                resolution=500,
+                get_attribute=True,
+            )
+        self.directory = directory
+        self.z_min = z_min
+        self.z_max = z_max
 
     def image_properties_epl_shear_njit(self, lens_parameters):
         """
@@ -276,6 +363,8 @@ class ImageProperties:
 
         """
 
+        print("computing image properties using ler's epl+shear (analytical, njit) solver...")
+
         zs = lens_parameters["zs"]
         zl = lens_parameters["zl"]
 
@@ -298,25 +387,36 @@ class ImageProperties:
         from numba import set_num_threads
 
         set_num_threads(self.npool)  # match Numba threads to npool
-        result = self.epl_solver(theta_E, D_dt, q, phi, gamma, gamma1, gamma2)
+        try:
+            result = self.epl_solver(theta_E, D_dt, q, phi, gamma, gamma1, gamma2)
+        except:
+            # save theta_E, D_dt, q, phi, gamma, gamma1, gamma2 values for debugging and raise error
+            np.savez(
+                "debug_epl_solver.npz", theta_E=theta_E, D_dt=D_dt, q=q, phi=phi, gamma=gamma, gamma1=gamma1, gamma2=gamma2
+            )
+            raise RuntimeError("Error in epl_solver. Try running it again; raise a github issue if the problem persists. Debug values saved to debug_epl_solver.npz")
 
-        # time-delays: convert to positive values
-        # time-delays will be relative to the first arrived signal of an lensed event
-        time_delays= result[5]
-        time_delays = (
-            time_delays - np.array([np.sort(time_delays, axis=1)[:, 0]]).T
-        )  # this is alright if time delays are already sorted
+        # # time-delays: convert to positive values
+        # # time-delays will be relative to the first arrived signal of an lensed event
+        # time_delays= result[5]
+        # time_delays = (
+        #     time_delays - np.array([np.sort(time_delays, axis=1)[:, 0]]).T
+        # )  # this is alright if time delays are already sorted
+
+        image_type = result[7]
+        # Image type codes: 1=minima (Type I), 2=saddle (Type II), 3=maxima (Type III)
+        # Kept as integer codes for compatibility with get_lensed_snrs morse phase conversion
 
         # Return a dictionary with all of the lens information but also the BBH parameters from gw_param
         image_parameters = {
             "x0_image_positions": result[2],
             "x1_image_positions": result[3],
             "magnifications": result[4],
-            "time_delays": time_delays,
-            "image_type": result[7],
+            "time_delays": result[5],
+            "image_type": image_type,
         }
 
-        idx_sort = np.argsort(time_delays, axis=1)  # sort each row
+        idx_sort = np.argsort(result[5], axis=1)  # sort each row
         # idx_sort has the shape (size, n_max_images)
         for key, value in image_parameters.items():
             image_parameters[key] = np.take_along_axis(value, idx_sort, axis=1)
@@ -327,7 +427,7 @@ class ImageProperties:
 
         return lens_parameters
 
-    def image_properties_epl_shear(self, lens_parameters):
+    def image_properties_epl_shear_lenstronomy(self, lens_parameters):
         """
         Compute image properties for strongly lensed events. This use functions from lenstronomy.
 
@@ -387,6 +487,8 @@ class ImageProperties:
             +------------------------------+-----------+-------------------------------------------------------+
 
         """
+
+        print("computing image properties using lenstronomy's epl+shear (analytical, jit) solver...")
 
         zs = lens_parameters["zs"]
         size = len(zs)
@@ -550,11 +652,11 @@ class ImageProperties:
                     x_source[iter_i] = x_source_i
                     y_source[iter_i] = y_source_i
 
-        # time-delays: convert to positive values
-        # time-delays will be relative to the first arrived signal of an lensed event
-        time_delays = (
-            time_delays - np.array([np.sort(time_delays, axis=1)[:, 0]]).T
-        )  # this is alright if time delays are already sorted
+        # # time-delays: convert to positive values
+        # # time-delays will be relative to the first arrived signal of an lensed event
+        # time_delays = (
+        #     time_delays - np.array([np.sort(time_delays, axis=1)[:, 0]]).T
+        # )  # this is alright if time delays are already sorted
 
         # image type classification (morse phase)
         image_type = np.zeros((size, self.n_max_images))
@@ -773,26 +875,30 @@ class ImageProperties:
             size, lensed_param, pdet_finder
         )
 
-        if not self.include_redundant_parameters:
-            del lensed_param["luminosity_distance"]
+        # # Get the optimal signal to noise ratios for each image
+        # # iterate over the image type (column)
+        # geocent_time_min = np.min(geocent_time)
+        # geocent_time_max = geocent_time_min + self.time_window
 
-        # Get the optimal signal to noise ratios for each image
-        # iterate over the image type (column)
-        geocent_time_min = np.min(geocent_time)
-        geocent_time_max = geocent_time_min + self.time_window
+        time_window = self.time_window  # in seconds
 
         pdet_finder_output_keys = (
             self.pdet_finder_output_keys.copy()
         )  # copy to avoid modifying original
+
+        # for loop on 1st, 2nd, 3rd images, etc. 
         for i in range(self.n_max_images):
 
             # get the effective time for each image type
             effective_geocent_time = geocent_time + time_delays[:, i]
 
-            # choose only the events that are within the time range and also not nan
-            idx = (effective_geocent_time <= geocent_time_max) & (
-                effective_geocent_time >= geocent_time_min
-            )
+            if i == 0:
+                last_effective_geocent_time = effective_geocent_time
+                idx = np.ones(size, dtype=bool)  # all events are valid for the first image
+            else: 
+                # choose only the events that are within the time range and also not nan
+                idx = (effective_geocent_time - last_effective_geocent_time) < time_window
+                last_effective_geocent_time = effective_geocent_time
 
             # get the effective luminosity distance for each image type
             effective_luminosity_distance = luminosity_distance / np.sqrt(
@@ -808,15 +914,16 @@ class ImageProperties:
             effective_dec = dec + (x1_image_positions[:, i] - y_source)
             effective_ra = ra + (x0_image_positions[:, i] - x_source) / np.cos(dec)
 
-            # check for nan values
-            idx = (
-                idx
-                & ~np.isnan(effective_luminosity_distance)
+            # check for nan/inf values in effective parameters
+            idx = idx & (
+                ~np.isnan(effective_luminosity_distance)
+                & np.isfinite(effective_luminosity_distance)
                 & ~np.isnan(effective_geocent_time)
                 & ~np.isnan(effective_phase)
                 & ~np.isnan(effective_ra)
                 & ~np.isnan(effective_dec)
             )
+            
 
             # Each image has their own effective luminosity distance and effective geocent time
             if sum(idx) != 0:
@@ -846,6 +953,9 @@ class ImageProperties:
 
         if include_effective_parameters:
             lensed_param = self.produce_effective_params(lensed_param)
+
+        if not self.include_redundant_parameters:
+            del lensed_param["luminosity_distance"]
 
         return result_dict, lensed_param
 
@@ -1046,6 +1156,8 @@ class ImageProperties:
     @npool.setter
     def npool(self, value):
         self._npool = value
+        from numba import set_num_threads
+        set_num_threads(value)
 
     @property
     def n_min_images(self):
@@ -1244,7 +1356,7 @@ class ImageProperties:
                 Nmeas=400,
                 Nmeas_extra=80,
             ),
-            image_properties_epl_shear=None,
+            image_properties_epl_shear_lenstronomy=None,
         )
 
         return self._available_image_properties_functions

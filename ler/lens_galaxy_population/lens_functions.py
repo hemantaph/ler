@@ -17,13 +17,21 @@ from lenstronomy.LensModel.Solver.epl_shear_solver import caustics_epl_shear
 from shapely.geometry import Polygon
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def phi_cut_SIE(q):
     """
     Calculate cross-section scaling factor for SIE lens galaxy from SIS.
 
     Computes the ratio of the SIE (Singular Isothermal Ellipsoid) cross-section
     to the SIS (Singular Isothermal Sphere) cross-section for a given axis ratio.
+    For the regular branch this is
+
+    .. math::
+
+        \\phi_{\\rm cut}(q) =
+        \\frac{2q\\ln q}{q^2 - 1},
+
+    normalized so that ``phi_cut_SIE(q=1) = 1``.
 
     Parameters
     ----------
@@ -51,7 +59,29 @@ def phi_cut_SIE(q):
 
 def einstein_radius(sigma, zl, zs, cosmo=None):
         """
-        Function to compute the Einstein radii of the lens galaxies
+        Compute the Einstein radius for an SIS/SIE lens galaxy.
+
+        .. math::
+
+            \\theta_E = 4\\pi \\left(\\frac{\\sigma}{c}\\right)^2
+            \\frac{D_{ls}}{D_s}.
+
+        Parameters
+        ----------
+        sigma : ``float`` or ``numpy.ndarray``
+            Lens velocity dispersion in km/s.
+        zl : ``float`` or ``numpy.ndarray``
+            Lens redshift.
+        zs : ``float`` or ``numpy.ndarray``
+            Source redshift.
+        cosmo : ``astropy.cosmology`` or ``None``
+            Cosmology used for angular-diameter distances. If None, the package
+            default LambdaCDM cosmology is used.
+
+        Returns
+        -------
+        theta_E : ``astropy.units.Quantity``
+            Einstein radius in radians.
         """
         if cosmo is None:
             from astropy.cosmology import LambdaCDM
@@ -74,7 +104,11 @@ def cross_section(theta_E, e1, e2, gamma, gamma1, gamma2):
     Compute the strong lensing cross-section for an EPL+Shear lens.
 
     Uses lenstronomy to compute the caustic structure and returns the 
-    area enclosed by the double-image (outer) caustic.
+    area enclosed by the double-image (outer) caustic:
+
+    .. math::
+
+        \\sigma_{\\rm SL} = \\int_{\\mathcal{C}_{\\rm double}} d^2\\beta.
 
     Parameters
     ----------

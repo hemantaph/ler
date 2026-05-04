@@ -25,7 +25,7 @@ from ..image_properties.cross_section_njit import phi_q2_ellipticity
 C_LIGHT = 299792.458  # km/s
 
 
-@njit(cache=True)
+@njit(fastmath=True)
 def _precompute_1d_coeffs(x_array):
     """
     Precompute grid invariants (spacings, ratios) for cubic Hermite interpolation.
@@ -66,7 +66,7 @@ def _precompute_1d_coeffs(x_array):
     return m1_0, m1_1, m1_2, m2_1, m2_2, m2_3, denom
 
 
-@njit(cache=True, fastmath=True, inline="always")
+@njit(fastmath=True)
 def _get_1d_weights(x_eval, x_grid, m1_0, m1_1, m1_2, m2_1, m2_2, m2_3, denom_arr):
     """
     Finds the base 4-point index and returns 4 scalar weights (C0, C1, C2, C3)
@@ -189,7 +189,7 @@ def _get_1d_weights(x_eval, x_grid, m1_0, m1_1, m1_2, m2_1, m2_2, m2_3, denom_ar
         return i - 1, C0, C1, C2, C3
 
 
-@njit(cache=True, fastmath=True, parallel=True)
+@njit(parallel=True, fastmath=True)
 def _cross_section_eval(
     zs, zl, ds_arr, dl_arr, sigma, q, phi, gamma, gamma1, gamma2,
     e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid, cs_unit_grid,
@@ -278,7 +278,7 @@ def make_cross_section_area_reinit(
         # Now explicitly accepts and processes the full NumPy array
         return Da_instance(z_array)
 
-    @njit(cache=True, fastmath=True)
+    @njit
     def cross_section_reinit(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):
         # 1. Precompute distances for the entire arrays using the fast vectorised function
         ds_arr = angular_diameter_distance_numba(zs)

@@ -10,6 +10,7 @@ def generate_mixed_grid(
     x_max,
     resolution,
     power_law_part='lower',
+    geomspace_part=False,
     spacing_trend='increasing',
     power=2.3,
     value_transition_fraction=0.6,
@@ -21,19 +22,30 @@ def generate_mixed_grid(
 
     Parameters
     ----------
-    x_min, x_max : float
-        The physical domain boundaries (can be negative, crossing zero, etc.).
-    power_law_part : str
-        'lower' to apply power-law to the first segment.
-        'upper' to apply power-law to the second segment.
-    spacing_trend : str
-        'increasing': Step sizes grow as x increases.
-        'decreasing': Step sizes shrink as x increases.
-    power : float
-        Exponent (>= 1.0) to control curvature. Overridden if auto_match_slope=True.
-    auto_match_slope : bool
-        If True, analytically calculates the required power AND trend to guarantee 
-        a smooth transition without a kink.
+    x_min : float
+        Minimum value of the grid.
+    x_max : float
+        Maximum value of the grid.
+    resolution : int
+        Total number of grid points.
+    power_law_part : str, optional
+        Which part of the grid should follow the power-law spacing. Options: 'lower' or 'upper'. Default is 'lower'.
+    geomspace_part : bool or str, optional
+        If `False`, keep the existing linear + power-law behavior. If `'lower'` or `'upper'`,
+        replace that segment with geometric spacing while keeping the other segment linear.
+        Geometric spacing is only used when the selected segment endpoints are strictly positive;
+        otherwise the function falls back to the standard mixed-grid construction. Default is `False`.
+    spacing_trend : str, optional
+        Whether the power-law spacing should be increasing or decreasing. Options: 'increasing' or 'decreasing'. Default is 'increasing'.
+    power : float, optional
+        The power-law exponent. Higher values lead to more extreme spacing. Default is 2.3.
+    value_transition_fraction : float, optional
+        The fraction of the total value range at which to transition from linear to power-law spacing. Must be between 0 and 1. Default is 0.6.
+    num_transition_fraction : float, optional
+        The fraction of the total number of points at which to transition from linear to power-law spacing. Must be between 0 and 1. Default is 0.8.
+    auto_match_slope : bool, optional
+        Whether to automatically adjust the power-law exponent to match the slope of the linear spacing at the transition point. Default is True.
+        This is ignored for the geometric-spacing segment when `geomspace_part` is used.
 
     Returns
     -------
@@ -42,7 +54,7 @@ def generate_mixed_grid(
 
     Examples
     --------
-    from ler.utils.cosmological_conversions import generate_mixed_grid
+    from ler.utils import generate_mixed_grid
 
     resolution=20
     # linear+power-law with power-law in the upper segment and decreasing step sizes
@@ -65,6 +77,13 @@ def generate_mixed_grid(
         num_transition_fraction=0.6,
         auto_match_slope=True       # We accept the kink to control the exact power
     )
+    # linear+geomspace with geometric spacing in the upper segment
+    x = generate_mixed_grid(
+        x_min=0.1, x_max=10.0, resolution=resolution,
+        geomspace_part='lower',
+        value_transition_fraction=0.3,
+        num_transition_fraction=0.6,
+    )
     """
     if x_max <= x_min:
         return np.linspace(x_min, x_max, resolution)
@@ -81,6 +100,20 @@ def generate_mixed_grid(
     n_low = max(2, int(resolution * num_transition_fraction))
     n_low = min(n_low, resolution - 1)
     n_high = resolution - n_low
+    x_trans = x_min + u_trans * (x_max - x_min)
+
+    if geomspace_part not in (False, None, 'lower', 'upper'):
+        raise ValueError("geomspace_part must be False, 'lower' or 'upper'")
+
+    if geomspace_part == 'lower' and x_min > 0.0 and x_trans > 0.0:
+        x_low = np.geomspace(x_min, x_trans, n_low)
+        x_high = np.linspace(x_trans, x_max, n_high + 1)[1:]
+        return np.concatenate([x_low, x_high])
+
+    if geomspace_part == 'upper' and x_trans > 0.0 and x_max > 0.0:
+        x_low = np.linspace(x_min, x_trans, n_low)
+        x_high = np.geomspace(x_trans, x_max, n_high + 1)[1:]
+        return np.concatenate([x_low, x_high])
 
     # 2. Build the grid in normalized [0, 1] space
     if power_law_part == 'lower':
@@ -139,7 +172,15 @@ def generate_mixed_grid(
 
 def luminosity_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory="./interpolator_json", create_new=False, resolution=500, get_attribute=True):
     """
-    Function to create a lookup table for the luminosity distance wrt redshift.
+    Function to create a lookup table for luminosity distance as a function of redshift.
+
+    The interpolated quantity is
+
+    .. math::
+
+        D_L(z) = (1+z) D_C(z),
+
+    as returned by ``astropy.cosmology`` for the supplied cosmology.
 
     Parameters
     ----------
@@ -153,7 +194,8 @@ def luminosity_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, O
     Attributes
     ----------
     z_to_luminosity_distance : `ler.utils.FunctionConditioning`
-        Object of FunctionConditioning class containing the luminosity distance wrt redshift
+        Object of FunctionConditioning class containing luminosity distance as a
+        function of redshift.
     """
 
     z_min = 0.001 if z_min == 0. else z_min
@@ -179,30 +221,67 @@ def luminosity_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, O
     luminosity_distance_object.__doc__ = """
     Redshift to luminosity distance conversion.
 
+    .. math::
+
+        D_L(z) = (1+z) D_C(z).
+
     Parameters
     ----------
     zs : `numpy.ndarray` or `float`
         Source redshifts
 
     Returns
-    ----------
+    -------
     luminosity_distance : `numpy.ndarray`
         luminosity distance in Mpc
 
     Examples
-    ----------
-    >>> from ler.gw_source_population import SourceGalaxyPopulationModel
-    >>> ler = SourceGalaxyPopulationModel()  # with default LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
-    >>> luminosity_distance = ler.luminosity_distance(1.)
-    >>> luminosity_distance = ler.luminosity_distance.function(np.array([1., 2.]))
-    >>> redshift = ler.luminosity_distance.function_inverse(np.array([100., 200.]))
+    --------
+    >>> import numpy as np
+    >>> from ler.utils import luminosity_distance
+    >>> dl = luminosity_distance(get_attribute=True)
+    >>> distances = dl.function(np.array([1., 2.]))
+    >>> redshift = dl.function_inverse(np.array([100., 200.]))
     """
 
     return luminosity_distance_object if get_attribute else luminosity_distance_object(z)
 
 
 def differential_comoving_volume(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory="./interpolator_json", create_new=False, resolution=500, get_attribute=True):
-        
+    """
+    Create a FunctionConditioning object for the differential comoving volume dVc/dz.
+
+    The stored table is full-sky:
+
+    .. math::
+
+        \\frac{dV_c}{dz} = 4\\pi \\frac{dV_c}{dz\\,d\\Omega}.
+
+    Parameters
+    ----------
+    z : ``float`` or ``numpy.ndarray`` or ``None``
+        Redshift(s) at which to evaluate. If None, returns the FunctionConditioning object.
+    z_min : ``float``
+        Minimum redshift. default: 0.001
+    z_max : ``float``
+        Maximum redshift. default: 10.0
+    cosmo : ``astropy.cosmology``
+        Cosmology object. default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+    directory : ``str``
+        Directory for storing interpolator JSON files. default: './interpolator_json'
+    create_new : ``bool``
+        If True, create new interpolator. default: False
+    resolution : ``int``
+        Number of grid points for the interpolator. default: 500
+    get_attribute : ``bool``
+        If True, return the FunctionConditioning object. default: True
+
+    Returns
+    -------
+    differential_comoving_volume : ``FunctionConditioning`` or ``numpy.ndarray``
+        dVc/dz in Mpc^3 sr^-1 (multiplied by 4*pi for full sky).
+    """
+
     z_min = 0.001 if z_min == 0. else z_min
 
     # get differential co-moving volume interpolator
@@ -227,27 +306,60 @@ def differential_comoving_volume(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM
     differential_comoving_volume_object.__doc__ = """
     Redshift to differential comoving volume conversion.
 
+    The returned values are full-sky ``dVc/dz`` in ``Mpc^3`` per unit redshift.
+
     Parameters
     ----------
     zs : `numpy.ndarray` or `float`
         Source redshifts
 
     Returns
-    ----------
+    -------
     differential_comoving_volume : `numpy.ndarray`
-        differential comoving volume in Mpc^3
+        differential comoving volume in Mpc^3 per unit redshift.
 
     Examples
-    ----------
-    >>> from ler.len_galaxy_population import OpticalDepth
-    >>> ler = OpticalDepth()  # with default LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
-    >>> differential_comoving_volume = ler.differential_comoving_volume(1.)
-    >>> differential_comoving_volume = ler.differential_comoving_volume.function(np.array([1., 2.]))
+    --------
+    >>> import numpy as np
+    >>> from ler.utils import differential_comoving_volume
+    >>> dvc_dz = differential_comoving_volume(get_attribute=True)
+    >>> values = dvc_dz.function(np.array([1., 2.]))
     """
 
     return differential_comoving_volume_object if get_attribute else differential_comoving_volume_object(z)
 
 def comoving_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory="./interpolator_json", create_new=False, resolution=500, get_attribute=True):
+    """
+    Create a FunctionConditioning object for the comoving distance.
+
+    .. math::
+
+        D_C(z) = c \\int_0^z \\frac{dz'}{H(z')}.
+
+    Parameters
+    ----------
+    z : ``float`` or ``numpy.ndarray`` or ``None``
+        Redshift(s) at which to evaluate. If None, returns the FunctionConditioning object.
+    z_min : ``float``
+        Minimum redshift. default: 0.001
+    z_max : ``float``
+        Maximum redshift. default: 10.0
+    cosmo : ``astropy.cosmology``
+        Cosmology object. default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+    directory : ``str``
+        Directory for storing interpolator JSON files. default: './interpolator_json'
+    create_new : ``bool``
+        If True, create new interpolator. default: False
+    resolution : ``int``
+        Number of grid points for the interpolator. default: 500
+    get_attribute : ``bool``
+        If True, return the FunctionConditioning object. default: True
+
+    Returns
+    -------
+    comoving_distance : ``FunctionConditioning`` or ``numpy.ndarray``
+        Comoving distance in Mpc.
+    """
 
     z_min = 0.001 if z_min == 0. else z_min
     zs = generate_mixed_grid(z_min, z_max, resolution)
@@ -277,28 +389,63 @@ def comoving_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, Om0
     comoving_distance_object.__doc__ = """
     Redshift to comoving distance conversion.
 
+    .. math::
+
+        D_C(z) = c \\int_0^z \\frac{dz'}{H(z')}.
+
     Parameters
     ----------
     zs : `numpy.ndarray` or `float`
         Source redshifts
 
     Returns
-    ----------
+    -------
     comoving_distance : `numpy.ndarray`
         comoving distance in Mpc
 
     Examples
-    ----------
-    >>> from ler.len_galaxy_population import OpticalDepth
-    >>> ler = OpticalDepth()  # with default LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
-    >>> comoving_distance = ler.comoving_distance(1.)
-    >>> comoving_distance = ler.comoving_distance.function(np.array([1., 2.]))
-    >>> redshift = ler.comoving_distance.function_inverse(np.array([100., 200.]))
+    --------
+    >>> import numpy as np
+    >>> from ler.utils import comoving_distance
+    >>> dc = comoving_distance(get_attribute=True)
+    >>> distances = dc.function(np.array([1., 2.]))
+    >>> redshift = dc.function_inverse(np.array([100., 200.]))
     """
 
     return comoving_distance_object if get_attribute else comoving_distance_object(z)
 
 def angular_diameter_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory="./interpolator_json", create_new=False, resolution=500, get_attribute=True):    
+    """
+    Create a FunctionConditioning object for the angular diameter distance.
+
+    .. math::
+
+        D_A(z) = \\frac{D_C(z)}{1+z}.
+
+    Parameters
+    ----------
+    z : ``float`` or ``numpy.ndarray`` or ``None``
+        Redshift(s) at which to evaluate. If None, returns the FunctionConditioning object.
+    z_min : ``float``
+        Minimum redshift. default: 0.001
+    z_max : ``float``
+        Maximum redshift. default: 10.0
+    cosmo : ``astropy.cosmology``
+        Cosmology object. default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+    directory : ``str``
+        Directory for storing interpolator JSON files. default: './interpolator_json'
+    create_new : ``bool``
+        If True, create new interpolator. default: False
+    resolution : ``int``
+        Number of grid points for the interpolator. default: 500
+    get_attribute : ``bool``
+        If True, return the FunctionConditioning object. default: True
+
+    Returns
+    -------
+    angular_diameter_distance : ``FunctionConditioning`` or ``numpy.ndarray``
+        Angular diameter distance in Mpc.
+    """
 
     z_min = 0.001 if z_min == 0. else z_min
     zs = generate_mixed_grid(z_min, z_max, resolution)
@@ -329,28 +476,67 @@ def angular_diameter_distance(z=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0
     angular_diameter_distance_object.__doc__ = """
     Redshift to angular diameter distance conversion.
 
+    .. math::
+
+        D_A(z) = \\frac{D_C(z)}{1+z}.
+
     Parameters
     ----------
     zs : `numpy.ndarray` or `float`
         Source redshifts
 
     Returns
-    ----------
+    -------
     angular_diameter_distance : `numpy.ndarray`
         angular diameter distance in Mpc
 
     Examples
-    ----------
-    >>> from ler.len_galaxy_population import OpticalDepth
-    >>> ler = OpticalDepth()  # with default LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
-    >>> angular_diameter_distance = ler.angular_diameter_distance(1.)
-    >>> angular_diameter_distance = ler.angular_diameter_distance.function(np.array([1., 2.]))
-    >>> redshift = ler.angular_diameter_distance.function_inverse(np.array([100., 200.]))
+    --------
+    >>> import numpy as np
+    >>> from ler.utils import angular_diameter_distance
+    >>> da = angular_diameter_distance(get_attribute=True)
+    >>> distances = da.function(np.array([1., 2.]))
     """
 
     return angular_diameter_distance_object if get_attribute else angular_diameter_distance_object(z)
 
 def angular_diameter_distance_z1z2(z1=None, z2=None, z_min=0.001, z_max=10., cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory="./interpolator_json", create_new=False, resolution=500, get_attribute=True):
+    """
+    Create a FunctionConditioning object for the angular diameter distance between two redshifts.
+
+    Uses the relation
+
+    .. math::
+
+        D_A(z_1, z_2) =
+        \\frac{D_A(z_2)(1+z_2) - D_A(z_1)(1+z_1)}{1+z_2}.
+
+    Parameters
+    ----------
+    z1 : ``float`` or ``numpy.ndarray`` or ``None``
+        Lens redshift(s).
+    z2 : ``float`` or ``numpy.ndarray`` or ``None``
+        Source redshift(s).
+    z_min : ``float``
+        Minimum redshift. default: 0.001
+    z_max : ``float``
+        Maximum redshift. default: 10.0
+    cosmo : ``astropy.cosmology``
+        Cosmology object. default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+    directory : ``str``
+        Directory for storing interpolator JSON files. default: './interpolator_json'
+    create_new : ``bool``
+        If True, create new interpolator. default: False
+    resolution : ``int``
+        Number of grid points for the interpolator. default: 500
+    get_attribute : ``bool``
+        If True, return the FunctionConditioning object. default: True
+
+    Returns
+    -------
+    angular_diameter_distance_z1z2 : ``FunctionConditioning`` or ``numpy.ndarray``
+        Angular diameter distance between z1 and z2 in Mpc.
+    """
 
     z_min = 0.001 if z_min == 0. else z_min
 
@@ -358,7 +544,7 @@ def angular_diameter_distance_z1z2(z1=None, z2=None, z_min=0.001, z_max=10., cos
 
     # for angular diameter distance between two redshifts
     _Da = angular_diameter_distance_object.function
-    @njit(cache=True)
+    @njit()
     def angular_diameter_distance_z1z2(zl0, zs0):
         return (_Da(zs0) * (1.0 + zs0) - _Da(zl0) * (1.0 + zl0)) / (1.0 + zs0)
 
@@ -377,7 +563,12 @@ def angular_diameter_distance_z1z2(z1=None, z2=None, z_min=0.001, z_max=10., cos
     )
 
     angular_diameter_distance_z1z2_object.__doc__ = """
-    Redshift to angular diameter distance conversion.
+    Angular diameter distance between two redshifts.
+
+    .. math::
+
+        D_A(z_l, z_s) =
+        \\frac{D_A(z_s)(1+z_s) - D_A(z_l)(1+z_l)}{1+z_s}.
 
     Parameters
     ----------
@@ -387,17 +578,16 @@ def angular_diameter_distance_z1z2(z1=None, z2=None, z_min=0.001, z_max=10., cos
         Source redshifts
 
     Returns
-    ----------
+    -------
     angular_diameter_distance_z1z2 : `numpy.ndarray`
-        angular diameter distance in Mpc
+        angular diameter distance between ``zl0`` and ``zs0`` in Mpc.
 
     Examples
-    ----------
-    >>> from ler.len_galaxy_population import OpticalDepth
-    >>> ler = OpticalDepth()  # with default LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
-    >>> angular_diameter_distance_z1z2 = ler.angular_diameter_distance_z1z2(1., 2.)
-    >>> angular_diameter_distance_z1z2 = ler.angular_diameter_distance_z1z2.function(np.array([1., 2.]), np.array([1., 2.]))
+    --------
+    >>> import numpy as np
+    >>> from ler.utils import angular_diameter_distance_z1z2
+    >>> da_z1z2 = angular_diameter_distance_z1z2(get_attribute=True)
+    >>> distances = da_z1z2.function(np.array([0.5, 1.0]), np.array([1.0, 2.0]))
     """
 
     return angular_diameter_distance_z1z2_object if get_attribute else angular_diameter_distance_z1z2_object(z1, z2)
-

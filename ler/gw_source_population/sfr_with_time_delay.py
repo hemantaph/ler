@@ -29,9 +29,18 @@ def sfr_with_time_delay_function(input_args):
     """
     Compute star formation rate at observed redshift with time delay.
 
-    The star formation rate is time-delayed relative to the observed redshift,
-    with a time delay uniformly distributed between td_min and td_max. The
-    formation redshift is computed using the cosmological age-redshift relation.
+    The star formation rate is evaluated at the formation redshift implied by a
+    delay-time distribution. The implemented delay prior is log-uniform,
+
+    .. math::
+
+        p(t_d) = \\frac{1}{t_d \\ln(t_{d,\\max}/t_{d,\\min})},
+
+    with formation redshift ``z_form`` found from
+
+    .. math::
+
+        t_d = t_{\\rm lb}(z_{\\rm form}) - t_{\\rm lb}(z).
 
     Parameters
     ----------
@@ -58,9 +67,9 @@ def sfr_with_time_delay_function(input_args):
 
     Examples
     --------
-    >>> from ler.gw_source_population.sfr_with_time_delay import sfr_with_time_delay
+    >>> from ler.gw_source_population.sfr_with_time_delay import sfr_with_time_delay_function
     >>> args = [0.5, 0, 0.02, 13.0, 70.0, 0.3, 0.7, 0.01, 2.6, 3.2, 6.2]
-    >>> idx, sfr = sfr_with_time_delay(args)
+    >>> idx, sfr = sfr_with_time_delay_function(args)
     """
     set_num_threads(1)
 

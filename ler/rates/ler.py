@@ -84,14 +84,14 @@ class LeR(LensGalaxyParameterDistribution):
         Maximum redshift of the source population. \n
         default: 10.0
     event_type : ``str``
-        Type of event to generate. source_priors and source_priors_params will be set accordingly. \n
+        Type of event to generate. gw_priors and gw_priors_params will be set accordingly. \n
         Options: \n
         - 'BBH': Binary Black Hole \n
         - 'BNS': Binary Neutron Star \n
         - 'NSBH': Neutron Star-Black Hole \n
         default: 'BBH'
     lens_type : ``str``
-        Type of lens model to use. lens_functions, lens_functions_params, lens_param_samplers and lens_param_samplers_params will be set accordingly. \n
+        Type of lens model to use. lens_functions, lens_functions_params, lens_priors and lens_priors_params will be set accordingly. \n
         Options: \n
         - 'epl_shear_galaxy': Exponential Power Law Shear Galaxy \n
         - 'sie_galaxy': Singular Isothermal Ellipsoid Galaxy \n
@@ -261,7 +261,8 @@ class LeR(LensGalaxyParameterDistribution):
                             continue
                         zip_ref.extract(member, dest_path)
 
-        print("\nInitializing LeR class...\n")
+        if verbose:
+            print("\nInitializing LeR class...\n")
         # init ler attributes
         self.npool = npool
         self.z_min = z_min
@@ -358,24 +359,27 @@ class LeR(LensGalaxyParameterDistribution):
             lens_type=self.lens_type,
             lens_functions=None,
             lens_functions_params=None,
-            lens_param_samplers=None,
-            lens_param_samplers_params=None,
+            lens_priors=None,
+            lens_priors_params=None,
             directory=self.interpolator_directory,
             create_new_interpolator=False,
+            buffer_size=1000,
             # ImageProperties class params
             n_min_images=2,
             n_max_images=4,
-            time_window=365 * 24 * 3600 * 2,
+            time_window=365. * 24. * 3600. * 1.,
             lens_model_list=["EPL_NUMBA", "SHEAR"],
-            image_properties_function="image_properties_epl_shear",
+            image_properties_function="image_properties_epl_shear_njit",
             image_properties_function_params=None,
             include_effective_parameters=False,
             multiprocessing_verbose=True,
             include_redundant_parameters=False,
             # CBCSourceParameterDistribution class params
             event_type=self.event_type,
-            source_priors=None,
-            source_priors_params=None,
+            gw_priors=None,
+            gw_priors_params=None,
+            gw_functions=None,
+            gw_functions_params=None,
             spin_zero=False,
             spin_precession=False,
         )
@@ -397,10 +401,11 @@ class LeR(LensGalaxyParameterDistribution):
             lens_type=input_params["lens_type"],
             lens_functions=input_params["lens_functions"],
             lens_functions_params=input_params["lens_functions_params"],
-            lens_param_samplers=input_params["lens_param_samplers"],
-            lens_param_samplers_params=input_params["lens_param_samplers_params"],
+            lens_priors=input_params["lens_priors"],
+            lens_priors_params=input_params["lens_priors_params"],
             directory=input_params["directory"],
             create_new_interpolator=input_params["create_new_interpolator"],
+            buffer_size=input_params["buffer_size"],
             # ImageProperties class params
             n_min_images=input_params["n_min_images"],
             n_max_images=input_params["n_max_images"],
@@ -413,18 +418,22 @@ class LeR(LensGalaxyParameterDistribution):
             include_redundant_parameters=input_params["include_redundant_parameters"],
             # CBCSourceParameterDistribution class params
             event_type=input_params["event_type"],
-            source_priors=input_params["source_priors"],
-            source_priors_params=input_params["source_priors_params"],
+            gw_priors=input_params["gw_priors"],
+            gw_priors_params=input_params["gw_priors_params"],
+            gw_functions=input_params["gw_functions"],
+            gw_functions_params=input_params["gw_functions_params"],
             spin_zero=input_params["spin_zero"],
             spin_precession=input_params["spin_precession"],
         )
 
         # some of the None values will have default values after initialization
-        input_params["source_priors"] = self.gw_param_samplers.copy()
-        input_params["source_priors_params"] = self.gw_param_samplers_params.copy()
-        input_params["lens_param_samplers"] = self.lens_param_samplers.copy()
-        input_params["lens_param_samplers_params"] = (
-            self.lens_param_samplers_params.copy()
+        input_params["gw_priors"] = self.gw_param_samplers.copy()
+        input_params["gw_priors_params"] = self.gw_param_samplers_params.copy()
+        input_params["gw_functions"] = self.gw_functions.copy()
+        input_params["gw_functions_params"] = self.gw_functions_params.copy()
+        input_params["lens_priors"] = self.lens_priors.copy()
+        input_params["lens_priors_params"] = (
+            self.lens_priors_params.copy()
         )
         input_params["lens_functions"] = self.lens_functions.copy()
         input_params["lens_functions_params"] = self.lens_functions_params.copy()
@@ -444,16 +453,6 @@ class LeR(LensGalaxyParameterDistribution):
         """
         from gwsnr import GWSNR
 
-        # initialization of GWSNR class
-        if "mminbh" in self.gw_param_samplers_params["source_frame_masses"]:
-            min_bh_mass = self.gw_param_samplers_params["source_frame_masses"]["mminbh"]
-        else:
-            min_bh_mass = 2.0
-
-        if "mmaxbh" in self.gw_param_samplers_params["source_frame_masses"]:
-            max_bh_mass = self.gw_param_samplers_params["source_frame_masses"]["mmaxbh"]
-        else:
-            max_bh_mass = 200.0
         input_params = dict(
             # General settings
             npool=self.npool,
@@ -470,12 +469,8 @@ class LeR(LensGalaxyParameterDistribution):
                 include_observed_snr=False,
             ),
             # Settings for interpolation grid
-            mtot_min=min_bh_mass * 2,
-            mtot_max=(
-                max_bh_mass * 2 * (1 + self.z_max)
-                if max_bh_mass * 2 * (1 + self.z_max) < 500.0
-                else 500.0
-            ),
+            mtot_min=1.0,
+            mtot_max=500.0,
             ratio_min=0.1,
             ratio_max=1.0,
             spin_max=0.99,
@@ -619,16 +614,32 @@ class LeR(LensGalaxyParameterDistribution):
         print(
             "\n    # LeR also takes other CBCSourceParameterDistribution class input arguments as kwargs, as follows:"
         )
-        print("    source_priors = dict(")
-        for key, value in self.ler_args["source_priors"].items():
+        print("    gw_functions = dict(")
+        for key, value in self.ler_args["gw_functions"].items():
             (
                 print(f"        {key} = '{value}',")
                 if isinstance(value, str)
                 else print(f"        {key} = {value},")
             )
         print("    ),")
-        print("    source_priors_params = dict(")
-        for key, value in self.ler_args["source_priors_params"].items():
+        print("    gw_functions_params = dict(")
+        for key, value in self.ler_args["gw_functions_params"].items():
+            (
+                print(f"        {key} = '{value}',")
+                if isinstance(value, str)
+                else print(f"        {key} = {value},")
+            )
+        print("    ),")
+        print("    gw_priors = dict(")
+        for key, value in self.ler_args["gw_priors"].items():
+            (
+                print(f"        {key} = '{value}',")
+                if isinstance(value, str)
+                else print(f"        {key} = {value},")
+            )
+        print("    ),")
+        print("    gw_priors_params = dict(")
+        for key, value in self.ler_args["gw_priors_params"].items():
             (
                 print(f"        {key} = '{value}',")
                 if isinstance(value, str)
@@ -657,16 +668,16 @@ class LeR(LensGalaxyParameterDistribution):
                 else print(f"        {key} = {value},")
             )
         print("    ),")
-        print("    lens_param_samplers = dict(")
-        for key, value in self.ler_args["lens_param_samplers"].items():
+        print("    lens_priors = dict(")
+        for key, value in self.ler_args["lens_priors"].items():
             (
                 print(f"        {key} = '{value}',")
                 if isinstance(value, str)
                 else print(f"        {key} = {value},")
             )
         print("    ),")
-        print("    lens_param_samplers_params = dict(")
-        for key, value in self.ler_args["lens_param_samplers_params"].items():
+        print("    lens_priors_params = dict(")
+        for key, value in self.ler_args["lens_priors_params"].items():
             (
                 print(f"        {key} = '{value}',")
                 if isinstance(value, str)
@@ -742,7 +753,7 @@ class LeR(LensGalaxyParameterDistribution):
         batch_size=50000,
         resume=True,
         save_batch=False,
-        output_jsonfile=None,
+        output_jsonfile=True,
     ):
         """
         Generate unlensed GW source parameters with detection probabilities.
@@ -827,10 +838,19 @@ class LeR(LensGalaxyParameterDistribution):
         """
 
         # Note: size must be provided as argument, no default fallback
-        output_jsonfile = output_jsonfile or self.json_file_names["unlensed_param"]
-        self.json_file_names["unlensed_param"] = output_jsonfile
-        output_path = os.path.join(self.ler_directory, output_jsonfile)
-        print(f"unlensed params will be stored in {output_path}")
+        if output_jsonfile is True:
+            output_jsonfile = self.json_file_names["unlensed_param"]
+            output_path = os.path.join(self.ler_directory, output_jsonfile)
+            print(f"unlensed params will be stored in {output_path}")
+        elif isinstance(output_jsonfile, str):
+            self.json_file_names["unlensed_param"] = output_jsonfile
+            output_path = os.path.join(self.ler_directory, output_jsonfile)
+            print(f"unlensed params will be stored in {output_path}")
+        else:
+            output_path = None
+            save_batch = False
+            resume = False
+            print("unlensed params will not be saved to file (output_jsonfile=None/False)")
 
         unlensed_param = batch_handler(
             size=size,
@@ -874,7 +894,7 @@ class LeR(LensGalaxyParameterDistribution):
 
         # get gw params
         print("sampling gw source params...")
-        unlensed_param = self.sample_gw_parameters(size=size)
+        unlensed_param = self.gw_parameters_rvs(size=size)
 
         # Get pdet
         from numba import set_num_threads
@@ -890,7 +910,7 @@ class LeR(LensGalaxyParameterDistribution):
         unlensed_param=None,
         pdet_threshold=0.5,
         pdet_type="boolean",
-        output_jsonfile=None,
+        output_jsonfile=True,
     ):
         """
         Function to calculate the unlensed rate.
@@ -979,7 +999,7 @@ class LeR(LensGalaxyParameterDistribution):
 
         # find index of detectable events
         pdet = unlensed_param["pdet_net"]
-        idx_detectable = pdet > pdet_threshold
+        idx_detectable = pdet >= pdet_threshold
 
         if pdet_type == "boolean":
             detectable_events = np.sum(idx_detectable)
@@ -987,7 +1007,7 @@ class LeR(LensGalaxyParameterDistribution):
             detectable_events = np.sum(pdet)
         else:
             raise ValueError("pdet_type not recognized")
-        # montecarlo integration``
+        # montecarlo integration
         # The total rate R = norm <Theta(rho-rhoc)>
         total_rate = self.rate_function(
             detectable_events, total_events, param_type="unlensed"
@@ -1136,14 +1156,18 @@ class LeR(LensGalaxyParameterDistribution):
                 param[key] = value[idx_detectable]
 
         # store all detectable params in json file
-        if output_jsonfile is None:
+        if output_jsonfile is True:
             output_jsonfile = self.json_file_names[key_file_name]
-        else:
+        elif isinstance(output_jsonfile, str):
             self.json_file_names[key_file_name] = output_jsonfile
+        else:
+            # None/False: skip saving
+            return None
 
         output_path = self.ler_directory + "/" + output_jsonfile
         if verbose:
             print(f"storing detectable params in {output_path}")
+        
         append_json(output_path, param, replace=replace_jsonfile)
 
     def _append_ler_param(self, total_rate, pdet_type="boolean", param_type="unlensed"):
@@ -1178,7 +1202,7 @@ class LeR(LensGalaxyParameterDistribution):
         batch_size=50000,
         save_batch=False,
         resume=True,
-        output_jsonfile=None,
+        output_jsonfile=True,
     ):
         """
         Generate lensed GW source parameters.
@@ -1292,8 +1316,6 @@ class LeR(LensGalaxyParameterDistribution):
             | effective_dec                | rad       | Dec of the image                                      |
             |                              |           | dec + (x1_image_positions_i - y_source)               |
             +------------------------------+-----------+-------------------------------------------------------+
-            | effective_geocent_time       | s         | effective GPS time of coalescence of the images       |
-            +------------------------------+-----------+-------------------------------------------------------+
             | pdet_L1                      |           | detection probability of L1                           |
             +------------------------------+-----------+-------------------------------------------------------+
             | pdet_H1                      |           | detection probability of H1                           |
@@ -1312,10 +1334,19 @@ class LeR(LensGalaxyParameterDistribution):
         """
 
         # Note: size must be provided as argument, no default fallback
-        output_jsonfile = output_jsonfile or self.json_file_names["lensed_param"]
-        self.json_file_names["lensed_param"] = output_jsonfile
-        output_path = os.path.join(self.ler_directory, output_jsonfile)
-        print(f"lensed params will be stored in {output_path}")
+        if output_jsonfile is True:
+            output_jsonfile = self.json_file_names["lensed_param"]
+            output_path = os.path.join(self.ler_directory, output_jsonfile)
+            print(f"lensed params will be stored in {output_path}")
+        elif isinstance(output_jsonfile, str):
+            self.json_file_names["lensed_param"] = output_jsonfile
+            output_path = os.path.join(self.ler_directory, output_jsonfile)
+            print(f"lensed params will be stored in {output_path}")
+        else:
+            output_path = None
+            save_batch = False
+            resume = False
+            print("lensed params will not be saved to file (output_jsonfile=None/False)")
 
         lensed_param = batch_handler(
             size=size,
@@ -1408,7 +1439,7 @@ class LeR(LensGalaxyParameterDistribution):
         lensed_param=None,
         pdet_threshold=[0.5, 0.5],
         num_img=[1, 1],
-        output_jsonfile=None,
+        output_jsonfile=True,
         nan_to_num=True,
         pdet_type="boolean",
     ):
@@ -1669,7 +1700,7 @@ class LeR(LensGalaxyParameterDistribution):
             for i, pdet_th in enumerate(pdet_threshold):
                 idx_max = idx_max + num_img[i]
                 pdet_hit = pdet_hit & (
-                    np.sum((pdet_param[:, j:idx_max] > pdet_th), axis=1) >= num_img[i]
+                    np.sum((pdet_param[:, j:idx_max] >= pdet_th), axis=1) >= num_img[i]
                 )
                 # select according to time delays
                 j = idx_max
@@ -1994,7 +2025,7 @@ class LeR(LensGalaxyParameterDistribution):
 
             # find index of detectable events
             pdet = unlensed_param["pdet_net"]
-            idx_detectable = pdet > pdet_threshold
+            idx_detectable = pdet >= pdet_threshold
 
             # store all params in json file
             self._save_detectable_params(
@@ -2566,7 +2597,6 @@ class LeR(LensGalaxyParameterDistribution):
                 angular_diameter_distance = {'create_new': False, 'resolution': 500},
                 angular_diameter_distance_z1z2 = {'create_new': False, 'resolution': 500},
                 density_profile_slope = {'create_new': False, 'resolution': 100},
-                lens_parameters_kde_sl = {'create_new': False, 'resolution': 5000},
                 cross_section = {'create_new': False, 'resolution': [25, 25, 45, 15, 15]},
                 gwsnr = False,
             )
@@ -2588,11 +2618,14 @@ class LeR(LensGalaxyParameterDistribution):
             Number of logical cores to use for multiprocessing. \n
             default: 4
         """
+        
         return self._npool
 
     @npool.setter
     def npool(self, value):
         self._npool = value
+        from numba import set_num_threads
+        set_num_threads(value)
 
     @property
     def z_min(self):

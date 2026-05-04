@@ -30,8 +30,6 @@ from scipy.integrate import quad
 from astropy.cosmology import LambdaCDM
 
 from .optical_depth import OpticalDepth
-from .sampler_functions import _njit_checks
-
 from ..gw_source_population import CBCSourceParameterDistribution
 from ..image_properties import ImageProperties
 from ..utils import (
@@ -89,10 +87,10 @@ class LensGalaxyParameterDistribution(
     lens_functions_params : ``dict`` or ``None``
         Parameters for lens functions. \n
         default: None
-    lens_param_samplers : ``dict`` or ``None``
+    lens_priors : ``dict`` or ``None``
         Dictionary specifying lens parameter sampling functions. \n
         default: None (uses defaults from OpticalDepth)
-    lens_param_samplers_params : ``dict`` or ``None``
+    lens_priors_params : ``dict`` or ``None``
         Parameters for lens parameter samplers. \n
         default: None
     directory : ``str``
@@ -131,7 +129,7 @@ class LensGalaxyParameterDistribution(
     | :meth:`~sample_all_routine_epl_shear_intrinsic`     | Sample EPL+shear lens parameters from          |
     |                                                     | intrinsic distributions                        |
     +-----------------------------------------------------+------------------------------------------------+
-    | :meth:`~sample_all_routine_epl_shear_sl`            | Sample EPL+shear lens parameters with strong   |
+    | :meth:`~epl_shear_sl_parameters_rvs`            | Sample EPL+shear lens parameters with strong   |
     |                                                     | lensing condition                              |
     +-----------------------------------------------------+------------------------------------------------+
     | :meth:`~strongly_lensed_source_redshift`            | Sample source redshifts with lensing condition |
@@ -155,9 +153,9 @@ class LensGalaxyParameterDistribution(
     +------------------------------------------------+----------------------+-------+------------------------------------------------+
     | :attr:`~directory`                             | ``str``              |       | Path to interpolator storage directory         |
     +------------------------------------------------+----------------------+-------+------------------------------------------------+
-    | :attr:`~lens_param_samplers`                   | ``dict``             |       | Dictionary of lens parameter sampler names     |
+    | :attr:`~lens_priors`                   | ``dict``             |       | Dictionary of lens parameter sampler names     |
     +------------------------------------------------+----------------------+-------+------------------------------------------------+
-    | :attr:`~lens_param_samplers_params`            | ``dict``             |       | Parameters for lens parameter samplers         |
+    | :attr:`~lens_priors_params`            | ``dict``             |       | Parameters for lens parameter samplers         |
     +------------------------------------------------+----------------------+-------+------------------------------------------------+
     | :attr:`~lens_functions`                        | ``dict``             |       | Dictionary of lens function names              |
     +------------------------------------------------+----------------------+-------+------------------------------------------------+
@@ -175,8 +173,8 @@ class LensGalaxyParameterDistribution(
         lens_type="epl_shear_galaxy",
         lens_functions=None,
         lens_functions_params=None,
-        lens_param_samplers=None,
-        lens_param_samplers_params=None,
+        lens_priors=None,
+        lens_priors_params=None,
         directory="./interpolator_json",
         create_new_interpolator=False,
         buffer_size=1000,
@@ -201,15 +199,15 @@ class LensGalaxyParameterDistribution(
             lens_type,
             lens_functions,
             lens_functions_params,
-            lens_param_samplers,
-            lens_param_samplers_params,
+            lens_priors,
+            lens_priors_params,
             directory,
             create_new_interpolator,
             params=kwargs,
         )
 
         # Function to sample source redshifts conditioned on strong lensing
-        self.source_redshift_sl = self.lens_param_samplers["source_redshift_sl"]
+        self.zs_sl = self.lens_priors["zs_sl"]
 
         # Function to sample lens parameters
         self.sample_lens_parameters_routine = getattr(
@@ -236,99 +234,106 @@ class LensGalaxyParameterDistribution(
         """
         Initialize the cross-section based lens parameter sampler.
 
+        ``_njit_checks`` always validates the intrinsic ``zs`` / ``lens_redshift``
+        PDFs (as used in *full* modes). *Partial* modes draw ``(zs,zl)`` from
+        ``zs_sl`` / ``lens_redshift_sl`` separately; conditional weights over
+        ``(sigma, lambda)`` omit redshift and ``dV/dz`` factors (constant given
+        fixed ``(zs,zl)``).
+
         Returns
         -------
         cross_section_based_sampler : ``callable``
             Function that samples lens parameters weighted by cross-section.
         """
-        # Get random variable samplers from initialized objects
-        sigma_rvs = self.velocity_dispersion.rvs
-        q_rvs = self.axis_ratio.rvs
-        phi_rvs = self.axis_rotation_angle.rvs
-        gamma_rvs = self.density_profile_slope.rvs
-        shear_rvs = self.external_shear.rvs
-        sigma_pdf = self.velocity_dispersion.pdf
-        number_density = self.velocity_dispersion.function
-        cross_section_function = self.cross_section
+        sampler_type = self.lens_functions["cross_section_based_sampler"]
+        sampler_params = self.lens_functions_params["cross_section_based_sampler"]
 
-        if cross_section_function.__code__.co_argcount <= 4:  # sie or sis cross-section
-            gamma_rvs = self.density_profile_slope_sl.rvs
-            shear_rvs = self.external_shear_sl.rvs
-            # not yet implemented
-            # q_rvs = self.axis_ratio_sl.rvs
-            # phi_rvs = self.axis_rotation_angle_sl.rvs
-
-        use_njit_sampler, dict_ = _njit_checks(
-            sigma_rvs,
-            q_rvs,
-            phi_rvs,
-            gamma_rvs,
-            shear_rvs,
-            sigma_pdf,
-            number_density,
-            cross_section_function,
+        range_kwargs = dict(
+            z_min=self.z_min,
+            z_max=self.z_max,
+            sigma_min=sampler_params.get(
+                "sigma_min",
+                self.lens_priors_params["velocity_dispersion"].get("sigma_min", 100.0),
+            ),
+            sigma_max=sampler_params.get(
+                "sigma_max",
+                self.lens_priors_params["velocity_dispersion"].get("sigma_max", 400.0),
+            ),
+            q_min=sampler_params.get(
+                "q_min", self.lens_priors_params["axis_ratio"].get("q_min", 0.2)
+            ),
+            q_max=sampler_params.get(
+                "q_max", self.lens_priors_params["axis_ratio"].get("q_max", 1.0)
+            ),
+            phi_min=sampler_params.get("phi_min", 0.0),
+            phi_max=sampler_params.get("phi_max", 2 * np.pi),
+            gamma_min=sampler_params.get("gamma_min", 1.5),
+            gamma_max=sampler_params.get("gamma_max", 2.5),
+            shear_min=sampler_params.get("shear_min", -0.2),
+            shear_max=sampler_params.get("shear_max", 0.2),
         )
 
-        sigma_rvs = dict_["sigma_rvs"]
-        sigma_pdf = dict_["sigma_pdf"]
-        q_rvs = dict_["q_rvs"]
-        phi_rvs = dict_["phi_rvs"]
-        gamma_rvs = dict_["gamma_rvs"]
-        shear_rvs = dict_["shear_rvs"]
-        cross_section_function = dict_["cross_section_function"]
+        # PDFs used in ``_njit_checks`` and full cross-section weights:
+        # * Full samplers: intrinsic ``P(zs)``, ``dV/dz_l``, and Schechter-style
+        #   ``n(sigma,zl)`` (no extra ``P(zl|zs)``: ``z_l`` is implicit in the
+        #   uniform-in-interval proposal vs comoving-volume × number density).
+        # * Partial samplers fix ``(zs,zl)`` from ``zs_sl`` and ``lens_redshift_sl``;
+        #   weights over ``(sigma,lambda)`` use only ``n(sigma,zl)`` and shape PDFs
+        #   (no ``P(zs|SL)``, ``P(zl|zs,SL)``, or ``dV/dz`` — constant given fixed redshifts).
+        zs_pdf = self.zs.pdf
+        zl_pdf = self.lens_redshift.pdf
 
-        sigma_max = self.lens_param_samplers_params["velocity_dispersion"]["sigma_max"]
+        number_density = self.velocity_dispersion.function
+        q_pdf=self.axis_ratio.pdf
+        phi_pdf=self.axis_rotation_angle.pdf
+        gamma_pdf=self.density_profile_slope.pdf
+        shear1_pdf=self.external_shear1.pdf
+        shear2_pdf=self.external_shear2.pdf
+        cross_section=self.cross_section
+        dVdz=self.differential_comoving_volume.function
 
-        # Choose sampling method based on configuration
-        if (
-            self.lens_functions["cross_section_based_sampler"]
-            == "rejection_sampling_with_cross_section"
-        ):
-            from .sampler_functions import create_rejection_sampler
+        from .sampler_functions import _njit_checks
 
-            safety_factor = self.lens_functions_params["cross_section_based_sampler"][
-                "safety_factor"
-            ]
+        use_njit_sampler, dict_ = _njit_checks(
+            zs_pdf=zs_pdf,  
+            zl_pdf=zl_pdf,
+            number_density_function=number_density,
+            q_pdf=q_pdf,
+            phi_pdf=phi_pdf,
+            gamma_pdf=gamma_pdf,
+            shear1_pdf=shear1_pdf,
+            shear2_pdf=shear2_pdf,
+            cross_section_function=cross_section,
+            dVcdz_function=dVdz,
+            create_njit_sampler=True,
+        )
+        
+        from .sampler_functions import create_sampler
 
-            cross_section_based_sampler = create_rejection_sampler(
-                sigma_max=sigma_max,
-                sigma_rvs=sigma_rvs,
-                q_rvs=q_rvs,
-                phi_rvs=phi_rvs,
-                gamma_rvs=gamma_rvs,
-                shear_rvs=shear_rvs,
-                cross_section=cross_section_function,
-                safety_factor=safety_factor,
-                use_njit_sampler=use_njit_sampler,
-            )
+        _full = sampler_type in (
+            "rejection_sampler_full",
+            "importance_sampler_full",
+        )
 
-        elif (
-            self.lens_functions["cross_section_based_sampler"]
-            == "importance_sampling_with_cross_section"
-        ):
-            from .sampler_functions import create_importance_sampler
+        return create_sampler(
+            zs_pdf=dict_["zs_pdf"] if _full else None,
+            number_density=dict_["number_density_function"],
+            q_pdf=dict_["q_pdf"],
+            phi_pdf=dict_["phi_pdf"],
+            gamma_pdf=dict_["gamma_pdf"],
+            shear1_pdf=dict_["shear1_pdf"],
+            shear2_pdf=dict_["shear2_pdf"],
+            cross_section=dict_["cross_section_function"],
+            dVdz=dict_["dVcdz_function"],
+            use_njit_sampler=use_njit_sampler,
+            sampler_type=sampler_type,
+            threshold_factor=sampler_params.get("threshold_factor", 1e-4),
+            n_prop=sampler_params.get("n_prop", 50),
+            lens_type=self.lens_type,
+            npool=self.npool,
+            **range_kwargs
+        )
 
-            sigma_min = self.lens_param_samplers_params["velocity_dispersion"][
-                "sigma_min"
-            ]
-            n_prop = self.lens_functions_params["cross_section_based_sampler"]["n_prop"]
-            cross_section_based_sampler = create_importance_sampler(
-                sigma_min=sigma_min,
-                sigma_max=sigma_max,
-                q_rvs=q_rvs,
-                phi_rvs=phi_rvs,
-                gamma_rvs=gamma_rvs,
-                shear_rvs=shear_rvs,
-                number_density=number_density,
-                cross_section=cross_section_function,
-                n_prop=n_prop,
-                use_njit_sampler=use_njit_sampler,
-                npool=self.npool,
-            )
-        else:
-            raise ValueError("Invalid cross_section_based_sampler")
-
-        return cross_section_based_sampler
 
     def _class_initialization_lens(
         self,
@@ -340,8 +345,8 @@ class LensGalaxyParameterDistribution(
         lens_type,
         lens_functions,
         lens_functions_params,
-        lens_param_samplers,
-        lens_param_samplers_params,
+        lens_priors,
+        lens_priors_params,
         directory,
         create_new_interpolator,
         params,
@@ -365,9 +370,9 @@ class LensGalaxyParameterDistribution(
             Dictionary of lens function names.
         lens_functions_params : ``dict`` or ``None``
             Parameters for lens functions.
-        lens_param_samplers : ``dict`` or ``None``
+        lens_priors : ``dict`` or ``None``
             Dictionary of lens parameter sampler names.
-        lens_param_samplers_params : ``dict`` or ``None``
+        lens_priors_params : ``dict`` or ``None``
             Parameters for lens parameter samplers.
         directory : ``str``
             Directory for interpolator storage.
@@ -385,8 +390,8 @@ class LensGalaxyParameterDistribution(
         # print("lens_type = ", lens_type)
         # print("lens_functions = ", lens_functions)
         # print("lens_functions_params = ", lens_functions_params)
-        # print("lens_param_samplers = ", lens_param_samplers)
-        # print("lens_param_samplers_params = ", lens_param_samplers_params)
+        # print("lens_priors = ", lens_priors)
+        # print("lens_priors_params = ", lens_priors_params)
         # print("directory = ", directory)
         # print("create_new_interpolator = ", create_new_interpolator)
 
@@ -400,28 +405,33 @@ class LensGalaxyParameterDistribution(
             lens_type=lens_type,
             lens_functions=lens_functions,
             lens_functions_params=lens_functions_params,
-            lens_param_samplers=lens_param_samplers,
-            lens_param_samplers_params=lens_param_samplers_params,
+            lens_priors=lens_priors,
+            lens_priors_params=lens_priors_params,
             directory=directory,
             create_new_interpolator=create_new_interpolator,
         )
 
         # Initialize CBCSourceParameterDistribution class
         input_params = dict(
-            source_priors=None,
-            source_priors_params=None,
-            spin_zero=True,
+            gw_priors=None,
+            gw_priors_params=None,
+            gw_functions=None,
+            gw_functions_params=None,
+            spin_zero=False,
             spin_precession=False,
         )
         input_params.update(params)
 
         CBCSourceParameterDistribution.__init__(
             self,
+            npool=npool,
             z_min=z_min,
             z_max=z_max,
             event_type=event_type,
-            source_priors=input_params["source_priors"],
-            source_priors_params=input_params["source_priors_params"],
+            gw_priors=input_params["gw_priors"],
+            gw_priors_params=input_params["gw_priors_params"],
+            gw_functions=input_params["gw_functions"],
+            gw_functions_params=input_params["gw_functions_params"],
             spin_zero=input_params["spin_zero"],
             cosmology=cosmology,
             spin_precession=input_params["spin_precession"],
@@ -433,11 +443,11 @@ class LensGalaxyParameterDistribution(
         input_params_image = dict(
             n_min_images=2,
             n_max_images=4,
-            time_window=365 * 24 * 3600 * 2,
+            time_window=365 * 24 * 3600 * 1,
             lens_model_list=["EPL_NUMBA", "SHEAR"],
-            image_properties_function="image_properties_epl_shear",
+            image_properties_function="image_properties_epl_shear_njit",
             image_properties_function_params=None,
-            include_effective_parameters=True,
+            include_effective_parameters=False,
             multiprocessing_verbose=True,
             include_redundant_parameters=False,
         )
@@ -454,6 +464,10 @@ class LensGalaxyParameterDistribution(
                 "image_properties_function_params"
             ],
             cosmology=cosmology,
+            directory=directory,
+            z_min=z_min,
+            z_max=z_max,
+            create_new_interpolator=create_new_interpolator,
             time_window=input_params_image["time_window"],
             spin_zero=input_params["spin_zero"],
             spin_precession=input_params["spin_precession"],
@@ -468,82 +482,83 @@ class LensGalaxyParameterDistribution(
 
     def sample_lens_parameters(self, size=1000):
         """
-        Sample lens galaxy and source parameters conditioned on strong lensing.
+            Sample lens galaxy and source parameters conditioned on strong lensing.
 
-        This method samples both lens galaxy parameters (velocity dispersion, axis
-        ratio, shear, etc.) and gravitational wave source parameters, with the
-        source redshift distribution weighted by strong lensing optical depth.
+            This method samples both lens galaxy parameters (velocity dispersion, axis
+            ratio, shear, etc.) and gravitational wave source parameters, with the
+            source redshift distribution weighted by strong lensing optical depth.
 
-        Parameters
-        ----------
-        size : ``int``
-            Number of lens-source parameter sets to sample. \n
-            default: 1000
+            Parameters
+            ----------
+            size : ``int``
+                Number of lens-source parameter sets to sample. \n
+                default: 1000
 
-        Returns
-        -------
-        lens_parameters : ``dict``
-            Dictionary containing sampled lens and source parameters. \n
-            The included parameters and their units are as follows (for default settings):\n
-            +------------------------------+-----------+-------------------------------------------------------+
-            | Parameter                    | Units     | Description                                           |
-            +==============================+===========+=======================================================+
-            | zl                           |           | redshift of the lens                                  |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | zs                           |           | redshift of the source                                |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | sigma                        | km s^-1   | velocity dispersion                                   |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | q                            |           | axis ratio                                            |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | theta_E                      | radian    | Einstein radius                                       |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
-            |                              |           | positive x-axis (RA-like axis) to the major axis of   |
-            |                              |           | the projected mass distribution.                      |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | gamma                        |           | density profile slope of EPL galaxy                   |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | gamma1                       |           | external shear component in the x-direction           |
-            |                              |           | (RA-like axis)                                        |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | gamma2                       |           | external shear component in the y-direction           |
-            |                              |           | (Dec-like axis)                                       |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | geocent_time                 | s         | geocent time                                          |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | ra                           | rad       | right ascension                                       |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | dec                          | rad       | declination                                           |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | phase                        | rad       | phase of GW at reference freq                         |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | psi                          | rad       | polarization angle                                    |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | theta_jn                     | rad       | inclination angle                                     |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | a_1                          |           | spin of the primary compact binary                    |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | a_2                          |           | spin of the secondary compact binary                  |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | luminosity_distance          | Mpc       | luminosity distance of the source                     |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | mass_1_source                | Msun      | mass of the primary compact binary (source frame)     |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | mass_2_source                | Msun      | mass of the secondary compact binary (source frame)   |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | mass_1                       | Msun      | mass of the primary compact binary (detector frame)   |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | mass_2                       | Msun      | mass of the secondary compact binary (detector frame) |
-            +------------------------------+-----------+-------------------------------------------------------+
+            Returns
+            -------
+            lens_parameters : ``dict``
+                Dictionary containing sampled lens and source parameters. \n
+                The included parameters and their units are as follows (for default settings):\n
+                +------------------------------+-----------+-------------------------------------------------------+
+                | Parameter                    | Units     | Description                                           |
+                +==============================+===========+=======================================================+
+                | zl                           |           | redshift of the lens                                  |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | zs                           |           | redshift of the source                                |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | sigma                        | km s^-1   | velocity dispersion                                   |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | q                            |           | axis ratio                                            |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | theta_E                      | radian    | Einstein radius                                       |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
+                |                              |           | positive x-axis (RA-like axis) to the major axis of   |
+                |                              |           | the projected mass distribution.                      |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | gamma                        |           | density profile slope of EPL galaxy                   |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | gamma1                       |           | external shear component in the x-direction           |
+                |                              |           | (RA-like axis)                                        |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | gamma2                       |           | external shear component in the y-direction           |
+                |                              |           | (Dec-like axis)                                       |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | geocent_time                 | s         | geocent time                                          |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | ra                           | rad       | right ascension                                       |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | dec                          | rad       | declination                                           |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | phase                        | rad       | phase of GW at reference freq                         |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | psi                          | rad       | polarization angle                                    |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | theta_jn                     | rad       | inclination angle                                     |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | a_1                          |           | spin of the primary compact binary                    |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | a_2                          |           | spin of the secondary compact binary                  |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | luminosity_distance          | Mpc       | luminosity distance of the source                     |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | mass_1_source                | Msun      | mass of the primary compact binary (source frame)     |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | mass_2_source                | Msun      | mass of the secondary compact binary (source frame)   |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | mass_1                       | Msun      | mass of the primary compact binary (detector frame)   |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | mass_2                       | Msun      | mass of the secondary compact binary (detector frame) |
+                +------------------------------+-----------+-------------------------------------------------------+
 
-        Examples
-        --------
-        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-        >>> lens = LensGalaxyParameterDistribution()
-        >>> params = lens.sample_lens_parameters(size=1000)
-        >>> print(params.keys())
+            Examples
+            --------
+            >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+            >>> lens = LensGalaxyParameterDistribution()
+            >>> params = lens.sample_lens_parameters(size=1000)
+            >>> print(params.keys())
         """
+
         print(
             f"sampling lens parameters with {self.lens_functions['param_sampler_type']}..."
         )
@@ -560,55 +575,78 @@ class LensGalaxyParameterDistribution(
 
         return lens_parameters
 
-    def sample_all_routine_epl_shear_sl(self, size=1000):
+    def epl_shear_sl_parameters_rvs(self, size=1000):
         """
-        Sample EPL+shear galaxy lens parameters with strong lensing condition.
+            Sample EPL+shear galaxy lens parameters with strong lensing condition.
 
-        Parameters
-        ----------
-        size : ``int``
-            Number of lens parameters to sample. \n
-            default: 1000
+            Parameters
+            ----------
+            size : ``int``
+                Number of lens parameters to sample. \n
+                default: 1000
 
-        Returns
-        -------
-        lens_parameters : ``dict``
-            Dictionary of sampled lens parameters. \n
-            The included parameters and their units are as follows (for default settings):\n
-            +------------------------------+-----------+-------------------------------------------------------+
-            | Parameter                    | Units     | Description                                           |
-            +==============================+===========+=======================================================+
-            | zl                           |           | redshift of the lens                                  |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | zs                           |           | redshift of the source                                |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | sigma                        | km s^-1   | velocity dispersion                                   |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | q                            |           | axis ratio                                            |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | theta_E                      | radian    | Einstein radius                                       |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
-            |                              |           | positive x-axis (RA-like axis) to the major axis of   |
-            |                              |           | the projected mass distribution.                      |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | gamma                        |           | density profile slope of EPL galaxy                   |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | gamma1                       |           | external shear component in the x-direction           |
-            |                              |           | (RA-like axis)                                        |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | gamma2                       |           | external shear component in the y-direction           |
-            |                              |           | (Dec-like axis)                                       |
-            +------------------------------+-----------+-------------------------------------------------------+
+            Returns
+            -------
+            lens_parameters : ``dict``
+                Dictionary of sampled lens parameters. \n
+                The included parameters and their units are as follows (for default settings):\n
+                +------------------------------+-----------+-------------------------------------------------------+
+                | Parameter                    | Units     | Description                                           |
+                +==============================+===========+=======================================================+
+                | zl                           |           | redshift of the lens                                  |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | zs                           |           | redshift of the source                                |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | sigma                        | km s^-1   | velocity dispersion                                   |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | q                            |           | axis ratio                                            |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | theta_E                      | radian    | Einstein radius                                       |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
+                |                              |           | positive x-axis (RA-like axis) to the major axis of   |
+                |                              |           | the projected mass distribution.                      |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | gamma                        |           | density profile slope of EPL galaxy                   |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | gamma1                       |           | external shear component in the x-direction           |
+                |                              |           | (RA-like axis)                                        |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | gamma2                       |           | external shear component in the y-direction           |
+                |                              |           | (Dec-like axis)                                       |
+                +------------------------------+-----------+-------------------------------------------------------+
         """
-        # Sample source redshift with strong lensing weighting
-        zs = self.source_redshift_sl(size)
 
-        # Sample lens redshift conditioned on source redshift
-        zl = self.lens_redshift.rvs(size, zs)
+        sampler_type = self.lens_functions["cross_section_based_sampler"]
 
-        # Sample other lens parameters using cross-section based sampler
-        sigma, q, phi, gamma, gamma1, gamma2 = self.cross_section_based_sampler(zs, zl)
+        # Full modes resample zs, zl, sigma, and lens nuisance parameters together.
+        if sampler_type in [
+            "rejection_sampler_full",
+            "importance_sampler_full",
+        ]:
+            zs, zl, sigma, q, phi, gamma, gamma1, gamma2 = (
+                self.cross_section_based_sampler(size)
+            )
+
+        # Partial modes keep the redshifts fixed and sample all lens parameters
+        # from the configured uniform proposal ranges.
+        elif sampler_type in [
+            "rejection_sampler_partial",
+            "importance_sampler_partial",
+        ]:
+            zs = self.zs_sl.rvs(size)
+            zl = self.lens_redshift_sl.rvs(size, zs)
+            sigma, q, phi, gamma, gamma1, gamma2 = self.cross_section_based_sampler(
+                size, zs, zl
+            )
+
+        else:
+            raise ValueError(
+                f"Invalid cross_section_based_sampler: {sampler_type}. "
+                "Available options are 'rejection_sampler_full', "
+                "'importance_sampler_full', 'rejection_sampler_partial', "
+                "and 'importance_sampler_partial'."
+            )
 
         lens_parameters = {
             "zl": zl,
@@ -624,190 +662,55 @@ class LensGalaxyParameterDistribution(
 
         return lens_parameters
 
-    # def strongly_lensed_source_redshift_rjs(self, size=1000):
-    #     """
-    #     Sample source redshifts conditioned on strong lensing.
-
-    #     Uses rejection sampling to generate source redshifts from the CBC source
-    #     population weighted by the optical depth, which increases with redshift.
-
-    #     Parameters
-    #     ----------
-    #     size : ``int``
-    #         Number of redshifts to sample. \n
-    #         default: 1000
-
-    #     Returns
-    #     -------
-    #     redshifts : ``numpy.ndarray``
-    #         Array of source redshifts conditioned on strong lensing.
-
-    #     Examples
-    #     --------
-    #     >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-    #     >>> lens = LensGalaxyParameterDistribution()
-    #     >>> zs = lens.strongly_lensed_source_redshift(size=1000)
-    #     >>> print(f"Mean source redshift: {zs.mean():.2f}")
-    #     """
-    #     z_max = self.z_max
-
-    #     def zs_function(zs_sl):
-    #         # Sample from source population
-    #         zs = self.zs(size)
-
-    #         # Apply optical depth weighting
-    #         tau = self.optical_depth(zs)
-    #         tau_max = self.optical_depth(np.array([z_max]))[0]
-
-    #         # Rejection sampling
-    #         r = np.random.uniform(0, tau_max, size=len(zs))
-    #         zs_sl += list(zs[r < tau])
-
-    #         if len(zs_sl) >= size:
-    #             return zs_sl[:size]
-    #         else:
-    #             return zs_function(zs_sl)
-
-    #     zs_sl = []
-    #     return np.array(zs_function(zs_sl))
-
-    def strongly_lensed_source_redshift(self, size, get_attribute=False, **kwargs):
-        """
-        Sample source redshifts conditioned on strong lensing.
-
-        Parameters
-        ----------
-        size : ``int``
-            Number of samples to generate. \n
-            default: 1000
-        get_attribute : ``bool``
-            If True, returns the sampler object instead of samples. \n
-            default: False
-        **kwargs : ``dict``
-            Additional parameters
-
-        Returns
-        -------
-        redshifts : ``numpy.ndarray``
-            Array of source redshifts conditioned on strong lensing.
-
-        Examples
-        --------
-        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
-        >>> lens = LensGalaxyParameterDistribution()
-        >>> zs = lens.strongly_lensed_source_redshift(size=1000)
-        >>> print(f"strongly lensed source redshift: {zs.mean():.2f}")
-        """
-
-        identifier_dict = {"name": "strongly_lensed_source_redshift"}
-        identifier_dict["resolution"] = self.create_new_interpolator[
-            "source_redshift_sl"
-        ]["resolution"]
-        identifier_dict["z_min"] = self.z_min
-        identifier_dict["z_max"] = self.z_max
-        identifier_dict["cosmology"] = self.cosmo
-        identifier_dict["resolution"] = self.create_new_interpolator[
-            "source_redshift_sl"
-        ]["resolution"]
-        identifier_dict["optical_depth"] = self.optical_depth.info  # can be None
-        identifier_dict["source_redshift"] = self.source_redshift.info
-
-        param_dict = self.available_lens_samplers["source_redshift_sl"][
-            "strongly_lensed_source_redshift"
-        ]
-        if param_dict:
-            param_dict.update(kwargs)
-        else:
-            param_dict = kwargs
-        identifier_dict.update(param_dict)
-
-        z_min = self.z_min if self.z_min > 0.0 else 0.0001
-        z_max = self.z_max
-        resolution = identifier_dict["resolution"]
-        zs_array = generate_mixed_grid(z_min, z_max, resolution)
-
-        if param_dict["tau_approximation"]:
-
-            def n_zs_sl(zs):
-                # gives number density of strongly lensed sources
-                P_sl_zs = self.optical_depth(zs)
-                return P_sl_zs * self.source_redshift.function(zs)
-
-        else:
-
-            def n_zs_sl(zs):
-                # gives number density of strongly lensed sources
-                tau = self.optical_depth(zs)
-                P_sl_zs = tau * np.exp(-tau)
-                return P_sl_zs * self.source_redshift.function(zs)
-
-        zs_sl_object = FunctionConditioning(
-            function=n_zs_sl,
-            x_array=zs_array,
-            conditioned_y_array=None,
-            identifier_dict=identifier_dict,
-            directory=self.directory,
-            sub_directory="source_redshift_sl",
-            name=identifier_dict["name"],
-            create_new=self.create_new_interpolator["source_redshift_sl"]["create_new"],
-            create_function_inverse=False,
-            create_function=True,
-            create_pdf=True,
-            create_rvs=True,
-            callback="rvs",
-        )
-
-        return zs_sl_object if get_attribute else zs_sl_object.rvs(size)
-
     def sample_all_routine_epl_shear_intrinsic(self, size=1000):
         """
-        Sample EPL+shear galaxy lens parameters from intrinsic distributions.
+            Sample EPL+shear galaxy lens parameters from intrinsic distributions.
 
-        Samples lens parameters from their intrinsic distributions without
-        applying strong lensing cross-section weighting.
+            Samples lens parameters from their intrinsic distributions without
+            applying strong lensing cross-section weighting.
 
-        Parameters
-        ----------
-        size : ``int``
-            Number of lens parameters to sample. \n
-            default: 1000
+            Parameters
+            ----------
+            size : ``int``
+                Number of lens parameters to sample. \n
+                default: 1000
 
-        Returns
-        -------
-        lens_parameters : ``dict``
-            Dictionary of sampled lens parameters. \n
-            The included parameters and their units are as follows (for default settings):\n
-            +------------------------------+-----------+-------------------------------------------------------+
-            | Parameter                    | Units     | Description                                           |
-            +==============================+===========+=======================================================+
-            | zl                           |           | redshift of the lens                                  |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | zs                           |           | redshift of the source                                |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | sigma                        | km s^-1   | velocity dispersion                                   |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | q                            |           | axis ratio                                            |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | theta_E                      | radian    | Einstein radius                                       |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
-            |                              |           | positive x-axis (RA-like axis) to the major axis of   |
-            |                              |           | the projected mass distribution.                      |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | gamma                        |           | density profile slope of EPL galaxy                   |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | gamma1                       |           | external shear component in the x-direction           |
-            |                              |           | (RA-like axis)                                        |
-            +------------------------------+-----------+-------------------------------------------------------+
-            | gamma2                       |           | external shear component in the y-direction           |
-            |                              |           | (Dec-like axis)                                       |
-            +------------------------------+-----------+-------------------------------------------------------+
+            Returns
+            -------
+            lens_parameters : ``dict``
+                Dictionary of sampled lens parameters. \n
+                The included parameters and their units are as follows (for default settings):\n
+                +------------------------------+-----------+-------------------------------------------------------+
+                | Parameter                    | Units     | Description                                           |
+                +==============================+===========+=======================================================+
+                | zl                           |           | redshift of the lens                                  |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | zs                           |           | redshift of the source                                |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | sigma                        | km s^-1   | velocity dispersion                                   |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | q                            |           | axis ratio                                            |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | theta_E                      | radian    | Einstein radius                                       |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
+                |                              |           | positive x-axis (RA-like axis) to the major axis of   |
+                |                              |           | the projected mass distribution.                      |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | gamma                        |           | density profile slope of EPL galaxy                   |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | gamma1                       |           | external shear component in the x-direction           |
+                |                              |           | (RA-like axis)                                        |
+                +------------------------------+-----------+-------------------------------------------------------+
+                | gamma2                       |           | external shear component in the y-direction           |
+                |                              |           | (Dec-like axis)                                       |
+                +------------------------------+-----------+-------------------------------------------------------+
         """
         # Sample source redshift from intrinsic distribution
         zs = self.zs(size)
 
         # Sample lens redshift
-        zl = self.lens_redshift_intrinsic.rvs(size, self.z_max * np.ones(size))
+        zl = self.lens_redshift.rvs(size, self.z_max * np.ones(size))
 
         # Sample velocity dispersion
         if self.velocity_dispersion.conditioned_y_array is not None:
@@ -824,7 +727,8 @@ class LensGalaxyParameterDistribution(
         # Sample remaining parameters
         phi = self.axis_rotation_angle.rvs(size)
         gamma = self.density_profile_slope.rvs(size)
-        gamma1, gamma2 = self.external_shear.rvs(size)
+        gamma1 = self.external_shear1.rvs(size)
+        gamma2 = self.external_shear2.rvs(size)
 
         lens_parameters = {
             "zl": zl,
@@ -839,44 +743,242 @@ class LensGalaxyParameterDistribution(
 
         return lens_parameters
 
+    # ---------------------------------
+    # Source redshift sampler functions
+    # ---------------------------------
+    def strongly_lensed_source_redshift(self, size, get_attribute=False, **kwargs):
+        """
+        Sample source redshifts conditioned on strong lensing.
+
+        Notes
+        -----
+        This sampler needs a merger-rate-weighted intrinsic source redshift model via
+        ``self.merger_rate_density_based_source_redshift``. That attribute is provided by
+        :class:`~ler.gw_source_population.CBCSourceParameterDistribution` and therefore is
+        available in :class:`~ler.lens_galaxy_population.LensGalaxyParameterDistribution`
+        (which inherits both).
+
+        Parameters
+        ----------
+        size : ``int``
+            Number of samples to generate. \n
+            default: 1000
+        get_attribute : ``bool``
+            If True, returns the sampler object instead of samples. \n
+            default: False
+        **kwargs : ``dict``
+            Additional parameters.
+
+        Returns
+        -------
+        redshifts : ``numpy.ndarray`` or ``ler.utils.FunctionConditioning``
+            Array of source redshifts conditioned on strong lensing, or the sampler object.
+
+        Examples
+        --------
+        >>> from ler.lens_galaxy_population import LensGalaxyParameterDistribution
+        >>> lens = LensGalaxyParameterDistribution()
+        >>> zs = lens.strongly_lensed_source_redshift(size=1000)
+        >>> print(f"strongly lensed source redshift: {zs.mean():.2f}")
+        """
+
+        if not hasattr(self, "merger_rate_density_based_source_redshift"):
+            raise AttributeError(
+                "Missing attribute `merger_rate_density_based_source_redshift`. "
+                "This sampler must be called from a class that also inherits "
+                "`ler.gw_source_population.CBCSourceParameterDistribution` "
+                "(e.g. `LensGalaxyParameterDistribution`)."
+            )
+
+        identifier_dict = {"name": "strongly_lensed_source_redshift"}
+        identifier_dict["resolution"] = self.create_new_interpolator["zs_sl"][
+            "resolution"
+        ]
+        identifier_dict["cdf_size"] = self.create_new_interpolator["zs_sl"][
+            "cdf_size"
+        ]
+        identifier_dict["z_min"] = self.z_min
+        identifier_dict["z_max"] = self.z_max
+        identifier_dict["cosmology"] = self.cosmo
+        identifier_dict["resolution"] = self.create_new_interpolator["zs_sl"][
+            "resolution"
+        ]
+        identifier_dict["optical_depth"] = self.optical_depth.info  # can be None
+        identifier_dict["merger_rate_density_based_source_redshift"] = (
+            self.merger_rate_density_based_source_redshift.info
+        )
+
+        param_dict = self.available_lens_priors["zs_sl"][
+            "strongly_lensed_source_redshift"
+        ]
+        if param_dict:
+            param_dict.update(kwargs)
+        else:
+            param_dict = kwargs
+        identifier_dict.update(param_dict)
+
+        z_min = self.z_min if self.z_min > 0.0 else 0.0001
+        z_max = self.z_max
+        resolution = identifier_dict["resolution"]
+        zs_array = generate_mixed_grid(z_min, z_max, resolution)
+
+        if param_dict["tau_approximation"]:
+
+            def n_zs_sl(zs):
+                # number density of strongly lensed sources
+                P_sl_zs = self.optical_depth(zs)
+                return P_sl_zs * self.merger_rate_density_based_source_redshift.function(
+                    zs
+                )
+
+        else:
+
+            def n_zs_sl(zs):
+                # number density of strongly lensed sources
+                tau = self.optical_depth(zs)
+                P_sl_zs = tau * np.exp(-tau)
+                return P_sl_zs * self.merger_rate_density_based_source_redshift.function(
+                    zs
+                )
+
+        zs_sl_object = FunctionConditioning(
+            function=n_zs_sl,
+            x_array=zs_array,
+            conditioned_y_array=None,
+            identifier_dict=identifier_dict,
+            directory=self.directory,
+            sub_directory="zs_sl",
+            name=identifier_dict["name"],
+            create_new=self.create_new_interpolator["zs_sl"]["create_new"],
+            create_function_inverse=False,
+            create_function=True,
+            create_pdf=True,
+            create_rvs=True,
+            callback="rvs",
+            cdf_size=identifier_dict["cdf_size"],
+        )
+
+        return zs_sl_object if get_attribute else zs_sl_object.rvs(size)
+
     # -------------------------------------------------------------------------
     # Properties
     # -------------------------------------------------------------------------
     @property
-    def lens_param_samplers(self):
+    def zs_sl(self):
+        """
+        Function to sample source redshifts conditioned on strong lensing.
+
+        Returns
+        -------
+        zs_sl : ``FunctionConditioning``
+            Sampler object for strongly-lensed source redshift.
+        """
+        return self._zs_sl
+
+    @zs_sl.setter
+    def zs_sl(self, prior):
+        if prior in self.available_lens_priors["zs_sl"]:
+            print(f"using ler available zs_sl function : {prior}")
+            args = self.lens_priors_params["zs_sl"]
+            if args is None:
+                self._zs_sl = getattr(self, prior)(
+                    size=None, get_attribute=True
+                )
+            else:
+                self._zs_sl = getattr(self, prior)(
+                    size=None, get_attribute=True, **args
+                )
+        elif isinstance(prior, FunctionConditioning):
+            print(
+                "using user provided custom zs_sl class/object of type ler.utils.FunctionConditioning"
+            )
+            self._zs_sl = prior
+        elif callable(prior):
+            print("using user provided custom zs_sl sampler function")
+            self._zs_sl = FunctionConditioning(
+                function=None, x_array=None, create_rvs=prior
+            )
+        else:
+            raise ValueError(
+                "zs_sl should be string in available_lens_priors['zs_sl'] "
+                "or class object of 'ler.utils.FunctionConditioning' "
+                "or callable function with input argument 'size'"
+            )
+
+    @property
+    def cross_section_based_sampler(self):
+        """
+        Cross-section based lens parameter sampler function. This is an initialized function of sampler_functions.create_importance_sampler or sampler_functions.create_rejection_sampler based on the configuration.
+
+        This function samples lens parameters weighted by the strong lensing
+        cross-section.
+
+        Parameters
+        ----------
+        size : ``int``
+            Number of strongly-lensed parameter sets to sample.
+
+        Returns
+        -------
+        zs : ``numpy.ndarray``
+            Array of source redshifts.
+        zl : ``numpy.ndarray``
+            Array of lens redshifts.
+        sigma : ``numpy.ndarray``
+            Array of velocity dispersions.
+        q : ``numpy.ndarray``
+            Array of axis ratios.
+        phi : ``numpy.ndarray``
+            Array of axis rotation angles.
+        gamma : ``numpy.ndarray``
+            Array of density profile slopes.
+        gamma1 : ``numpy.ndarray``
+            Array of external shear components in the x-direction.
+        gamma2 : ``numpy.ndarray``
+            Array of external shear components in the y-direction.
+
+        """
+        return self._cross_section_based_sampler
+
+    @cross_section_based_sampler.setter
+    def cross_section_based_sampler(self, value):
+        self._cross_section_based_sampler = value
+
+    @property
+    def lens_priors(self):
         """
         Dictionary of lens parameter sampler function names.
 
         Returns
         -------
-        lens_param_samplers : ``dict``
+        lens_priors : ``dict``
             Dictionary mapping parameter names to sampler function names. \n
-            Keys include: 'source_redshift_sl', 'lens_redshift', \n
+            Keys include: 'zs_sl', 'lens_redshift', \n
             'velocity_dispersion', 'axis_ratio', 'axis_rotation_angle', \n
-            'external_shear', 'density_profile_slope'.
+            'external_shear1', 'external_shear2', 'density_profile_slope'.
         """
-        return self._lens_param_samplers
+        return self._lens_priors
 
-    @lens_param_samplers.setter
-    def lens_param_samplers(self, value):
-        self._lens_param_samplers = value
+    @lens_priors.setter
+    def lens_priors(self, value):
+        self._lens_priors = value
 
     @property
-    def lens_param_samplers_params(self):
+    def lens_priors_params(self):
         """
         Dictionary of parameters for lens parameter samplers.
 
         Returns
         -------
-        lens_param_samplers_params : ``dict``
+        lens_priors_params : ``dict``
             Dictionary with sampler parameters. \n
-            Each key corresponds to a sampler in lens_param_samplers.
+            Each key corresponds to a sampler in lens_priors.
         """
-        return self._lens_param_samplers_params
+        return self._lens_priors_params
 
-    @lens_param_samplers_params.setter
-    def lens_param_samplers_params(self, value):
-        self._lens_param_samplers_params = value
+    @lens_priors_params.setter
+    def lens_priors_params(self, value):
+        self._lens_priors_params = value
 
     @property
     def lens_functions(self):
@@ -915,43 +1017,3 @@ class LensGalaxyParameterDistribution(
     @normalization_pdf_z_lensed.setter
     def normalization_pdf_z_lensed(self, value):
         self._normalization_pdf_z_lensed = value
-
-    @property
-    def source_redshift_sl(self):
-        """
-        Function to sample source redshifts conditioned on strong lensing.
-
-        Returns
-        -------
-        source_redshift_sl : ``ler.functions.FunctionConditioning``
-            Function for sampling source redshifts conditioned on strong lensing.
-        """
-        return self._source_redshift_sl
-
-    @source_redshift_sl.setter
-    def source_redshift_sl(self, prior):
-        if prior in self.available_lens_samplers["source_redshift_sl"]:
-            print(f"using ler available source_redshift_sl function : {prior}")
-            args = self.lens_param_samplers_params["source_redshift_sl"]
-            if args is None:
-                self._source_redshift_sl = getattr(self, prior)(
-                    size=None, get_attribute=True
-                )
-            else:
-                self._source_redshift_sl = getattr(self, prior)(
-                    size=None, get_attribute=True, **args
-                )
-        elif isinstance(prior, FunctionConditioning):
-            print(
-                "using user provided custom source_redshift_sl class/object of type ler.utils.FunctionConditioning"
-            )
-            self._source_redshift_sl = prior
-        elif callable(prior):
-            print("using user provided custom source_redshift_sl sampler function")
-            self._source_redshift_sl = FunctionConditioning(
-                function=None, x_array=None, create_rvs=prior
-            )
-        else:
-            raise ValueError(
-                "source_redshift_sl should be string in available_lens_samplers['source_redshift_sl'] or class object of 'ler.utils.FunctionConditioning' or callable function with input argument 'size'"
-            )

@@ -6,7 +6,6 @@ This module contains functions to plot the results.
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import gaussian_kde
-from scipy.interpolate import interp1d
 
 from ler.utils.utils import get_param_from_json
 
@@ -32,21 +31,15 @@ def param_plot(
     param_dict : `dict` or `str`
         dictionary of GW source parameters or json file name.
         default param_dict = './gw_params.json'.
-    param_xlabel : `str`
-        x-axis label.
-        default param_xlabel = 'source redshift'.
-    param_ylabel : `str`
-        y-axis label.
-        default param_ylabel = 'probability density'.
+    plot_label : `str`
+        label used for the plotted histogram/KDE curve.
+        default plot_label = 'zs'.
     param_min : `float`
         minimum value of the parameter.
         default param_min = None.
     param_max : `float`
         maximum value of the parameter.
         default param_max = None.
-    figsize : `tuple`
-        figure size.
-        default figsize = (4, 4).
     kde : `bool`
         if True, kde will be plotted.
         default kde = True.
@@ -79,7 +72,7 @@ def param_plot(
     """
 
     # get gw params from json file if not provided
-    if type(param_dict) == str:
+    if isinstance(param_dict, str):
         print(f"getting gw_params from json file {param_dict}...")
         param_dict = get_param_from_json(param_dict)
 
@@ -162,11 +155,11 @@ def relative_mu_dt_unlensed(param, size=100, randomize=True):
 
 def relative_mu_dt_lensed(
     lensed_param, 
-    pdet_threshold=[0.5, 0.5], 
+    pdet_threshold=None, 
     classification_type='morse_phase'
     ):
     """
-    Function to classify the lensed images wrt to the morse phase difference.
+    Classify lensed image pairs by Morse-phase difference or arrival time.
 
     Parameters
     ----------
@@ -207,6 +200,9 @@ def relative_mu_dt_lensed(
                 "mu_34": np.array of relative magnification for image 3 and image 4,
             }
     """
+
+    if pdet_threshold is None:
+        pdet_threshold = [0.5, 0.5]
 
     # get magnifications, time_delays and snr
     mu = lensed_param["magnifications"]
@@ -330,8 +326,8 @@ def mu_vs_dt_plot(
     yscale = 'log10',
     alpha=0.6,
     extent=None,
-    contour_levels=[10, 40, 68, 95],
-    colors=['blue', 'blue', 'blue', 'blue', 'blue'],
+    contour_levels=None,
+    colors=None,
 ):
     """
         Function to generate 2D KDE and plot the relative magnification vs time delay difference for lensed samples.
@@ -380,8 +376,8 @@ def mu_vs_dt_plot(
         >>> mu_vs_dt_plot(ans['dt_rel0'], ans['mu_rel0'], colors='g')
         >>> mu_vs_dt_plot(dt, dmu, colors='r')
         >>> # Create proxy artists for legend
-        >>> proxy1 = plt.Line2D([0], [0], linestyle='-', color='b', label=r'Lensed ($\Delta \phi=90$)')
-        >>> proxy2 = plt.Line2D([0], [0], linestyle='-', color='g', label=r'Lensed ($\Delta \phi=0$)')
+        >>> proxy1 = plt.Line2D([0], [0], linestyle='-', color='b', label=r'Lensed ($\\Delta \\phi=90$)')
+        >>> proxy2 = plt.Line2D([0], [0], linestyle='-', color='g', label=r'Lensed ($\\Delta \\phi=0$)')
         >>> proxy3 = plt.Line2D([0], [0], linestyle='-', color='r', label=r'Unlensed')
         >>> plt.legend(handles=[proxy1, proxy2, proxy3], loc='upper left')
         >>> plt.xlim(-5, 2.5)
@@ -389,6 +385,11 @@ def mu_vs_dt_plot(
         >>> plt.grid(alpha=0.4)
         >>> plt.show()
     """
+
+    if contour_levels is None:
+        contour_levels = [10, 40, 68, 95]
+    if colors is None:
+        colors = ['blue', 'blue', 'blue', 'blue', 'blue']
 
     x_min = min(x_array)
     x_max = max(x_array)
@@ -419,21 +420,32 @@ def mu_vs_dt_plot(
         y_min = np.log(y_min)
         y_max = np.log(y_max)
 
-    # Perform a kernel density estimation (KDE)
+    # Perform a kernel density estimation (KDE) - reuse kde object
     xy = np.vstack([x_array, y_array])
-    kde = gaussian_kde(xy)(xy)
+    kde = gaussian_kde(xy)
+    
+    # Evaluate KDE on data points for percentile calculation
+    kde_values = kde(xy)
 
     # Define the levels for contour as percentiles of the density
-    levels = np.percentile(kde, [10, 40, 68, 95])
+    levels = np.percentile(kde_values, contour_levels)
+    # Ensure levels are strictly increasing (remove duplicates and sort)
+    levels = np.unique(levels)
+    if len(levels) < 2:
+        # If we have less than 2 unique levels, create some linearly spaced ones
+        levels = np.linspace(np.min(kde_values), np.max(kde_values), max(2, len(contour_levels)))
 
-    # Create a grid for contour plot
-    xgrid = np.linspace(x_min, x_max, 1000)
-    ygrid = np.linspace(y_min, y_max, 1000)
+    # Create a grid for contour plot (200x200 is sufficient for smooth contours)
+    xgrid = np.linspace(x_min, x_max, 200)
+    ygrid = np.linspace(y_min, y_max, 200)
     X1, Y1 = np.meshgrid(xgrid, ygrid)
-    Z1 = gaussian_kde(xy)(np.vstack([X1.ravel(), Y1.ravel()])).reshape(X1.shape)
+    Z1 = kde(np.vstack([X1.ravel(), Y1.ravel()])).reshape(X1.shape)
 
     if isinstance(colors, str):
         colors = [colors] * len(contour_levels)
+    # Adjust colors to match the number of levels
+    if len(colors) != len(levels):
+        colors = colors[:len(levels)] if len(colors) > len(levels) else colors + [colors[-1]] * (len(levels) - len(colors))
 
     plt.contour(X1, Y1, Z1, levels=levels, colors=colors, alpha=alpha)
     
