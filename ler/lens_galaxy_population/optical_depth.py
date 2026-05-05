@@ -1213,6 +1213,18 @@ class OpticalDepth:
             "use_multiprocessing"
         ]
 
+        if use_njit_sampler:
+            try:
+                from numba import threading_layer
+
+                if threading_layer() == "workqueue":
+                    # The workqueue backend can abort on this prange-heavy path.
+                    # Use the multiprocessing implementation instead.
+                    use_njit_sampler = False
+            except ValueError:
+                # Threading layer not initialized yet; keep the normal path.
+                pass
+
         if use_multiprocessing or not use_njit_sampler:
             print("Using multiprocessing")
             density_array = self._lens_redshift_multiprocessing(

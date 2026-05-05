@@ -307,6 +307,20 @@ class LensGalaxyParameterDistribution(
             dVcdz_function=dVdz,
             create_njit_sampler=True,
         )
+
+        if use_njit_sampler:
+            try:
+                from numba import threading_layer
+
+                if threading_layer() == "workqueue":
+                    # Numba's workqueue backend is not safe for this parallel
+                    # sampler path and can abort the interpreter. Keep the
+                    # scalar njit callables, but use the interpreted sampler.
+                    use_njit_sampler = False
+            except ValueError:
+                # Threading layer not initialized yet; leave the normal njit
+                # path available and let Numba initialize the selected backend.
+                pass
         
         from .sampler_functions import create_sampler
 

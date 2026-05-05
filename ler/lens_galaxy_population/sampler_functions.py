@@ -483,7 +483,8 @@ def gengamma_pdf(
         beta=beta,
         sigmastar=sigmastar,
     )
-    norm_const = np.trapz(density, sigma_array)
+    integrate = np.trapezoid if hasattr(np, "trapezoid") else np.trapz
+    norm_const = integrate(density, sigma_array)
 
     pdf = (
         gengamma_function(

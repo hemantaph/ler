@@ -1,12 +1,12 @@
-# ---------------------------------------------------------------------------
-# Hidden paths (names starting with "."). Re-include only what we keep in git.
-# ---------------------------------------------------------------------------
-.*
-!.gitignore
-!.gitattributes
-!.github/
-!.github/**
-!.python-version
+# dot-tooling / environments (explicit list avoids a blanket ``.*`` that hides
+# new dot-config you may want to commit later).
+.claude/
+.venv/
+
+# PyPI secrets
+.pypirc
+
+.DS_Store
 
 # Jupyter
 .ipynb_checkpoints

@@ -959,8 +959,10 @@ class FunctionConditioning:
             x_array_new = self._upsample_x_array(x_array, size)
             z_array_new = cubic_spline_interpolator(x_array_new, function_spline, x_array)
             z_array_new[z_array_new < 0.0] = 0.0
-            # `np.trapezoid` is preferred, but older NumPy may only provide `np.trapz`.
-            integrate = getattr(np, "trapezoid", np.trapz)
+            # ``np.trapezoid`` is preferred; older NumPy may only provide
+            # ``np.trapz``. Avoid evaluating ``np.trapz`` unless needed because
+            # newer NumPy releases may remove it.
+            integrate = np.trapezoid if hasattr(np, "trapezoid") else np.trapz
             return float(integrate(z_array_new, x_array_new))
         # 2D case
         else:
@@ -970,7 +972,7 @@ class FunctionConditioning:
                 x_array_new = self._upsample_x_array(x_array[i], size)
                 z_array_new = cubic_spline_interpolator(x_array_new, function_spline[i], x_array[i])
                 z_array_new[z_array_new < 0.0] = 0.0
-                integrate = getattr(np, "trapezoid", np.trapz)
+                integrate = np.trapezoid if hasattr(np, "trapezoid") else np.trapz
                 norm.append(float(integrate(z_array_new, x_array_new)))
 
             return np.array(norm)
