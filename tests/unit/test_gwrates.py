@@ -381,16 +381,19 @@ class TestGWRATES(CommonTestUtils):
         )
 
         # get the meta file 
-        # check the keys ['events_total', 'detectable_events', 'total_rate']
+        # check the keys ['events_total', 'detectable_events', 'total_rate', 'batch_rate']
         # the last total_rate should be the same as the rate returned by the function
         # rate should be finite and positive
         meta_data = get_param_from_json(os.path.join(gwrates_instance.ler_directory, meta_data_file))
-        assert isinstance(meta_data, dict) and len(meta_data) == 3, \
-            f"meta_data: expected dict with 3 keys, got {len(meta_data)}"
-        assert 'events_total' in meta_data and 'detectable_events' in meta_data and 'total_rate' in meta_data, \
-            f"meta_data: expected keys ['events_total', 'detectable_events', 'total_rate'], got {list(meta_data.keys())}"
+        expected_meta_keys = ["events_total", "detectable_events", "total_rate", "batch_rate"]
+        assert isinstance(meta_data, dict) and len(meta_data) == len(expected_meta_keys), \
+            f"meta_data: expected dict with {len(expected_meta_keys)} keys, got {len(meta_data)}"
+        for key in expected_meta_keys:
+            assert key in meta_data, f"meta_data: missing key '{key}'"
         assert isinstance(meta_data['total_rate'][-1], float) and np.isfinite(meta_data['total_rate'][-1]) and meta_data['total_rate'][-1] > 0, \
             f"meta_data: expected finite positive float total_rate, got {meta_data['total_rate'][-1]}"
+        assert isinstance(meta_data['batch_rate'][-1], float) and np.isfinite(meta_data['batch_rate'][-1]) and meta_data['batch_rate'][-1] > 0, \
+            f"meta_data: expected finite positive float batch_rate, got {meta_data['batch_rate'][-1]}"
         assert meta_data['total_rate'][-1] == rate, \
             f"meta_data: expected total_rate to be the same as the rate returned by the function, got {meta_data['total_rate'][-1]} and {rate}"
 
