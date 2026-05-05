@@ -57,4 +57,4 @@ jobs:
         run: uv sync --locked --extra dev
 
       - name: Run tests (default excludes slow)
-        run: uv run pytest tests/ --tb=short -q
+        run: uv run pytest tests/ -v -s
