@@ -66,7 +66,6 @@ Functions
    ler.utils.utils.inverse_transform_sampler
    ler.utils.utils.normal_pdf
    ler.utils.utils.normal_pdf_2d
-   ler.utils.utils.load_txt_from_module
    ler.utils.utils.cumulative_trapezoid
    ler.utils.utils.sample_from_powerlaw_distribution
 
@@ -1522,9 +1521,6 @@ Functions
 
    ..
        !! processed by numpydoc !!
-
-.. py:function:: load_txt_from_module(package, directory, filename)
-
 
 .. py:function:: cumulative_trapezoid(y, x=None, dx=1.0, initial=0.0)
 

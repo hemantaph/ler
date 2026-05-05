@@ -271,7 +271,7 @@
         <span class="n">cross_section</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="n">lens_param_samplers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">source_redshift_sl</span> <span class="o">=</span> <span class="s1">&#39;strongly_lensed_source_redshift&#39;</span><span class="p">,</span>
+        <span class="n">zs_sl</span> <span class="o">=</span> <span class="s1">&#39;strongly_lensed_source_redshift&#39;</span><span class="p">,</span>
         <span class="n">lens_redshift</span> <span class="o">=</span> <span class="s1">&#39;lens_redshift_strongly_lensed_numerical&#39;</span><span class="p">,</span>
         <span class="n">velocity_dispersion</span> <span class="o">=</span> <span class="s1">&#39;velocity_dispersion_ewoud&#39;</span><span class="p">,</span>
         <span class="n">axis_ratio</span> <span class="o">=</span> <span class="s1">&#39;axis_ratio_rayleigh&#39;</span><span class="p">,</span>
@@ -282,7 +282,7 @@
         <span class="n">density_profile_slope_sl</span> <span class="o">=</span> <span class="s1">&#39;density_profile_slope_normal&#39;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="n">lens_param_samplers_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">source_redshift_sl</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">zs_sl</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">lens_redshift</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">integration_size</span><span class="o">=</span><span class="mi">20000</span><span class="p">),</span>
         <span class="n">velocity_dispersion</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">sigma_min</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">sigma_max</span><span class="o">=</span><span class="mf">400.0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.94</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.85</span><span class="p">,</span> <span class="n">phistar</span><span class="o">=</span><span class="mf">2.099e-2</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span><span class="o">.</span><span class="n">h</span> <span class="o">/</span> <span class="mf">0.7</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span><span class="p">,</span> <span class="n">sigmastar</span><span class="o">=</span><span class="mf">113.78</span><span class="p">),</span>
         <span class="n">axis_ratio</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">q_min</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">q_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
@@ -560,7 +560,7 @@ Merger Rate Denisty: [2.21298914e-08 2.57321630e-08 2.98600744e-08] Mpc^-3 yr^-1
 <div class="highlight"><pre>
 Built-in lens parameter sampler functions and parameters:
 
-source_redshift_sl:
+zs_sl:
   strongly_lensed_source_redshift: None
 
 lens_redshift:
@@ -933,7 +933,7 @@ mass_2: [1.07456818 1.03191177 1.41843627 1.22341249 1.41124184] M_sun
 <h3>3.4. Custom Lens Model<a class="headerlink" href="#3.4.-Custom-Lens-Model" title="Link to this heading"></a></h3>
 <p>Using <code class="docutils literal notranslate"><span class="pre">lens_model='sie_galaxy'</span></code> in the <code class="docutils literal notranslate"><span class="pre">LeR</span></code> initialization will use the following settings:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lens_param_samplers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">source_redshift_sl</span><span class="o">=</span><span class="s2">&quot;strongly_lensed_source_redshift&quot;</span><span class="p">,</span>
+    <span class="n">zs_sl</span><span class="o">=</span><span class="s2">&quot;strongly_lensed_source_redshift&quot;</span><span class="p">,</span>
     <span class="n">lens_redshift</span><span class="o">=</span><span class="s2">&quot;lens_redshift_strongly_lensed_numerical&quot;</span><span class="p">,</span>
     <span class="n">velocity_dispersion</span><span class="o">=</span><span class="s2">&quot;velocity_dispersion_ewoud&quot;</span><span class="p">,</span>
     <span class="n">axis_ratio</span><span class="o">=</span><span class="s2">&quot;axis_ratio_rayleigh&quot;</span><span class="p">,</span>
@@ -944,7 +944,7 @@ mass_2: [1.07456818 1.03191177 1.41843627 1.22341249 1.41124184] M_sun
     <span class="n">density_profile_slope_sl</span><span class="o">=</span><span class="s2">&quot;density_profile_slope_normal&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">lens_param_samplers_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">source_redshift_sl</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">zs_sl</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">lens_redshift</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">integration_size</span><span class="o">=</span><span class="mi">20000</span><span class="p">),</span>
     <span class="n">velocity_dispersion</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
         <span class="n">sigma_min</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
@@ -1491,7 +1491,7 @@ Faster, njitted and importance sampling based lens parameter sampler will be use
         cross_section = None,
     ),
     lens_param_samplers = dict(
-        source_redshift_sl = &#39;strongly_lensed_source_redshift&#39;,
+        zs_sl = &#39;strongly_lensed_source_redshift&#39;,
         lens_redshift = &#39;lens_redshift_strongly_lensed_numerical&#39;,
         velocity_dispersion = CPUDispatcher(&lt;function &lt;lambda&gt; at 0x30d9667a0&gt;),
         axis_ratio = CPUDispatcher(&lt;function &lt;lambda&gt; at 0x30ea01a20&gt;),
@@ -1502,7 +1502,7 @@ Faster, njitted and importance sampling based lens parameter sampler will be use
         density_profile_slope_sl = &#39;density_profile_slope_normal&#39;,
     ),
     lens_param_samplers_params = dict(
-        source_redshift_sl = None,
+        zs_sl = None,
         lens_redshift = {&#39;integration_size&#39;: 25000, &#39;use_multiprocessing&#39;: False},
         velocity_dispersion = {&#39;sigma_min&#39;: 100.0, &#39;sigma_max&#39;: 400.0, &#39;alpha&#39;: 0.94, &#39;beta&#39;: 1.85, &#39;phistar&#39;: 0.02099, &#39;sigmastar&#39;: 161.0, &#39;name&#39;: &#39;CPUDispatcher(&lt;function &lt;lambda&gt; at 0x30d9667a0&gt;)&#39;},
         axis_ratio = {&#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0, &#39;name&#39;: &#39;CPUDispatcher(&lt;function &lt;lambda&gt; at 0x30ea01a20&gt;)&#39;},

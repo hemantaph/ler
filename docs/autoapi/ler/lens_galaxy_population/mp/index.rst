@@ -43,29 +43,10 @@ Functions
 
 
 
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   ler.lens_galaxy_population.mp.CS_UNIT_SLOPE
-   ler.lens_galaxy_population.mp.CS_UNIT_INTERCEPT
-
-
-.. py:data:: CS_UNIT_SLOPE
-   :value: '0.31830988618379075'
-
-   
-
-.. py:data:: CS_UNIT_INTERCEPT
-   :value: '-3.2311742677852644e-27'
-
-   
-
 .. py:function:: lens_redshift_strongly_lensed_njit(zs_array, zl_scaled, sigma_min, sigma_max, q_rvs, phi_rvs, gamma_rvs, shear_rvs, number_density, cross_section, dVcdz_function, integration_size)
 
    
-   JIT-compiled parallel computation of lens redshift optical depth.
+   JIT-compiled parallel computation of differential optical dept (lens redshift).
 
    Computes the differential optical depth for strong lensing as a function
    of source and lens redshifts using Monte Carlo integration with parallel
@@ -132,7 +113,7 @@ Attributes
 .. py:function:: lens_redshift_strongly_lensed_mp(params)
 
    
-   Multiprocessing worker for lens redshift optical depth calculation.
+   Multiprocessing worker for computation of differential optical dept (lens redshift).
 
    Computes the differential optical depth for a single source redshift
    across multiple lens redshifts. Designed to be called via multiprocessing

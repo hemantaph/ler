@@ -224,7 +224,7 @@ Classes
 
    ..
        !! processed by numpydoc !!
-   .. py:property:: source_redshift_sl
+   .. py:property:: zs_sl
 
       
       Function to sample source redshifts conditioned on strong lensing.
@@ -233,8 +233,59 @@ Classes
 
       :Returns:
 
-          **source_redshift_sl** : ``ler.functions.FunctionConditioning``
+          **zs_sl** : ``ler.functions.FunctionConditioning``
               Function for sampling source redshifts conditioned on strong lensing.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: cross_section_based_sampler
+
+      
+      Cross-section based lens parameter sampler function. This is an initialized function of sampler_functions.create_importance_sampler or sampler_functions.create_rejection_sampler based on the configuration.
+
+      This function samples lens parameters weighted by the strong lensing
+      cross-section.
+
+      :Parameters:
+
+          **zs** : ``numpy.ndarray``
+              Array of source redshifts.
+
+          **zl** : ``numpy.ndarray``
+              Array of lens redshifts.
+
+      :Returns:
+
+          **sigma** : ``numpy.ndarray``
+              Array of velocity dispersions.
+
+          **q** : ``numpy.ndarray``
+              Array of axis ratios.
+
+          **phi** : ``numpy.ndarray``
+              Array of axis rotation angles.
+
+          **gamma** : ``numpy.ndarray``
+              Array of density profile slopes.
+
+          **gamma1** : ``numpy.ndarray``
+              Array of external shear components in the x-direction.
+
+          **gamma2** : ``numpy.ndarray``
+              Array of external shear components in the y-direction.
 
 
 
@@ -295,7 +346,7 @@ Classes
           **lens_param_samplers** : ``dict``
               Dictionary mapping parameter names to sampler function names.
 
-              Keys include: 'source_redshift_sl', 'lens_redshift',
+              Keys include: 'zs_sl', 'lens_redshift',
 
               'velocity_dispersion', 'axis_ratio', 'axis_rotation_angle',
 
@@ -376,38 +427,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:attribute:: event_type
-      :value: "'BBH'"
-
-      
-      ``str``
-
-      Type of event to generate.
-
-      e.g. 'BBH', 'BNS', 'NSBH'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
    .. py:attribute:: sample_lens_parameters_routine
-
-      
-
-   .. py:attribute:: cross_section_based_sampler
 
       
 

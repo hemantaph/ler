@@ -84,8 +84,8 @@ def main():
             "optical_depth": "optical_depth_SIE_hemanta",
             "param_sampler_type": "sample_all_routine",
         },
-        lens_param_samplers={
-            "source_redshift_sl": "strongly_lensed_source_redshift",
+        lens_priors={
+            "zs_sl": "strongly_lensed_source_redshift",
             "lens_redshift": "lens_redshift_SDSS_catalogue",
             "velocity_dispersion": "velocity_dispersion_ewoud",
             "axis_ratio": "axis_ratio_rayleigh",
@@ -94,8 +94,8 @@ def main():
             "density_profile_slope": "density_profile_slope_normal",
             "source_parameters": "sample_gw_parameters",
         },
-        lens_param_samplers_params={
-            "source_redshift_sl": None,
+        lens_priors_params={
+            "zs_sl": None,
             "lens_redshift": None,
             "velocity_dispersion": None,
             "axis_ratio": {"q_min": 0.2, "q_max": 1.0},

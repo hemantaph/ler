@@ -1169,15 +1169,19 @@ class GWRATES(CBCSourceParameterDistribution):
             )
 
             if pdet_type == "boolean":
-                n += np.sum(idx_detectable)
+                n_batch = np.sum(idx_detectable)
             else:
-                n += np.sum(pdet)
+                n_batch = np.sum(pdet)
+            n += n_batch
             events_total += total_events_in_this_iteration
             total_rate = self.rate_function(n, events_total, verbose=False)
+            batch_rate = self.rate_function(
+                n_batch, total_events_in_this_iteration, verbose=False
+            )
 
             # bookmark
             buffer_dict = self._append_meta_data(
-                meta_data_path, n, events_total, total_rate
+                meta_data_path, n, events_total, total_rate, batch_rate
             )
 
             continue_condition = self._continue_condition_check(
@@ -1447,7 +1451,9 @@ class GWRATES(CBCSourceParameterDistribution):
 
         return param_final, new_total_rate
 
-    def _append_meta_data(self, meta_data_path, n, events_total, total_rate):
+    def _append_meta_data(
+        self, meta_data_path, n, events_total, total_rate, batch_rate
+    ):
         """
         Helper function for appending metadata to JSON file.
 
@@ -1461,6 +1467,8 @@ class GWRATES(CBCSourceParameterDistribution):
             Total number of simulated events.
         total_rate : ``float``
             Total detection rate (yr^-1).
+        batch_rate : ``float``
+            Detection rate from the latest batch only (yr^-1).
 
         Returns
         -------
@@ -1473,11 +1481,26 @@ class GWRATES(CBCSourceParameterDistribution):
             events_total=np.array([events_total]),
             detectable_events=np.array([n]),
             total_rate=np.array([total_rate]),
+            batch_rate=np.array([batch_rate]),
         )
 
         if os.path.exists(meta_data_path):
             try:
-                dict_ = append_json(meta_data_path, meta_data, replace=False)
+                old_meta_data = load_json(meta_data_path)
+                for key, value in old_meta_data.items():
+                    if isinstance(value, list):
+                        old_meta_data[key] = np.array(value)
+                if "batch_rate" not in old_meta_data:
+                    old_meta_data["batch_rate"] = np.full(
+                        len(old_meta_data["total_rate"]),
+                        np.nan,
+                    )
+                dict_ = append_json(
+                    meta_data_path,
+                    meta_data,
+                    old_dictionary=old_meta_data,
+                    replace=False,
+                )
             except Exception:
                 print(
                     "Error in appending meta data. Replacing the existing meta data file."
@@ -1497,6 +1520,7 @@ class GWRATES(CBCSourceParameterDistribution):
         print("collected number of detectable events (batch) = ", batch_n)
         print("collected number of detectable events (cumulative) = ", n)
         print("total number of events = ", events_total)
+        print(f"batch rate (yr^-1): {batch_rate}")
         print(f"total rate (yr^-1): {total_rate}")
 
         return dict_

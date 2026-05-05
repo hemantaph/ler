@@ -310,7 +310,7 @@
         <span class="p">)</span>
 
         <span class="c1"># Function to sample source redshifts conditioned on strong lensing</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">source_redshift_sl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="p">[</span><span class="s2">&quot;source_redshift_sl&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zs_sl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="p">[</span><span class="s2">&quot;zs_sl&quot;</span><span class="p">]</span>
 
         <span class="c1"># Function to sample lens parameters</span>
 <div class="viewcode-block" id="LensGalaxyParameterDistribution.sample_lens_parameters_routine">
@@ -692,7 +692,7 @@
 <span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Sample source redshift with strong lensing weighting</span>
-        <span class="n">zs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_redshift_sl</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">zs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zs_sl</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
 
         <span class="c1"># Sample lens redshift conditioned on source redshift</span>
         <span class="n">zl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_redshift</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">zs</span><span class="p">)</span>
@@ -794,18 +794,18 @@
 
         <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;strongly_lensed_source_redshift&quot;</span><span class="p">}</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
-            <span class="s2">&quot;source_redshift_sl&quot;</span>
+            <span class="s2">&quot;zs_sl&quot;</span>
         <span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cosmology&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
-            <span class="s2">&quot;source_redshift_sl&quot;</span>
+            <span class="s2">&quot;zs_sl&quot;</span>
         <span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;optical_depth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optical_depth</span><span class="o">.</span><span class="n">info</span>  <span class="c1"># can be None</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;source_redshift&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_redshift</span><span class="o">.</span><span class="n">info</span>
 
-        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_lens_samplers</span><span class="p">[</span><span class="s2">&quot;source_redshift_sl&quot;</span><span class="p">][</span>
+        <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_lens_samplers</span><span class="p">[</span><span class="s2">&quot;zs_sl&quot;</span><span class="p">][</span>
             <span class="s2">&quot;strongly_lensed_source_redshift&quot;</span>
         <span class="p">]</span>
         <span class="k">if</span> <span class="n">param_dict</span><span class="p">:</span>
@@ -840,9 +840,9 @@
             <span class="n">conditioned_y_array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;source_redshift_sl&quot;</span><span class="p">,</span>
+            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;zs_sl&quot;</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
-            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;source_redshift_sl&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">],</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;zs_sl&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">],</span>
             <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_function</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">create_pdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -950,7 +950,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        lens_param_samplers : ``dict``</span>
 <span class="sd">            Dictionary mapping parameter names to sampler function names. \n</span>
-<span class="sd">            Keys include: &#39;source_redshift_sl&#39;, &#39;lens_redshift&#39;, \n</span>
+<span class="sd">            Keys include: &#39;zs_sl&#39;, &#39;lens_redshift&#39;, \n</span>
 <span class="sd">            &#39;velocity_dispersion&#39;, &#39;axis_ratio&#39;, &#39;axis_rotation_angle&#39;, \n</span>
 <span class="sd">            &#39;external_shear&#39;, &#39;density_profile_slope&#39;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1026,46 +1026,46 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_normalization_pdf_z_lensed</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-<div class="viewcode-block" id="LensGalaxyParameterDistribution.source_redshift_sl">
-<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/lens_galaxy_parameter_distribution/index.html#ler.lens_galaxy_population.LensGalaxyParameterDistribution.source_redshift_sl">[docs]</a>
-    <span class="k">def</span> <span class="nf">source_redshift_sl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="LensGalaxyParameterDistribution.zs_sl">
+<a class="viewcode-back" href="../../../autoapi/ler/lens_galaxy_population/lens_galaxy_parameter_distribution/index.html#ler.lens_galaxy_population.LensGalaxyParameterDistribution.zs_sl">[docs]</a>
+    <span class="k">def</span> <span class="nf">zs_sl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to sample source redshifts conditioned on strong lensing.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        source_redshift_sl : ``ler.functions.FunctionConditioning``</span>
+<span class="sd">        zs_sl : ``ler.functions.FunctionConditioning``</span>
 <span class="sd">            Function for sampling source redshifts conditioned on strong lensing.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_redshift_sl</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zs_sl</span></div>
 
 
-    <span class="nd">@source_redshift_sl</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">source_redshift_sl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">prior</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_lens_samplers</span><span class="p">[</span><span class="s2">&quot;source_redshift_sl&quot;</span><span class="p">]:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;using ler available source_redshift_sl function : </span><span class="si">{</span><span class="n">prior</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;source_redshift_sl&quot;</span><span class="p">]</span>
+    <span class="nd">@zs_sl</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">zs_sl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">prior</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_lens_samplers</span><span class="p">[</span><span class="s2">&quot;zs_sl&quot;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;using ler available zs_sl function : </span><span class="si">{</span><span class="n">prior</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;zs_sl&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_source_redshift_sl</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_zs_sl</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
                     <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_source_redshift_sl</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_zs_sl</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">)(</span>
                     <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span>
                 <span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">FunctionConditioning</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span>
-                <span class="s2">&quot;using user provided custom source_redshift_sl class/object of type ler.utils.FunctionConditioning&quot;</span>
+                <span class="s2">&quot;using user provided custom zs_sl class/object of type ler.utils.FunctionConditioning&quot;</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_source_redshift_sl</span> <span class="o">=</span> <span class="n">prior</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_zs_sl</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">prior</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user provided custom source_redshift_sl sampler function&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_source_redshift_sl</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user provided custom zs_sl sampler function&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_zs_sl</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
                 <span class="n">function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">create_rvs</span><span class="o">=</span><span class="n">prior</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;source_redshift_sl should be string in available_lens_samplers[&#39;source_redshift_sl&#39;] or class object of &#39;ler.utils.FunctionConditioning&#39; or callable function with input argument &#39;size&#39;&quot;</span>
+                <span class="s2">&quot;zs_sl should be string in available_lens_samplers[&#39;zs_sl&#39;] or class object of &#39;ler.utils.FunctionConditioning&#39; or callable function with input argument &#39;size&#39;&quot;</span>
             <span class="p">)</span></div>
 
 </pre></div>

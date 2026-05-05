@@ -29,7 +29,7 @@ Functions
 .. autoapisummary::
 
    ler.lens_galaxy_population.lens_functions.phi_cut_SIE
-   ler.lens_galaxy_population.lens_functions.phi_q2_ellipticity
+   ler.lens_galaxy_population.lens_functions.einstein_radius
    ler.lens_galaxy_population.lens_functions.cross_section
 
 
@@ -71,27 +71,13 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: phi_q2_ellipticity(phi, q)
+.. py:function:: einstein_radius(sigma, zl, zs, cosmo=None)
 
    
-   Convert position angle and axis ratio to ellipticity components.
+   Function to compute the Einstein radii of the lens galaxies
 
 
-   :Parameters:
 
-       **phi** : ``numpy.ndarray``
-           Position angle of the major axis (radians).
-
-       **q** : ``numpy.ndarray``
-           Axis ratio (0 < q <= 1).
-
-   :Returns:
-
-       **e1** : ``numpy.ndarray``
-           First ellipticity component.
-
-       **e2** : ``numpy.ndarray``
-           Second ellipticity component.
 
 
 

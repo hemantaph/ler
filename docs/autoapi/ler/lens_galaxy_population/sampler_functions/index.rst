@@ -1140,42 +1140,6 @@ Functions
 
 
 
-   .. rubric:: Examples
-
-   >>> import numpy as np
-   >>> from numba import njit
-   >>> @njit
-   ... def q_rvs(n, sigma):
-   ...     return 0.5 + 0.5 * np.random.random(n)
-   >>> @njit
-   ... def phi_rvs(n):
-   ...     return np.pi * np.random.random(n)
-   >>> @njit
-   ... def gamma_rvs(n):
-   ...     return 2.0 + 0.2 * np.random.randn(n)
-   >>> @njit
-   ... def shear_rvs(n):
-   ...     return 0.05 * np.random.randn(n), 0.05 * np.random.randn(n)
-   >>> @njit
-   ... def number_density(sigma, zl):
-   ...     return np.ones_like(sigma)
-   >>> @njit
-   ... def cross_section(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):
-   ...     return sigma**4
-   >>> sampler = create_importance_sampler(
-   ...     sigma_min=100.0,
-   ...     sigma_max=400.0,
-   ...     q_rvs=q_rvs,
-   ...     phi_rvs=phi_rvs,
-   ...     gamma_rvs=gamma_rvs,
-   ...     shear_rvs=shear_rvs,
-   ...     number_density=number_density,
-   ...     cross_section=cross_section,
-   ...     n_prop=100,
-   ... )
-   >>> zs = np.array([1.0, 1.5, 2.0])
-   >>> zl = np.array([0.3, 0.5, 0.7])
-   >>> sigma, q, phi, gamma, gamma1, gamma2 = sampler(zs, zl)
 
 
 

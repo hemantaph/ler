@@ -22,16 +22,16 @@ AI prompt to use this template:
     # =============================================================================
     # MODULE DOCSTRING TEMPLATE
     # =============================================================================
-2i. Rewrite docstrings (including heading and inline docstrings) of *.py using docstring_template.py. If required, convert some of the functions to private function with underscore prefix. Add exmples to the docstrings (exclude private functions). Use '\n' for newline and don't use '\\n'. Dont add unnecessary docstrings like the following:
+2i. Rewrite docstrings (including heading and inline docstrings) of *.py using docstring_template.py. If required, convert some of the functions to private function with underscore prefix. Add exmples to the docstrings if required(exclude private functions). Use '\n' for newline and don't use '\\n'. Dont add unnecessary docstrings like the following:
     # =============================================================================
     # MODULE DOCSTRING TEMPLATE
     # =============================================================================
 3. Create properties of the Instance Attributes if it is not there. Properties should be at the end.
 """
 
-# =============================================================================
+# ---------------------------
 # MODULE DOCSTRING TEMPLATE
-# =============================================================================
+# ---------------------------
 """
 Module for [brief description].
 
@@ -54,9 +54,9 @@ Copyright (C) 2026 Author Name. Distributed under MIT License.
 """
 
 
-# =============================================================================
+# ---------------------------
 # CLASS DOCSTRING TEMPLATE
-# =============================================================================
+# ---------------------------
 class TemplateClass:
     """
     One-line summary of the class.
@@ -149,9 +149,9 @@ class TemplateClass:
         self.param3 = param3
         self.param4 = param4 or {}
 
-    # =============================================================================
+    # ---------------------------
     # METHOD DOCSTRING TEMPLATES
-    # =============================================================================
+    # ---------------------------
 
     def public_method(self, arg1, arg2=None, arg3=0.5):
         """
@@ -206,9 +206,9 @@ class TemplateClass:
         """
         pass
 
-    # =============================================================================
+    # ---------------------------
     # PROPERTY DOCSTRING TEMPLATES
-    # =============================================================================
+    # ---------------------------
 
     @property
     def simple_property(self):
@@ -336,9 +336,9 @@ class TemplateClass:
         self._cosmology_property = value
 
 
-# =============================================================================
+# ---------------------------
 # FORMATTING REFERENCE
-# =============================================================================
+# ---------------------------
 """
 QUICK REFERENCE:
 

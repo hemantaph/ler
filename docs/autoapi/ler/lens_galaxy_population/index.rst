@@ -11,6 +11,7 @@ Submodules
    :maxdepth: 1
 
    cross_section_interpolator/index.rst
+   cross_section_interpolator copy/index.rst
    lens_functions/index.rst
    lens_galaxy_parameter_distribution/index.rst
    mp/index.rst
@@ -41,7 +42,7 @@ Functions
 
 .. autoapisummary::
 
-   ler.lens_galaxy_population.redshift_optimal_spacing
+   ler.lens_galaxy_population.generate_mixed_grid
    ler.lens_galaxy_population.cubic_spline_interpolator
    ler.lens_galaxy_population.inverse_transform_sampler
    ler.lens_galaxy_population.cubic_spline_interpolator2d_array
@@ -56,22 +57,19 @@ Functions
    ler.lens_galaxy_population.angular_diameter_distance
    ler.lens_galaxy_population.angular_diameter_distance_z1z2
    ler.lens_galaxy_population.differential_comoving_volume
-   ler.lens_galaxy_population.redshift_optimal_spacing
+   ler.lens_galaxy_population.generate_mixed_grid
    ler.lens_galaxy_population.phi_cut_SIE
-   ler.lens_galaxy_population.phi_q2_ellipticity
    ler.lens_galaxy_population.cross_section
+   ler.lens_galaxy_population.phi_q2_ellipticity
    ler.lens_galaxy_population.cross_section_mp
    ler.lens_galaxy_population.cross_section
-   ler.lens_galaxy_population.load_pickle
    ler.lens_galaxy_population.lens_redshift_strongly_lensed_njit
    ler.lens_galaxy_population.lens_redshift_strongly_lensed_mp
    ler.lens_galaxy_population.cross_section_unit_mp
    ler.lens_galaxy_population.cross_section_mp
    ler.lens_galaxy_population.is_njitted
-   ler.lens_galaxy_population.save_pickle
-   ler.lens_galaxy_population.load_pickle
    ler.lens_galaxy_population.inverse_transform_sampler
-   ler.lens_galaxy_population.redshift_optimal_spacing
+   ler.lens_galaxy_population.generate_mixed_grid
    ler.lens_galaxy_population.available_sampler_list
    ler.lens_galaxy_population.lens_redshift_strongly_lensed_sis_haris_pdf
    ler.lens_galaxy_population.lens_redshift_strongly_lensed_sis_haris_rvs
@@ -91,10 +89,10 @@ Functions
    ler.lens_galaxy_population.importance_sampler_mp
    ler.lens_galaxy_population.create_importance_sampler
    ler.lens_galaxy_population.phi_cut_SIE
-   ler.lens_galaxy_population.phi_q2_ellipticity
+   ler.lens_galaxy_population.einstein_radius
    ler.lens_galaxy_population.cross_section
    ler.lens_galaxy_population.phi_q2_ellipticity
-   ler.lens_galaxy_population.make_cross_section_reinit
+   ler.lens_galaxy_population.make_cross_section_area_reinit
 
 
 
@@ -103,8 +101,6 @@ Attributes
 
 .. autoapisummary::
 
-   ler.lens_galaxy_population.CS_UNIT_SLOPE
-   ler.lens_galaxy_population.CS_UNIT_INTERCEPT
    ler.lens_galaxy_population.C_LIGHT
 
 
@@ -255,6 +251,8 @@ Attributes
    | :meth:`~cross_section_epl_shear_numerical`          | Compute EPL+shear cross-section numerically              |
    +-----------------------------------------------------+----------------------------------------------------------+
    | :meth:`~cross_section_epl_shear_interpolation`      | Compute EPL+shear cross-section via interpolation        |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~cross_section_epl_shear_njit`               | Compute EPL+shear cross-section using Numba njit         |
    +-----------------------------------------------------+----------------------------------------------------------+
 
    Instance Attributes
@@ -1788,7 +1786,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: create_parameter_grid(size_list=[25, 25, 45, 15, 15])
+   .. py:method:: create_parameter_grid(size_list=[25, 25, 45, 15, 15], spacing_config=None)
 
       
       Create a parameter grid for lens galaxies.
@@ -1798,6 +1796,11 @@ Attributes
 
           **size_list** : list
               List of sizes for each parameter grid.
+
+          **spacing_config** : dict or None
+              Optional per-parameter spacing configuration. Keys can include
+              ``q``, ``phi``, ``e1``, ``e2``, ``gamma``, ``gamma1``, ``gamma2`` and values are
+              dictionaries, e.g. ``{"mode": "two_sided_mixed_grid", "power_law_part": "lower", "spacing_trend": "increasing", "power": 2.5, "value_transition_fraction": 0.6, "num_transition_fraction": 0.3, "auto_match_slope": True}``.
 
       :Returns:
 
@@ -1825,16 +1828,86 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: cross_section_epl_shear_interpolation_init(file_path, size_list)
+   .. py:method:: cross_section_epl_shear_interpolation_init(file_path, size_list, spacing_config=None, batch_size=50000)
 
 
-   .. py:method:: cross_section_epl_shear_interpolation(zs, zl, sigma, q, phi, gamma, gamma1, gamma2, get_attribute=False, size_list=[25, 25, 45, 15, 15], **kwargs)
+   .. py:method:: cross_section_epl_shear_interpolation(zs, zl, sigma, q, phi, gamma, gamma1, gamma2, get_attribute=False, size_list=[25, 25, 45, 15, 15], spacing_config=None, **kwargs)
 
       
       Function to compute the cross-section correction factor
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: cross_section_epl_shear_njit(zs, zl, sigma, q, phi, gamma, gamma1, gamma2, get_attribute=False, num_th=500, maginf=-100.0, **kwargs)
+
+      
+      Compute the lensing cross-section for EPL+shear lens model using Numba njit.
+
+
+      :Parameters:
+
+          **zs** : ``float`` or ``numpy.ndarray``
+              Source redshift(s).
+
+          **zl** : ``float`` or ``numpy.ndarray``
+              Lens redshift(s).
+
+          **sigma** : ``float`` or ``numpy.ndarray``
+              Velocity dispersion(s) in km/s.
+
+          **q** : ``float`` or ``numpy.ndarray``
+              Axis ratio(s) (b/a).
+
+          **phi** : ``float`` or ``numpy.ndarray``
+              Axis rotation angle(s) in radians.
+
+          **gamma** : ``float`` or ``numpy.ndarray``
+              Density profile slope(s).
+
+          **gamma1** : ``float`` or ``numpy.ndarray``
+              External shear component 1.
+
+          **gamma2** : ``float`` or ``numpy.ndarray``
+              External shear component 2.
+
+          **get_attribute** : ``bool``, optional
+              If True, return the interpolator instance instead of the cross-section.
+              Default is False.
+
+          **num_th** : ``int``, optional
+              Number of theta values to use for the spline interpolation.
+              Default is 500.
+
+          **maginf** : ``float``, optional
+              Magnitude limit for the cross-section calculation.
+              Default is -100.0.
+
+          **\*\*kwargs**
+              Additional keyword arguments to pass to the interpolator.
+
+      :Returns:
+
+          **cs_caculator** : ``ler.image_properties.cross_section_njit.CrossSectionNjit``
+              The interpolator instance (if get_attribute=True).
+
+          **cross_section** : ``float`` or ``numpy.ndarray``
+              Lensing cross-section in arcsec^2.
 
 
 
@@ -3098,6 +3171,82 @@ Attributes
       ..
           !! processed by numpydoc !!
 
+   .. py:method:: binary_masses_BBH_broken_powerlaw_plus_2peaks(size, get_attribute=False, **kwargs)
+
+      
+      Sample source masses from broken power law + 2 Gaussian peaks model.
+
+      Implements the mass distribution model from LIGO-Virgo population analyses
+      (GWTC-4.0, Callister & Farr 2024) that combines a broken power-law continuum
+      with two Gaussian peaks to capture population features.
+
+      :Parameters:
+
+          **size** : ``int``
+              Number of samples to draw.
+
+          **get_attribute** : ``bool``
+              If True, return the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Model parameters:
+
+              - alpha1: Spectral index below break, default: 1.7
+
+              - alpha2: Spectral index above break, default: 4.5
+
+              - m_break: Break mass (Msun), default: 34.1
+
+              - m_min: Minimum BH mass (Msun), default: 5.0
+
+              - m_max: Maximum BH mass (Msun), default: 100.0
+
+              - delta_m: Low-mass smoothing width (Msun), default: 4.0
+
+              - mu1: Peak 1 location (Msun), default: 9.8
+
+              - sigma1: Peak 1 width (Msun), default: 1.0
+
+              - lam1: Peak 1 mixture fraction, default: 0.05
+
+              - mu2: Peak 2 location (Msun), default: 32.7
+
+              - sigma2: Peak 2 width (Msun), default: 4.0
+
+              - lam2: Peak 2 mixture fraction, default: 0.05
+
+              - beta_q: Mass ratio power-law index, default: 1.2
+
+      :Returns:
+
+          **mass_1_source** : ``numpy.ndarray``
+              Array of primary masses in source frame (Msun).
+
+          **mass_2_source** : ``numpy.ndarray``
+              Array of secondary masses in source frame (Msun).
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.gw_source_population import CBCSourceParameterDistribution
+      >>> cbc = CBCSourceParameterDistribution()
+      >>> m1_src, m2_src = cbc.binary_masses_BBH_broken_powerlaw_plus_2peaks(size=1000)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
    .. py:method:: binary_masses_uniform(size, get_attribute=False, **kwargs)
 
       
@@ -3375,7 +3524,7 @@ Attributes
           !! processed by numpydoc !!
 
 
-.. py:class:: ImageProperties(npool=4, n_min_images=2, n_max_images=4, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, time_window=365 * 24 * 3600 * 2, spin_zero=True, spin_precession=False, pdet_finder=None, include_effective_parameters=False, multiprocessing_verbose=True, include_redundant_parameters=False)
+.. py:class:: ImageProperties(npool=4, n_min_images=2, n_max_images=4, lens_model_list=['EPL_NUMBA', 'SHEAR'], image_properties_function='image_properties_epl_shear_njit', image_properties_function_params=None, cosmology=None, time_window=365.0 * 24.0 * 3600.0 * 1.0, spin_zero=True, spin_precession=False, pdet_finder=None, include_effective_parameters=False, multiprocessing_verbose=True, include_redundant_parameters=False)
 
 
    
@@ -3490,7 +3639,7 @@ Attributes
    +-----------------------------------------------------+------------------------------------------------+
    | Method                                              | Description                                    |
    +=====================================================+================================================+
-   | :meth:`~image_properties`                           | Compute image properties for lensed events     |
+   | :meth:`~image_properties_epl_shear`                 | Compute image properties for lensed events     |
    +-----------------------------------------------------+------------------------------------------------+
    | :meth:`~get_lensed_snrs`                            | Compute detection probability for lensed images|
    +-----------------------------------------------------+------------------------------------------------+
@@ -3862,6 +4011,37 @@ Attributes
       ..
           !! processed by numpydoc !!
 
+   .. py:property:: available_image_properties_functions
+
+      
+      Dictionary of available functions for computing image properties.
+
+
+
+      :Returns:
+
+          **available_image_properties_functions** : ``dict``
+              Dictionary with function names and default parameters.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: image_properties_function
+
+      
+
    .. py:attribute:: multiprocessing_verbose
       :value: 'True'
 
@@ -3872,10 +4052,91 @@ Attributes
 
       
 
-   .. py:method:: image_properties(lens_parameters)
+   .. py:attribute:: image_properties_function_params
 
       
-      Compute image properties for strongly lensed events.
+
+   .. py:method:: image_properties_epl_shear_njit(lens_parameters)
+
+      
+      Compute image properties for strongly lensed events. This use functions similar to lenstronomy but rewritten in numba njit for speed.
+
+      Solves the lens equation using multiprocessing to find image positions,
+      magnifications, time delays, and image types for each lensing event.
+
+      :Parameters:
+
+          **lens_parameters** : ``dict``
+              Dictionary containing lens and source parameters shown in the table:
+
+              +------------------------------+-----------+-------------------------------------------------------+
+              | Parameter                    | Units     | Description                                           |
+              +==============================+===========+=======================================================+
+              | zl                           |           | redshift of the lens                                  |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | zs                           |           | redshift of the source                                |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | sigma                        | km s^-1   | velocity dispersion                                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | q                            |           | axis ratio                                            |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | theta_E                      | radian    | Einstein radius                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
+              |                              |           | positive x-axis (RA-like axis) to the major axis of   |
+              |                              |           | the projected mass distribution.                      |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma                        |           | density profile slope of EPL galaxy                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma1                       |           | external shear component in the x-direction           |
+              |                              |           | (RA-like axis)                                        |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma2                       |           | external shear component in the y-direction           |
+              |                              |           | (Dec-like axis)                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
+
+      :Returns:
+
+          **lens_parameters** : ``dict``
+              Updated dictionary with additional image properties with the following description:
+
+              +------------------------------+-----------+-------------------------------------------------------+
+              | x0_image_positions           | radian    | x-coordinate (RA-like axis) of the images             |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | x1_image_positions           | radian    | y-coordinate (Dec-like axis) of the images            |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | magnifications               |           | magnifications                                        |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | time_delays                  |           | time delays                                           |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | image_type                   |           | image type                                            |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | n_images                     |           | number of images                                      |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | x_source                     | radian    | x-coordinate (RA-like axis) of the source             |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | y_source                     | radian    | y-coordinate (Dec-like axis) of the source            |
+              +------------------------------+-----------+-------------------------------------------------------+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: image_properties_epl_shear_lenstronomy(lens_parameters)
+
+      
+      Compute image properties for strongly lensed events. This use functions from lenstronomy.
 
       Solves the lens equation using multiprocessing to find image positions,
       magnifications, time delays, and image types for each lensing event.
@@ -4164,8 +4425,99 @@ Attributes
 
 
 
-.. py:function:: redshift_optimal_spacing(z_min, z_max, resolution)
+.. py:function:: generate_mixed_grid(x_min, x_max, resolution, power_law_part='lower', geomspace_part=False, spacing_trend='increasing', power=2.3, value_transition_fraction=0.6, num_transition_fraction=0.8, auto_match_slope=True)
 
+   
+   Generalized mixed spacing grid generator. Safely handles negative ranges.
+
+
+   :Parameters:
+
+       **x_min** : float
+           Minimum value of the grid.
+
+       **x_max** : float
+           Maximum value of the grid.
+
+       **resolution** : int
+           Total number of grid points.
+
+       **power_law_part** : str, optional
+           Which part of the grid should follow the power-law spacing. Options: 'lower' or 'upper'. Default is 'lower'.
+
+       **geomspace_part** : bool or str, optional
+           If `False`, keep the existing linear + power-law behavior. If `'lower'` or `'upper'`,
+           replace that segment with geometric spacing while keeping the other segment linear.
+           Geometric spacing is only used when the selected segment endpoints are strictly positive;
+           otherwise the function falls back to the standard mixed-grid construction. Default is `False`.
+
+       **spacing_trend** : str, optional
+           Whether the power-law spacing should be increasing or decreasing. Options: 'increasing' or 'decreasing'. Default is 'increasing'.
+
+       **power** : float, optional
+           The power-law exponent. Higher values lead to more extreme spacing. Default is 2.3.
+
+       **value_transition_fraction** : float, optional
+           The fraction of the total value range at which to transition from linear to power-law spacing. Must be between 0 and 1. Default is 0.6.
+
+       **num_transition_fraction** : float, optional
+           The fraction of the total number of points at which to transition from linear to power-law spacing. Must be between 0 and 1. Default is 0.8.
+
+       **auto_match_slope** : bool, optional
+           Whether to automatically adjust the power-law exponent to match the slope of the linear spacing at the transition point. Default is True.
+           This is ignored for the geometric-spacing segment when `geomspace_part` is used.
+
+   :Returns:
+
+       numpy.ndarray
+           The generated grid points.
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   from ler.utils.cosmological_conversions import generate_mixed_grid
+
+   resolution=20
+   # linear+power-law with power-law in the upper segment and decreasing step sizes
+   x = generate_mixed_grid(
+       x_min=0.0, x_max=10.0, resolution=resolution,
+       power_law_part='upper',
+       spacing_trend='decreasing',  # Forces largest steps near z_trans
+       power=2.5,
+       value_transition_fraction=0.6,
+       num_transition_fraction=0.3,
+       auto_match_slope=True       # We accept the kink to control the exact power
+   )
+   # powerlaw+linear with power-law in the lower segment and increasing step sizes
+   x = generate_mixed_grid(
+       x_min=0.0, x_max=10.0, resolution=resolution,
+       power_law_part='lower',
+       spacing_trend='increasing',  # Forces largest steps near z_trans
+       power=2.5,
+       value_transition_fraction=0.3,
+       num_transition_fraction=0.6,
+       auto_match_slope=True       # We accept the kink to control the exact power
+   )
+   # linear+geomspace with geometric spacing in the upper segment
+   x = generate_mixed_grid(
+       x_min=0.1, x_max=10.0, resolution=resolution,
+       geomspace_part='lower',
+       value_transition_fraction=0.3,
+       num_transition_fraction=0.6,
+   )
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:class:: LensGalaxyParameterDistribution(npool=4, z_min=0.0, z_max=10.0, cosmology=None, event_type='BBH', lens_type='epl_shear_galaxy', lens_functions=None, lens_functions_params=None, lens_param_samplers=None, lens_param_samplers_params=None, directory='./interpolator_json', create_new_interpolator=False, buffer_size=1000, **kwargs)
 
@@ -4343,7 +4695,7 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-   .. py:property:: source_redshift_sl
+   .. py:property:: zs_sl
 
       
       Function to sample source redshifts conditioned on strong lensing.
@@ -4352,8 +4704,59 @@ Attributes
 
       :Returns:
 
-          **source_redshift_sl** : ``ler.functions.FunctionConditioning``
+          **zs_sl** : ``ler.functions.FunctionConditioning``
               Function for sampling source redshifts conditioned on strong lensing.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: cross_section_based_sampler
+
+      
+      Cross-section based lens parameter sampler function. This is an initialized function of sampler_functions.create_importance_sampler or sampler_functions.create_rejection_sampler based on the configuration.
+
+      This function samples lens parameters weighted by the strong lensing
+      cross-section.
+
+      :Parameters:
+
+          **zs** : ``numpy.ndarray``
+              Array of source redshifts.
+
+          **zl** : ``numpy.ndarray``
+              Array of lens redshifts.
+
+      :Returns:
+
+          **sigma** : ``numpy.ndarray``
+              Array of velocity dispersions.
+
+          **q** : ``numpy.ndarray``
+              Array of axis ratios.
+
+          **phi** : ``numpy.ndarray``
+              Array of axis rotation angles.
+
+          **gamma** : ``numpy.ndarray``
+              Array of density profile slopes.
+
+          **gamma1** : ``numpy.ndarray``
+              Array of external shear components in the x-direction.
+
+          **gamma2** : ``numpy.ndarray``
+              Array of external shear components in the y-direction.
 
 
 
@@ -4414,7 +4817,7 @@ Attributes
           **lens_param_samplers** : ``dict``
               Dictionary mapping parameter names to sampler function names.
 
-              Keys include: 'source_redshift_sl', 'lens_redshift',
+              Keys include: 'zs_sl', 'lens_redshift',
 
               'velocity_dispersion', 'axis_ratio', 'axis_rotation_angle',
 
@@ -4495,38 +4898,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:attribute:: event_type
-      :value: "'BBH'"
-
-      
-      ``str``
-
-      Type of event to generate.
-
-      e.g. 'BBH', 'BNS', 'NSBH'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
    .. py:attribute:: sample_lens_parameters_routine
-
-      
-
-   .. py:attribute:: cross_section_based_sampler
 
       
 
@@ -5237,8 +5609,99 @@ Attributes
 .. py:function:: differential_comoving_volume(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
 
 
-.. py:function:: redshift_optimal_spacing(z_min, z_max, resolution)
+.. py:function:: generate_mixed_grid(x_min, x_max, resolution, power_law_part='lower', geomspace_part=False, spacing_trend='increasing', power=2.3, value_transition_fraction=0.6, num_transition_fraction=0.8, auto_match_slope=True)
 
+   
+   Generalized mixed spacing grid generator. Safely handles negative ranges.
+
+
+   :Parameters:
+
+       **x_min** : float
+           Minimum value of the grid.
+
+       **x_max** : float
+           Maximum value of the grid.
+
+       **resolution** : int
+           Total number of grid points.
+
+       **power_law_part** : str, optional
+           Which part of the grid should follow the power-law spacing. Options: 'lower' or 'upper'. Default is 'lower'.
+
+       **geomspace_part** : bool or str, optional
+           If `False`, keep the existing linear + power-law behavior. If `'lower'` or `'upper'`,
+           replace that segment with geometric spacing while keeping the other segment linear.
+           Geometric spacing is only used when the selected segment endpoints are strictly positive;
+           otherwise the function falls back to the standard mixed-grid construction. Default is `False`.
+
+       **spacing_trend** : str, optional
+           Whether the power-law spacing should be increasing or decreasing. Options: 'increasing' or 'decreasing'. Default is 'increasing'.
+
+       **power** : float, optional
+           The power-law exponent. Higher values lead to more extreme spacing. Default is 2.3.
+
+       **value_transition_fraction** : float, optional
+           The fraction of the total value range at which to transition from linear to power-law spacing. Must be between 0 and 1. Default is 0.6.
+
+       **num_transition_fraction** : float, optional
+           The fraction of the total number of points at which to transition from linear to power-law spacing. Must be between 0 and 1. Default is 0.8.
+
+       **auto_match_slope** : bool, optional
+           Whether to automatically adjust the power-law exponent to match the slope of the linear spacing at the transition point. Default is True.
+           This is ignored for the geometric-spacing segment when `geomspace_part` is used.
+
+   :Returns:
+
+       numpy.ndarray
+           The generated grid points.
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   from ler.utils.cosmological_conversions import generate_mixed_grid
+
+   resolution=20
+   # linear+power-law with power-law in the upper segment and decreasing step sizes
+   x = generate_mixed_grid(
+       x_min=0.0, x_max=10.0, resolution=resolution,
+       power_law_part='upper',
+       spacing_trend='decreasing',  # Forces largest steps near z_trans
+       power=2.5,
+       value_transition_fraction=0.6,
+       num_transition_fraction=0.3,
+       auto_match_slope=True       # We accept the kink to control the exact power
+   )
+   # powerlaw+linear with power-law in the lower segment and increasing step sizes
+   x = generate_mixed_grid(
+       x_min=0.0, x_max=10.0, resolution=resolution,
+       power_law_part='lower',
+       spacing_trend='increasing',  # Forces largest steps near z_trans
+       power=2.5,
+       value_transition_fraction=0.3,
+       num_transition_fraction=0.6,
+       auto_match_slope=True       # We accept the kink to control the exact power
+   )
+   # linear+geomspace with geometric spacing in the upper segment
+   x = generate_mixed_grid(
+       x_min=0.1, x_max=10.0, resolution=resolution,
+       geomspace_part='lower',
+       value_transition_fraction=0.3,
+       num_transition_fraction=0.6,
+   )
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:function:: phi_cut_SIE(q)
 
@@ -5261,43 +5724,6 @@ Attributes
            For q -> 1 (spherical): returns 1.0
 
            For q -> 0 (highly elliptical): returns ~0.
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: phi_q2_ellipticity(phi, q)
-
-   
-   Convert position angle and axis ratio to ellipticity components.
-
-
-   :Parameters:
-
-       **phi** : ``numpy.ndarray``
-           Position angle of the major axis (radians).
-
-       **q** : ``numpy.ndarray``
-           Axis ratio (0 < q <= 1).
-
-   :Returns:
-
-       **e1** : ``numpy.ndarray``
-           First ellipticity component.
-
-       **e2** : ``numpy.ndarray``
-           Second ellipticity component.
 
 
 
@@ -5358,6 +5784,46 @@ Attributes
 
 
 
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: phi_q2_ellipticity(phi, q)
+
+   
+   Convert lens orientation and axis ratio to ellipticity components.
+
+
+   :Parameters:
+
+       **phi** : ``float``
+           Position angle of the lens major axis in radians.
+
+       **q** : ``float``
+           Axis ratio (minor/major), where ``0 < q <= 1``.
+
+   :Returns:
+
+       **e1** : ``float``
+           First ellipticity component.
+
+       **e2** : ``float``
+           Second ellipticity component.
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   >>> e1, e2 = phi_q2_ellipticity(phi=0.25, q=0.8)
 
 
 
@@ -5547,6 +6013,8 @@ Attributes
    | :meth:`~cross_section_epl_shear_numerical`          | Compute EPL+shear cross-section numerically              |
    +-----------------------------------------------------+----------------------------------------------------------+
    | :meth:`~cross_section_epl_shear_interpolation`      | Compute EPL+shear cross-section via interpolation        |
+   +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~cross_section_epl_shear_njit`               | Compute EPL+shear cross-section using Numba njit         |
    +-----------------------------------------------------+----------------------------------------------------------+
 
    Instance Attributes
@@ -7080,7 +7548,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: create_parameter_grid(size_list=[25, 25, 45, 15, 15])
+   .. py:method:: create_parameter_grid(size_list=[25, 25, 45, 15, 15], spacing_config=None)
 
       
       Create a parameter grid for lens galaxies.
@@ -7090,6 +7558,11 @@ Attributes
 
           **size_list** : list
               List of sizes for each parameter grid.
+
+          **spacing_config** : dict or None
+              Optional per-parameter spacing configuration. Keys can include
+              ``q``, ``phi``, ``e1``, ``e2``, ``gamma``, ``gamma1``, ``gamma2`` and values are
+              dictionaries, e.g. ``{"mode": "two_sided_mixed_grid", "power_law_part": "lower", "spacing_trend": "increasing", "power": 2.5, "value_transition_fraction": 0.6, "num_transition_fraction": 0.3, "auto_match_slope": True}``.
 
       :Returns:
 
@@ -7117,16 +7590,86 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: cross_section_epl_shear_interpolation_init(file_path, size_list)
+   .. py:method:: cross_section_epl_shear_interpolation_init(file_path, size_list, spacing_config=None, batch_size=50000)
 
 
-   .. py:method:: cross_section_epl_shear_interpolation(zs, zl, sigma, q, phi, gamma, gamma1, gamma2, get_attribute=False, size_list=[25, 25, 45, 15, 15], **kwargs)
+   .. py:method:: cross_section_epl_shear_interpolation(zs, zl, sigma, q, phi, gamma, gamma1, gamma2, get_attribute=False, size_list=[25, 25, 45, 15, 15], spacing_config=None, **kwargs)
 
       
       Function to compute the cross-section correction factor
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: cross_section_epl_shear_njit(zs, zl, sigma, q, phi, gamma, gamma1, gamma2, get_attribute=False, num_th=500, maginf=-100.0, **kwargs)
+
+      
+      Compute the lensing cross-section for EPL+shear lens model using Numba njit.
+
+
+      :Parameters:
+
+          **zs** : ``float`` or ``numpy.ndarray``
+              Source redshift(s).
+
+          **zl** : ``float`` or ``numpy.ndarray``
+              Lens redshift(s).
+
+          **sigma** : ``float`` or ``numpy.ndarray``
+              Velocity dispersion(s) in km/s.
+
+          **q** : ``float`` or ``numpy.ndarray``
+              Axis ratio(s) (b/a).
+
+          **phi** : ``float`` or ``numpy.ndarray``
+              Axis rotation angle(s) in radians.
+
+          **gamma** : ``float`` or ``numpy.ndarray``
+              Density profile slope(s).
+
+          **gamma1** : ``float`` or ``numpy.ndarray``
+              External shear component 1.
+
+          **gamma2** : ``float`` or ``numpy.ndarray``
+              External shear component 2.
+
+          **get_attribute** : ``bool``, optional
+              If True, return the interpolator instance instead of the cross-section.
+              Default is False.
+
+          **num_th** : ``int``, optional
+              Number of theta values to use for the spline interpolation.
+              Default is 500.
+
+          **maginf** : ``float``, optional
+              Magnitude limit for the cross-section calculation.
+              Default is -100.0.
+
+          **\*\*kwargs**
+              Additional keyword arguments to pass to the interpolator.
+
+      :Returns:
+
+          **cs_caculator** : ``ler.image_properties.cross_section_njit.CrossSectionNjit``
+              The interpolator instance (if get_attribute=True).
+
+          **cross_section** : ``float`` or ``numpy.ndarray``
+              Lensing cross-section in arcsec^2.
 
 
 
@@ -7194,51 +7737,10 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: load_pickle(file_name)
-
-   
-   Load a pickle file.
-
-
-   :Parameters:
-
-       **file_name** : `str`
-           pickle file name for storing the parameters.
-
-   :Returns:
-
-       **param** : `dict`
-           ..
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:data:: CS_UNIT_SLOPE
-   :value: '0.31830988618379075'
-
-   
-
-.. py:data:: CS_UNIT_INTERCEPT
-   :value: '-3.2311742677852644e-27'
-
-   
-
 .. py:function:: lens_redshift_strongly_lensed_njit(zs_array, zl_scaled, sigma_min, sigma_max, q_rvs, phi_rvs, gamma_rvs, shear_rvs, number_density, cross_section, dVcdz_function, integration_size)
 
    
-   JIT-compiled parallel computation of lens redshift optical depth.
+   JIT-compiled parallel computation of differential optical dept (lens redshift).
 
    Computes the differential optical depth for strong lensing as a function
    of source and lens redshifts using Monte Carlo integration with parallel
@@ -7305,7 +7807,7 @@ Attributes
 .. py:function:: lens_redshift_strongly_lensed_mp(params)
 
    
-   Multiprocessing worker for lens redshift optical depth calculation.
+   Multiprocessing worker for computation of differential optical dept (lens redshift).
 
    Computes the differential optical depth for a single source redshift
    across multiple lens redshifts. Designed to be called via multiprocessing
@@ -7420,67 +7922,6 @@ Attributes
 .. py:function:: is_njitted(func)
 
 
-.. py:function:: save_pickle(file_name, param)
-
-   
-   Save a dictionary as a pickle file.
-
-
-   :Parameters:
-
-       **file_name** : `str`
-           pickle file name for storing the parameters.
-
-       **param** : `dict`
-           dictionary to be saved as a pickle file.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:function:: load_pickle(file_name)
-
-   
-   Load a pickle file.
-
-
-   :Parameters:
-
-       **file_name** : `str`
-           pickle file name for storing the parameters.
-
-   :Returns:
-
-       **param** : `dict`
-           ..
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
 .. py:function:: inverse_transform_sampler(size, cdf, x)
 
    
@@ -7518,8 +7959,99 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: redshift_optimal_spacing(z_min, z_max, resolution)
+.. py:function:: generate_mixed_grid(x_min, x_max, resolution, power_law_part='lower', geomspace_part=False, spacing_trend='increasing', power=2.3, value_transition_fraction=0.6, num_transition_fraction=0.8, auto_match_slope=True)
 
+   
+   Generalized mixed spacing grid generator. Safely handles negative ranges.
+
+
+   :Parameters:
+
+       **x_min** : float
+           Minimum value of the grid.
+
+       **x_max** : float
+           Maximum value of the grid.
+
+       **resolution** : int
+           Total number of grid points.
+
+       **power_law_part** : str, optional
+           Which part of the grid should follow the power-law spacing. Options: 'lower' or 'upper'. Default is 'lower'.
+
+       **geomspace_part** : bool or str, optional
+           If `False`, keep the existing linear + power-law behavior. If `'lower'` or `'upper'`,
+           replace that segment with geometric spacing while keeping the other segment linear.
+           Geometric spacing is only used when the selected segment endpoints are strictly positive;
+           otherwise the function falls back to the standard mixed-grid construction. Default is `False`.
+
+       **spacing_trend** : str, optional
+           Whether the power-law spacing should be increasing or decreasing. Options: 'increasing' or 'decreasing'. Default is 'increasing'.
+
+       **power** : float, optional
+           The power-law exponent. Higher values lead to more extreme spacing. Default is 2.3.
+
+       **value_transition_fraction** : float, optional
+           The fraction of the total value range at which to transition from linear to power-law spacing. Must be between 0 and 1. Default is 0.6.
+
+       **num_transition_fraction** : float, optional
+           The fraction of the total number of points at which to transition from linear to power-law spacing. Must be between 0 and 1. Default is 0.8.
+
+       **auto_match_slope** : bool, optional
+           Whether to automatically adjust the power-law exponent to match the slope of the linear spacing at the transition point. Default is True.
+           This is ignored for the geometric-spacing segment when `geomspace_part` is used.
+
+   :Returns:
+
+       numpy.ndarray
+           The generated grid points.
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   from ler.utils.cosmological_conversions import generate_mixed_grid
+
+   resolution=20
+   # linear+power-law with power-law in the upper segment and decreasing step sizes
+   x = generate_mixed_grid(
+       x_min=0.0, x_max=10.0, resolution=resolution,
+       power_law_part='upper',
+       spacing_trend='decreasing',  # Forces largest steps near z_trans
+       power=2.5,
+       value_transition_fraction=0.6,
+       num_transition_fraction=0.3,
+       auto_match_slope=True       # We accept the kink to control the exact power
+   )
+   # powerlaw+linear with power-law in the lower segment and increasing step sizes
+   x = generate_mixed_grid(
+       x_min=0.0, x_max=10.0, resolution=resolution,
+       power_law_part='lower',
+       spacing_trend='increasing',  # Forces largest steps near z_trans
+       power=2.5,
+       value_transition_fraction=0.3,
+       num_transition_fraction=0.6,
+       auto_match_slope=True       # We accept the kink to control the exact power
+   )
+   # linear+geomspace with geometric spacing in the upper segment
+   x = generate_mixed_grid(
+       x_min=0.1, x_max=10.0, resolution=resolution,
+       geomspace_part='lower',
+       value_transition_fraction=0.3,
+       num_transition_fraction=0.6,
+   )
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:function:: available_sampler_list()
 
@@ -8602,42 +9134,6 @@ Attributes
 
 
 
-   .. rubric:: Examples
-
-   >>> import numpy as np
-   >>> from numba import njit
-   >>> @njit
-   ... def q_rvs(n, sigma):
-   ...     return 0.5 + 0.5 * np.random.random(n)
-   >>> @njit
-   ... def phi_rvs(n):
-   ...     return np.pi * np.random.random(n)
-   >>> @njit
-   ... def gamma_rvs(n):
-   ...     return 2.0 + 0.2 * np.random.randn(n)
-   >>> @njit
-   ... def shear_rvs(n):
-   ...     return 0.05 * np.random.randn(n), 0.05 * np.random.randn(n)
-   >>> @njit
-   ... def number_density(sigma, zl):
-   ...     return np.ones_like(sigma)
-   >>> @njit
-   ... def cross_section(zs, zl, sigma, q, phi, gamma, gamma1, gamma2):
-   ...     return sigma**4
-   >>> sampler = create_importance_sampler(
-   ...     sigma_min=100.0,
-   ...     sigma_max=400.0,
-   ...     q_rvs=q_rvs,
-   ...     phi_rvs=phi_rvs,
-   ...     gamma_rvs=gamma_rvs,
-   ...     shear_rvs=shear_rvs,
-   ...     number_density=number_density,
-   ...     cross_section=cross_section,
-   ...     n_prop=100,
-   ... )
-   >>> zs = np.array([1.0, 1.5, 2.0])
-   >>> zl = np.array([0.3, 0.5, 0.7])
-   >>> sigma, q, phi, gamma, gamma1, gamma2 = sampler(zs, zl)
 
 
 
@@ -8681,27 +9177,13 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: phi_q2_ellipticity(phi, q)
+.. py:function:: einstein_radius(sigma, zl, zs, cosmo=None)
 
    
-   Convert position angle and axis ratio to ellipticity components.
+   Function to compute the Einstein radii of the lens galaxies
 
 
-   :Parameters:
 
-       **phi** : ``numpy.ndarray``
-           Position angle of the major axis (radians).
-
-       **q** : ``numpy.ndarray``
-           Axis ratio (0 < q <= 1).
-
-   :Returns:
-
-       **e1** : ``numpy.ndarray``
-           First ellipticity component.
-
-       **e2** : ``numpy.ndarray``
-           Second ellipticity component.
 
 
 
@@ -8771,99 +9253,24 @@ Attributes
 .. py:function:: phi_q2_ellipticity(phi, q)
 
    
-   Convert position angle and axis ratio to ellipticity components.
+   Convert lens orientation and axis ratio to ellipticity components.
 
 
    :Parameters:
 
-       **phi** : ``numpy.ndarray``
-           Position angle of the major axis (radians).
+       **phi** : ``float``
+           Position angle of the lens major axis in radians.
 
-       **q** : ``numpy.ndarray``
-           Axis ratio (0 < q <= 1).
+       **q** : ``float``
+           Axis ratio (minor/major), where ``0 < q <= 1``.
 
    :Returns:
 
-       **e1** : ``numpy.ndarray``
+       **e1** : ``float``
            First ellipticity component.
 
-       **e2** : ``numpy.ndarray``
+       **e2** : ``float``
            Second ellipticity component.
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
-.. py:data:: C_LIGHT
-   :value: '299792.458'
-
-   
-
-.. py:function:: make_cross_section_reinit(e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid, cs_spline_coeff_grid, Da_instance, csunit_to_cs_slope=0.31830988618379075, csunit_to_cs_intercept=-3.2311742677852644e-27)
-
-   
-   Factory function to create a JIT-compiled cross section calculator.
-
-   This function precomputes B-spline coefficients and creates a closure
-   that captures the grid parameters, returning a fast Numba-compiled
-   function for computing cross sections.
-
-   :Parameters:
-
-       **e1_grid** : ``numpy.ndarray``
-           Grid values for ellipticity component e1, shape (n_e1,).
-
-       **e2_grid** : ``numpy.ndarray``
-           Grid values for ellipticity component e2, shape (n_e2,).
-
-       **gamma_grid** : ``numpy.ndarray``
-           Grid values for density slope gamma, shape (n_g,).
-
-       **gamma1_grid** : ``numpy.ndarray``
-           Grid values for shear component gamma1, shape (n_g1,).
-
-       **gamma2_grid** : ``numpy.ndarray``
-           Grid values for shear component gamma2, shape (n_g2,).
-
-       **cs_spline_coeff_grid** : ``numpy.ndarray``
-           Raw cross section grid data (before spline filtering),
-
-           shape (n_e1, n_e2, n_g, n_g1, n_g2).
-
-       **Da_instance** : ``callable``
-           Angular diameter distance function.
-
-           Signature: ``Da_instance(z) -> distance``
-
-       **csunit_to_cs_slope** : ``float``
-           Slope for affine calibration from unit cross section.
-
-           default: 0.31830988618379075
-
-       **csunit_to_cs_intercept** : ``float``
-           Intercept for affine calibration from unit cross section.
-
-           default: -3.2311742677852644e-27
-
-   :Returns:
-
-       **cross_section_reinit** : ``callable``
-           JIT-compiled function with signature:
-
-           ``cross_section_reinit(zs, zl, sigma, q, phi, gamma, gamma1, gamma2)``
-
-           Returns cross sections as ``numpy.ndarray`` of shape (N,).
 
 
 
@@ -8876,15 +9283,18 @@ Attributes
 
    .. rubric:: Examples
 
-   >>> from ler.lens_galaxy_population.cross_section_interpolator import make_cross_section_reinit
-   >>> cs_func = make_cross_section_reinit(
-   ...     e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid,
-   ...     cs_spline_coeff_grid, Da_instance
-   ... )
-   >>> cross_sections = cs_func(zs, zl, sigma, q, phi, gamma, gamma1, gamma2)
+   >>> e1, e2 = phi_q2_ellipticity(phi=0.25, q=0.8)
 
 
 
    ..
        !! processed by numpydoc !!
+
+.. py:data:: C_LIGHT
+   :value: '299792.458'
+
+   
+
+.. py:function:: make_cross_section_area_reinit(e1_grid, e2_grid, gamma_grid, gamma1_grid, gamma2_grid, cs_unit_grid, Da_instance, csunit_to_cs_slope=0.31830988618379075, csunit_to_cs_intercept=-3.2311742677852644e-27)
+
 

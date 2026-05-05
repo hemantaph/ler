@@ -190,6 +190,8 @@ Classes
    +-----------------------------------------------------+----------------------------------------------------------+
    | :meth:`~cross_section_epl_shear_interpolation`      | Compute EPL+shear cross-section via interpolation        |
    +-----------------------------------------------------+----------------------------------------------------------+
+   | :meth:`~cross_section_epl_shear_njit`               | Compute EPL+shear cross-section using Numba njit         |
+   +-----------------------------------------------------+----------------------------------------------------------+
 
    Instance Attributes
    ----------
@@ -1722,7 +1724,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: create_parameter_grid(size_list=[25, 25, 45, 15, 15])
+   .. py:method:: create_parameter_grid(size_list=[25, 25, 45, 15, 15], spacing_config=None)
 
       
       Create a parameter grid for lens galaxies.
@@ -1732,6 +1734,11 @@ Classes
 
           **size_list** : list
               List of sizes for each parameter grid.
+
+          **spacing_config** : dict or None
+              Optional per-parameter spacing configuration. Keys can include
+              ``q``, ``phi``, ``e1``, ``e2``, ``gamma``, ``gamma1``, ``gamma2`` and values are
+              dictionaries, e.g. ``{"mode": "two_sided_mixed_grid", "power_law_part": "lower", "spacing_trend": "increasing", "power": 2.5, "value_transition_fraction": 0.6, "num_transition_fraction": 0.3, "auto_match_slope": True}``.
 
       :Returns:
 
@@ -1759,16 +1766,86 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: cross_section_epl_shear_interpolation_init(file_path, size_list)
+   .. py:method:: cross_section_epl_shear_interpolation_init(file_path, size_list, spacing_config=None, batch_size=50000)
 
 
-   .. py:method:: cross_section_epl_shear_interpolation(zs, zl, sigma, q, phi, gamma, gamma1, gamma2, get_attribute=False, size_list=[25, 25, 45, 15, 15], **kwargs)
+   .. py:method:: cross_section_epl_shear_interpolation(zs, zl, sigma, q, phi, gamma, gamma1, gamma2, get_attribute=False, size_list=[25, 25, 45, 15, 15], spacing_config=None, **kwargs)
 
       
       Function to compute the cross-section correction factor
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: cross_section_epl_shear_njit(zs, zl, sigma, q, phi, gamma, gamma1, gamma2, get_attribute=False, num_th=500, maginf=-100.0, **kwargs)
+
+      
+      Compute the lensing cross-section for EPL+shear lens model using Numba njit.
+
+
+      :Parameters:
+
+          **zs** : ``float`` or ``numpy.ndarray``
+              Source redshift(s).
+
+          **zl** : ``float`` or ``numpy.ndarray``
+              Lens redshift(s).
+
+          **sigma** : ``float`` or ``numpy.ndarray``
+              Velocity dispersion(s) in km/s.
+
+          **q** : ``float`` or ``numpy.ndarray``
+              Axis ratio(s) (b/a).
+
+          **phi** : ``float`` or ``numpy.ndarray``
+              Axis rotation angle(s) in radians.
+
+          **gamma** : ``float`` or ``numpy.ndarray``
+              Density profile slope(s).
+
+          **gamma1** : ``float`` or ``numpy.ndarray``
+              External shear component 1.
+
+          **gamma2** : ``float`` or ``numpy.ndarray``
+              External shear component 2.
+
+          **get_attribute** : ``bool``, optional
+              If True, return the interpolator instance instead of the cross-section.
+              Default is False.
+
+          **num_th** : ``int``, optional
+              Number of theta values to use for the spline interpolation.
+              Default is 500.
+
+          **maginf** : ``float``, optional
+              Magnitude limit for the cross-section calculation.
+              Default is -100.0.
+
+          **\*\*kwargs**
+              Additional keyword arguments to pass to the interpolator.
+
+      :Returns:
+
+          **cs_caculator** : ``ler.image_properties.cross_section_njit.CrossSectionNjit``
+              The interpolator instance (if get_attribute=True).
+
+          **cross_section** : ``float`` or ``numpy.ndarray``
+              Lensing cross-section in arcsec^2.
 
 
 

@@ -3743,13 +3743,13 @@ lensing condition</p></td>
 </tbody>
 </table>
 <dl class="py property">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.LensGalaxyParameterDistribution.source_redshift_sl">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source_redshift_sl</span></span><a class="headerlink" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.source_redshift_sl" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.LensGalaxyParameterDistribution.zs_sl">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zs_sl</span></span><a class="headerlink" href="#ler.lens_galaxy_population.LensGalaxyParameterDistribution.zs_sl" title="Link to this definition"></a></dt>
 <dd><p>Function to sample source redshifts conditioned on strong lensing.</p>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>source_redshift_sl</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">ler.functions.FunctionConditioning</span></code></span></dt><dd><p>Function for sampling source redshifts conditioned on strong lensing.</p>
+<dt><strong>zs_sl</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">ler.functions.FunctionConditioning</span></code></span></dt><dd><p>Function for sampling source redshifts conditioned on strong lensing.</p>
 </dd>
 </dl>
 </dd>
@@ -3781,7 +3781,7 @@ lensing condition</p></td>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>lens_param_samplers</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary mapping parameter names to sampler function names.</p>
-<p>Keys include: ‘source_redshift_sl’, ‘lens_redshift’,</p>
+<p>Keys include: ‘zs_sl’, ‘lens_redshift’,</p>
 <p>‘velocity_dispersion’, ‘axis_ratio’, ‘axis_rotation_angle’,</p>
 <p>‘external_shear’, ‘density_profile_slope’.</p>
 </dd>

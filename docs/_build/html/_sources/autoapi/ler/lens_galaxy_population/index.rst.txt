@@ -4343,7 +4343,7 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-   .. py:property:: source_redshift_sl
+   .. py:property:: zs_sl
 
       
       Function to sample source redshifts conditioned on strong lensing.
@@ -4352,7 +4352,7 @@ Attributes
 
       :Returns:
 
-          **source_redshift_sl** : ``ler.functions.FunctionConditioning``
+          **zs_sl** : ``ler.functions.FunctionConditioning``
               Function for sampling source redshifts conditioned on strong lensing.
 
 
@@ -4414,7 +4414,7 @@ Attributes
           **lens_param_samplers** : ``dict``
               Dictionary mapping parameter names to sampler function names.
 
-              Keys include: 'source_redshift_sl', 'lens_redshift',
+              Keys include: 'zs_sl', 'lens_redshift',
 
               'velocity_dispersion', 'axis_ratio', 'axis_rotation_angle',
 

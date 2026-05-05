@@ -44,14 +44,15 @@ Attributes
 
 .. autoapisummary::
 
-   ler.image_properties.image_properties.cosmo
+   ler.image_properties.image_properties.Mpc_to_m
 
 
-.. py:data:: cosmo
+.. py:data:: Mpc_to_m
+   :value: '3.085677581491367e+22'
 
    
 
-.. py:class:: ImageProperties(npool=4, n_min_images=2, n_max_images=4, lens_model_list=['EPL_NUMBA', 'SHEAR'], cosmology=None, time_window=365 * 24 * 3600 * 2, spin_zero=True, spin_precession=False, pdet_finder=None, include_effective_parameters=False, multiprocessing_verbose=True, include_redundant_parameters=False)
+.. py:class:: ImageProperties(npool=4, n_min_images=2, n_max_images=4, lens_model_list=['EPL_NUMBA', 'SHEAR'], image_properties_function='image_properties_epl_shear_njit', image_properties_function_params=None, cosmology=None, time_window=365.0 * 24.0 * 3600.0 * 1.0, spin_zero=True, spin_precession=False, pdet_finder=None, include_effective_parameters=False, multiprocessing_verbose=True, include_redundant_parameters=False)
 
 
    
@@ -166,7 +167,7 @@ Attributes
    +-----------------------------------------------------+------------------------------------------------+
    | Method                                              | Description                                    |
    +=====================================================+================================================+
-   | :meth:`~image_properties`                           | Compute image properties for lensed events     |
+   | :meth:`~image_properties_epl_shear`                 | Compute image properties for lensed events     |
    +-----------------------------------------------------+------------------------------------------------+
    | :meth:`~get_lensed_snrs`                            | Compute detection probability for lensed images|
    +-----------------------------------------------------+------------------------------------------------+
@@ -538,6 +539,37 @@ Attributes
       ..
           !! processed by numpydoc !!
 
+   .. py:property:: available_image_properties_functions
+
+      
+      Dictionary of available functions for computing image properties.
+
+
+
+      :Returns:
+
+          **available_image_properties_functions** : ``dict``
+              Dictionary with function names and default parameters.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:attribute:: image_properties_function
+
+      
+
    .. py:attribute:: multiprocessing_verbose
       :value: 'True'
 
@@ -548,10 +580,91 @@ Attributes
 
       
 
-   .. py:method:: image_properties(lens_parameters)
+   .. py:attribute:: image_properties_function_params
 
       
-      Compute image properties for strongly lensed events.
+
+   .. py:method:: image_properties_epl_shear_njit(lens_parameters)
+
+      
+      Compute image properties for strongly lensed events. This use functions similar to lenstronomy but rewritten in numba njit for speed.
+
+      Solves the lens equation using multiprocessing to find image positions,
+      magnifications, time delays, and image types for each lensing event.
+
+      :Parameters:
+
+          **lens_parameters** : ``dict``
+              Dictionary containing lens and source parameters shown in the table:
+
+              +------------------------------+-----------+-------------------------------------------------------+
+              | Parameter                    | Units     | Description                                           |
+              +==============================+===========+=======================================================+
+              | zl                           |           | redshift of the lens                                  |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | zs                           |           | redshift of the source                                |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | sigma                        | km s^-1   | velocity dispersion                                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | q                            |           | axis ratio                                            |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | theta_E                      | radian    | Einstein radius                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
+              |                              |           | positive x-axis (RA-like axis) to the major axis of   |
+              |                              |           | the projected mass distribution.                      |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma                        |           | density profile slope of EPL galaxy                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma1                       |           | external shear component in the x-direction           |
+              |                              |           | (RA-like axis)                                        |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma2                       |           | external shear component in the y-direction           |
+              |                              |           | (Dec-like axis)                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
+
+      :Returns:
+
+          **lens_parameters** : ``dict``
+              Updated dictionary with additional image properties with the following description:
+
+              +------------------------------+-----------+-------------------------------------------------------+
+              | x0_image_positions           | radian    | x-coordinate (RA-like axis) of the images             |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | x1_image_positions           | radian    | y-coordinate (Dec-like axis) of the images            |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | magnifications               |           | magnifications                                        |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | time_delays                  |           | time delays                                           |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | image_type                   |           | image type                                            |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | n_images                     |           | number of images                                      |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | x_source                     | radian    | x-coordinate (RA-like axis) of the source             |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | y_source                     | radian    | y-coordinate (Dec-like axis) of the source            |
+              +------------------------------+-----------+-------------------------------------------------------+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: image_properties_epl_shear_lenstronomy(lens_parameters)
+
+      
+      Compute image properties for strongly lensed events. This use functions from lenstronomy.
 
       Solves the lens equation using multiprocessing to find image positions,
       magnifications, time delays, and image types for each lensing event.

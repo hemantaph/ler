@@ -388,34 +388,6 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: create_new_interpolator
-
-      
-      Dictionary controlling interpolator creation settings.
-
-
-
-      :Returns:
-
-          **create_new_interpolator** : ``dict``
-              Dictionary with that controls the creation of new interpolators.
-              Default: {'merger_rate_density': {'create_new': False, 'resolution': 100}, 'luminosity_distance': {'create_new': False, 'resolution': 100}, 'differential_comoving_volume': {'create_new': False, 'resolution': 100}}
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
    .. py:property:: luminosity_distance
 
       
@@ -558,6 +530,34 @@ Classes
 
           **normalization_pdf_z** : ``float``
               Integral of the unnormalized p(z) over [z_min, z_max].
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: create_new_interpolator
+
+      
+      Dictionary controlling interpolator creation settings.
+
+
+
+      :Returns:
+
+          **create_new_interpolator** : ``dict``
+              Dictionary with that controls the creation of new interpolators.
+              Default: {'merger_rate_density': {'create_new': False, 'resolution': 100}, 'luminosity_distance': {'create_new': False, 'resolution': 100}, 'differential_comoving_volume': {'create_new': False, 'resolution': 100}}
 
 
 

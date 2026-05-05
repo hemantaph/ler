@@ -541,34 +541,6 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: create_new_interpolator
-
-      
-      Dictionary controlling interpolator creation settings.
-
-
-
-      :Returns:
-
-          **create_new_interpolator** : ``dict``
-              Dictionary with that controls the creation of new interpolators.
-              Default: {'merger_rate_density': {'create_new': False, 'resolution': 100}, 'luminosity_distance': {'create_new': False, 'resolution': 100}, 'differential_comoving_volume': {'create_new': False, 'resolution': 100}}
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
    .. py:property:: luminosity_distance
 
       
@@ -711,6 +683,34 @@ Attributes
 
           **normalization_pdf_z** : ``float``
               Integral of the unnormalized p(z) over [z_min, z_max].
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: create_new_interpolator
+
+      
+      Dictionary controlling interpolator creation settings.
+
+
+
+      :Returns:
+
+          **create_new_interpolator** : ``dict``
+              Dictionary with that controls the creation of new interpolators.
+              Default: {'merger_rate_density': {'create_new': False, 'resolution': 100}, 'luminosity_distance': {'create_new': False, 'resolution': 100}, 'differential_comoving_volume': {'create_new': False, 'resolution': 100}}
 
 
 
@@ -1460,34 +1460,6 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: create_new_interpolator
-
-      
-      Dictionary controlling interpolator creation settings.
-
-
-
-      :Returns:
-
-          **create_new_interpolator** : ``dict``
-              Dictionary with that controls the creation of new interpolators.
-              Default: {'merger_rate_density': {'create_new': False, 'resolution': 100}, 'luminosity_distance': {'create_new': False, 'resolution': 100}, 'differential_comoving_volume': {'create_new': False, 'resolution': 100}}
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
    .. py:property:: luminosity_distance
 
       
@@ -1630,6 +1602,34 @@ Attributes
 
           **normalization_pdf_z** : ``float``
               Integral of the unnormalized p(z) over [z_min, z_max].
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: create_new_interpolator
+
+      
+      Dictionary controlling interpolator creation settings.
+
+
+
+      :Returns:
+
+          **create_new_interpolator** : ``dict``
+              Dictionary with that controls the creation of new interpolators.
+              Default: {'merger_rate_density': {'create_new': False, 'resolution': 100}, 'luminosity_distance': {'create_new': False, 'resolution': 100}, 'differential_comoving_volume': {'create_new': False, 'resolution': 100}}
 
 
 
@@ -3238,6 +3238,82 @@ Attributes
       >>> from ler.gw_source_population import CBCSourceParameterDistribution
       >>> cbc = CBCSourceParameterDistribution(event_type='NSBH')
       >>> m1_src, m2_src = cbc.binary_masses_NSBH_broken_powerlaw(size=1000)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: binary_masses_BBH_broken_powerlaw_plus_2peaks(size, get_attribute=False, **kwargs)
+
+      
+      Sample source masses from broken power law + 2 Gaussian peaks model.
+
+      Implements the mass distribution model from LIGO-Virgo population analyses
+      (GWTC-4.0, Callister & Farr 2024) that combines a broken power-law continuum
+      with two Gaussian peaks to capture population features.
+
+      :Parameters:
+
+          **size** : ``int``
+              Number of samples to draw.
+
+          **get_attribute** : ``bool``
+              If True, return the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Model parameters:
+
+              - alpha1: Spectral index below break, default: 1.7
+
+              - alpha2: Spectral index above break, default: 4.5
+
+              - m_break: Break mass (Msun), default: 34.1
+
+              - m_min: Minimum BH mass (Msun), default: 5.0
+
+              - m_max: Maximum BH mass (Msun), default: 100.0
+
+              - delta_m: Low-mass smoothing width (Msun), default: 4.0
+
+              - mu1: Peak 1 location (Msun), default: 9.8
+
+              - sigma1: Peak 1 width (Msun), default: 1.0
+
+              - lam1: Peak 1 mixture fraction, default: 0.05
+
+              - mu2: Peak 2 location (Msun), default: 32.7
+
+              - sigma2: Peak 2 width (Msun), default: 4.0
+
+              - lam2: Peak 2 mixture fraction, default: 0.05
+
+              - beta_q: Mass ratio power-law index, default: 1.2
+
+      :Returns:
+
+          **mass_1_source** : ``numpy.ndarray``
+              Array of primary masses in source frame (Msun).
+
+          **mass_2_source** : ``numpy.ndarray``
+              Array of secondary masses in source frame (Msun).
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.gw_source_population import CBCSourceParameterDistribution
+      >>> cbc = CBCSourceParameterDistribution()
+      >>> m1_src, m2_src = cbc.binary_masses_BBH_broken_powerlaw_plus_2peaks(size=1000)
 
 
 
