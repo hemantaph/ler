@@ -162,6 +162,8 @@ Glossary
    examples/GWRATES_complete_examples
    examples/LeR_custom_functions
    examples/LeR_advanced_sampling
+   examples/LeR_model_uncertainty
+   examples/selection_function
 
 
 Indices and tables

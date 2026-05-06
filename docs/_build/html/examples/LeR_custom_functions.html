@@ -118,6 +118,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LeR_model_uncertainty.html">LeR model uncertainty example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection_function.html">Selection Function</a></li>
 </ul>
 
         </div>
@@ -605,7 +607,7 @@ zs_sl:
 
 lens_redshift_sl:
   lens_redshift_strongly_lensed_sis_analytical: None
-  lens_redshift_strongly_lensed_numerical: {&#39;param_name&#39;: &#39;lens_redshift_sl&#39;, &#39;sampler_type&#39;: &#39;lens_redshift_strongly_lensed_numerical&#39;, &#39;lens_type&#39;: &#39;epl_shear_galaxy&#39;, &#39;integration_size&#39;: 25000, &#39;use_multiprocessing&#39;: False}
+  lens_redshift_strongly_lensed_numerical: {&#39;param_name&#39;: &#39;lens_redshift_sl&#39;, &#39;sampler_type&#39;: &#39;lens_redshift_strongly_lensed_numerical&#39;, &#39;lens_type&#39;: &#39;epl_shear_galaxy&#39;, &#39;integration_size&#39;: 50000, &#39;use_multiprocessing&#39;: False, &#39;cross_section_epl_shear_interpolation&#39;: False}
 
 lens_redshift:
   lens_redshift_intrinsic_numerical: None
@@ -626,6 +628,10 @@ axis_rotation_angle:
   uniform: {&#39;param_name&#39;: &#39;axis_rotation_angle&#39;, &#39;sampler_type&#39;: &#39;uniform&#39;, &#39;x_min&#39;: 0.0, &#39;x_max&#39;: 6.283185307179586}
   constant_values_n_size: {&#39;param_name&#39;: &#39;axis_rotation_angle&#39;, &#39;sampler_type&#39;: &#39;constant_values_n_size&#39;, &#39;value&#39;: 0.0}
 
+density_profile_slope:
+  normal: {&#39;param_name&#39;: &#39;density_profile_slope&#39;, &#39;sampler_type&#39;: &#39;normal&#39;, &#39;mu&#39;: 1.99, &#39;sigma&#39;: 0.149}
+  constant_values_n_size: {&#39;param_name&#39;: &#39;density_profile_slope&#39;, &#39;sampler_type&#39;: &#39;constant_values_n_size&#39;, &#39;value&#39;: 2.0}
+
 external_shear1:
   normal: {&#39;param_name&#39;: &#39;external_shear1&#39;, &#39;sampler_type&#39;: &#39;normal&#39;, &#39;mu&#39;: 0.0, &#39;sigma&#39;: 0.05}
   constant_values_n_size: {&#39;param_name&#39;: &#39;external_shear1&#39;, &#39;sampler_type&#39;: &#39;constant_values_n_size&#39;, &#39;value&#39;: 0.0}
@@ -633,10 +639,6 @@ external_shear1:
 external_shear2:
   normal: {&#39;param_name&#39;: &#39;external_shear2&#39;, &#39;sampler_type&#39;: &#39;normal&#39;, &#39;mu&#39;: 0.0, &#39;sigma&#39;: 0.05}
   constant_values_n_size: {&#39;param_name&#39;: &#39;external_shear2&#39;, &#39;sampler_type&#39;: &#39;constant_values_n_size&#39;, &#39;value&#39;: 0.0}
-
-density_profile_slope:
-  normal: {&#39;param_name&#39;: &#39;density_profile_slope&#39;, &#39;sampler_type&#39;: &#39;normal&#39;, &#39;mu&#39;: 1.99, &#39;sigma&#39;: 0.149}
-  constant_values_n_size: {&#39;param_name&#39;: &#39;density_profile_slope&#39;, &#39;sampler_type&#39;: &#39;constant_values_n_size&#39;, &#39;value&#39;: 2.0}
 
 </pre></div></div>
 </div>
@@ -662,8 +664,8 @@ density_profile_slope:
 
 Testing gengamma sampler function
 gengamma interpolator will be generated at ./interpolator_json/velocity_dispersion/gengamma_1.json
-Velocity dispersion: [121.01025904 124.90593863 186.82633715 113.61481765
- 152.7145442 ] km/s
+Velocity dispersion: [130.32498575 152.65861243 153.17794808 100.9058325
+ 182.76520196] km/s
 </pre></div></div>
 </div>
 </section>
@@ -802,8 +804,8 @@ importance_sampler_mp
 <div class="highlight"><pre>
 
 Testing gengamma sampler function
-Velocity dispersion: [129.80469404 122.13905381 115.46994992 130.13669092
- 178.38531492] km/s
+Velocity dispersion: [151.09757508 182.54117392 201.69941703 180.6957201
+ 110.82457502] km/s
 </pre></div></div>
 </div>
 </section>
@@ -851,9 +853,10 @@ Velocity dispersion: [129.80469404 122.13905381 115.46994992 130.13669092
 </table>
 <p><strong>Notes:</strong></p>
 <ul class="simple">
-<li><p><strong>GW and Lens parameter priors/samplers</strong> must be a function with <code class="docutils literal notranslate"><span class="pre">size</span></code> as the only input argument, or a <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code> class object (preferred for lens parameters). Use <code class="docutils literal notranslate"><span class="pre">numba.njit</span></code> decorator for prior/sampler functions when possible. <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code> creates interpolators for the custom functions to speed up the calculations relying on numba njit.</p></li>
+<li><p><strong>GW priors/samplers</strong> must be a function with <code class="docutils literal notranslate"><span class="pre">size</span></code> as the only input argument, or a <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code> class object (use cases shown in later sections). Use <code class="docutils literal notranslate"><span class="pre">numba.njit</span></code> decorator for prior/sampler functions when possible. <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code> creates interpolators for the custom functions to speed up the calculations relying on numba njit.</p></li>
+<li><p><strong>Lens parameter samplers</strong> must be <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code> class object. Generally it takes it the function (1D or 2D) and create <code class="docutils literal notranslate"><span class="pre">njit</span></code> interpolators pdf and inverse rvs (sampler).</p></li>
 <li><p><strong>Merger rate density</strong> must be a function of redshift, i.e., <span class="math notranslate nohighlight">\(F(z_s)\)</span>.</p></li>
-<li><p><strong>Velocity dispersion function (galaxy number density)</strong> must be a function of velocity dispersion, i.e., <span class="math notranslate nohighlight">\(F(\sigma)\)</span> or <span class="math notranslate nohighlight">\(F(\sigma, z_l)\)</span>.</p></li>
+<li><p><strong>Velocity dispersion function (galaxy number density)</strong> must use a function of velocity dispersion, i.e., <span class="math notranslate nohighlight">\(F(\sigma)\)</span> or <span class="math notranslate nohighlight">\(F(\sigma, z_l)\)</span>, to create the <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code> class object.</p></li>
 </ul>
 <section id="3.1.-Custom-Event-Type-with-non-spinning-configuration">
 <h3>3.1. Custom Event Type with non-spinning configuration<a class="headerlink" href="#3.1.-Custom-Event-Type-with-non-spinning-configuration" title="Link to this heading"></a></h3>
@@ -988,7 +991,7 @@ Parameters: {&#39;param_name&#39;: &#39;merger_rate_density&#39;, &#39;function_
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-mass: [2.47554309 1.24614399 2.19106097 1.17291098 1.72856904] M_sun
+mass: [2.47061195 1.22504778 2.47096762 1.35593826 1.96734825] M_sun
 </pre></div></div>
 </div>
 </section>
@@ -1063,46 +1066,76 @@ mass: [2.47554309 1.24614399 2.19106097 1.17291098 1.72856904] M_sun
 <h4>3.4.1. Custom Velocity Dispersion<a class="headerlink" href="#3.4.1.-Custom-Velocity-Dispersion" title="Link to this heading"></a></h4>
 <p>Unlike other lens parameter, custom velocity dispersion needs to be a density function (galaxy number density as a function of velocity dispersion).</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">FunctionConditioning</span><span class="p">,</span> <span class="n">generate_mixed_grid</span>
+<span class="c1"># import number density function wrt velocity dispersion and redshift</span>
 <span class="kn">from</span> <span class="nn">ler.lens_galaxy_population</span> <span class="kn">import</span> <span class="n">velocity_dispersion_ewoud_denisty_function</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Velocity dispersion density function:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">velocity_dispersion_ewoud_denisty_function</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
-
 <span class="n">velocity_dispersion_args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;velocity_dispersion&#39;</span><span class="p">,</span>
-    <span class="n">sampler_type</span><span class="o">=</span><span class="s1">&#39;velocity_dispersion_ewoud&#39;</span><span class="p">,</span>
-    <span class="n">sigma_min</span><span class="o">=</span><span class="mf">100.</span><span class="p">,</span>  <span class="c1"># default ler sigma_min=100 km/s</span>
-    <span class="n">sigma_max</span><span class="o">=</span><span class="mf">400.</span><span class="p">,</span>  <span class="c1"># default ler sigma_max=400 km/s</span>
+    <span class="n">sigma_min</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>  <span class="c1"># default ler sigma_min=100 km/s</span>
+    <span class="n">sigma_max</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>  <span class="c1"># default ler sigma_max=400 km/s</span>
     <span class="n">alpha</span><span class="o">=</span><span class="mf">0.94</span><span class="p">,</span>
     <span class="n">beta</span><span class="o">=</span><span class="mf">1.85</span><span class="p">,</span>
     <span class="n">phistar</span><span class="o">=</span><span class="mf">2.099e-2</span><span class="p">,</span>
     <span class="n">sigmastar</span><span class="o">=</span><span class="mf">161.0</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">alpha</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">velocity_dispersion_args</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">])</span>
-<span class="n">beta</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">velocity_dispersion_args</span><span class="p">[</span><span class="s2">&quot;beta&quot;</span><span class="p">])</span>
-<span class="n">phistar</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">velocity_dispersion_args</span><span class="p">[</span><span class="s2">&quot;phistar&quot;</span><span class="p">])</span>
-<span class="n">sigmastar</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">velocity_dispersion_args</span><span class="p">[</span><span class="s2">&quot;sigmastar&quot;</span><span class="p">])</span>
 
-<span class="n">sigma_object</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span>
-    <span class="k">lambda</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">zl</span><span class="p">:</span> <span class="n">velocity_dispersion_ewoud_denisty_function</span><span class="p">(</span>  <span class="c1"># noqa: E731</span>
-        <span class="n">sigma</span><span class="p">,</span>
-        <span class="n">zl</span><span class="p">,</span>
-        <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span>
-        <span class="n">beta</span><span class="o">=</span><span class="n">beta</span><span class="p">,</span>
-        <span class="n">phistar</span><span class="o">=</span><span class="n">phistar</span><span class="p">,</span>
-        <span class="n">sigmastar</span><span class="o">=</span><span class="n">sigmastar</span><span class="p">,</span>
-    <span class="p">)</span>
+<span class="c1"># identifier_dict dict allows for easy tracking of the generated interpolator in future usage</span>
+<span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;velocity_dispersion_custom&quot;</span><span class="p">}</span>
+<span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;sigma_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">velocity_dispersion_args</span><span class="p">[</span><span class="s2">&quot;sigma_min&quot;</span><span class="p">]</span>
+<span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;sigma_max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">velocity_dispersion_args</span><span class="p">[</span><span class="s2">&quot;sigma_max&quot;</span><span class="p">]</span>
+<span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;zl_resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">48</span>
+
+<span class="c1"># setting up inputs for the interpolator</span>
+<span class="c1"># Note: sigma_array and zl_array will form a 2D grid where the function is evaluated. Gird points are use for cubic spline interpolation.</span>
+<span class="n">sigma_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+    <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;sigma_min&quot;</span><span class="p">],</span>
+    <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;sigma_max&quot;</span><span class="p">],</span>
+    <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">z_min</span> <span class="o">=</span> <span class="mf">0.001</span>
+<span class="n">z_max</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">z_resolution</span> <span class="o">=</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;zl_resolution&quot;</span><span class="p">]</span>
+<span class="n">zl_array</span> <span class="o">=</span> <span class="n">generate_mixed_grid</span><span class="p">(</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="n">z_resolution</span><span class="p">)</span>
+
+<span class="c1"># define the function</span>
+<span class="n">number_density_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">zl</span><span class="p">:</span> <span class="n">velocity_dispersion_ewoud_denisty_function</span><span class="p">(</span>  <span class="c1"># noqa: E731</span>
+    <span class="n">sigma</span><span class="p">,</span>
+    <span class="n">zl</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="n">velocity_dispersion_args</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">],</span>
+    <span class="n">beta</span><span class="o">=</span><span class="n">velocity_dispersion_args</span><span class="p">[</span><span class="s2">&quot;beta&quot;</span><span class="p">],</span>
+    <span class="n">phistar</span><span class="o">=</span><span class="n">velocity_dispersion_args</span><span class="p">[</span><span class="s2">&quot;phistar&quot;</span><span class="p">],</span>
+    <span class="n">sigmastar</span><span class="o">=</span><span class="n">velocity_dispersion_args</span><span class="p">[</span><span class="s2">&quot;sigmastar&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">sigma_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
+    <span class="n">function</span><span class="o">=</span><span class="n">number_density_function</span><span class="p">,</span>
+    <span class="n">x_array</span><span class="o">=</span><span class="n">sigma_array</span><span class="p">,</span>
+    <span class="n">non_negative_function</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">conditioned_y_array</span><span class="o">=</span><span class="n">zl_array</span><span class="p">,</span>
+    <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;./interpolator_json&quot;</span><span class="p">,</span>
+    <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;velocity_dispersion&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+    <span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">create_function</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">create_pdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">create_rvs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;rvs&quot;</span><span class="p">,</span>
+    <span class="n">cdf_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Test</span>
 <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">100.</span><span class="p">,</span> <span class="mf">200.</span><span class="p">,</span> <span class="mf">300.</span><span class="p">])</span>
 <span class="n">zl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Velocity dispersions: </span><span class="si">{</span><span class="n">sigma</span><span class="si">}</span><span class="s2"> km/s at lens redshifts: </span><span class="si">{</span><span class="n">zl</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Velocity dispersion density function values: </span><span class="si">{</span><span class="n">sigma_object</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span><span class="w"> </span><span class="n">zl</span><span class="p">)</span><span class="si">}</span><span class="s2"> Mpc^-3&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Velocity dispersion density function values: </span><span class="si">{</span><span class="n">sigma_object</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span><span class="w"> </span><span class="n">zl</span><span class="p">)</span><span class="si">}</span><span class="s2"> Mpc^-3&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Random velocity dispersion samples: </span><span class="si">{</span><span class="n">sigma_object</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">zl</span><span class="p">),</span><span class="w"> </span><span class="n">zl</span><span class="p">)</span><span class="si">}</span><span class="s2"> Mpc^-3&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1111,140 +1144,33 @@ mass: [2.47554309 1.24614399 2.19106097 1.17291098 1.72856904] M_sun
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Velocity dispersion density function:
-
-    Calculate the lens galaxy velocity dispersion function at redshift z (Oguri et al. (2018b) + Wempe et al. (2022)).
-
-    Parameters
-    ----------
-    sigma : ``numpy.ndarray``
-        Velocity dispersion of the lens galaxy (km/s).
-    z : ``float``
-        Redshift of the lens galaxy.
-    alpha : ``float``
-        Shape parameter of the velocity dispersion function.
-
-        default: 0.94
-    beta : ``float``
-        Slope parameter of the velocity dispersion function.
-
-        default: 1.85
-    phistar : ``float``
-        Normalization of the velocity dispersion function (Mpc^-3).
-
-        default: 2.099e-2
-    sigmastar : ``float``
-        Characteristic velocity dispersion (km/s).
-
-        default: 113.78
-
-    Returns
-    -------
-    result : ``numpy.ndarray``
-        Velocity dispersion function values.
-
-        Negative values are clipped to 0.
-
+velocity_dispersion_custom interpolator will be generated at ./interpolator_json/velocity_dispersion/velocity_dispersion_custom_2.json
 Velocity dispersions: [100. 200. 300.] km/s at lens redshifts: [0.1 0.2 0.3]
-Velocity dispersion density function values: [9.75545769e-05 3.09054559e-05 5.78714227e-06] Mpc^-3
+Velocity dispersion density function values: [9.75545717e-05 3.09054572e-05 5.78713823e-06] Mpc^-3
+Random velocity dispersion samples: [187.89865267 239.40749587 130.15268119] Mpc^-3
 </pre></div></div>
-</div>
-<blockquote>
-<div><p>It is recommended to use <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code> class object for custom lens parameter samplers, as it creates interpolators for the custom functions to speed up the calculations relying on numba njit.</p>
-</div></blockquote>
-<p>Uncomment and run the following if you want to use <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code> class object.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import numpy as np</span>
-<span class="c1"># from ler.utils import FunctionConditioning, generate_mixed_grid</span>
-<span class="c1"># # import number density function wrt velocity dispersion and redshift</span>
-<span class="c1"># from ler.lens_galaxy_population import velocity_dispersion_ewoud_denisty_function</span>
-
-<span class="c1"># velocity_dispersion_args = dict(</span>
-<span class="c1">#     sigma_min=100,  # default ler sigma_min=100 km/s</span>
-<span class="c1">#     sigma_max=400,  # default ler sigma_max=400 km/s</span>
-<span class="c1">#     alpha=0.94,</span>
-<span class="c1">#     beta=1.85,</span>
-<span class="c1">#     phistar=2.099e-2,</span>
-<span class="c1">#     sigmastar=161.0,</span>
-<span class="c1"># )</span>
-
-<span class="c1"># # identifier_dict dict allows for easy tracking of the generated interpolator in future usage</span>
-<span class="c1"># identifier_dict = {&quot;name&quot;: &quot;velocity_dispersion_custom&quot;}</span>
-<span class="c1"># identifier_dict[&quot;sigma_min&quot;] = velocity_dispersion_args[&quot;sigma_min&quot;]</span>
-<span class="c1"># identifier_dict[&quot;sigma_max&quot;] = velocity_dispersion_args[&quot;sigma_max&quot;]</span>
-<span class="c1"># identifier_dict[&quot;resolution&quot;] = 500</span>
-<span class="c1"># identifier_dict[&quot;zl_resolution&quot;] = 48</span>
-
-<span class="c1"># # setting up inputs for the interpolator</span>
-<span class="c1"># # Note: sigma_array and zl_array will form a 2D grid where the function is evaluated. Gird points are use for cubic spline interpolation.</span>
-<span class="c1"># sigma_array = np.linspace(</span>
-<span class="c1">#     identifier_dict[&quot;sigma_min&quot;],</span>
-<span class="c1">#     identifier_dict[&quot;sigma_max&quot;],</span>
-<span class="c1">#     identifier_dict[&quot;resolution&quot;],</span>
-<span class="c1"># )</span>
-<span class="c1"># z_min = 0.001</span>
-<span class="c1"># z_max = 10.0</span>
-<span class="c1"># z_resolution = identifier_dict[&quot;zl_resolution&quot;]</span>
-<span class="c1"># zl_array = generate_mixed_grid(z_min, z_max, z_resolution)</span>
-
-<span class="c1"># # define the function</span>
-<span class="c1"># number_density_function = lambda sigma, zl: velocity_dispersion_ewoud_denisty_function(  # noqa: E731</span>
-<span class="c1">#     sigma,</span>
-<span class="c1">#     zl,</span>
-<span class="c1">#     alpha=velocity_dispersion_args[&quot;alpha&quot;],</span>
-<span class="c1">#     beta=velocity_dispersion_args[&quot;beta&quot;],</span>
-<span class="c1">#     phistar=velocity_dispersion_args[&quot;phistar&quot;],</span>
-<span class="c1">#     sigmastar=velocity_dispersion_args[&quot;sigmastar&quot;],</span>
-<span class="c1"># )</span>
-
-<span class="c1"># sigma_object = FunctionConditioning(</span>
-<span class="c1">#     function=number_density_function,</span>
-<span class="c1">#     x_array=sigma_array,</span>
-<span class="c1">#     conditioned_y_array=zl_array,</span>
-<span class="c1">#     identifier_dict=identifier_dict,</span>
-<span class="c1">#     directory=&quot;./interpolator_json&quot;,</span>
-<span class="c1">#     sub_directory=&quot;velocity_dispersion&quot;,</span>
-<span class="c1">#     name=identifier_dict[&quot;name&quot;],</span>
-<span class="c1">#     create_new=False,</span>
-<span class="c1">#     create_function_inverse=False,</span>
-<span class="c1">#     create_function=True,</span>
-<span class="c1">#     create_pdf=True,</span>
-<span class="c1">#     create_rvs=True,</span>
-<span class="c1">#     callback=&quot;rvs&quot;,</span>
-<span class="c1"># )</span>
-
-<span class="c1"># # Test</span>
-<span class="c1"># sigma = np.array([100., 200., 300.])</span>
-<span class="c1"># zl = np.array([0.1, 0.2, 0.3])</span>
-<span class="c1"># print(f&quot;Velocity dispersions: {sigma} km/s at lens redshifts: {zl}&quot;)</span>
-<span class="c1"># print(f&quot;Velocity dispersion density function values: {sigma_object.function(sigma, zl)} Mpc^-3&quot;)</span>
-<span class="c1"># print(f&quot;Random velocity dispersion samples: {sigma_object.rvs(len(zl), zl)} Mpc^-3&quot;)</span>
-</pre></div>
-</div>
 </div>
 </section>
 </section>
 <section id="3.4.2.-Custom-Axis-Ratio">
 <h3>3.4.2. Custom Axis Ratio<a class="headerlink" href="#3.4.2.-Custom-Axis-Ratio" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">FunctionConditioning</span></code> class object creates pdf and rvs, which is required by <code class="docutils literal notranslate"><span class="pre">ler</span></code> for sampling.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">CubicSpline</span>  <span class="c1"># noqa: E402</span>
-<span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">inverse_transform_sampler</span>  <span class="c1"># noqa: E402</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>  <span class="c1"># noqa: E402</span>
-
-<span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">FunctionConditioning</span>
+<span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">FunctionConditioning</span>  <span class="c1"># noqa: E402</span>
 
 <span class="n">axis_ratio_args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;axis_ratio&#39;</span><span class="p">,</span>
-    <span class="n">sampler_type</span><span class="o">=</span><span class="s1">&#39;axis_ratio_padilla_strauss_2008&#39;</span><span class="p">,</span>
     <span class="n">q_min</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
     <span class="n">q_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
 <span class="p">)</span>
+
+<span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;axis_ratio_padilla_strauss_custom&quot;</span><span class="p">}</span>
+<span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;q_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">axis_ratio_args</span><span class="p">[</span><span class="s2">&quot;q_min&quot;</span><span class="p">]</span>
+<span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;q_max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">axis_ratio_args</span><span class="p">[</span><span class="s2">&quot;q_max&quot;</span><span class="p">]</span>
+<span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">500</span>
 
 <span class="c1"># Using Padilla and Strauss 2008 distribution for axis ratio</span>
 <span class="n">q_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
@@ -1258,104 +1184,34 @@ Velocity dispersion density function values: [9.75545769e-05 3.09054559e-05 5.78
 
 <span class="c1"># Interpolate the pdf</span>
 <span class="n">spline</span> <span class="o">=</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">q_array</span><span class="p">,</span> <span class="n">pdf</span><span class="p">,</span> <span class="n">extrapolate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">q_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">axis_ratio_args</span><span class="p">[</span><span class="s1">&#39;q_min&#39;</span><span class="p">],</span> <span class="n">axis_ratio_args</span><span class="p">[</span><span class="s1">&#39;q_max&#39;</span><span class="p">],</span> <span class="mi">500</span><span class="p">)</span>
-<span class="n">pdf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">spline</span><span class="p">(</span><span class="n">q_array</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">q_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;q_min&quot;</span><span class="p">],</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;q_max&quot;</span><span class="p">],</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">])</span>
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">spline</span><span class="p">(</span><span class="n">q_array</span><span class="p">)</span>
 
-<span class="n">cdf_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">pdf</span><span class="p">)</span>
-<span class="n">cdf_values</span> <span class="o">/=</span> <span class="n">cdf_values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># normalize</span>
-
-
-<span class="k">def</span> <span class="nf">q_rvs</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">inverse_transform_sampler</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">cdf_values</span><span class="p">,</span> <span class="n">q_array</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">q_pdf</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">spline</span><span class="p">(</span><span class="n">q</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-
-
-<span class="c1"># FunctionConditioning provides both `.rvs` and `.pdf` (required by lens sampling)</span>
 <span class="n">q_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
-    <span class="n">function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">x_array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">create_rvs</span><span class="o">=</span><span class="n">q_rvs</span><span class="p">,</span>
-    <span class="n">create_pdf</span><span class="o">=</span><span class="n">q_pdf</span><span class="p">,</span>
+    <span class="n">function</span><span class="o">=</span><span class="n">pdf</span><span class="p">,</span>  <span class="c1"># it also allows precomputed values, besides function</span>
+    <span class="n">x_array</span><span class="o">=</span><span class="n">q_array</span><span class="p">,</span>
+    <span class="n">non_negative_function</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">conditioned_y_array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;./interpolator_json&quot;</span><span class="p">,</span>
+    <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;axis_ratio&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;axis_ratio_padilla_strauss&quot;</span><span class="p">,</span>
+    <span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">create_function</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">create_pdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">create_rvs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;rvs&quot;</span><span class="p">,</span>
+    <span class="n">cdf_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># test</span>
-<span class="n">q_samples</span> <span class="o">=</span> <span class="n">q_object</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="c1"># sampling</span>
+<span class="n">q_samples</span> <span class="o">=</span> <span class="n">q_object</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Axis ratio samples: </span><span class="si">{</span><span class="n">q_samples</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Axis ratio pdf values: </span><span class="si">{</span><span class="n">q_object</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">q_samples</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Axis ratio samples: [0.62782212 0.39753573 0.46666496 0.81924579 0.79105449]
-</pre></div></div>
-</div>
-<blockquote>
-<div><p>It is recommended to use <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code> class object for custom lens parameter samplers, as it creates interpolators for the custom functions to speed up the calculations relying on numba njt.</p>
-</div></blockquote>
-<p>Uncomment and run the following if you want to use <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code> class object.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># from scipy.interpolate import CubicSpline  # noqa: E402</span>
-<span class="c1"># from ler.utils import FunctionConditioning  # noqa: E402</span>
-
-<span class="c1"># axis_ratio_args = dict(</span>
-<span class="c1">#     q_min=0.2,</span>
-<span class="c1">#     q_max=1.0,</span>
-<span class="c1"># )</span>
-
-<span class="c1"># identifier_dict = {&quot;name&quot;: &quot;axis_ratio_padilla_strauss_custom&quot;}</span>
-<span class="c1"># identifier_dict[&quot;q_min&quot;] = axis_ratio_args[&quot;q_min&quot;]</span>
-<span class="c1"># identifier_dict[&quot;q_max&quot;] = axis_ratio_args[&quot;q_max&quot;]</span>
-<span class="c1"># identifier_dict[&quot;resolution&quot;] = 500</span>
-
-<span class="c1"># # Using Padilla and Strauss 2008 distribution for axis ratio</span>
-<span class="c1"># q_array = np.array(</span>
-<span class="c1">#     [0.04903276402927845,0.09210526315789469,0.13596491228070173,0.20789473684210524,0.2899703729522482,0.3230132450331126,0.35350877192982455,0.37946148483792264,0.4219298245614036,0.4689525967235971,0.5075026141512723,0.5226472638550018,0.5640350877192983,0.6096491228070177,0.6500000000000001,0.6864848379226213,0.7377192982456142,0.7787295224817011,0.8007581038689441,0.822786685256187,0.8668438480306729,0.8973684210526317,0.9254385964912283,</span>
-<span class="c1">#     ]</span>
-<span class="c1"># )</span>
-<span class="c1"># pdf = np.array(</span>
-<span class="c1">#     [0.04185262687135349,0.06114520695141845,0.096997499638376,0.1932510900336828,0.39547914337673706,0.49569751276216234,0.6154609137685201,0.7182049959882812,0.920153741243567,1.1573982157399754,1.3353263628106684,1.413149656448315,1.5790713532948977,1.7280185150744938,1.8132994441344819,1.8365803753840484,1.8178662203211204,1.748929843583365,1.688182592496342,1.6274353414093188,1.4948487090314488,1.402785526832393,1.321844068356993,</span>
-<span class="c1">#     ]</span>
-<span class="c1"># )</span>
-
-<span class="c1"># # Interpolate the pdf</span>
-<span class="c1"># spline = CubicSpline(q_array, pdf, extrapolate=True)</span>
-<span class="c1"># q_array = np.linspace(identifier_dict[&quot;q_min&quot;], identifier_dict[&quot;q_max&quot;], identifier_dict[&quot;resolution&quot;])</span>
-<span class="c1"># pdf = spline(q_array)</span>
-
-<span class="c1"># q_object = FunctionConditioning(</span>
-<span class="c1">#     function=pdf,  # it also allows precomputed values, besides function</span>
-<span class="c1">#     x_array=q_array,</span>
-<span class="c1">#     conditioned_y_array=None,</span>
-<span class="c1">#     identifier_dict=identifier_dict,</span>
-<span class="c1">#     directory=&quot;./interpolator_json&quot;,</span>
-<span class="c1">#     sub_directory=&quot;axis_ratio&quot;,</span>
-<span class="c1">#     name=&quot;axis_ratio_padilla_strauss&quot;,</span>
-<span class="c1">#     create_new=False,</span>
-<span class="c1">#     create_function_inverse=False,</span>
-<span class="c1">#     create_function=True,</span>
-<span class="c1">#     create_pdf=True,</span>
-<span class="c1">#     create_rvs=True,</span>
-<span class="c1">#     callback=&quot;rvs&quot;,</span>
-<span class="c1"># )</span>
-
-<span class="c1"># # test</span>
-<span class="c1"># # sampling</span>
-<span class="c1"># q_samples = q_object.rvs(5)</span>
-<span class="c1"># print(f&quot;Axis ratio samples: {q_samples}&quot;)</span>
-<span class="c1"># # pdf</span>
-<span class="c1"># q_pdf = q_object.pdf(q_samples)</span>
-<span class="c1"># print(f&quot;Axis ratio pdf values: {q_samples}&quot;)</span>
+<span class="c1"># pdf</span>
+<span class="n">q_pdf</span> <span class="o">=</span> <span class="n">q_object</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">q_samples</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Axis ratio pdf values: </span><span class="si">{</span><span class="n">q_pdf</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1365,8 +1221,8 @@ Axis ratio samples: [0.62782212 0.39753573 0.46666496 0.81924579 0.79105449]
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 axis_ratio_padilla_strauss interpolator will be generated at ./interpolator_json/axis_ratio/axis_ratio_padilla_strauss_1.json
-Axis ratio samples: [0.92750867 0.31238047 0.67003542 0.551374   0.45404884]
-Axis ratio pdf values: [0.92750867 0.31238047 0.67003542 0.551374   0.45404884]
+Axis ratio samples: [0.61392959 0.38463519 0.90852885 0.67962473 0.82826483]
+Axis ratio pdf values: [1.76358827 0.75046076 1.38887165 1.8601851  1.63387105]
 </pre></div></div>
 </div>
 </section>
@@ -1393,7 +1249,7 @@ Axis ratio pdf values: [0.92750867 0.31238047 0.67003542 0.551374   0.45404884]
 <div><p><strong>Note</strong>: Even though <code class="docutils literal notranslate"><span class="pre">ler</span></code> uses <code class="docutils literal notranslate"><span class="pre">pdet_net</span></code> to determine detectability, we can use standard SNR (or other detector sensitivity arguments) instead, and set a corresponding threshold later.</p>
 </div></blockquote>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define a function that sets detection criteria</span>
@@ -1403,16 +1259,23 @@ Axis ratio pdf values: [0.92750867 0.31238047 0.67003542 0.551374   0.45404884]
 <span class="n">mmin</span><span class="p">,</span> <span class="n">mmax</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.5</span>
 <span class="n">zmin</span><span class="p">,</span> <span class="n">zmax</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">10.0</span>
 
+<span class="c1"># for spin precessing waveform</span>
 <span class="n">gwsnr_3g</span> <span class="o">=</span> <span class="n">GWSNR</span><span class="p">(</span>
-    <span class="n">npool</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-    <span class="n">ifos</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ET&#39;</span><span class="p">,</span> <span class="s1">&#39;CE&#39;</span><span class="p">],</span>  <span class="c1"># 3G detector network</span>
-    <span class="n">snr_method</span><span class="o">=</span><span class="s1">&#39;interpolation_no_spins&#39;</span><span class="p">,</span>  <span class="c1"># BNS have no spins</span>
-    <span class="n">mtot_min</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">mmin</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">zmin</span><span class="p">),</span> <span class="n">mtot_max</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">mmax</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">zmax</span><span class="p">),</span>
-    <span class="n">sampling_frequency</span><span class="o">=</span><span class="mf">2048.0</span><span class="p">,</span> <span class="n">waveform_approximant</span><span class="o">=</span><span class="s1">&#39;IMRPhenomD&#39;</span><span class="p">,</span>
-    <span class="n">minimum_frequency</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">gwsnr_verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">npool</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">ifos</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;CE&#39;</span><span class="p">],</span>  <span class="c1"># 3G detector network. Can put ifos=[&#39;ET&#39;,&#39;CE&#39;] for multiple detectors</span>
+    <span class="n">snr_method</span><span class="o">=</span><span class="s1">&#39;interpolation_aligned_spins&#39;</span><span class="p">,</span>  <span class="c1"># BNS have no spins</span>
+    <span class="n">mtot_min</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">mmin</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">zmin</span><span class="p">),</span>
+    <span class="n">mtot_max</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">mmax</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">zmax</span><span class="p">),</span>
+    <span class="n">sampling_frequency</span><span class="o">=</span><span class="mf">1024.0</span><span class="p">,</span>
+    <span class="n">waveform_approximant</span><span class="o">=</span><span class="s1">&#39;IMRPhenomXPHM&#39;</span><span class="p">,</span>
+    <span class="n">minimum_frequency</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
+    <span class="n">gwsnr_verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">snr_recalculation</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">snr_recalculation_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span>
+    <span class="n">snr_recalculation_waveform_approximant</span> <span class="o">=</span> <span class="s1">&#39;IMRPhenomXPHM&#39;</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">detection_threshold</span><span class="o">=</span><span class="mi">12</span>
+<span class="n">detection_threshold</span><span class="o">=</span><span class="mi">10</span>
 
 <span class="k">def</span> <span class="nf">detection_criteria</span><span class="p">(</span><span class="n">gw_param_dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1428,6 +1291,12 @@ Axis ratio pdf values: [0.92750867 0.31238047 0.67003542 0.551374   0.45404884]
     <span class="n">mass_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">]),</span>
     <span class="n">mass_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">]),</span>
     <span class="n">luminosity_distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1000.0</span><span class="p">,</span> <span class="mf">40000.0</span><span class="p">]),</span>
+    <span class="n">a_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]),</span>
+    <span class="n">a_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]),</span>
+    <span class="n">tilt_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]),</span>
+    <span class="n">tilt_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]),</span>
+    <span class="n">phi_12</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]),</span>
+    <span class="n">phi_jl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]),</span>
 <span class="p">)</span>
 <span class="n">detection_dict</span> <span class="o">=</span> <span class="n">detection_criteria</span><span class="p">(</span><span class="n">gw_param_dict</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SNR results: </span><span class="si">{</span><span class="n">detection_dict</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1436,7 +1305,7 @@ Axis ratio pdf values: [0.92750867 0.31238047 0.67003542 0.551374   0.45404884]
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
@@ -1444,14 +1313,36 @@ Axis ratio pdf values: [0.92750867 0.31238047 0.67003542 0.551374   0.45404884]
 
 Initializing GWSNR class...
 
-Interpolator will be loaded for ET1 detector from ./interpolator_json/ET1/partialSNR_dict_0.json
-Interpolator will be loaded for ET2 detector from ./interpolator_json/ET2/partialSNR_dict_0.json
-Interpolator will be loaded for ET3 detector from ./interpolator_json/ET3/partialSNR_dict_0.json
-Interpolator will be loaded for CE detector from ./interpolator_json/CE/partialSNR_dict_0.json
+Intel processor has trouble allocating memory when the data is huge. So, by default for IMRPhenomXPHM, duration_max = 64.0. Otherwise, set to some max value like duration_max = 600.0 (10 mins)
+Interpolator will be loaded for CE detector from ./interpolator_json/CE/partialSNR_dict_1.json
 
 
-SNR results: {&#39;pdet_net&#39;: array([408.62083928,  10.21552098])}
-Detection results: [ True False]
+Recalculating SNR for 1 out of 2 samples in the SNR range of 6 to 14
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|█████████████████████████████████████████████████████████████████| 1/1 [00:01&lt;00:00,  1.32s/it]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+SNR results: {&#39;pdet_net&#39;: array([412.10519461,  10.26345904])}
+Detection results: [ True  True]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
 </pre></div></div>
 </div>
 </section>
@@ -1459,7 +1350,7 @@ Detection results: [ True False]
 <h3>3.6. LeR initialization with custom functions and parameters<a class="headerlink" href="#3.6.-LeR-initialization-with-custom-functions-and-parameters" title="Link to this heading"></a></h3>
 <p>Create a <code class="docutils literal notranslate"><span class="pre">LeR</span></code> instance with custom source priors, lens samplers, and detection criteria for BNS events.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
@@ -1513,7 +1404,7 @@ Detection results: [ True False]
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
@@ -1531,16 +1422,32 @@ comoving_distance interpolator will be loaded from ./interpolator_json/comoving_
 angular_diameter_distance interpolator will be loaded from ./interpolator_json/angular_diameter_distance/angular_diameter_distance_0.json
 angular_diameter_distance interpolator will be loaded from ./interpolator_json/angular_diameter_distance/angular_diameter_distance_0.json
 differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_0.json
-using user provided custom velocity_dispersion function
-velocity_dispersion_custom interpolator will be generated at ./interpolator_json/velocity_dispersion/velocity_dispersion_custom_3.json
-using user provided custom axis_ratio sampler function
+using user provided custom velocity_dispersion class/object of type ler.utils.FunctionConditioning
+using user provided custom axis_ratio class/object of type ler.utils.FunctionConditioning
 using ler available axis_rotation_angle function : uniform
 using ler available density_profile_slope function : constant_values_n_size
 using ler available external_shear1 function : constant_values_n_size
 using ler available external_shear2 function : constant_values_n_size
+using ler available cross_section function : cross_section_sie_feixu
 using ler available lens_redshift_sl function : lens_redshift_strongly_lensed_numerical
 Numerically solving the lens redshift distribution...
-Using multithreaded njit
+Using multiprocessing
+Computing lens redshift distribution with multiprocessing...
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|███████████████████████████████████████████████████████████████| 16/16 [00:15&lt;00:00,  1.05it/s]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 lens_redshift_strongly_lensed_numerical interpolator will be generated at ./interpolator_json/lens_redshift_sl/lens_redshift_strongly_lensed_numerical_1.json
 using ler available lens_redshift function : lens_redshift_intrinsic_numerical
 lens_redshift_intrinsic_numerical interpolator will be generated at ./interpolator_json/lens_redshift/lens_redshift_intrinsic_numerical_3.json
@@ -1579,7 +1486,7 @@ Initializing GW parameter samplers...
 initializing epl shear njit solver
 using ler available zs_sl function : strongly_lensed_source_redshift
 strongly_lensed_source_redshift interpolator will be generated at ./interpolator_json/zs_sl/strongly_lensed_source_redshift_1.json
-Faster, njitted and importance sampling based lens parameter sampler will be used.
+Slower, non-njit and importance sampling based lens parameter sampler will be used.
 #-------------------------------------
 # LeR initialization input arguments:
 #-------------------------------------
@@ -1591,7 +1498,7 @@ Faster, njitted and importance sampling based lens parameter sampler will be use
     event_type = &#39;BNS&#39;,
     lens_type = &#39;sie_galaxy&#39;,
     cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=0.0),
-    pdet_finder = &lt;function detection_criteria at 0x156a32b90&gt;,
+    pdet_finder = &lt;function detection_criteria at 0x129311120&gt;,
     json_file_names = dict(
         ler_params = &#39;ler_params.json&#39;,
         unlensed_param = &#39;unlensed_param.json&#39;,
@@ -1602,35 +1509,35 @@ Faster, njitted and importance sampling based lens parameter sampler will be use
     interpolator_directory = &#39;./interpolator_json&#39;,
     ler_directory = &#39;./ler_data_custom&#39;,
     create_new_interpolator = dict(
-        velocity_dispersion = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;zl_resolution&#39;: 48},
-        axis_ratio = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;sigma_resolution&#39;: 48},
-        lens_redshift_sl = {&#39;create_new&#39;: False, &#39;resolution&#39;: 16, &#39;zl_resolution&#39;: 48},
-        lens_redshift = {&#39;create_new&#39;: False, &#39;resolution&#39;: 16, &#39;zl_resolution&#39;: 48},
-        optical_depth = {&#39;create_new&#39;: False, &#39;resolution&#39;: 16},
+        velocity_dispersion = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;zl_resolution&#39;: 48, &#39;cdf_size&#39;: 400},
+        axis_ratio = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;sigma_resolution&#39;: 48, &#39;cdf_size&#39;: 400},
+        lens_redshift_sl = {&#39;create_new&#39;: False, &#39;resolution&#39;: 16, &#39;zl_resolution&#39;: 48, &#39;cdf_size&#39;: 400},
+        lens_redshift = {&#39;create_new&#39;: False, &#39;resolution&#39;: 16, &#39;zl_resolution&#39;: 48, &#39;cdf_size&#39;: 400},
+        optical_depth = {&#39;create_new&#39;: False, &#39;resolution&#39;: 16, &#39;cdf_size&#39;: 500},
         comoving_distance = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
         angular_diameter_distance = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
         angular_diameter_distance_z1z2 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
         differential_comoving_volume = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        zs_sl = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200},
+        zs_sl = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
         cross_section = {&#39;create_new&#39;: False, &#39;resolution&#39;: [25, 25, 5, 5, 5], &#39;spacing_config&#39;: {&#39;e1&#39;: {&#39;mode&#39;: &#39;two_sided_mixed_grid&#39;, &#39;power_law_part&#39;: &#39;lower&#39;, &#39;spacing_trend&#39;: &#39;increasing&#39;, &#39;power&#39;: 2.5, &#39;value_transition_fraction&#39;: 0.7, &#39;num_transition_fraction&#39;: 0.9, &#39;auto_match_slope&#39;: True}, &#39;e2&#39;: {&#39;mode&#39;: &#39;two_sided_mixed_grid&#39;, &#39;power_law_part&#39;: &#39;lower&#39;, &#39;spacing_trend&#39;: &#39;increasing&#39;, &#39;power&#39;: 2.5, &#39;value_transition_fraction&#39;: 0.7, &#39;num_transition_fraction&#39;: 0.9, &#39;auto_match_slope&#39;: True}, &#39;gamma&#39;: {&#39;mode&#39;: &#39;two_sided_mixed_grid&#39;, &#39;power_law_part&#39;: &#39;lower&#39;, &#39;spacing_trend&#39;: &#39;increasing&#39;, &#39;power&#39;: 2.5, &#39;value_transition_fraction&#39;: 0.7, &#39;num_transition_fraction&#39;: 0.9, &#39;auto_match_slope&#39;: True}, &#39;gamma1&#39;: {&#39;mode&#39;: &#39;two_sided_mixed_grid&#39;, &#39;power_law_part&#39;: &#39;lower&#39;, &#39;spacing_trend&#39;: &#39;increasing&#39;, &#39;power&#39;: 2.5, &#39;value_transition_fraction&#39;: 0.7, &#39;num_transition_fraction&#39;: 0.9, &#39;auto_match_slope&#39;: True}, &#39;gamma2&#39;: {&#39;mode&#39;: &#39;two_sided_mixed_grid&#39;, &#39;power_law_part&#39;: &#39;lower&#39;, &#39;spacing_trend&#39;: &#39;increasing&#39;, &#39;power&#39;: 2.5, &#39;value_transition_fraction&#39;: 0.7, &#39;num_transition_fraction&#39;: 0.9, &#39;auto_match_slope&#39;: True}}},
-        merger_rate_density = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200},
-        redshift_distribution = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200},
+        merger_rate_density = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        redshift_distribution = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
         luminosity_distance = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        mass_1_source = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200},
-        mass_ratio = {&#39;create_new&#39;: False, &#39;resolution&#39;: 100, &#39;m1_resolution&#39;: 200},
-        mass_2_source = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200},
-        geocent_time = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200},
-        ra = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200},
-        dec = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200},
-        phase = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200},
-        psi = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200},
-        theta_jn = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200},
-        a_1 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200},
-        a_2 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200},
-        tilt_1 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200},
-        tilt_2 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;tilt_1_resolution&#39;: 100},
-        phi_12 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200},
-        phi_jl = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200},
+        mass_1_source = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        mass_ratio = {&#39;create_new&#39;: False, &#39;resolution&#39;: 100, &#39;m1_resolution&#39;: 200, &#39;cdf_size&#39;: 200},
+        mass_2_source = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        geocent_time = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        ra = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        dec = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        phase = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        psi = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        theta_jn = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        a_1 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        a_2 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        tilt_1 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        tilt_2 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;tilt_1_resolution&#39;: 100, &#39;cdf_size&#39;: 200},
+        phi_12 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        phi_jl = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
     ),
 
     # LeR also takes other CBCSourceParameterDistribution class input arguments as kwargs, as follows:
@@ -1644,9 +1551,9 @@ Faster, njitted and importance sampling based lens parameter sampler will be use
     ),
     gw_priors = dict(
         zs = &#39;merger_rate_density_based_source_redshift&#39;,
-        mass_1_source = CPUDispatcher(&lt;function source_frame_masses_uniform at 0x135eed090&gt;),
+        mass_1_source = CPUDispatcher(&lt;function source_frame_masses_uniform at 0x1290bd800&gt;),
         mass_ratio = None,
-        mass_2_source = CPUDispatcher(&lt;function source_frame_masses_uniform at 0x135eed090&gt;),
+        mass_2_source = CPUDispatcher(&lt;function source_frame_masses_uniform at 0x1290bd800&gt;),
         geocent_time = &#39;uniform&#39;,
         ra = &#39;uniform&#39;,
         dec = &#39;sampler_cosine&#39;,
@@ -1684,13 +1591,13 @@ Faster, njitted and importance sampling based lens parameter sampler will be use
     # LeR also takes other LensGalaxyParameterDistribution class input arguments as kwargs, as follows:
     lens_functions = dict(
         param_sampler_type = &#39;epl_shear_sl_parameters_rvs&#39;,
-        cross_section_based_sampler = &#39;importance_sampling_with_cross_section&#39;,
+        cross_section_based_sampler = &#39;importance_sampler_partial&#39;,
         optical_depth = &#39;optical_depth_numerical&#39;,
         cross_section = &#39;cross_section_sie_feixu&#39;,
     ),
     lens_functions_params = dict(
         param_sampler_type = None,
-        cross_section_based_sampler = {&#39;n_prop_factor&#39;: 10},
+        cross_section_based_sampler = {&#39;n_prop&#39;: 50, &#39;threshold_factor&#39;: 0.0, &#39;sigma_min&#39;: 100.0, &#39;sigma_max&#39;: 400.0, &#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0, &#39;phi_min&#39;: 0.0, &#39;phi_max&#39;: 6.283185307179586, &#39;gamma_min&#39;: 2.0, &#39;gamma_max&#39;: 2.0, &#39;shear_min&#39;: 0.0, &#39;shear_max&#39;: 0.0},
         optical_depth = {&#39;param_name&#39;: &#39;optical_depth&#39;, &#39;function_type&#39;: &#39;optical_depth_numerical&#39;},
         cross_section = None,
     ),
@@ -1698,19 +1605,19 @@ Faster, njitted and importance sampling based lens parameter sampler will be use
         zs_sl = &#39;strongly_lensed_source_redshift&#39;,
         lens_redshift_sl = &#39;lens_redshift_strongly_lensed_numerical&#39;,
         lens_redshift = &#39;lens_redshift_intrinsic_numerical&#39;,
-        velocity_dispersion = CPUDispatcher(&lt;function &lt;lambda&gt; at 0x140494dc0&gt;),
-        axis_ratio = CPUDispatcher(&lt;function &lt;lambda&gt; at 0x137ba2200&gt;),
+        velocity_dispersion = &lt;ler.utils.function_interpolation.FunctionConditioning object at 0x1291c2310&gt;,
+        axis_ratio = &lt;ler.utils.function_interpolation.FunctionConditioning object at 0x12d1502d0&gt;,
         axis_rotation_angle = &#39;uniform&#39;,
         external_shear1 = &#39;constant_values_n_size&#39;,
         external_shear2 = &#39;constant_values_n_size&#39;,
         density_profile_slope = &#39;constant_values_n_size&#39;,
     ),
     lens_priors_params = dict(
-        zs_sl = None,
-        lens_redshift_sl = {&#39;param_name&#39;: &#39;lens_redshift_sl&#39;, &#39;sampler_type&#39;: &#39;lens_redshift_strongly_lensed_numerical&#39;, &#39;lens_type&#39;: &#39;sie_galaxy&#39;, &#39;integration_size&#39;: 25000, &#39;use_multiprocessing&#39;: False},
+        zs_sl = {&#39;tau_approximation&#39;: True},
+        lens_redshift_sl = {&#39;param_name&#39;: &#39;lens_redshift_sl&#39;, &#39;sampler_type&#39;: &#39;lens_redshift_strongly_lensed_numerical&#39;, &#39;lens_type&#39;: &#39;sie_galaxy&#39;, &#39;integration_size&#39;: 50000, &#39;use_multiprocessing&#39;: False, &#39;cross_section_epl_shear_interpolation&#39;: False},
         lens_redshift = None,
-        velocity_dispersion = {&#39;param_name&#39;: &#39;velocity_dispersion&#39;, &#39;sampler_type&#39;: &#39;velocity_dispersion_ewoud&#39;, &#39;sigma_min&#39;: 100.0, &#39;sigma_max&#39;: 400.0, &#39;alpha&#39;: 0.94, &#39;beta&#39;: 1.85, &#39;phistar&#39;: 0.02099, &#39;sigmastar&#39;: 161.0},
-        axis_ratio = {&#39;param_name&#39;: &#39;axis_ratio&#39;, &#39;sampler_type&#39;: &#39;axis_ratio_padilla_strauss_2008&#39;, &#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0},
+        velocity_dispersion = {&#39;param_name&#39;: &#39;velocity_dispersion&#39;, &#39;sampler_type&#39;: &#39;velocity_dispersion_ewoud&#39;, &#39;sigma_min&#39;: 100, &#39;sigma_max&#39;: 400, &#39;alpha&#39;: 0.94, &#39;beta&#39;: 1.85, &#39;phistar&#39;: 0.02099, &#39;sigmastar&#39;: 161.0},
+        axis_ratio = {&#39;param_name&#39;: &#39;axis_ratio&#39;, &#39;sampler_type&#39;: &#39;rayleigh&#39;, &#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0},
         axis_rotation_angle = {&#39;param_name&#39;: &#39;axis_rotation_angle&#39;, &#39;sampler_type&#39;: &#39;uniform&#39;, &#39;x_min&#39;: 0.0, &#39;x_max&#39;: 6.283185307179586},
         external_shear1 = {&#39;param_name&#39;: &#39;external_shear1&#39;, &#39;sampler_type&#39;: &#39;constant_values_n_size&#39;, &#39;value&#39;: 0.0},
         external_shear2 = {&#39;param_name&#39;: &#39;external_shear2&#39;, &#39;sampler_type&#39;: &#39;constant_values_n_size&#39;, &#39;value&#39;: 0.0},
@@ -1733,10 +1640,10 @@ Faster, njitted and importance sampling based lens parameter sampler will be use
 <h3>3.7. Simulate Unlensed Population<a class="headerlink" href="#3.7.-Simulate-Unlensed-Population" title="Link to this heading"></a></h3>
 <p>Generate unlensed BNS events using the custom mass distribution and merger rate density.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">unlensed_params</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">unlensed_params</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Total unlensed events simulated: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">unlensed_params</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sample source redshift values (first 5): </span><span class="si">{</span><span class="n">unlensed_params</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1746,7 +1653,7 @@ Faster, njitted and importance sampling based lens parameter sampler will be use
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
@@ -1756,16 +1663,48 @@ removing ./ler_data_custom/unlensed_param.json if it exists
 Batch no. 1
 sampling gw source params...
 calculating pdet...
+Recalculating SNR for 4361 out of 10000 samples in the SNR range of 6 to 14
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████████████████████████████████████████████████████| 4361/4361 [00:12&lt;00:00, 349.15it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Batch no. 2
 sampling gw source params...
 calculating pdet...
+Recalculating SNR for 4308 out of 10000 samples in the SNR range of 6 to 14
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████████████████████████████████████████████████████| 4308/4308 [00:11&lt;00:00, 364.34it/s]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 saving all unlensed parameters in ./ler_data_custom/unlensed_param.json
 
-Total unlensed events simulated: 100000
-Sample source redshift values (first 5): [2.57179313 0.44740802 1.35452178 1.11470706 4.19621209]
+Total unlensed events simulated: 20000
+Sample source redshift values (first 5): [2.38335663 1.66229721 2.0978767  1.30300035 1.71605284]
 Sample masses (first 3):
-  mass_1: [2.23496178 1.10452232 2.05232208]
-  mass_2: [2.08128978 1.9367126  1.8850276 ]
+  mass_1: [1.13298159 2.28624153 1.71188966]
+  mass_2: [1.5889242  2.15626486 1.23868748]
 </pre></div></div>
 </div>
 </section>
@@ -1773,10 +1712,10 @@ Sample masses (first 3):
 <h3>3.8. Simulate Lensed Population<a class="headerlink" href="#3.8.-Simulate-Lensed-Population" title="Link to this heading"></a></h3>
 <p>Generate lensed BNS events with custom lens parameters.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lensed_params</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">lensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lensed_params</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">lensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Total lensed events simulated: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">lensed_params</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sample source redshift values (first 5): </span><span class="si">{</span><span class="n">lensed_params</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1788,7 +1727,7 @@ Sample masses (first 3):
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
@@ -1798,37 +1737,193 @@ removing ./ler_data_custom/lensed_param.json if it exists
 Batch no. 1
 sampling lensed params...
 sampling lens parameters with epl_shear_sl_parameters_rvs...
-Invalid sample found. Resampling 3320 lensed events...
+computing image properties using ler&#39;s epl+shear (analytical, njit) solver...
+Invalid sample found. Resampling 661 lensed events...
 sampling lens parameters with epl_shear_sl_parameters_rvs...
-Invalid sample found. Resampling 243 lensed events...
+computing image properties using ler&#39;s epl+shear (analytical, njit) solver...
+Invalid sample found. Resampling 31 lensed events...
 sampling lens parameters with epl_shear_sl_parameters_rvs...
-Invalid sample found. Resampling 17 lensed events...
-sampling lens parameters with epl_shear_sl_parameters_rvs...
+computing image properties using ler&#39;s epl+shear (analytical, njit) solver...
 calculating pdet...
+Recalculating SNR for 1 out of 1 samples in the SNR range of 6 to 14
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|█████████████████████████████████████████████████████████████████| 1/1 [00:00&lt;00:00,  1.07it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Recalculating SNR for 4598 out of 10000 samples in the SNR range of 6 to 14
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
+100%|██████████████████████████████████████████████████████████| 4598/4598 [00:09&lt;00:00, 472.00it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Recalculating SNR for 1836 out of 7765 samples in the SNR range of 6 to 14
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
+100%|██████████████████████████████████████████████████████████| 1836/1836 [00:04&lt;00:00, 372.57it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Recalculating SNR for 201 out of 515 samples in the SNR range of 6 to 14
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|████████████████████████████████████████████████████████████| 201/201 [00:01&lt;00:00, 144.79it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Recalculating SNR for 156 out of 492 samples in the SNR range of 6 to 14
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
+100%|████████████████████████████████████████████████████████████| 156/156 [00:01&lt;00:00, 114.71it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Batch no. 2
 sampling lensed params...
 sampling lens parameters with epl_shear_sl_parameters_rvs...
-Invalid sample found. Resampling 3337 lensed events...
+computing image properties using ler&#39;s epl+shear (analytical, njit) solver...
+Invalid sample found. Resampling 668 lensed events...
 sampling lens parameters with epl_shear_sl_parameters_rvs...
-Invalid sample found. Resampling 226 lensed events...
+computing image properties using ler&#39;s epl+shear (analytical, njit) solver...
+Invalid sample found. Resampling 37 lensed events...
 sampling lens parameters with epl_shear_sl_parameters_rvs...
-Invalid sample found. Resampling 16 lensed events...
+computing image properties using ler&#39;s epl+shear (analytical, njit) solver...
+Invalid sample found. Resampling 1 lensed events...
 sampling lens parameters with epl_shear_sl_parameters_rvs...
-Invalid sample found. Resampling 2 lensed events...
+computing image properties using ler&#39;s epl+shear (analytical, njit) solver...
+Invalid sample found. Resampling 1 lensed events...
 sampling lens parameters with epl_shear_sl_parameters_rvs...
+computing image properties using ler&#39;s epl+shear (analytical, njit) solver...
 calculating pdet...
+Recalculating SNR for 4581 out of 10000 samples in the SNR range of 6 to 14
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████████████████████████████████████████████████████| 4581/4581 [00:09&lt;00:00, 475.12it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Recalculating SNR for 1975 out of 7728 samples in the SNR range of 6 to 14
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
+100%|██████████████████████████████████████████████████████████| 1975/1975 [00:05&lt;00:00, 377.59it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Recalculating SNR for 222 out of 515 samples in the SNR range of 6 to 14
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
+100%|████████████████████████████████████████████████████████████| 222/222 [00:01&lt;00:00, 153.29it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Recalculating SNR for 170 out of 490 samples in the SNR range of 6 to 14
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
+100%|████████████████████████████████████████████████████████████| 170/170 [00:01&lt;00:00, 123.38it/s]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 saving all lensed parameters in ./ler_data_custom/lensed_param.json
 
-Total lensed events simulated: 100000
-Sample source redshift values (first 5): [2.55388566 6.00599847 6.33488689 3.98069836 4.06473916]
+Total lensed events simulated: 20000
+Sample source redshift values (first 5): [4.393585   4.43653119 7.74806238 5.82014538 4.66031067]
 Lens parameters (first 3):
-  zl: [0.86457567 0.57945016 0.97600994]
-  sigma: [238.67288882 324.67378786 184.34055796]
-  q: [0.28861028 0.6418532  0.94956851]
+  zl: [0.54230372 0.33748345 1.94065031]
+  sigma: [362.33283443 354.76713343 266.12957698]
+  q: [0.6649898  0.7713353  0.44194038]
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># include other useful parameters in the output dictionary.</span>
@@ -1847,7 +1942,7 @@ Lens parameters (first 3):
 <h3>3.9. Calculate Rates and Compare Results<a class="headerlink" href="#3.9.-Calculate-Rates-and-Compare-Results" title="Link to this heading"></a></h3>
 <p>Calculate unlensed and lensed detection rates using the custom detection criteria.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate detection rates</span>
@@ -1875,23 +1970,23 @@ Lens parameters (first 3):
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Using provided unlensed_param dict...
-total unlensed rate (yr^-1): 102762.29092932232
-number of simulated unlensed detectable events: 26143
-number of simulated all unlensed events: 100000
+total unlensed rate (yr^-1): 118984.60266071376
+number of simulated unlensed detectable events: 6054
+number of simulated all unlensed events: 20000
 storing detectable params in ./ler_data_custom/unlensed_param_detectable.json
 Using provided lensed_param dict...
-total lensed rate (yr^-1): 129.67953677564768
-number of simulated lensed detectable events: 8622
-number of simulated all lensed events: 100000
+total lensed rate (yr^-1): 146.82448281660734
+number of simulated lensed detectable events: 1952
+number of simulated all lensed events: 20000
 storing detectable params in ./ler_data_custom/lensed_param_detectable.json
-unlensed_rate: 102762.29092932232
-lensed_rate: 129.67953677564768
-ratio: 792.4325879348753
+unlensed_rate: 118984.60266071376
+lensed_rate: 146.82448281660734
+ratio: 810.3866628928141
 
 === Detection Rates (BNS with Custom Configuration) ===
-Unlensed rate: 1.0276e+05 events/year
-Lensed rate:   1.2968e+02 events/year
-Rate ratio (lensed/unlensed): 792.4326
+Unlensed rate: 1.1898e+05 events/year
+Lensed rate:   1.4682e+02 events/year
+Rate ratio (lensed/unlensed): 810.3867
 </pre></div></div>
 </div>
 </section>
@@ -1903,7 +1998,7 @@ Rate ratio (lensed/unlensed): 792.4326
 <h3>4.1. Mass Distribution Comparison<a class="headerlink" href="#4.1.-Mass-Distribution-Comparison" title="Link to this heading"></a></h3>
 <p>Compare the custom uniform mass distribution with an internal BNS mass model (normal distribution).</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ler.utils</span> <span class="k">as</span> <span class="nn">lerplt</span>
@@ -1958,7 +2053,7 @@ Rate ratio (lensed/unlensed): 792.4326
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_LeR_custom_functions_44_0.png" src="../_images/examples_LeR_custom_functions_44_0.png" />
+<img alt="../_images/examples_LeR_custom_functions_41_0.png" src="../_images/examples_LeR_custom_functions_41_0.png" />
 </div>
 </div>
 </section>
@@ -1966,7 +2061,7 @@ Rate ratio (lensed/unlensed): 792.4326
 <h3>4.2. Axis-Ratio Distribution Comparison<a class="headerlink" href="#4.2.-Axis-Ratio-Distribution-Comparison" title="Link to this heading"></a></h3>
 <p>Compare the <code class="docutils literal notranslate"><span class="pre">ler</span></code> default axis-ratio distribution (Rayleigh distribution, Collet et al. 2018) with custom axis-ratio distribution (Padilla and Strauss 2008)</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare axis-ratio distributions</span>
@@ -2013,7 +2108,7 @@ rayleigh interpolator will be generated at ./interpolator_json/axis_ratio/raylei
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_LeR_custom_functions_46_1.png" src="../_images/examples_LeR_custom_functions_46_1.png" />
+<img alt="../_images/examples_LeR_custom_functions_43_1.png" src="../_images/examples_LeR_custom_functions_43_1.png" />
 </div>
 </div>
 </section>

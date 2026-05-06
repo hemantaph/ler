@@ -59,7 +59,10 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Code overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Code overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#main-entry-points">Main entry points</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
 </ul>
@@ -77,6 +80,8 @@
 <li class="toctree-l1"><a class="reference internal" href="examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/LeR_model_uncertainty.html">LeR model uncertainty example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/selection_function.html">Selection Function</a></li>
 </ul>
 
         </div>
@@ -105,9 +110,22 @@
              
   <section id="code-overview">
 <h1>Code overview<a class="headerlink" href="#code-overview" title="Link to this heading"></a></h1>
-<p>Below is a simple flowchart of inner workings of the <code class="docutils literal notranslate"><span class="pre">ler</span></code> code.</p>
-<a class="reference internal image-reference" href="_images/ler_layout.png"><img alt="ler flowchart" class="align-center" src="_images/ler_layout.png" style="width: 50%;" />
+<p>The diagram below shows the main internal workflow of <code class="docutils literal notranslate"><span class="pre">ler</span></code>: how the
+public classes connect to the source-population samplers, lens-population
+samplers, image solver, detectability calculation, rate estimators, and
+JSON outputs.</p>
+<a class="reference internal image-reference" href="_images/ler_flowchart.svg"><img alt="Flowchart of the internal workflow of ler" class="align-center" src="_images/ler_flowchart.svg" style="width: 100%;" />
 </a>
+<section id="main-entry-points">
+<h2>Main entry points<a class="headerlink" href="#main-entry-points" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">GWRATES</span></code> handles unlensed compact-binary population sampling and detection
+rates. <code class="docutils literal notranslate"><span class="pre">LeR</span></code> extends that workflow to strongly lensed events by adding lens
+galaxy sampling, optical-depth weighting, image-property calculations, and
+image-level detectability.</p>
+<p>The same source-population machinery is used in both paths. The lensed path
+adds lens parameters and transforms each lensed image into effective GW
+parameters before applying the same detection-probability and rate machinery.</p>
+</section>
 </section>
 
 

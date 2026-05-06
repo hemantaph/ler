@@ -124,6 +124,8 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LeR_model_uncertainty.html">LeR model uncertainty example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection_function.html">Selection Function</a></li>
 </ul>
 
         </div>
@@ -287,13 +289,13 @@ detectors:  [&#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;]
 psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
        4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
        6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
-      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x1473c63e0&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x121a5e9e0&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
        4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
        6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
-      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x1475bbbf0&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x121aaf430&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
         9954.0389  ,  9976.993   , 10000.      ], shape=(3000,)), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,
        1.51304203e-43, 1.52010157e-43, 1.52719372e-43],
-      shape=(3000,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x1475ffec0&gt;]]
+      shape=(3000,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x1214253b0&gt;]]
 
 
 #----------------------------------------
@@ -306,7 +308,7 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
     z_max = 10.0,
     event_type = &#39;BBH&#39;,
     cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=0.0),
-    pdet_finder = &lt;bound method GWSNR.pdet of &lt;gwsnr.core.gwsnr.GWSNR object at 0x147693370&gt;&gt;,
+    pdet_finder = &lt;bound method GWSNR.pdet of &lt;gwsnr.core.gwsnr.GWSNR object at 0x116882710&gt;&gt;,
     json_file_names = dict(
         gwrates_params = &#39;gwrates_params.json&#39;,
         gw_param = &#39;gw_param.json&#39;,
@@ -399,13 +401,13 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
     psds_list = [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
        4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
        6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
-      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x1473c63e0&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x121a5e9e0&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
        4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
        6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
-      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x1475bbbf0&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x121aaf430&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
         9954.0389  ,  9976.993   , 10000.      ], shape=(3000,)), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,
        1.51304203e-43, 1.52010157e-43, 1.52719372e-43],
-      shape=(3000,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x1475ffec0&gt;]],
+      shape=(3000,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x1214253b0&gt;]],
 </pre></div></div>
 </div>
 <p>To print all initialization input arguments, use:</p>
@@ -474,7 +476,7 @@ calculating pdet...
 saving all gw parameters in ./ler_data/gw_param.json
 
 Total events simulated: 100000
-Sampled redshift values: [3.10293822 2.88895754 2.88530347 6.0598807  2.63991915]
+Sampled redshift values: [1.90218238 2.86449212 1.9142129  4.65725558 1.29739929]
 </pre></div></div>
 </div>
 </section>
@@ -501,15 +503,15 @@ Sampled redshift values: [3.10293822 2.88895754 2.88530347 6.0598807  2.63991915
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Getting gw parameters from json file ./ler_data/gw_param.json...
-total GW event rate (yr^-1): 348.9342865004223
-number of simulated GW detectable events: 381
+total GW event rate (yr^-1): 355.34514219975864
+number of simulated GW detectable events: 388
 number of simulated all GW events: 100000
 storing detectable params in ./ler_data/gw_param_detectable.json
 
 === Detection Rate Summary ===
-Detectable event rate: 3.49e+02 events per year
+Detectable event rate: 3.55e+02 events per year
 Total event rate: 9.16e+04 events per year
-Percentage fraction of the detectable events: 3.81e-01%
+Percentage fraction of the detectable events: 3.88e-01%
 </pre></div></div>
 </div>
 <blockquote>
@@ -541,7 +543,7 @@ Detectable event parameters:
 [&#39;zs&#39;, &#39;mass_1_source&#39;, &#39;mass_ratio&#39;, &#39;mass_2_source&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;luminosity_distance&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;pdet_L1&#39;, &#39;pdet_H1&#39;, &#39;pdet_V1&#39;, &#39;pdet_net&#39;]
 
 Example values for mass_1_source (detector frame):
-[29.14992432 27.48315251 34.52774416  9.90106851 10.44594939]
+[35.35786944 57.10189932 29.35265561 18.8782851  36.36839126]
 </pre></div></div>
 </div>
 </section>
@@ -603,7 +605,7 @@ Saved JSON files:
 <div class="highlight"><pre>
 Parameters loaded from file: [&#39;zs&#39;, &#39;mass_1_source&#39;, &#39;mass_ratio&#39;, &#39;mass_2_source&#39;, &#39;geocent_time&#39;, &#39;ra&#39;, &#39;dec&#39;, &#39;phase&#39;, &#39;psi&#39;, &#39;theta_jn&#39;, &#39;a_1&#39;, &#39;a_2&#39;, &#39;luminosity_distance&#39;, &#39;mass_1&#39;, &#39;mass_2&#39;, &#39;pdet_L1&#39;, &#39;pdet_H1&#39;, &#39;pdet_V1&#39;, &#39;pdet_net&#39;]
 
-Detectable event rate (from saved file): 3.4893e+02 per year
+Detectable event rate (from saved file): 3.5535e+02 per year
 </pre></div></div>
 </div>
 </section>
@@ -1048,7 +1050,7 @@ Parameters: {&#39;param_name&#39;: &#39;merger_rate_density&#39;, &#39;function_
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-mass: [2.49467409 1.90795724 2.2845663  2.11791596 1.04725876] M_sun
+mass: [2.35343027 1.92223868 2.04885968 1.61283146 2.3104571 ] M_sun
 </pre></div></div>
 </div>
 </section>
@@ -1132,10 +1134,10 @@ mass: [2.49467409 1.90795724 2.2845663  2.11791596 1.04725876] M_sun
 
 Initializing GWSNR class...
 
-Interpolator will be generated for ET1 detector at ./interpolator_json/ET1/partialSNR_dict_1.json
-Interpolator will be generated for ET2 detector at ./interpolator_json/ET2/partialSNR_dict_1.json
-Interpolator will be generated for ET3 detector at ./interpolator_json/ET3/partialSNR_dict_1.json
-Interpolator will be generated for CE detector at ./interpolator_json/CE/partialSNR_dict_1.json
+Interpolator will be generated for ET1 detector at ./interpolator_json/ET1/partialSNR_dict_2.json
+Interpolator will be generated for ET2 detector at ./interpolator_json/ET2/partialSNR_dict_2.json
+Interpolator will be generated for ET3 detector at ./interpolator_json/ET3/partialSNR_dict_2.json
+Interpolator will be generated for CE detector at ./interpolator_json/CE/partialSNR_dict_2.json
 Please be patient while the interpolator is generated
 Generating interpolator for [&#39;ET1&#39;, &#39;ET2&#39;, &#39;ET3&#39;, &#39;CE&#39;] detectors
 </pre></div></div>
@@ -1145,7 +1147,7 @@ Generating interpolator for [&#39;ET1&#39;, &#39;ET2&#39;, &#39;ET3&#39;, &#39;C
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|█████████████████████████████████████████████████████████| 4000/4000 [00:03&lt;00:00, 1134.35it/s]
+100%|█████████████████████████████████████████████████████████| 4000/4000 [00:03&lt;00:00, 1253.33it/s]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1269,12 +1271,12 @@ Initializing GW parameter samplers...
 #----------------------------------------
 
     # GWRATES set up input arguments:
-    npool = 4,
+    npool = 6,
     z_min = 0.001,
     z_max = 10,
     event_type = &#39;BNS&#39;,
     cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=0.0),
-    pdet_finder = &lt;function detection_criteria at 0x151d9add0&gt;,
+    pdet_finder = &lt;function detection_criteria at 0x123a8fba0&gt;,
     json_file_names = dict(
         gwrates_params = &#39;gwrates_params.json&#39;,
         gw_param = &#39;gw_param.json&#39;,
@@ -1286,9 +1288,9 @@ Initializing GW parameter samplers...
     # GWRATES also takes other CBCSourceParameterDistribution class input arguments as kwargs, as follows:
     gw_priors = dict(
         zs = &#39;merger_rate_density_based_source_redshift&#39;,
-        mass_1_source = CPUDispatcher(&lt;function source_frame_masses_uniform at 0x151d1c790&gt;),
+        mass_1_source = CPUDispatcher(&lt;function source_frame_masses_uniform at 0x12611a480&gt;),
         mass_ratio = None,
-        mass_2_source = CPUDispatcher(&lt;function source_frame_masses_uniform at 0x151d1c790&gt;),
+        mass_2_source = CPUDispatcher(&lt;function source_frame_masses_uniform at 0x12611a480&gt;),
         geocent_time = &#39;uniform&#39;,
         ra = &#39;uniform&#39;,
         dec = &#39;sampler_cosine&#39;,
@@ -1388,13 +1390,13 @@ Sampled 100000 custom BNS events
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Getting gw parameters from json file ./ler_data_custom/custom_gw_params.json...
-total GW event rate (yr^-1): 86942.48022792942
-number of simulated GW detectable events: 26219
+total GW event rate (yr^-1): 86945.79248429395
+number of simulated GW detectable events: 26220
 number of simulated all GW events: 100000
 storing detectable params in ./ler_data_custom/gw_param_detectable.json
 
 === Custom BNS Detection Results (3G Detectors Sensitivity) ===
-Detectable BNS event rate: 8.6942e+04 events per year
+Detectable BNS event rate: 8.6946e+04 events per year
 Total BNS event rate: 3.3160e+05 events per year
 Detectable fraction: 26.22%
 </pre></div></div>
@@ -1470,7 +1472,7 @@ Detectable fraction: 26.22%
 <p>This section demonstrates how to generate a specific number of detectable events and monitor detection rate convergence.</p>
 <section id="3.1-Initialize-GWRATES-for-N-Event-Sampling">
 <h3>3.1 Initialize GWRATES for N-Event Sampling<a class="headerlink" href="#3.1-Initialize-GWRATES-for-N-Event-Sampling" title="Link to this heading"></a></h3>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
@@ -1485,16 +1487,6 @@ Detectable fraction: 26.22%
 <span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-
-Initializing GWRATES class...
-
-</pre></div></div>
 </div>
 </section>
 <section id="3.2-Sample-Until-N-Detectable-Events-Are-Found">
@@ -1536,169 +1528,175 @@ sample collection will stop when the stopping criteria is met and number of dete
 removing ./ler_data/gw_params_n_detectable.json if it exists
 removing ./ler_data/meta_gw.json if it exists
 collected number of detectable events =  0
-collected number of detectable events (batch) =  392
-collected number of detectable events (cumulative) =  392
-total number of events =  100000
-total rate (yr^-1): 359.0085047458413
-collected number of detectable events (batch) =  349
-collected number of detectable events (cumulative) =  741
-total number of events =  200000
-total rate (yr^-1): 339.3179872661587
-collected number of detectable events (batch) =  371
-collected number of detectable events (cumulative) =  1112
-total number of events =  300000
-total rate (yr^-1): 339.47062693654385
-collected number of detectable events (batch) =  373
-collected number of detectable events (cumulative) =  1485
-total number of events =  400000
-total rate (yr^-1): 340.0048657828918
-collected number of detectable events (batch) =  415
-collected number of detectable events (cumulative) =  1900
-total number of events =  500000
-total rate (yr^-1): 348.01844847811145
-percentage difference of total rate for the last 4 cumulative batches = [2.5        2.45614035 2.30263158 0.        ]
-collected number of detectable events (batch) =  386
-collected number of detectable events (cumulative) =  2286
-total number of events =  600000
-total rate (yr^-1): 348.93428650042233
-percentage difference of total rate for the last 4 cumulative batches = [2.71216098 2.55905512 0.26246719 0.        ]
 collected number of detectable events (batch) =  412
-collected number of detectable events (cumulative) =  2698
+collected number of detectable events (cumulative) =  412
+total number of events =  100000
+batch rate (yr^-1): 377.3252540884035
+total rate (yr^-1): 377.3252540884035
+collected number of detectable events (batch) =  334
+collected number of detectable events (cumulative) =  746
+total number of events =  200000
+batch rate (yr^-1): 305.88989045030775
+total rate (yr^-1): 341.60757226935567
+collected number of detectable events (batch) =  400
+collected number of detectable events (cumulative) =  1146
+total number of events =  300000
+batch rate (yr^-1): 366.33519814408106
+total rate (yr^-1): 349.8501142275975
+collected number of detectable events (batch) =  381
+collected number of detectable events (cumulative) =  1527
+total number of events =  400000
+batch rate (yr^-1): 348.9342762322372
+total rate (yr^-1): 349.62115472875746
+collected number of detectable events (batch) =  375
+collected number of detectable events (cumulative) =  1902
+total number of events =  500000
+batch rate (yr^-1): 343.43924826007606
+total rate (yr^-1): 348.38477343502115
+percentage difference of total rate for the last 4 cumulative batches = [1.94532072 0.42060988 0.35488959 0.        ]
+collected number of detectable events (batch) =  371
+collected number of detectable events (cumulative) =  2273
+total number of events =  600000
+batch rate (yr^-1): 339.7758962786353
+total rate (yr^-1): 346.94996057562344
+percentage difference of total rate for the last 4 cumulative batches = [0.83589969 0.76990761 0.41355037 0.        ]
+collected number of detectable events (batch) =  373
+collected number of detectable events (cumulative) =  2646
 total number of events =  700000
-total rate (yr^-1): 352.99014059922735
-percentage difference of total rate for the last 4 cumulative batches = [3.67865085 1.4084507  1.14899926 0.        ]
+batch rate (yr^-1): 341.60757226935567
+total rate (yr^-1): 346.18676224615666
+percentage difference of total rate for the last 4 cumulative batches = [0.99206349 0.63492063 0.22045855 0.        ]
 collected number of detectable events (batch) =  353
-collected number of detectable events (cumulative) =  3051
+collected number of detectable events (cumulative) =  2999
 total number of events =  800000
-total rate (yr^-1): 349.2777257587888
-percentage difference of total rate for the last 4 cumulative batches = [0.36053753 0.09832842 1.06288336 0.        ]
-collected number of detectable events (batch) =  401
-collected number of detectable events (cumulative) =  3452
+batch rate (yr^-1): 323.2908123621516
+total rate (yr^-1): 343.324768510656
+percentage difference of total rate for the last 4 cumulative batches = [1.47382461 1.05590752 0.8336112  0.        ]
+collected number of detectable events (batch) =  396
+collected number of detectable events (cumulative) =  3395
 total number of events =  900000
-total rate (yr^-1): 351.2747614463277
-percentage difference of total rate for the last 4 cumulative batches = [0.66628042 0.48832975 0.56851101 0.        ]
-collected number of detectable events (batch) =  383
-collected number of detectable events (cumulative) =  3835
+batch rate (yr^-1): 362.6718461626403
+total rate (yr^-1): 345.4744438053209
+percentage difference of total rate for the last 4 cumulative batches = [0.42709867 0.20618557 0.62223859 0.        ]
+collected number of detectable events (batch) =  387
+collected number of detectable events (cumulative) =  3782
 total number of events =  1000000
-total rate (yr^-1): 351.22388155619933
-percentage difference of total rate for the last 4 cumulative batches = [0.50288694 0.55410691 0.01448646 0.        ]
-collected number of detectable events (batch) =  378
-collected number of detectable events (cumulative) =  4213
+batch rate (yr^-1): 354.4293042043985
+total rate (yr^-1): 346.3699298452287
+percentage difference of total rate for the last 4 cumulative batches = [0.05288207 0.87916446 0.25853458 0.        ]
+collected number of detectable events (batch) =  388
+collected number of detectable events (cumulative) =  4170
 total number of events =  1100000
-total rate (yr^-1): 350.7659625450439
-percentage difference of total rate for the last 4 cumulative batches = [0.42428198 0.14505367 0.1305483  0.        ]
-stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
-collected number of detectable events (batch) =  391
-collected number of detectable events (cumulative) =  4604
+batch rate (yr^-1): 355.34514219975864
+total rate (yr^-1): 347.18585824109505
+percentage difference of total rate for the last 4 cumulative batches = [1.11211031 0.49293898 0.23501199 0.        ]
+collected number of detectable events (batch) =  375
+collected number of detectable events (cumulative) =  4545
 total number of events =  1200000
-total rate (yr^-1): 351.3765212265845
-percentage difference of total rate for the last 4 cumulative batches = [0.02896032 0.04344049 0.17376195 0.        ]
+batch rate (yr^-1): 343.43924826007606
+total rate (yr^-1): 346.8736407426768
+percentage difference of total rate for the last 4 cumulative batches = [0.40337367 0.14521452 0.090009   0.        ]
 stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
-collected number of detectable events (batch) =  368
-collected number of detectable events (cumulative) =  4972
+collected number of detectable events (batch) =  416
+collected number of detectable events (cumulative) =  4961
 total number of events =  1300000
-total rate (yr^-1): 350.27281899456887
-percentage difference of total rate for the last 4 cumulative batches = [0.27152051 0.14078842 0.31509788 0.        ]
-stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
-collected number of detectable events (batch) =  355
-collected number of detectable events (cumulative) =  5327
+batch rate (yr^-1): 380.98860606984437
+total rate (yr^-1): 349.49786884476663
+percentage difference of total rate for the last 4 cumulative batches = [0.89498085 0.66152352 0.75085668 0.        ]
+collected number of detectable events (batch) =  393
+collected number of detectable events (cumulative) =  5354
 total number of events =  1400000
-total rate (yr^-1): 348.47636748926686
-percentage difference of total rate for the last 4 cumulative batches = [0.65703022 0.83223828 0.51551602 0.        ]
-collected number of detectable events (batch) =  388
-collected number of detectable events (cumulative) =  5715
-total number of events =  1500000
-total rate (yr^-1): 348.9342865004223
-percentage difference of total rate for the last 4 cumulative batches = [0.69991251 0.3836059  0.1312336  0.        ]
-collected number of detectable events (batch) =  386
-collected number of detectable events (cumulative) =  6101
-total number of events =  1600000
-total rate (yr^-1): 349.22048588239437
-percentage difference of total rate for the last 4 cumulative batches = [0.30133774 0.21307982 0.08195378 0.        ]
-stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
-collected number of detectable events (batch) =  388
-collected number of detectable events (cumulative) =  6489
-total number of events =  1700000
-total rate (yr^-1): 349.58076039852403
-percentage difference of total rate for the last 4 cumulative batches = [0.31591925 0.18492834 0.10305902 0.        ]
-stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
-collected number of detectable events (batch) =  371
-collected number of detectable events (cumulative) =  6860
-total number of events =  1800000
-total rate (yr^-1): 349.03604628067905
-percentage difference of total rate for the last 4 cumulative batches = [0.02915452 0.05284257 0.15606242 0.        ]
-stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
-collected number of detectable events (batch) =  368
-collected number of detectable events (cumulative) =  7228
-total number of events =  1900000
-total rate (yr^-1): 348.40406448750554
-percentage difference of total rate for the last 4 cumulative batches = [0.23433177 0.33773886 0.18139335 0.        ]
-stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
-collected number of detectable events (batch) =  364
-collected number of detectable events (cumulative) =  7592
-total number of events =  2000000
-total rate (yr^-1): 347.65211326918717
-percentage difference of total rate for the last 4 cumulative batches = [0.55476353 0.39807985 0.21629416 0.        ]
-collected number of detectable events (batch) =  401
-collected number of detectable events (cumulative) =  7993
-total number of events =  2100000
-total rate (yr^-1): 348.5853958252563
-percentage difference of total rate for the last 4 cumulative batches = [0.12927979 0.0520192  0.26773427 0.        ]
-stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
-collected number of detectable events (batch) =  399
-collected number of detectable events (cumulative) =  8392
-total number of events =  2200000
-total rate (yr^-1): 349.35057651056354
-percentage difference of total rate for the last 4 cumulative batches = [0.27093472 0.48617731 0.21902946 0.        ]
-stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
-collected number of detectable events (batch) =  392
-collected number of detectable events (cumulative) =  8784
-total number of events =  2300000
-total rate (yr^-1): 349.77048643383654
-percentage difference of total rate for the last 4 cumulative batches = [0.60564663 0.3388195  0.12005299 0.        ]
+batch rate (yr^-1): 359.92433217655974
+total rate (yr^-1): 350.24261622560897
+percentage difference of total rate for the last 4 cumulative batches = [0.87275444 0.96189765 0.21263757 0.        ]
 collected number of detectable events (batch) =  377
-collected number of detectable events (cumulative) =  9161
-total number of events =  2400000
-total rate (yr^-1): 349.5830050995591
-percentage difference of total rate for the last 4 cumulative batches = [0.28537122 0.06648738 0.05362999 0.        ]
+collected number of detectable events (cumulative) =  5731
+total number of events =  1500000
+batch rate (yr^-1): 345.27092425079644
+total rate (yr^-1): 349.9111700939548
+percentage difference of total rate for the last 4 cumulative batches = [0.86808585 0.11811605 0.09472294 0.        ]
+collected number of detectable events (batch) =  390
+collected number of detectable events (cumulative) =  6121
+total number of events =  1600000
+batch rate (yr^-1): 357.1768181904791
+total rate (yr^-1): 350.3652730999876
+percentage difference of total rate for the last 4 cumulative batches = [0.24757141 0.03500829 0.12960845 0.        ]
 stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
-collected number of detectable events (batch) =  367
-collected number of detectable events (cumulative) =  9528
-total number of events =  2500000
-total rate (yr^-1): 349.04418706309957
-percentage difference of total rate for the last 4 cumulative batches = [0.08777956 0.20808236 0.15436958 0.        ]
+collected number of detectable events (batch) =  365
+collected number of detectable events (cumulative) =  6486
+total number of events =  1700000
+batch rate (yr^-1): 334.280868306474
+total rate (yr^-1): 349.41913164154556
+percentage difference of total rate for the last 4 cumulative batches = [0.23567244 0.14081612 0.27077552 0.        ]
 stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
-collected number of detectable events (batch) =  346
-collected number of detectable events (cumulative) =  9874
-total number of events =  2600000
-total rate (yr^-1): 347.8071012421936
-percentage difference of total rate for the last 4 cumulative batches = [0.56450406 0.51060023 0.35568159 0.        ]
-collected number of detectable events (batch) =  343
-collected number of detectable events (cumulative) =  10217
-total number of events =  2700000
-total rate (yr^-1): 346.5598916277646
-percentage difference of total rate for the last 4 cumulative batches = [0.87232064 0.71684447 0.35988285 0.        ]
-Given size=10000 reached
-
 collected number of detectable events (batch) =  371
-collected number of detectable events (cumulative) =  10588
-total number of events =  2800000
-total rate (yr^-1): 346.3176064366771
-percentage difference of total rate for the last 4 cumulative batches = [0.78730638 0.43009503 0.0699604  0.        ]
-Given size=10000 reached
-
-collected number of detectable events (batch) =  364
-collected number of detectable events (cumulative) =  10952
-total number of events =  2900000
-total rate (yr^-1): 345.8709662188999
-percentage difference of total rate for the last 4 cumulative batches = [0.55978536 0.19918567 0.12913493 0.        ]
-Given size=10000 reached
-
-collected number of detectable events (batch) =  367
-collected number of detectable events (cumulative) =  11319
-total number of events =  3000000
-total rate (yr^-1): 345.54568581787225
-percentage difference of total rate for the last 4 cumulative batches = [0.29350846 0.22339177 0.09413528 0.        ]
+collected number of detectable events (cumulative) =  6857
+total number of events =  1800000
+batch rate (yr^-1): 339.7758962786353
+total rate (yr^-1): 348.88339634360614
+percentage difference of total rate for the last 4 cumulative batches = [0.29458947 0.42474843 0.15355712 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events (batch) =  378
+collected number of detectable events (cumulative) =  7235
+total number of events =  1900000
+batch rate (yr^-1): 346.18676224615666
+total rate (yr^-1): 348.74146823321405
+percentage difference of total rate for the last 4 cumulative batches = [0.46561852 0.19431684 0.04069723 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events (batch) =  354
+collected number of detectable events (cumulative) =  7589
+total number of events =  2000000
+batch rate (yr^-1): 324.20665035751176
+total rate (yr^-1): 347.514727339429
+percentage difference of total rate for the last 4 cumulative batches = [0.54800679 0.39384489 0.353004   0.        ]
+collected number of detectable events (batch) =  402
+collected number of detectable events (cumulative) =  7991
+total number of events =  2100000
+batch rate (yr^-1): 368.1668741348015
+total rate (yr^-1): 348.49816290111335
+percentage difference of total rate for the last 4 cumulative batches = [0.11054103 0.06981538 0.28219247 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events (batch) =  382
+collected number of detectable events (cumulative) =  8373
+total number of events =  2200000
+batch rate (yr^-1): 349.8501142275975
+total rate (yr^-1): 348.5596152341353
+percentage difference of total rate for the last 4 cumulative batches = [0.05217271 0.29977308 0.01763037 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events (batch) =  370
+collected number of detectable events (cumulative) =  8743
+total number of events =  2300000
+batch rate (yr^-1): 338.860058283275
+total rate (yr^-1): 348.13789536670663
+percentage difference of total rate for the last 4 cumulative batches = [0.17900034 0.10348415 0.12113587 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events (batch) =  415
+collected number of detectable events (cumulative) =  9158
+total number of events =  2400000
+batch rate (yr^-1): 380.07276807448415
+total rate (yr^-1): 349.468515062864
+percentage difference of total rate for the last 4 cumulative batches = [0.27766512 0.26008061 0.38075524 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events (batch) =  385
+collected number of detectable events (cumulative) =  9543
+total number of events =  2500000
+batch rate (yr^-1): 352.5976282136781
+total rate (yr^-1): 349.59367958889663
+percentage difference of total rate for the last 4 cumulative batches = [0.29579035 0.41642178 0.03580286 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events (batch) =  384
+collected number of detectable events (cumulative) =  9927
+total number of events =  2600000
+batch rate (yr^-1): 351.6817902183179
+total rate (yr^-1): 349.67399153618203
+percentage difference of total rate for the last 4 cumulative batches = [0.4392938  0.0587623  0.02296766 0.        ]
+stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
+collected number of detectable events (batch) =  400
+collected number of detectable events (cumulative) =  10327
+total number of events =  2700000
+batch rate (yr^-1): 366.33519814408106
+total rate (yr^-1): 350.2910732624005
+percentage difference of total rate for the last 4 cumulative batches = [0.23482134 0.19908976 0.17616256 0.        ]
 stopping criteria of rate relative difference of 0.5% for the last 4 cumulative batches reached.
 Given size=10000 reached
 
@@ -1706,8 +1704,8 @@ stored detectable GW params in ./ler_data/gw_params_n_detectable.json
 stored meta data in ./ler_data/meta_gw.json
 
 === N-Event Sampling Results ===
-Detectable event rate: 3.4555e+02 events per year
-Collected number of detectable events: 11319
+Detectable event rate: 3.5029e+02 events per year
+Collected number of detectable events: 10327
 </pre></div></div>
 </div>
 </section>
@@ -1789,9 +1787,9 @@ Collected number of detectable events: 11319
 
 === Rate Stability Analysis ===
 Number of converged batches: 4
-Mean rate (converged): 3.4607e+02 events per year
-Standard deviation: 3.9236e-01 events per year
-Relative uncertainty: 0.11%
+Mean rate (converged): 3.4976e+02 events per year
+Standard deviation: 3.1703e-01 events per year
+Relative uncertainty: 0.09%
 </pre></div></div>
 </div>
 </section>
@@ -1891,7 +1889,7 @@ saving all gw parameters in ./ler_data/gw_param.json
 <section id="4.1-Median-Hyperparameter-Run">
 <h3>4.1 Median Hyperparameter Run<a class="headerlink" href="#4.1-Median-Hyperparameter-Run" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">get_param_from_json</span>
@@ -1943,7 +1941,7 @@ Loaded posterior chain with 500 hyperparameter samples.
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run once using median hyperparameter values</span>
@@ -1984,10 +1982,7 @@ Loaded posterior chain with 500 hyperparameter samples.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-
-Initializing GWRATES class...
-
-Detectable GW rate (median hyperparameters): 314.132 events/year
+Detectable GW rate (median hyperparameters): 326.038 events/year
 Total sampled events (median run): 100000
 </pre></div></div>
 </div>
@@ -1997,11 +1992,11 @@ Total sampled events (median run): 100000
 <p>Generate multiple realizations by sampling hyperparameters from their posterior chain and recomputing the detectable GW rate for each realization.</p>
 <p>Use smaller values of <code class="docutils literal notranslate"><span class="pre">sample_size</span></code> and <code class="docutils literal notranslate"><span class="pre">loop_size</span></code> for quick tests, and increase them for production-quality uncertainty estimates.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sample_size</span> <span class="o">=</span> <span class="mi">100000</span>
-<span class="n">loop_size</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">loop_size</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
 <span class="n">idx</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;lam_0&quot;</span><span class="p">]),</span> <span class="n">size</span><span class="o">=</span><span class="n">loop_size</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
@@ -2047,7 +2042,7 @@ Total sampled events (median run): 100000
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|███████████████████████████████████████████████████████████████| 10/10 [00:17&lt;00:00,  1.75s/it]
+100%|█████████████████████████████████████████████████████████████| 100/100 [02:11&lt;00:00,  1.32s/it]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -2055,9 +2050,9 @@ Total sampled events (median run): 100000
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Completed 10 posterior draws.
-Rate mean: 347.011 events/year
-Rate std:  49.371 events/year
+Completed 100 posterior draws.
+Rate mean: 337.019 events/year
+Rate std:  50.882 events/year
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2069,7 +2064,7 @@ Rate std:  49.371 events/year
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # save the results in a json file</span>
@@ -2091,7 +2086,7 @@ Rate std:  49.371 events/year
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 4.3 Visualize rate uncertainty from posterior hyperparameter propagation</span>
@@ -2118,7 +2113,7 @@ Rate std:  49.371 events/year
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot mass_1_source distribution overlays using posterior hyperparameter samples</span>

@@ -34,7 +34,9 @@
       <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Selection Function" href="selection_function.html" />
+    <link rel="prev" title="LeR Advanced Sampling — Generating Detectable Events" href="LeR_advanced_sampling.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -73,11 +75,43 @@
 <li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="LeR_short_examples.html">LeR Short Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GWRATES_complete_examples.html">GWRATES complete example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">LeR model uncertainty example</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Table-of-Contents">Table of Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Part-1:-Load-Hyperparameter-Posterior-and-Inspect-Inputs">Part 1: Load Hyperparameter Posterior and Inspect Inputs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#1.1-Load-Posterior-Samples-of-Mass-Model-Hyperparameters">1.1 Load Posterior Samples of Mass Model Hyperparameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Velocity-Dispersion">Velocity Dispersion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Merger-Rate-Denisity">Merger Rate Denisity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Cosmology">Cosmology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Part-2:-Define-Baseline-Sampler-and-Initialize-LeR">Part 2: Define Baseline Sampler and Initialize LeR</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#2.1-Median-hyperparameter-mass-sampler">2.1 Median-hyperparameter mass sampler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.2-Initialize-LeR">2.2 Initialize LeR</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Part-3:-Median-Hyperparameter-Baseline-Run">Part 3: Median-Hyperparameter Baseline Run</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#3.1-Generate-CBC-populations-and-rates">3.1 Generate CBC populations and rates</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Part-4:-Posterior-Propagation-Across-Hyperparameter-Draws">Part 4: Posterior Propagation Across Hyperparameter Draws</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#4.1-Loop-over-posterior-samples">4.1 Loop over posterior samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#4.2-Save-and-reload-propagated-results">4.2 Save and reload propagated results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Part-5:-Visualize-Uncertainty-in-Rates-and-Mass-Distribution">Part 5: Visualize Uncertainty in Rates and Mass Distribution</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#5.1-Rate-distributions">5.1 Rate distributions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#5.2-Source-mass-distribution-uncertainty">5.2 Source-mass distribution uncertainty</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="selection_function.html">Selection Function</a></li>
 </ul>
 
         </div>
@@ -499,138 +533,138 @@ Rate ratio (lensed/unlensed): 3503.502
 <h3>4.1 Loop over posterior samples<a class="headerlink" href="#4.1-Loop-over-posterior-samples" title="Link to this heading"></a></h3>
 <p>For each selected posterior sample, reconfigure the mass sampler, run LeR statistics, and store rates and mass samples for uncertainty analysis.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># from ler.utils import relative_mu_dt_lensed</span>
-<span class="c1"># import numpy as np</span>
-<span class="c1"># from ler import LeR</span>
-<span class="c1"># from astropy.cosmology import FlatLambdaCDM</span>
-<span class="c1"># from contextlib import redirect_stdout</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">relative_mu_dt_lensed</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
+<span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">FlatLambdaCDM</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">redirect_stdout</span>
 
 
-<span class="c1"># cosmo = FlatLambdaCDM(H0=H0_median, Om0=Om0_median, Ob0=Ob0_median, Tcmb0=Tcmb0, Neff=Neff, m_nu=m_nu)</span>
+<span class="n">cosmo</span> <span class="o">=</span> <span class="n">FlatLambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="n">H0_median</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="n">Om0_median</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="n">Ob0_median</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="n">Tcmb0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="n">Neff</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="n">m_nu</span><span class="p">)</span>
 
-<span class="c1"># sample_size = 500000</span>
-<span class="c1"># batch_size = 50000</span>
-<span class="c1"># loop_size = 100</span>
+<span class="n">sample_size</span> <span class="o">=</span> <span class="mi">500000</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">50000</span>
+<span class="n">loop_size</span> <span class="o">=</span> <span class="mi">100</span>
 
-<span class="c1"># size_ = 10000</span>
-<span class="c1"># m1_source_samples = []</span>
-<span class="c1"># zs_samples = []</span>
+<span class="n">size_</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">m1_source_samples</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">zs_samples</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="c1"># velocity_dispersion_samples_sl = []</span>
-<span class="c1"># optical_depth_samples_sl = []</span>
+<span class="n">velocity_dispersion_samples_sl</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">optical_depth_samples_sl</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="c1"># zs_samples_det = []</span>
-<span class="c1"># m1_samples_det = []</span>
+<span class="n">zs_samples_det</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">m1_samples_det</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="c1"># zs_samples_sl_det = []</span>
-<span class="c1"># m1_samples_sl_det = []</span>
-<span class="c1"># time_delays_sl_det = []</span>
+<span class="n">zs_samples_sl_det</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">m1_samples_sl_det</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">time_delays_sl_det</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="c1"># unlensed_rates = []</span>
-<span class="c1"># lensed_rates = []</span>
-<span class="c1"># rate_ratios = []</span>
+<span class="n">unlensed_rates</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">lensed_rates</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">rate_ratios</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="c1"># from tqdm import tqdm</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
-<span class="c1"># for i in tqdm(range(loop_size), total=loop_size, ncols=100):</span>
-<span class="c1">#     with redirect_stdout(None):</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">loop_size</span><span class="p">),</span> <span class="n">total</span><span class="o">=</span><span class="n">loop_size</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">redirect_stdout</span><span class="p">(</span><span class="kc">None</span><span class="p">):</span>
 
-<span class="c1">#         cosmo = FlatLambdaCDM(H0=H0[i], Om0=Om0[i], Ob0=Ob0[i], Tcmb0=Tcmb0, Neff=Neff, m_nu=m_nu)</span>
+        <span class="n">cosmo</span> <span class="o">=</span> <span class="n">FlatLambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="n">H0</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Om0</span><span class="o">=</span><span class="n">Om0</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Ob0</span><span class="o">=</span><span class="n">Ob0</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="n">Tcmb0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="n">Neff</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="n">m_nu</span><span class="p">)</span>
 
-<span class="c1">#         ler = LeR(</span>
-<span class="c1">#             npool=6,</span>
-<span class="c1">#             cosmo=cosmo,</span>
-<span class="c1">#             event_type=&quot;BBH&quot;,</span>
-<span class="c1">#             lens_type=&quot;sie_galaxy&quot;,</span>
-<span class="c1">#             image_properties_function=&quot;image_properties_epl_shear_njit&quot;,</span>
-<span class="c1">#             verbose=False,</span>
-<span class="c1">#             gwsnr_verbose=False,</span>
+        <span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span>
+            <span class="n">npool</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="n">cosmo</span><span class="o">=</span><span class="n">cosmo</span><span class="p">,</span>
+            <span class="n">event_type</span><span class="o">=</span><span class="s2">&quot;BBH&quot;</span><span class="p">,</span>
+            <span class="n">lens_type</span><span class="o">=</span><span class="s2">&quot;sie_galaxy&quot;</span><span class="p">,</span>
+            <span class="n">image_properties_function</span><span class="o">=</span><span class="s2">&quot;image_properties_epl_shear_njit&quot;</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">gwsnr_verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 
-<span class="c1">#             gw_functions=dict(</span>
-<span class="c1">#                 merger_rate_density=&#39;merger_rate_density_madau_dickinson_belczynski_ng&#39;,</span>
-<span class="c1">#             ),</span>
-<span class="c1">#             gw_functions_params=dict(</span>
-<span class="c1">#                 merger_rate_density=dict(</span>
-<span class="c1">#                     param_name=&quot;merger_rate_density&quot;,</span>
-<span class="c1">#                     function_type=&quot;merger_rate_density_madau_dickinson_belczynski_ng&quot;,</span>
-<span class="c1">#                     R0=R0[i] * 1e-9, alpha_F=2.57, beta_F=5.83, c_F=3.36</span>
-<span class="c1">#                 ),</span>
-<span class="c1">#             ),</span>
-<span class="c1">#             gw_priors=dict(</span>
-<span class="c1">#                 mass_1_source=&#39;broken_powerlaw_plus_2peaks&#39;</span>
-<span class="c1">#             ),</span>
-<span class="c1">#             gw_priors_params=dict(</span>
-<span class="c1">#                 mass_1_source=dict(</span>
-<span class="c1">#                     param_name=&quot;mass_1_source&quot;,</span>
-<span class="c1">#                     function_type=&quot;broken_powerlaw_plus_2peaks&quot;,</span>
-<span class="c1">#                     lam_0=lam_0[i], lam_1=lam_1[i], mpp_1=mpp_1[i], sigpp_1=sigpp_1[i], mpp_2=mpp_2[i], sigpp_2=sigpp_2[i], mlow_1=mlow_1[i], delta_m_1=delta_m_1[i], break_mass=break_mass[i], alpha_1=alpha_1[i], alpha_2=alpha_2[i],</span>
-<span class="c1">#                     mmax=300.0, normalization_size=500,</span>
-<span class="c1">#                 ),</span>
-<span class="c1">#             ),</span>
-<span class="c1">#             lens_priors=dict(</span>
-<span class="c1">#                 velocity_dispersion=&#39;velocity_dispersion_ewoud&#39;,</span>
-<span class="c1">#             ),</span>
-<span class="c1">#             lens_priors_params=dict(</span>
-<span class="c1">#                 velocity_dispersion=dict(</span>
-<span class="c1">#                     param_name=&quot;velocity_dispersion&quot;,</span>
-<span class="c1">#                     sampler_type=&quot;velocity_dispersion_ewoud&quot;,</span>
-<span class="c1">#                     sigma_min=100.0,</span>
-<span class="c1">#                     sigma_max=400.0,</span>
-<span class="c1">#                     alpha=alpha[i],</span>
-<span class="c1">#                     beta=beta[i],</span>
-<span class="c1">#                     phistar=phistar[i] * 1e-2 * (cosmo.h/0.7)**3,</span>
-<span class="c1">#                     sigmastar=sigmastar[i],</span>
-<span class="c1">#                 ),</span>
-<span class="c1">#             ),</span>
-<span class="c1">#         )</span>
+            <span class="n">gw_functions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">merger_rate_density</span><span class="o">=</span><span class="s1">&#39;merger_rate_density_madau_dickinson_belczynski_ng&#39;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">gw_functions_params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">merger_rate_density</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
+                    <span class="n">function_type</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_madau_dickinson_belczynski_ng&quot;</span><span class="p">,</span>
+                    <span class="n">R0</span><span class="o">=</span><span class="n">R0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">alpha_F</span><span class="o">=</span><span class="mf">2.57</span><span class="p">,</span> <span class="n">beta_F</span><span class="o">=</span><span class="mf">5.83</span><span class="p">,</span> <span class="n">c_F</span><span class="o">=</span><span class="mf">3.36</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">gw_priors</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">mass_1_source</span><span class="o">=</span><span class="s1">&#39;broken_powerlaw_plus_2peaks&#39;</span>
+            <span class="p">),</span>
+            <span class="n">gw_priors_params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">mass_1_source</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;mass_1_source&quot;</span><span class="p">,</span>
+                    <span class="n">function_type</span><span class="o">=</span><span class="s2">&quot;broken_powerlaw_plus_2peaks&quot;</span><span class="p">,</span>
+                    <span class="n">lam_0</span><span class="o">=</span><span class="n">lam_0</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">lam_1</span><span class="o">=</span><span class="n">lam_1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mpp_1</span><span class="o">=</span><span class="n">mpp_1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">sigpp_1</span><span class="o">=</span><span class="n">sigpp_1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mpp_2</span><span class="o">=</span><span class="n">mpp_2</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">sigpp_2</span><span class="o">=</span><span class="n">sigpp_2</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mlow_1</span><span class="o">=</span><span class="n">mlow_1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">delta_m_1</span><span class="o">=</span><span class="n">delta_m_1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">break_mass</span><span class="o">=</span><span class="n">break_mass</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alpha_1</span><span class="o">=</span><span class="n">alpha_1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alpha_2</span><span class="o">=</span><span class="n">alpha_2</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="n">mmax</span><span class="o">=</span><span class="mf">300.0</span><span class="p">,</span> <span class="n">normalization_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">lens_priors</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">velocity_dispersion</span><span class="o">=</span><span class="s1">&#39;velocity_dispersion_ewoud&#39;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">lens_priors_params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">velocity_dispersion</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;velocity_dispersion&quot;</span><span class="p">,</span>
+                    <span class="n">sampler_type</span><span class="o">=</span><span class="s2">&quot;velocity_dispersion_ewoud&quot;</span><span class="p">,</span>
+                    <span class="n">sigma_min</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
+                    <span class="n">sigma_max</span><span class="o">=</span><span class="mf">400.0</span><span class="p">,</span>
+                    <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="n">beta</span><span class="o">=</span><span class="n">beta</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="n">phistar</span><span class="o">=</span><span class="n">phistar</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1e-2</span> <span class="o">*</span> <span class="p">(</span><span class="n">cosmo</span><span class="o">.</span><span class="n">h</span><span class="o">/</span><span class="mf">0.7</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span>
+                    <span class="n">sigmastar</span><span class="o">=</span><span class="n">sigmastar</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
 
-<span class="c1">#         # unlensed rates</span>
-<span class="c1">#         unlensed_params = ler.unlensed_cbc_statistics(size=sample_size, batch_size=batch_size, resume=False, output_jsonfile=False)</span>
-<span class="c1">#         unlensed_rate, unlensed_params_det = ler.unlensed_rate(unlensed_params, output_jsonfile=False)</span>
-<span class="c1">#         # lensed rates</span>
-<span class="c1">#         lensed_params = ler.lensed_cbc_statistics(size=sample_size, batch_size=batch_size, resume=False, output_jsonfile=False)</span>
-<span class="c1">#         lensed_rate, lensed_params_det = ler.lensed_rate(lensed_params, output_jsonfile=False)</span>
-<span class="c1">#         rate_ratio = unlensed_rate / lensed_rate</span>
+        <span class="c1"># unlensed rates</span>
+        <span class="n">unlensed_params</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">sample_size</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">unlensed_rate</span><span class="p">,</span> <span class="n">unlensed_params_det</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_rate</span><span class="p">(</span><span class="n">unlensed_params</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># lensed rates</span>
+        <span class="n">lensed_params</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">lensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">sample_size</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">lensed_rate</span><span class="p">,</span> <span class="n">lensed_params_det</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">lensed_rate</span><span class="p">(</span><span class="n">lensed_params</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">rate_ratio</span> <span class="o">=</span> <span class="n">unlensed_rate</span> <span class="o">/</span> <span class="n">lensed_rate</span>
 
-<span class="c1">#         m1_source_samples.append(np.random.choice(unlensed_params[&quot;mass_1_source&quot;], size=size_, replace=False))</span>
-<span class="c1">#         zs_samples.append(np.random.choice(unlensed_params[&quot;zs&quot;], size=size_, replace=False))</span>
+        <span class="n">m1_source_samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">unlensed_params</span><span class="p">[</span><span class="s2">&quot;mass_1_source&quot;</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">size_</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="n">zs_samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">unlensed_params</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">size_</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 
-<span class="c1">#         velocity_dispersion_samples_sl.append(np.random.choice(lensed_params[&quot;sigma&quot;], size=size_, replace=False))</span>
+        <span class="n">velocity_dispersion_samples_sl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">lensed_params</span><span class="p">[</span><span class="s2">&quot;sigma&quot;</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">size_</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 
-<span class="c1">#         zs = np.linspace(0, 10, 100)</span>
-<span class="c1">#         optical_depth_samples_sl.append(ler.optical_depth(zs))</span>
+        <span class="n">zs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="n">optical_depth_samples_sl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ler</span><span class="o">.</span><span class="n">optical_depth</span><span class="p">(</span><span class="n">zs</span><span class="p">))</span>
 
-<span class="c1">#         zs_samples_det.append(unlensed_params_det[&quot;zs&quot;])</span>
-<span class="c1">#         m1_samples_det.append(unlensed_params_det[&quot;mass_1&quot;])</span>
+        <span class="n">zs_samples_det</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unlensed_params_det</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">])</span>
+        <span class="n">m1_samples_det</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unlensed_params_det</span><span class="p">[</span><span class="s2">&quot;mass_1&quot;</span><span class="p">])</span>
 
-<span class="c1">#         zs_samples_sl_det.append(lensed_params_det[&quot;zs&quot;])</span>
-<span class="c1">#         m1_samples_sl_det.append(lensed_params_det[&quot;mass_1&quot;])</span>
-<span class="c1">#         lensed_dict = relative_mu_dt_lensed(lensed_param=lensed_params_det)</span>
-<span class="c1">#         time_delays_sl_det.append(np.concatenate((lensed_dict[&#39;dt_rel0&#39;], lensed_dict[&#39;dt_rel90&#39;])))</span>
+        <span class="n">zs_samples_sl_det</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lensed_params_det</span><span class="p">[</span><span class="s2">&quot;zs&quot;</span><span class="p">])</span>
+        <span class="n">m1_samples_sl_det</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lensed_params_det</span><span class="p">[</span><span class="s2">&quot;mass_1&quot;</span><span class="p">])</span>
+        <span class="n">lensed_dict</span> <span class="o">=</span> <span class="n">relative_mu_dt_lensed</span><span class="p">(</span><span class="n">lensed_param</span><span class="o">=</span><span class="n">lensed_params_det</span><span class="p">)</span>
+        <span class="n">time_delays_sl_det</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">lensed_dict</span><span class="p">[</span><span class="s1">&#39;dt_rel0&#39;</span><span class="p">],</span> <span class="n">lensed_dict</span><span class="p">[</span><span class="s1">&#39;dt_rel90&#39;</span><span class="p">])))</span>
 
-<span class="c1">#         unlensed_rates.append(unlensed_rate)</span>
-<span class="c1">#         lensed_rates.append(lensed_rate)</span>
-<span class="c1">#         rate_ratios.append(rate_ratio)</span>
+        <span class="n">unlensed_rates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unlensed_rate</span><span class="p">)</span>
+        <span class="n">lensed_rates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lensed_rate</span><span class="p">)</span>
+        <span class="n">rate_ratios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rate_ratio</span><span class="p">)</span>
 
-<span class="c1"># # detectable numbers doesn&#39;t need to have the same number of samples</span>
-<span class="c1"># m1_source_samples = np.array(m1_source_samples, dtype=object)</span>
-<span class="c1"># zs_samples = np.array(zs_samples, dtype=object)</span>
-<span class="c1"># velocity_dispersion_samples_sl = np.array(velocity_dispersion_samples_sl, dtype=object)</span>
-<span class="c1"># optical_depth_samples_sl = np.array(optical_depth_samples_sl, dtype=object)</span>
-<span class="c1"># zs_samples_det = np.array(zs_samples_det, dtype=object)</span>
-<span class="c1"># m1_samples_det = np.array(m1_samples_det, dtype=object)</span>
-<span class="c1"># zs_samples_sl_det = np.array(zs_samples_sl_det, dtype=object)</span>
-<span class="c1"># m1_samples_sl_det = np.array(m1_samples_sl_det, dtype=object)</span>
-<span class="c1"># time_delays_sl_det = np.array(time_delays_sl_det, dtype=object)</span>
-<span class="c1"># unlensed_rates = np.array(unlensed_rates)</span>
-<span class="c1"># lensed_rates = np.array(lensed_rates)</span>
-<span class="c1"># rate_ratios = np.array(rate_ratios)</span>
-<span class="c1"># # time: 2.44min * loop_size</span>
-<span class="c1"># # time: 5m 29.2s for loop_size=2</span>
-<span class="c1"># # loop_size=100 would take around 4 hours</span>
+<span class="c1"># detectable numbers doesn&#39;t need to have the same number of samples</span>
+<span class="n">m1_source_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m1_source_samples</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="n">zs_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">zs_samples</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="n">velocity_dispersion_samples_sl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">velocity_dispersion_samples_sl</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="n">optical_depth_samples_sl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">optical_depth_samples_sl</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="n">zs_samples_det</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">zs_samples_det</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="n">m1_samples_det</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m1_samples_det</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="n">zs_samples_sl_det</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">zs_samples_sl_det</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="n">m1_samples_sl_det</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m1_samples_sl_det</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="n">time_delays_sl_det</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">time_delays_sl_det</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="n">unlensed_rates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">unlensed_rates</span><span class="p">)</span>
+<span class="n">lensed_rates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lensed_rates</span><span class="p">)</span>
+<span class="n">rate_ratios</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rate_ratios</span><span class="p">)</span>
+<span class="c1"># time: 2.44min * loop_size</span>
+<span class="c1"># time: 5m 29.2s for loop_size=2</span>
+<span class="c1"># loop_size=100 would take around 4 hours</span>
 </pre></div>
 </div>
 </div>
@@ -639,7 +673,7 @@ Rate ratio (lensed/unlensed): 3503.502
 <h3>4.2 Save and reload propagated results<a class="headerlink" href="#4.2-Save-and-reload-propagated-results" title="Link to this heading"></a></h3>
 <p>Use JSON persistence for reproducibility and faster reruns of plotting sections without recomputing expensive simulations.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # save the results in a json file</span>
@@ -674,34 +708,34 @@ Rate ratio (lensed/unlensed): 3503.502
 <span class="c1"># # save the results in a json file</span>
 <span class="c1"># append_json(&quot;LeR_model_uncertainty.json&quot;, dict_, replace=True);</span>
 
-<span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">load_json</span>
+<span class="c1"># from ler.utils import load_json</span>
 
-<span class="n">results</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="s2">&quot;LeR_model_uncertainty.json&quot;</span><span class="p">)</span>
-<span class="n">m1_source_samples</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;m1_source_samples&quot;</span><span class="p">]</span>
-<span class="n">zs_samples</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;zs_samples&quot;</span><span class="p">]</span>
-<span class="n">velocity_dispersion_samples_sl</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;velocity_dispersion_samples_sl&quot;</span><span class="p">]</span>
-<span class="n">optical_depth_samples_sl</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;optical_depth_samples_sl&quot;</span><span class="p">]</span>
-<span class="n">zs_samples_det</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;zs_samples_det&quot;</span><span class="p">]</span>
-<span class="n">m1_samples_det</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;m1_samples_det&quot;</span><span class="p">]</span>
-<span class="n">zs_samples_sl_det</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;zs_samples_sl_det&quot;</span><span class="p">]</span>
-<span class="n">m1_samples_sl_det</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;m1_samples_sl_det&quot;</span><span class="p">]</span>
-<span class="n">time_delays_sl_det</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;time_delays_sl_det&quot;</span><span class="p">]</span>
-<span class="n">unlensed_rates</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;unlensed_rates&quot;</span><span class="p">]</span>
-<span class="n">lensed_rates</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;lensed_rates&quot;</span><span class="p">]</span>
-<span class="n">rate_ratios</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;rate_ratios&quot;</span><span class="p">]</span>
-<span class="c1"># median</span>
-<span class="n">m1_source_samples_median</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;m1_source_samples_median&quot;</span><span class="p">]</span>
-<span class="n">zs_samples_median</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;zs_samples_median&quot;</span><span class="p">]</span>
-<span class="n">velocity_dispersion_samples_sl_median</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;velocity_dispersion_samples_sl_median&quot;</span><span class="p">]</span>
-<span class="n">optical_depth_samples_sl_median</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;optical_depth_samples_sl_median&quot;</span><span class="p">]</span>
-<span class="n">zs_samples_det_median</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;zs_samples_det_median&quot;</span><span class="p">]</span>
-<span class="n">m1_samples_det_median</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;m1_samples_det_median&quot;</span><span class="p">]</span>
-<span class="n">zs_samples_sl_det_median</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;zs_samples_sl_det_median&quot;</span><span class="p">]</span>
-<span class="n">m1_samples_sl_det_median</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;m1_samples_sl_det_median&quot;</span><span class="p">]</span>
-<span class="n">time_delays_sl_det_median</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;time_delays_sl_det_median&quot;</span><span class="p">]</span>
-<span class="n">unlensed_rate_median</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;unlensed_rate_median&quot;</span><span class="p">]</span>
-<span class="n">lensed_rate_median</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;lensed_rate_median&quot;</span><span class="p">]</span>
-<span class="n">rate_ratio_median</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;rate_ratio_median&quot;</span><span class="p">]</span>
+<span class="c1"># results = load_json(&quot;LeR_model_uncertainty.json&quot;)</span>
+<span class="c1"># m1_source_samples = results[&quot;m1_source_samples&quot;]</span>
+<span class="c1"># zs_samples = results[&quot;zs_samples&quot;]</span>
+<span class="c1"># velocity_dispersion_samples_sl = results[&quot;velocity_dispersion_samples_sl&quot;]</span>
+<span class="c1"># optical_depth_samples_sl = results[&quot;optical_depth_samples_sl&quot;]</span>
+<span class="c1"># zs_samples_det = results[&quot;zs_samples_det&quot;]</span>
+<span class="c1"># m1_samples_det = results[&quot;m1_samples_det&quot;]</span>
+<span class="c1"># zs_samples_sl_det = results[&quot;zs_samples_sl_det&quot;]</span>
+<span class="c1"># m1_samples_sl_det = results[&quot;m1_samples_sl_det&quot;]</span>
+<span class="c1"># time_delays_sl_det = results[&quot;time_delays_sl_det&quot;]</span>
+<span class="c1"># unlensed_rates = results[&quot;unlensed_rates&quot;]</span>
+<span class="c1"># lensed_rates = results[&quot;lensed_rates&quot;]</span>
+<span class="c1"># rate_ratios = results[&quot;rate_ratios&quot;]</span>
+<span class="c1"># # median</span>
+<span class="c1"># m1_source_samples_median = results[&quot;m1_source_samples_median&quot;]</span>
+<span class="c1"># zs_samples_median = results[&quot;zs_samples_median&quot;]</span>
+<span class="c1"># velocity_dispersion_samples_sl_median = results[&quot;velocity_dispersion_samples_sl_median&quot;]</span>
+<span class="c1"># optical_depth_samples_sl_median = results[&quot;optical_depth_samples_sl_median&quot;]</span>
+<span class="c1"># zs_samples_det_median = results[&quot;zs_samples_det_median&quot;]</span>
+<span class="c1"># m1_samples_det_median = results[&quot;m1_samples_det_median&quot;]</span>
+<span class="c1"># zs_samples_sl_det_median = results[&quot;zs_samples_sl_det_median&quot;]</span>
+<span class="c1"># m1_samples_sl_det_median = results[&quot;m1_samples_sl_det_median&quot;]</span>
+<span class="c1"># time_delays_sl_det_median = results[&quot;time_delays_sl_det_median&quot;]</span>
+<span class="c1"># unlensed_rate_median = results[&quot;unlensed_rate_median&quot;]</span>
+<span class="c1"># lensed_rate_median = results[&quot;lensed_rate_median&quot;]</span>
+<span class="c1"># rate_ratio_median = results[&quot;rate_ratio_median&quot;]</span>
 </pre></div>
 </div>
 </div>
@@ -874,22 +908,6 @@ where the $\vec{\theta}_i$ are samples drawn from the original prior $P_{\rm old
 <img alt="../_images/examples_LeR_model_uncertainty_29_0.png" src="../_images/examples_LeR_model_uncertainty_29_0.png" />
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
 </section>
 </section>
 <hr class="docutils" />
@@ -909,7 +927,10 @@ where the $\vec{\theta}_i$ are samples drawn from the original prior $P_{\rm old
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="LeR_advanced_sampling.html" class="btn btn-neutral float-left" title="LeR Advanced Sampling — Generating Detectable Events" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="selection_function.html" class="btn btn-neutral float-right" title="Selection Function" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
