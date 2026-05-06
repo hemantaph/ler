@@ -3,6 +3,38 @@
 
 .. py:module:: ler.utils.function_interpolation
 
+.. autoapi-nested-parse::
+
+   Module for function interpolation and conditioning using cubic splines and Gaussian KDE.
+
+   This module provides the FunctionConditioning class, which implements flexible function
+
+   interpolation for both 1D and 2D cases with support for inverse functions, probability
+
+   density functions (PDFs), and random variable sampling. It supports both cubic spline
+
+   interpolation and Gaussian Kernel Density Estimation (KDE).
+
+   Key Features:
+
+   - 1D and 2D cubic spline interpolation via JSON caching
+
+   - Automatic inverse function generation and normalization
+
+   - PDF computation with proper normalization constants
+
+   - Inverse transform sampling for random variable generation
+
+   - Gaussian KDE as an alternative to spline interpolation
+
+   - Numba JIT compilation for performance optimization
+
+
+   Copyright (C) 2026 Hemanta Ph. Distributed under MIT License.
+
+   ..
+       !! processed by numpydoc !!
+
 
 Module Contents
 ---------------
@@ -17,8 +49,196 @@ Classes
 
 
 
-.. py:class:: FunctionConditioning(function=None, x_array=None, conditioned_y_array=None, y_array=None, non_zero_function=False, gaussian_kde=False, gaussian_kde_kwargs={}, identifier_dict={}, directory='./interpolator_json', sub_directory='default', name='default', create_new=False, create_function=False, create_function_inverse=False, create_pdf=False, create_rvs=False, multiprocessing_function=False, callback=None)
+.. py:class:: FunctionConditioning(function=None, x_array=None, conditioned_y_array=None, y_array=None, non_negative_function=False, gaussian_kde=False, gaussian_kde_kwargs=None, identifier_dict=None, directory='./interpolator_json', sub_directory='default', name='default', create_new=False, create_function=False, create_function_inverse=False, create_pdf=False, create_rvs=False, multiprocessing_function=False, callback=None, use_spline_ppf=False, cdf_size=500)
 
+
+   
+   Cubic spline interpolation and conditioning for functions with optional PDF and sampling.
+
+   This class creates efficiently interpolated representations of scalar or multi-dimensional
+
+   functions, supporting inverse functions, probability density functions, and random
+
+   variable sampling. Interpolators are cached as JSON files to avoid recomputation.
+
+   Both 1D and 2D conditioning scenarios are supported.
+
+   :Parameters:
+
+       **function** : ``callable`` or ``numpy.ndarray`` or ``None``
+           Function to interpolate or array of function values at x_array points.
+
+           If callable, will be evaluated at x_array (and conditioned_y_array if provided).
+
+           default: None
+
+       **x_array** : ``numpy.ndarray``
+           X-axis values where the function is defined.
+
+           For 2D case, can be 1D (replicated for each y) or 2D (shape: len(conditioned_y_array), len(x)).
+
+           default: None
+
+       **conditioned_y_array** : ``numpy.ndarray`` or ``None``
+           Y-axis values for 2D conditioning. If None, 1D interpolation is used.
+
+           default: None
+
+       **y_array** : ``numpy.ndarray`` or ``None``
+           Y values for 2D Gaussian KDE (used only when gaussian_kde=True).
+
+           default: None
+
+       **non_negative_function** : ``bool``
+           If True, clamps negative function values to 0. Useful for PDF-like functions.
+
+           default: False
+
+       **gaussian_kde** : ``bool``
+           If True, uses Gaussian KDE instead of cubic spline interpolation.
+
+           default: False
+
+       **gaussian_kde_kwargs** : ``dict``
+           Keyword arguments passed to scipy.stats.gaussian_kde constructor.
+
+           default: None
+
+       **identifier_dict** : ``dict``
+           Dictionary to uniquely identify the interpolator in the cache.
+
+           Used in directory structure for saving/loading.
+
+           default: None
+
+       **directory** : ``str``
+           Root directory for storing interpolator JSON files.
+
+           default: './interpolator_json'
+
+       **sub_directory** : ``str``
+           Subdirectory within directory for organizing interpolators.
+
+           default: 'default'
+
+       **name** : ``str``
+           Name/identifier of this specific interpolator.
+
+           default: 'default'
+
+       **create_new** : ``bool``
+           If True, forces creation of new interpolator, ignoring cached versions.
+
+           default: False
+
+       **create_function** : ``bool`` or ``callable``
+           If True, compiles interpolated function via Numba JIT.
+
+           If callable, uses provided function directly.
+
+           default: False
+
+       **create_function_inverse** : ``bool`` or ``callable``
+           If True, compiles inverse interpolated function via Numba JIT.
+
+           If callable, uses provided function directly.
+
+           default: False
+
+       **create_pdf** : ``bool`` or ``callable``
+           If True, compiles PDF function (normalized) via Numba JIT.
+
+           If callable, uses provided function directly.
+
+           default: False
+
+       **create_rvs** : ``bool`` or ``callable``
+           If True, compiles random variable sampler via Numba JIT.
+
+           If callable, uses provided function directly.
+
+           default: False
+
+       **multiprocessing_function** : ``bool``
+           If True, assumes function accepts vectorized input for 2D evaluation.
+
+           default: False
+
+       **callback** : ``str`` or ``None``
+           Name of the method to call when instance is called (e.g., 'function', 'pdf', 'rvs').
+
+           default: None
+
+       **use_spline_ppf** : ``bool``
+           If True, uses spline-based inverse-CDF sampling when creating random-variable samplers.
+
+           default: False
+
+       **cdf_size** : ``int``
+           Number of points to use when computing CDF for inverse transform sampling.
+
+
+
+
+
+
+
+
+
+   .. rubric:: Notes
+
+   - Interpolators are cached as JSON for efficiency; use create_new=True to regenerate.
+
+   - For PDF-like functions, set non_negative_function=True to avoid negative values.
+
+   - Numba JIT compilation requires ~0.5-1 second on first call for startup.
+
+   - 2D interpolation requires arrays sorted by conditioned_y_array values internally.
+
+
+   .. rubric:: Examples
+
+   1D cubic spline interpolation:
+
+   >>> import numpy as np
+   >>> from ler.utils import FunctionConditioning
+   >>> x = np.linspace(0, 10, 100)
+   >>> def f(x): return np.sin(x)
+   >>> fc = FunctionConditioning(
+   ...     function=f,
+   ...     x_array=x,
+   ...     identifier_dict={'param': 'sin_function'},
+   ...     create_function=True,
+   ...     callback='function'
+   ... )
+   >>> result = fc.function(5.0)
+
+   2D conditioning with PDF:
+
+   >>> y = np.linspace(0, 5, 50)
+   >>> def f2d(x, y): return np.exp(-x**2/y)
+   >>> fc2d = FunctionConditioning(
+   ...     function=f2d,
+   ...     x_array=x,
+   ...     conditioned_y_array=y,
+   ...     identifier_dict={'param': 'exp_function_2d'},
+   ...     create_pdf=True,
+   ...     create_rvs=True
+   ... )
+
+
+
+   ..
+       !! processed by numpydoc !!
+   .. py:attribute:: cdf_size
+      :value: '500'
+
+      
+
+   .. py:attribute:: use_spline_ppf
+      :value: 'False'
+
+      
 
    .. py:attribute:: info
 
@@ -31,26 +251,38 @@ Classes
 
    .. py:method:: __call__(*args)
 
+      
+      Call the instance with arguments forwarded to the callback method.
 
-   .. py:method:: create_decision_function(create_function, create_function_inverse, create_pdf, create_rvs)
+      Converts float arguments to reshaped arrays for compatibility with
+
+      interpolation functions and forwards to the method specified by callback.
+
+      :Parameters:
+
+          **\*args** : ``float`` or ``numpy.ndarray``
+              Arguments to pass to callback method. Float values are converted to
+
+              reshaped (-1,) arrays for interpolation compatibility.
+
+      :Returns:
+
+          **result** : ``float`` or ``numpy.ndarray``
+              Output from the callback method.
 
 
-   .. py:method:: create_gaussian_kde(x_array, y_array, gaussian_kde_kwargs)
 
 
-   .. py:method:: create_interpolator(function, x_array, conditioned_y_array, create_function_inverse, create_pdf, create_rvs, multiprocessing_function)
 
 
-   .. py:method:: create_z_array(x_array, function, conditioned_y_array, create_pdf, create_rvs, multiprocessing_function)
 
 
-   .. py:method:: cdf_values_generator(x_array, z_array, conditioned_y_array)
 
 
-   .. py:method:: pdf_norm_const_generator(x_array, function_spline, conditioned_y_array)
 
 
-   .. py:method:: function_spline_generator(x_array, z_array, conditioned_y_array)
 
+      ..
+          !! processed by numpydoc !!
 
 

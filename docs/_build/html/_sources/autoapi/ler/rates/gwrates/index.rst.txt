@@ -161,15 +161,6 @@ Classes
 
 
 
-   .. rubric:: Notes
-
-   - ``GWRATES`` class inherits from :class:`~ler.gw_source_population.CBCSourceParameterDistribution`.
-
-     Refer to that class for additional inherited attributes and methods.
-
-   - Parameters are stored in JSON files for memory efficiency and reproducibility.
-
-   - For stable rate estimates, use size >= 1e6 samples.
 
 
    .. rubric:: Examples
@@ -180,50 +171,6 @@ Classes
    >>> gwrates = GWRATES()
    >>> gw_params = gwrates.gw_cbc_statistics()
    >>> gwrates.gw_rate()
-
-   Instance Methods
-   ----------
-   GWRATES class has the following methods:
-
-   +-----------------------------------------------------+------------------------------------------------+
-   | Method                                              | Description                                    |
-   +=====================================================+================================================+
-   | :meth:`~gw_cbc_statistics`                          | Generate GW source parameters                  |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~gw_rate`                                    | Calculate the GW detection rate                |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~selecting_n_gw_detectable_events`           | Select n GW detectable events                  |
-   +-----------------------------------------------------+------------------------------------------------+
-
-   Instance Attributes
-   ----------
-   GWRATES class has the following attributes:
-
-   +------------------------------------------------+-----------------------+-------+------------------------------------------------+
-   | Attribute                                      | Type                  | Unit  | Description                                    |
-   +================================================+=======================+=======+================================================+
-   | :meth:`~npool`                                 | ``int``               |       | Number of parallel processing cores            |
-   +------------------------------------------------+-----------------------+-------+------------------------------------------------+
-   | :meth:`~z_min`                                 | ``float``             |       | Minimum source redshift                        |
-   +------------------------------------------------+-----------------------+-------+------------------------------------------------+
-   | :meth:`~z_max`                                 | ``float``             |       | Maximum source redshift                        |
-   +------------------------------------------------+-----------------------+-------+------------------------------------------------+
-   | :meth:`~event_type`                            | ``str``               |       | Type of CBC event                              |
-   +------------------------------------------------+-----------------------+-------+------------------------------------------------+
-   | :meth:`~cosmo`                                 | ``astropy.cosmology`` |       | Cosmology for calculations                     |
-   +------------------------------------------------+-----------------------+-------+------------------------------------------------+
-   | :meth:`~json_file_names`                       | ``dict``              |       | JSON file names for parameter storage          |
-   +------------------------------------------------+-----------------------+-------+------------------------------------------------+
-   | :meth:`~interpolator_directory`                | ``str``               |       | Directory for interpolator files               |
-   +------------------------------------------------+-----------------------+-------+------------------------------------------------+
-   | :meth:`~ler_directory`                         | ``str``               |       | Directory for output parameter files           |
-   +------------------------------------------------+-----------------------+-------+------------------------------------------------+
-   | :meth:`~list_of_detectors`                     | ``list``              |       | List of detector names                         |
-   +------------------------------------------------+-----------------------+-------+------------------------------------------------+
-   | :meth:`~pdet_finder`                           | ``callable``          |       | Detection probability finder function          |
-   +------------------------------------------------+-----------------------+-------+------------------------------------------------+
-   | :meth:`~gwrates_args`                          | ``dict``              |       | All GWRATES initialization arguments           |
-   +------------------------------------------------+-----------------------+-------+------------------------------------------------+
 
 
 
@@ -492,25 +439,7 @@ Classes
               - 'resolution': int or list - Grid resolution for interpolation
 
               Special key 'gwsnr' is a bool for GWSNR interpolator creation.
-              Default: dict(
-                  merger_rate_density = {'create_new': False, 'resolution': 500},
-                  redshift_distribution = {'create_new': False, 'resolution': 500},
-                  luminosity_distance = {'create_new': False, 'resolution': 500},
-                  differential_comoving_volume = {'create_new': False, 'resolution': 500},
-                  source_frame_masses = {'create_new': False, 'resolution': 500},
-                  geocent_time = {'create_new': False, 'resolution': 500},
-                  ra = {'create_new': False, 'resolution': 500},
-                  dec = {'create_new': False, 'resolution': 500},
-                  phase = {'create_new': False, 'resolution': 500},
-                  psi = {'create_new': False, 'resolution': 500},
-                  theta_jn = {'create_new': False, 'resolution': 500},
-                  a_1 = {'create_new': False, 'resolution': 500},
-                  a_2 = {'create_new': False, 'resolution': 500},
-                  tilt_1 = {'create_new': False, 'resolution': 500},
-                  tilt_2 = {'create_new': False, 'resolution': 500},
-                  phi_12 = {'create_new': False, 'resolution': 500},
-                  phi_jl = {'create_new': False, 'resolution': 500},
-              )
+              Default: ``False``.
 
 
 
@@ -616,7 +545,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: gw_cbc_statistics(size=100000, batch_size=50000, resume=True, save_batch=False, output_jsonfile=None)
+   .. py:method:: gw_cbc_statistics(size=100000, batch_size=50000, resume=True, save_batch=False, output_jsonfile=True)
 
       
       Generate GW source parameters with detection probabilities.
@@ -657,51 +586,7 @@ Classes
       :Returns:
 
           **gw_param** : ``dict``
-              dictionary of GW source parameters. The included parameters and their units are as follows (for default settings):
-
-              +--------------------+--------------+--------------------------------------+
-              | Parameter          | Units        | Description                          |
-              +====================+==============+======================================+
-              | zs                 |              | redshift of the source               |
-              +--------------------+--------------+--------------------------------------+
-              | geocent_time       | s            | GPS time of coalescence              |
-              +--------------------+--------------+--------------------------------------+
-              | ra                 | rad          | right ascension                      |
-              +--------------------+--------------+--------------------------------------+
-              | dec                | rad          | declination                          |
-              +--------------------+--------------+--------------------------------------+
-              | phase              | rad          | phase of GW at reference frequency   |
-              +--------------------+--------------+--------------------------------------+
-              | psi                | rad          | polarization angle                   |
-              +--------------------+--------------+--------------------------------------+
-              | theta_jn           | rad          | inclination angle                    |
-              +--------------------+--------------+--------------------------------------+
-              | a_1                |              | spin of the primary compact binary   |
-              +--------------------+--------------+--------------------------------------+
-              | a_2                |              | spin of the secondary compact binary |
-              +--------------------+--------------+--------------------------------------+
-              | luminosity_distance| Mpc          | luminosity distance                  |
-              +--------------------+--------------+--------------------------------------+
-              | mass_1_source      | Msun         | mass_1 of the compact binary         |
-              |                    |              | (source frame)                       |
-              +--------------------+--------------+--------------------------------------+
-              | mass_2_source      | Msun         | mass_2 of the compact binary         |
-              |                    |              | (source frame)                       |
-              +--------------------+--------------+--------------------------------------+
-              | mass_1             | Msun         | mass_1 of the compact binary         |
-              |                    |              | (detector frame)                     |
-              +--------------------+--------------+--------------------------------------+
-              | mass_2             | Msun         | mass_2 of the compact binary         |
-              |                    |              | (detector frame)                     |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_L1            |              | pdet of L1                           |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_H1            |              | pdet of H1                           |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_V1            |              | pdet of V1                           |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_net           |              | pdet of the network                  |
-              +--------------------+--------------+--------------------------------------+
+              Sampled GW source parameters.
 
 
 
@@ -723,7 +608,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: gw_rate(gw_param=None, pdet_threshold=0.5, pdet_type='boolean', output_jsonfile=None)
+   .. py:method:: gw_rate(gw_param=None, pdet_threshold=0.5, pdet_type='boolean', output_jsonfile=True)
 
       
       Calculate the GW detection rate.
@@ -765,51 +650,7 @@ Classes
               Total GW detection rate (yr^-1).
 
           **gw_param** : ``dict``
-              dictionary of GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):
-
-              +--------------------+--------------+--------------------------------------+
-              | Parameter          | Units        | Description                          |
-              +====================+==============+======================================+
-              | zs                 |              | redshift of the source               |
-              +--------------------+--------------+--------------------------------------+
-              | geocent_time       | s            | GPS time of coalescence              |
-              +--------------------+--------------+--------------------------------------+
-              | ra                 | rad          | right ascension                      |
-              +--------------------+--------------+--------------------------------------+
-              | dec                | rad          | declination                          |
-              +--------------------+--------------+--------------------------------------+
-              | phase              | rad          | phase of GW at reference frequency   |
-              +--------------------+--------------+--------------------------------------+
-              | psi                | rad          | polarization angle                   |
-              +--------------------+--------------+--------------------------------------+
-              | theta_jn           | rad          | inclination angle                    |
-              +--------------------+--------------+--------------------------------------+
-              | a_1                |              | spin of the primary compact binary   |
-              +--------------------+--------------+--------------------------------------+
-              | a_2                |              | spin of the secondary compact binary |
-              +--------------------+--------------+--------------------------------------+
-              | luminosity_distance| Mpc          | luminosity distance                  |
-              +--------------------+--------------+--------------------------------------+
-              | mass_1_source      | Msun         | mass_1 of the compact binary         |
-              |                    |              | (source frame)                       |
-              +--------------------+--------------+--------------------------------------+
-              | mass_2_source      | Msun         | mass_2 of the compact binary         |
-              |                    |              | (source frame)                       |
-              +--------------------+--------------+--------------------------------------+
-              | mass_1             | Msun         | mass_1 of the compact binary         |
-              |                    |              | (detector frame)                     |
-              +--------------------+--------------+--------------------------------------+
-              | mass_2             | Msun         | mass_2 of the compact binary         |
-              |                    |              | (detector frame)                     |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_L1            |              | pdet of L1                           |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_H1            |              | pdet of H1                           |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_V1            |              | pdet of V1                           |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_net           |              | pdet of the network                  |
-              +--------------------+--------------+--------------------------------------+
+              Detectable GW source parameters.
 
 
 
@@ -943,52 +784,11 @@ Classes
 
       :Returns:
 
-          **param_final** : ``dict``
-              dictionary of GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):
+          **total_rate** : ``float``
+              Total GW detection rate (yr^-1).
 
-              +--------------------+--------------+--------------------------------------+
-              | Parameter          | Units        | Description                          |
-              +====================+==============+======================================+
-              | zs                 |              | redshift of the source               |
-              +--------------------+--------------+--------------------------------------+
-              | geocent_time       | s            | GPS time of coalescence              |
-              +--------------------+--------------+--------------------------------------+
-              | ra                 | rad          | right ascension                      |
-              +--------------------+--------------+--------------------------------------+
-              | dec                | rad          | declination                          |
-              +--------------------+--------------+--------------------------------------+
-              | phase              | rad          | phase of GW at reference frequency   |
-              +--------------------+--------------+--------------------------------------+
-              | psi                | rad          | polarization angle                   |
-              +--------------------+--------------+--------------------------------------+
-              | theta_jn           | rad          | inclination angle                    |
-              +--------------------+--------------+--------------------------------------+
-              | a_1                |              | spin of the primary compact binary   |
-              +--------------------+--------------+--------------------------------------+
-              | a_2                |              | spin of the secondary compact binary |
-              +--------------------+--------------+--------------------------------------+
-              | luminosity_distance| Mpc          | luminosity distance                  |
-              +--------------------+--------------+--------------------------------------+
-              | mass_1_source      | Msun         | mass of the primary compact binary   |
-              |                    |              | (source frame)                       |
-              +--------------------+--------------+--------------------------------------+
-              | mass_2_source      | Msun         | mass of the secondary compact binary |
-              |                    |              | (source frame)                       |
-              +--------------------+--------------+--------------------------------------+
-              | mass_1             | Msun         | mass_1 of the compact binary         |
-              |                    |              | (detector frame)                     |
-              +--------------------+--------------+--------------------------------------+
-              | mass_2             | Msun         | mass_2 of the compact binary         |
-              |                    |              | (detector frame)                     |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_L1            |              | pdet of L1                           |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_H1            |              | pdet of H1                           |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_V1            |              | pdet of V1                           |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_net           |              | pdet of the network                  |
-              +--------------------+--------------+--------------------------------------+
+          **param_final** : ``dict``
+              Detectable GW source parameters.
 
 
 

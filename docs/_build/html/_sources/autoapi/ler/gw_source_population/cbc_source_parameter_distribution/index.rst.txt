@@ -22,7 +22,7 @@
 
        >>> from ler.gw_source_population import CBCSourceParameterDistribution
        >>> cbc = CBCSourceParameterDistribution(event_type='BBH')
-       >>> params = cbc.sample_gw_parameters(size=1000)
+       >>> params = cbc.gw_parameters_rvs(size=1000)
        >>> print(list(params.keys()))
 
    ..
@@ -55,7 +55,7 @@ Attributes
 
    
 
-.. py:class:: CBCSourceParameterDistribution(z_min=0.0, z_max=10.0, event_type='BBH', source_priors=None, source_priors_params=None, cosmology=None, spin_zero=False, spin_precession=False, directory='./interpolator_json', create_new_interpolator=False)
+.. py:class:: CBCSourceParameterDistribution(npool=4, z_min=0.0, z_max=10.0, event_type='BBH', gw_functions=None, gw_functions_params=None, gw_priors=None, gw_priors_params=None, cosmology=None, spin_zero=False, spin_precession=False, directory='./interpolator_json', create_new_interpolator=False, verbose=False)
 
 
    Bases: :py:obj:`ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution`
@@ -79,6 +79,11 @@ Attributes
    - Built-in support for population III and primordial black holes
 
    :Parameters:
+
+       **npool** : ``int``
+           Number of processors to use for multiprocessing and numba threads.
+
+           default: 4
 
        **z_min** : ``float``
            Minimum redshift of the source population.
@@ -107,14 +112,14 @@ Attributes
 
            default: 'BBH'
 
-       **source_priors** : ``dict`` or ``None``
+       **gw_priors** : ``dict`` or ``None``
            Dictionary of prior sampler functions for each parameter.
 
            If None, uses default priors based on event_type.
 
            default: None
 
-       **source_priors_params** : ``dict`` or ``None``
+       **gw_priors_params** : ``dict`` or ``None``
            Dictionary of parameters for each prior sampler function.
 
            If None, uses default parameters based on event_type.
@@ -164,92 +169,8 @@ Attributes
 
    >>> from ler.gw_source_population import CBCSourceParameterDistribution
    >>> cbc = CBCSourceParameterDistribution(event_type='BBH')
-   >>> params = cbc.sample_gw_parameters(size=1000)
+   >>> params = cbc.gw_parameters_rvs(size=1000)
    >>> print(list(params.keys()))
-
-   Instance Methods
-   ----------
-   CBCSourceParameterDistribution has the following methods:
-
-   +-----------------------------------------------------+------------------------------------------------+
-   | Method                                              | Description                                    |
-   +=====================================================+================================================+
-   | :meth:`~sample_gw_parameters`                       | Sample all GW parameters for compact binaries  |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~binary_masses_BBH_powerlaw_gaussian`.       | Sample BBH masses with PowerLaw+PEAK model     |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~binary_masses_BBH_popIII_lognormal`         | Sample pop III BBH masses from lognormal       |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~binary_masses_BBH_primordial_lognormal`     | Sample primordial BBH masses from lognormal    |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~binary_masses_NSBH_broken_powerlaw`         | Sample NSBH masses from broken powerlaw        |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~binary_masses_uniform`                      | Sample masses from uniform distribution        |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~binary_masses_BNS_bimodal`                  | Sample BNS masses from bimodal distribution    |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~constant_values_n_size`                     | Return array of constant values                |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~sampler_uniform`                            | Sample from uniform distribution               |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~sampler_cosine`                             | Sample from cosine distribution                |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~sampler_sine`                               | Sample from sine distribution                  |
-   +-----------------------------------------------------+------------------------------------------------+
-
-   Instance Attributes
-   ----------
-   CBCSourceParameterDistribution has the following attributes:
-
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | Attribute                                      | Type                   | Unit  | Description                                    |
-   +================================================+========================+=======+================================================+
-   | :attr:`~z_min`                                 | ``float``              |       | Minimum redshift of source population          |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~z_max`                                 | ``float``              |       | Maximum redshift of source population          |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~cosmo`                                 | ``astropy.cosmology``  |       | Cosmology for distance calculations            |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~spin_zero`                             | ``bool``               |       | Whether to ignore spin parameters              |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~spin_precession`                       | ``bool``               |       | Whether to use precessing spins                |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~directory`                             | ``str``                |       | Directory for interpolator files               |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~gw_param_samplers`                     | ``dict``               |       | Dictionary of parameter sampler functions      |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~gw_param_samplers_params`              | ``dict``               |       | Dictionary of sampler function parameters      |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~available_gw_prior`                    | ``dict``               |       | Available prior distributions                  |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~source_frame_masses`                   | ``callable``           |       | Sampler for source frame masses                |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~zs`                                    | ``callable``           |       | Sampler for source redshift                    |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~geocent_time`                          | ``callable``           |       | Sampler for geocentric time                    |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~ra`                                    | ``callable``           |       | Sampler for right ascension                    |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~dec`                                   | ``callable``           |       | Sampler for declination                        |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~phase`                                 | ``callable``           |       | Sampler for coalescence phase                  |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~psi`                                   | ``callable``           |       | Sampler for polarization angle                 |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~theta_jn`                              | ``callable``           |       | Sampler for inclination angle                  |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~a_1`                                   | ``callable``           |       | Sampler for spin1 magnitude                    |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~a_2`                                   | ``callable``           |       | Sampler for spin2 magnitude                    |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~tilt_1`                                | ``callable``           |       | Sampler for tilt1 angle                        |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~tilt_2`                                | ``callable``           |       | Sampler for tilt2 angle                        |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~phi_12`                                | ``callable``           |       | Sampler for phi_12 angle                       |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
-   | :attr:`~phi_jl`                                | ``callable``           |       | Sampler for phi_jl angle                       |
-   +------------------------------------------------+------------------------+-------+------------------------------------------------+
 
 
 
@@ -289,23 +210,24 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: source_frame_masses
+   .. py:property:: mass_1_source
 
       
-      Class object (of FunctionConditioning) for source frame masses, with rvs/sampler as callback. Can also be a user defined callable sampler.
+      Class object (of FunctionConditioning) for source frame primary mass, with rvs/sampler as callback. Can also be a user defined callable sampler.
 
       The class object contains the following attribute methods:
 
-      - `rvs`: returns random samples from the density profile slope distribution
+      - `function(m1)`: returns the primary mass distribution function in terms of the merger rate at fixed redshift.
+
+      - `pdf(m1)`: returns the probability density function of the primary mass distribution.
+
+      - `rvs(size)`: returns random samples from the primary mass distribution.
 
 
       :Returns:
 
           **mass_1_source** : ``numpy.ndarray``
               Array of mass_1_source values in solar masses.
-
-          **mass_2_source** : ``numpy.ndarray``
-              Array of mass_2_source values in solar masses.
 
 
 
@@ -320,7 +242,7 @@ Attributes
 
       >>> from ler.gw_source_population import CBCSourceParameterDistribution
       >>> cbc_source_param_dist = CBCSourceParameterDistribution()
-      >>> cbc_source_param_dist.source_frame_masses(size=10)
+      >>> cbc_source_param_dist.mass_1_source(size=10)
 
 
 
@@ -479,7 +401,7 @@ Attributes
 
       :Returns:
 
-          **geocent_time** : ``numpy.ndarray``
+          **psi** : ``numpy.ndarray``
               Array of polarization angle values.
 
 
@@ -544,6 +466,8 @@ Attributes
 
       - `function`: returns the spin1 magnitude distribution function.
 
+      - `None` : if spin_zero=True.
+
 
       :Returns:
 
@@ -577,6 +501,7 @@ Attributes
       - `pdf`: returns the probability density function of the spin2 magnitude distribution
 
       - `function`: returns the spin2 magnitude distribution function.
+      - `None` : if spin_zero=True.
 
 
       :Returns:
@@ -611,6 +536,7 @@ Attributes
       - `pdf`: returns the probability density function of the tilt1 angle distribution
 
       - `function`: returns the tilt1 angle distribution function.
+      - `None` : if spin_zero=True or spin_precession=False.
 
 
       :Returns:
@@ -645,6 +571,7 @@ Attributes
       - `pdf`: returns the probability density function of the tilt2 angle distribution
 
       - `function`: returns the tilt2 angle distribution function.
+      - `None` : if spin_zero=True or spin_precession=False.
 
 
       :Returns:
@@ -679,6 +606,7 @@ Attributes
       - `pdf`: returns the probability density function of the phi_12 angle distribution
 
       - `function`: returns the phi_12 angle distribution function.
+      - `None` : if spin_zero=True or spin_precession=False.
 
 
       :Returns:
@@ -713,6 +641,7 @@ Attributes
       - `pdf`: returns the probability density function of the phi_jl angle distribution
 
       - `function`: returns the phi_jl angle distribution function.
+      - `None` : if spin_zero=True or spin_precession=False.
 
 
       :Returns:
@@ -735,6 +664,77 @@ Attributes
       ..
           !! processed by numpydoc !!
 
+   .. py:property:: mass_ratio
+
+      
+      Class object (of FunctionConditioning) for mass ratio, with rvs/sampler as callback. Can also be a user defined callable sampler.
+
+      The class object contains the following attribute methods:
+
+      -  `rvs(size)` or `rvs(size, m1)`: returns random samples from the mass ratio distribution
+
+      - `pdf(q)` or `pdf(q, m1)`: returns the probability density function of the mass ratio distribution
+
+
+      :Returns:
+
+          **mass_ratio** : ``numpy.ndarray``
+              Array of mass ratio values.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: mass_2_source
+
+      
+      Class object (of FunctionConditioning) for source frame secondary mass, with rvs/sampler as callback. Can also be a user defined callable sampler.
+
+      The class object contains the following attribute methods:
+
+      - `function(m1)`: returns the secondary mass distribution function in terms of the merger rate at fixed redshift.
+
+      - `pdf(m1)`: returns the probability density function of the secondary mass distribution.
+
+      - `rvs(size)`: returns random samples from the secondary mass distribution.
+
+
+      :Returns:
+
+          **mass_2_source** : ``numpy.ndarray``
+              Array of mass_2_source values in solar masses.
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.gw_source_population import CBCSourceParameterDistribution
+      >>> cbc_source_param_dist = CBCSourceParameterDistribution()
+      >>> cbc_source_param_dist.mass_2_source(size=10)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
    .. py:property:: available_gw_prior
 
       
@@ -747,9 +747,36 @@ Attributes
       :Returns:
 
           **available_gw_prior** : ``dict``
-              Nested dictionary organized by parameter type (e.g., 'source_frame_masses',
+              Nested dictionary organized by parameter type (e.g., 'mass_1_source',
 
               'geocent_time', etc.) with sampler names and default parameters.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: available_gw_functions
+
+      
+      Dictionary of available gravitational wave related functions and their default parameters.
+
+
+
+      :Returns:
+
+          **available_gw_functions** : ``dict``
+              Dictionary with function names and default parameters.
 
 
 
@@ -843,7 +870,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:attribute:: source_priors
+   .. py:attribute:: gw_priors
       :value: 'None'
 
       
@@ -868,7 +895,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:attribute:: source_priors_params
+   .. py:attribute:: gw_priors_params
       :value: 'None'
 
       
@@ -977,20 +1004,27 @@ Attributes
       ..
           !! processed by numpydoc !!
 
+   .. py:attribute:: gw_parameters_rvs_routine
+
+      
+
+   .. py:attribute:: sample_gw_parameters_routine
+
+      
+
    .. py:method:: sample_gw_parameters(size=1000, param=None)
 
       
       Sample all gravitational wave parameters for compact binaries.
 
-      Generates a complete set of intrinsic and extrinsic parameters including
-      masses, redshift, luminosity distance, sky position, orientation, and
-      optionally spin parameters.
+      This method samples GW parameters using the specified routine and
+      returns a dictionary with redshift, masses, luminosity distance, and
+      orientation parameters.
 
       :Parameters:
 
           **size** : ``int``
               Number of samples to draw.
-
               default: 1000
 
           **param** : ``dict`` or ``None``
@@ -1050,25 +1084,249 @@ Attributes
 
 
 
-      .. rubric:: Examples
-
-      >>> from ler.gw_source_population import CBCSourceParameterDistribution
-      >>> cbc = CBCSourceParameterDistribution()
-      >>> params = cbc.sample_gw_parameters(size=1000)
-      >>> print(list(params.keys()))
 
 
 
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BBH_powerlaw_gaussian(size, get_attribute=False, **kwargs)
+   .. py:method:: gw_parameters_rvs(size=1000, **kwargs)
+
+      
+       Sample all gravitational wave parameters for compact binaries.
+
+       This method samples GW parameters using the specified routine and returns a dictionary with redshift, masses, luminosity distance, and
+       orientation parameters.
+
+      :Parameters:
+
+          **size** : ``int``
+              Number of samples to draw.
+              default: 1000
+
+          **\*\*kwargs** : ``dict``
+              Dictionary of fixed parameter values.
+
+              Parameters in this dict will not be sampled.
+
+              e.g. mass_1_source, mass_2_source, mass_ratio, zs, geocent_time, ra, dec, phase, psi, theta_jn, a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl
+
+      :Returns:
+
+          **gw_parameters** : ``dict``
+              Dictionary of sampled GW parameters. The included parameters and their units are as follows (for default settings):
+
+              +--------------------+--------------+--------------------------------------+
+              | Parameter          | Units        | Description                          |
+              +====================+==============+======================================+
+              | zs                 |              | redshift of the source               |
+              +--------------------+--------------+--------------------------------------+
+              | geocent_time       | s            | GPS time of coalescence              |
+              +--------------------+--------------+--------------------------------------+
+              | ra                 | rad          | right ascension                      |
+              +--------------------+--------------+--------------------------------------+
+              | dec                | rad          | declination                          |
+              +--------------------+--------------+--------------------------------------+
+              | phase              | rad          | phase of GW at reference frequency   |
+              +--------------------+--------------+--------------------------------------+
+              | psi                | rad          | polarization angle                   |
+              +--------------------+--------------+--------------------------------------+
+              | theta_jn           | rad          | inclination angle                    |
+              +--------------------+--------------+--------------------------------------+
+              | a_1                |              | spin_1 of the compact binary         |
+              +--------------------+--------------+--------------------------------------+
+              | a_2                |              | spin of the secondary compact binary |
+              +--------------------+--------------+--------------------------------------+
+              | luminosity_distance| Mpc          | luminosity distance                  |
+              +--------------------+--------------+--------------------------------------+
+              | mass_1_source      | Msun         | mass_1 of the compact binary         |
+              |                    |              | (source frame)                       |
+              +--------------------+--------------+--------------------------------------+
+              | mass_2_source      | Msun         | mass_2 of the compact binary         |
+              |                    |              | (source frame)                       |
+              +--------------------+--------------+--------------------------------------+
+              | mass_1             | Msun         | mass_1 of the compact binary         |
+              |                    |              | (detector frame)                     |
+              +--------------------+--------------+--------------------------------------+
+              | mass_2             | Msun         | mass_2 of the compact binary         |
+              |                    |              | (detector frame)                     |
+              +--------------------+--------------+--------------------------------------+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: gw_parameters_rvs_njit(size=1000, **kwargs)
+
+      
+      Sample all gravitational wave parameters for compact binaries.
+
+      This method samples GW parameters using the specified routine and
+      returns a dictionary with redshift, masses, luminosity distance, and
+      orientation parameters.
+
+      :Parameters:
+
+          **size** : ``int``
+              Number of samples to draw.
+              default: 1000
+
+      :Returns:
+
+          **gw_parameters** : ``dict``
+              Dictionary of sampled GW parameters. The included parameters and their units are as follows (for default settings):
+
+              +--------------------+--------------+--------------------------------------+
+              | Parameter          | Units        | Description                          |
+              +====================+==============+======================================+
+              | zs                 |              | redshift of the source               |
+              +--------------------+--------------+--------------------------------------+
+              | geocent_time       | s            | GPS time of coalescence              |
+              +--------------------+--------------+--------------------------------------+
+              | ra                 | rad          | right ascension                      |
+              +--------------------+--------------+--------------------------------------+
+              | dec                | rad          | declination                          |
+              +--------------------+--------------+--------------------------------------+
+              | phase              | rad          | phase of GW at reference frequency   |
+              +--------------------+--------------+--------------------------------------+
+              | psi                | rad          | polarization angle                   |
+              +--------------------+--------------+--------------------------------------+
+              | theta_jn           | rad          | inclination angle                    |
+              +--------------------+--------------+--------------------------------------+
+              | a_1                |              | spin_1 of the compact binary         |
+              +--------------------+--------------+--------------------------------------+
+              | a_2                |              | spin of the secondary compact binary |
+              +--------------------+--------------+--------------------------------------+
+              | luminosity_distance| Mpc          | luminosity distance                  |
+              +--------------------+--------------+--------------------------------------+
+              | mass_1_source      | Msun         | mass_1 of the compact binary         |
+              |                    |              | (source frame)                       |
+              +--------------------+--------------+--------------------------------------+
+              | mass_2_source      | Msun         | mass_2 of the compact binary         |
+              |                    |              | (source frame)                       |
+              +--------------------+--------------+--------------------------------------+
+              | mass_1             | Msun         | mass_1 of the compact binary         |
+              |                    |              | (detector frame)                     |
+              +--------------------+--------------+--------------------------------------+
+              | mass_2             | Msun         | mass_2 of the compact binary         |
+              |                    |              | (detector frame)                     |
+              +--------------------+--------------+--------------------------------------+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: broken_powerlaw_plus_2peaks(size, get_attribute=False, **kwargs)
+
+      
+      Sample primary source mass with broken power-law + two peaks model for BBH.
+
+      Implements the mass distribution model combining a broken power-law
+      with two Gaussian peaks for modeling specific mass populations.
+
+      :Parameters:
+
+          **size** : ``int``
+              Number of samples to draw.
+
+          **get_attribute** : ``bool``
+              If True, return the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Model parameters:
+
+              - lam_0: Fraction of broken power-law component, default: 0.361
+
+              - lam_1: Fraction of first Gaussian peak, default: 0.586
+
+              - mpp_1: Mean of first Gaussian peak (Msun), default: 9.764
+
+              - sigpp_1: Std dev of first Gaussian peak (Msun), default: 0.649
+
+              - mpp_2: Mean of second Gaussian peak (Msun), default: 32.763
+
+              - sigpp_2: Std dev of second Gaussian peak (Msun), default: 3.918
+
+              - mlow_1: Minimum primary mass (Msun), default: 5.059
+
+              - delta_m_1: Low-mass tapering range (Msun), default: 4.321
+
+              - break_mass: Power-law break mass (Msun), default: 35.622
+
+              - alpha_1: Power-law index below break, default: 1.728
+
+              - alpha_2: Power-law index above break, default: 4.512
+
+              - mmax: Maximum primary mass (Msun), default: 300.0
+
+              - beta: Mass ratio power-law index, default: 1.171
+
+              - mlow_2: Minimum secondary mass (Msun), default: 3.551
+
+              - delta_m_2: Secondary mass tapering range (Msun), default: 4.910
+
+      :Returns:
+
+          **mass_1_source** : ``numpy.ndarray``
+              Array of primary masses in source frame (Msun).
+
+          **mass_2_source** : ``numpy.ndarray``
+              Array of secondary masses in source frame (Msun).
+
+
+
+
+
+
+
+
+
+
+      .. rubric:: Examples
+
+      >>> from ler.gw_source_population import CBCSourceParameterDistribution
+      >>> cbc = CBCSourceParameterDistribution()
+      >>> m1_src, m2_src = cbc.broken_powerlaw_plus_2peaks(size=1000)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: powerlaw_plus_peak(size, get_attribute=False, **kwargs)
 
       
       Sample source masses with PowerLaw+PEAK model for Population I/II BBH.
 
+      GWTC-3 parameters: mminbh=4.98, mmaxbh=112.5, alpha=3.78, mu_g=32.27, sigma_g=3.88, lambda_peak=0.03, delta_m=4.8, beta=0.81
+
       Implements the mass distribution model from LIGO-Virgo population analyses
-      combining a power-law with a Gaussian peak component.
+      combining a power-law with a Gaussian peak component. Uses separate
+      m1 and q interpolators with joint composite sampling.
 
       :Parameters:
 
@@ -1120,19 +1378,20 @@ Attributes
 
       >>> from ler.gw_source_population import CBCSourceParameterDistribution
       >>> cbc = CBCSourceParameterDistribution()
-      >>> m1_src, m2_src = cbc.binary_masses_BBH_powerlaw_gaussian(size=1000)
+      >>> m1_src, m2_src = cbc.powerlaw_plus_peak(size=1000)
 
 
 
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BBH_popIII_lognormal(size, get_attribute=False, **kwargs)
+   .. py:method:: powerlaw_with_smoothing(size, get_attribute=False, **kwargs)
 
       
-      Sample source masses for Population III BBH from lognormal distribution.
+      Sample mass ratio with power-law distribution with smoothing near q=1.
 
-      Based on Eqn. 1 and 4 of Ng et al. 2022 for Population III black holes.
+      Implements a power-law distribution for the mass ratio with an additional
+      smoothing function to account for the observed excess of equal-mass binaries.
 
       :Parameters:
 
@@ -1147,190 +1406,20 @@ Attributes
           **\*\*kwargs** : ``dict``
               Model parameters:
 
-              - m_min: Minimum BH mass (Msun), default: 5.0
+              - q_min: Minimum mass ratio, default: 0.01
 
-              - m_max: Maximum BH mass (Msun), default: 150.0
+              - q_max: Maximum mass ratio, default: 1.0
 
-              - Mc: Central mass scale (Msun), default: 30.0
+              - beta: Power-law index, default: 1.171
 
-              - sigma: Distribution width, default: 0.3
+              - mlow_2: Minimum secondary mass (Msun), default: 3.551
 
-      :Returns:
-
-          **mass_1_source** : ``numpy.ndarray``
-              Array of primary masses in source frame (Msun).
-
-          **mass_2_source** : ``numpy.ndarray``
-              Array of secondary masses in source frame (Msun).
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.gw_source_population import CBCSourceParameterDistribution
-      >>> cbc = CBCSourceParameterDistribution(event_type='BBH_popIII')
-      >>> m1_src, m2_src = cbc.binary_masses_BBH_popIII_lognormal(size=1000)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: binary_masses_BBH_primordial_lognormal(size, get_attribute=False, **kwargs)
-
-      
-      Sample source masses for primordial BBH from lognormal distribution.
-
-      Based on Eqn. 1 and 4 of Ng et al. 2022 for primordial black holes.
-
-      :Parameters:
-
-          **size** : ``int``
-              Number of samples to draw.
-
-          **get_attribute** : ``bool``
-              If True, return the sampler object instead of samples.
-
-              default: False
-
-          **\*\*kwargs** : ``dict``
-              Model parameters:
-
-              - m_min: Minimum BH mass (Msun), default: 1.0
-
-              - m_max: Maximum BH mass (Msun), default: 100.0
-
-              - Mc: Central mass scale (Msun), default: 20.0
-
-              - sigma: Distribution width, default: 0.3
+              - delta_m_2: Tapering range for secondary mass (Msun), default: 4.910
 
       :Returns:
 
-          **mass_1_source** : ``numpy.ndarray``
-              Array of primary masses in source frame (Msun).
-
-          **mass_2_source** : ``numpy.ndarray``
-              Array of secondary masses in source frame (Msun).
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: binary_masses_NSBH_broken_powerlaw(size, get_attribute=False, **kwargs)
-
-      
-      Sample source masses for NSBH from broken power-law distribution.
-
-      Uses gwcosmo-style broken power-law for black hole mass and power-law
-      for neutron star mass.
-
-      :Parameters:
-
-          **size** : ``int``
-              Number of samples to draw.
-
-          **get_attribute** : ``bool``
-              If True, return the sampler object instead of samples.
-
-              default: False
-
-          **\*\*kwargs** : ``dict``
-              Model parameters:
-
-              - mminbh: Minimum BH mass (Msun), default: 26
-
-              - mmaxbh: Maximum BH mass (Msun), default: 125
-
-              - alpha_1: Primary power-law index, default: 6.75
-
-              - alpha_2: Secondary power-law index, default: 6.75
-
-              - b: Break point, default: 0.5
-
-              - delta_m: Tapering range (Msun), default: 5
-
-              - mminns: Minimum NS mass (Msun), default: 1.0
-
-              - mmaxns: Maximum NS mass (Msun), default: 3.0
-
-              - alphans: NS mass power-law index, default: 0.0
-
-      :Returns:
-
-          **mass_1_source** : ``numpy.ndarray``
-              Array of BH masses in source frame (Msun).
-
-          **mass_2_source** : ``numpy.ndarray``
-              Array of NS masses in source frame (Msun).
-
-
-
-
-
-
-
-
-
-
-      .. rubric:: Examples
-
-      >>> from ler.gw_source_population import CBCSourceParameterDistribution
-      >>> cbc = CBCSourceParameterDistribution(event_type='NSBH')
-      >>> m1_src, m2_src = cbc.binary_masses_NSBH_broken_powerlaw(size=1000)
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: binary_masses_uniform(size, get_attribute=False, **kwargs)
-
-      
-      Sample source masses from uniform distribution.
-
-
-      :Parameters:
-
-          **size** : ``int``
-              Number of samples to draw.
-
-          **get_attribute** : ``bool``
-              If True, return the sampler object instead of samples.
-
-              default: False
-
-          **\*\*kwargs** : ``dict``
-              Model parameters:
-
-              - m_min: Minimum mass (Msun), default: 1.0
-
-              - m_max: Maximum mass (Msun), default: 3.0
-
-      :Returns:
-
-          **mass_1_source** : ``numpy.ndarray``
-              Array of primary masses in source frame (Msun).
-
-          **mass_2_source** : ``numpy.ndarray``
-              Array of secondary masses in source frame (Msun).
+          **q** : ``numpy.ndarray``
+              Array of mass ratios (m2/m1) for the binary systems.
 
 
 
@@ -1345,20 +1434,102 @@ Attributes
 
       >>> from ler.gw_source_population import CBCSourceParameterDistribution
       >>> cbc = CBCSourceParameterDistribution()
-      >>> m1_src, m2_src = cbc.binary_masses_uniform(size=1000)
+      >>> m1 = cbc.broken_powerlaw_plus_2peaks(1000)
+      >>> q_samples = cbc.powerlaw_with_smoothing(1000, m1)
 
 
 
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: binary_masses_BNS_bimodal(size, get_attribute=False, **kwargs)
+   .. py:method:: gaussian_plus_isotropic(size, get_attribute=False, **kwargs)
 
       
-      Sample BNS masses from bimodal Gaussian distribution.
+      Sample from tilt_1 distribution for spin tilt angle of primary mass.
 
-      Based on Will M. Farr et al. 2020 Eqn. 6 for neutron star mass
+      Samples values in range [-1, 1] and converts to tilt angles in radians. Combines a truncated Gaussian component with an isotropic distribution.
+
+      :Parameters:
+
+          **size** : ``int``
+              Number of samples to draw.
+
+          **get_attribute** : ``bool``
+              If True, return the sampler object instead of samples.
+
+              default: False
+
+      :Returns:
+
+          **values** : ``numpy.ndarray``
+              Array of tilt_1 angles.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: gaussian_plus_isotropic_joint(size, get_attribute=False, **kwargs)
+
+      
+      Sample from tilt_2 distribution for spin tilt angle of secondary mass, given the tilt_1 distribution for primary mass.
+
+      Samples values in range [-1, 1] and converts to tilt angles in radians. Combines a truncated Gaussian component with an isotropic distribution.
+
+      :Parameters:
+
+          **size** : ``int``
+              Number of samples to draw.
+
+          **get_attribute** : ``bool``
+              If True, return the sampler object instead of samples.
+
+              default: False
+
+      :Returns:
+
+          **values** : ``numpy.ndarray``
+              Array of tilt_2 angles.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: bimodal(size, get_attribute=False, **kwargs)
+
+      
+      Sample BNS primary mass from bimodal Gaussian distribution.
+
+      Based on Will M. Farr et al. 2020 Eq. 6 for neutron star mass
       distribution combining two Gaussian peaks.
+
+      .. math::
+
+          p(m) = w\,\mathcal{N}(m \mid \mu_L, \sigma_L)
+          + (1-w)\,\mathcal{N}(m \mid \mu_R, \sigma_R),
+
+      truncated to ``[mmin, mmax]``.
 
       :Parameters:
 
@@ -1392,9 +1563,6 @@ Attributes
           **mass_1_source** : ``numpy.ndarray``
               Array of primary masses in source frame (Msun).
 
-          **mass_2_source** : ``numpy.ndarray``
-              Array of secondary masses in source frame (Msun).
-
 
 
 
@@ -1408,7 +1576,153 @@ Attributes
 
       >>> from ler.gw_source_population import CBCSourceParameterDistribution
       >>> cbc = CBCSourceParameterDistribution(event_type='BNS')
-      >>> m1_src, m2_src = cbc.binary_masses_BNS_bimodal(size=1000)
+      >>> m1_src = cbc.bimodal(size=1000)
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: broken_powerlaw(size, get_attribute=False, **kwargs)
+
+      
+      Sample source masses for NSBH from broken power-law distribution.
+
+      Uses gwcosmo-style broken power-law for black hole mass and power-law
+      for neutron star mass.
+
+      :Parameters:
+
+          **size** : ``int``
+              Number of samples to draw.
+
+          **get_attribute** : ``bool``
+              If True, return the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Model parameters:
+
+              - mminbh: Minimum BH mass (Msun), default: 26
+
+              - mmaxbh: Maximum BH mass (Msun), default: 125
+
+              - alpha_1: Primary power-law index, default: 6.75
+
+              - alpha_2: Secondary power-law index, default: 6.75
+
+              - b: Break point, default: 0.5
+
+              - delta_m: Tapering range (Msun), default: 5
+
+      :Returns:
+
+          **mass_1_source** : ``numpy.ndarray``
+              Array of BH masses in source frame (Msun).
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: truncated_normal(size, get_attribute=False, **kwargs)
+
+      
+      Sample with a truncated normal distribution.
+
+
+      :Parameters:
+
+          **size** : ``int``
+              Number of samples to draw.
+
+          **get_attribute** : ``bool``
+              If True, return the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Model parameters:
+
+              - x_min: Minimum value, default: 1.0
+
+              - x_max: Maximum value, default: 2.5
+
+              - mu: Mean of the truncated normal distribution, default: 1.4
+
+              - sigma: Standard deviation of the truncated normal distribution, default: 0.68
+
+      :Returns:
+
+          **x** : ``numpy.ndarray``
+              Array of values drawn from the truncated normal distribution.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: powerlaw(size, get_attribute=False, **kwargs)
+
+      
+      Sample values from a normalized power-law distribution.
+      p(x) ∝ x^{-alpha}, x in [x_min, x_max]
+
+
+      :Parameters:
+
+          **size** : ``int``
+              Number of samples to draw.
+
+          **get_attribute** : ``bool``
+              If True, return the sampler object instead of samples.
+
+              default: False
+
+          **\*\*kwargs** : ``dict``
+              Model parameters:
+
+              - x_min: Minimum value, default: 0.0
+
+              - x_max: Maximum value, default: 1.0
+
+              - alpha: Power-law index, default: 2.35
+
+      :Returns:
+
+          **values** : ``numpy.ndarray``
+              Array of values drawn from the normalized power-law distribution.
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1458,7 +1772,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: sampler_uniform(size, get_attribute=False, **kwargs)
+   .. py:method:: uniform(size, get_attribute=False, **kwargs)
 
       
       Sample values from uniform distribution.
@@ -1477,14 +1791,14 @@ Attributes
           **\*\*kwargs** : ``dict``
               Model parameters:
 
-              - xmin: Minimum value, default: 0.0
+              - x_min: Minimum value, default: 0.0
 
-              - xmax: Maximum value, default: 1.0
+              - x_max: Maximum value, default: 1.0
 
       :Returns:
 
           **values** : ``numpy.ndarray``
-              Array of uniformly distributed values in range [xmin, xmax].
+              Array of uniformly distributed values in range [x_min, x_max].
 
 
 

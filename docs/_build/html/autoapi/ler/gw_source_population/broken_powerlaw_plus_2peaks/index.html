@@ -1,0 +1,633 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.gw_source_population.broken_powerlaw_plus_2peaks &mdash; ler 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=551ad726" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=88a06014" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=8fa8b3e9"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="ler.gw_source_population.cbc_source_parameter_distribution" href="../cbc_source_parameter_distribution/index.html" />
+    <link rel="prev" title="ler.gw_source_population" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.broken_powerlaw_plus_2peaks</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cbc_source_parameter_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_parameter_distribution</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cbc_source_redshift_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_redshift_distribution</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../powerlaw_plus_peak/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.powerlaw_plus_peak</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prior_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.prior_functions</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sfr_with_time_delay/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.sfr_with_time_delay</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.broken_powerlaw_plus_2peaks</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/autoapi/ler/gw_source_population/broken_powerlaw_plus_2peaks/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ler.gw_source_population.broken_powerlaw_plus_2peaks">
+<span id="ler-gw-source-population-broken-powerlaw-plus-2peaks"></span><h1><a class="reference internal" href="#module-ler.gw_source_population.broken_powerlaw_plus_2peaks" title="ler.gw_source_population.broken_powerlaw_plus_2peaks"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.broken_powerlaw_plus_2peaks</span></code></a><a class="headerlink" href="#module-ler.gw_source_population.broken_powerlaw_plus_2peaks" title="Link to this heading"></a></h1>
+<p>Broken Power-Law with Two Gaussian Peaks Mass Distribution Model.</p>
+<p>This module implements a primary mass distribution model combining a broken
+power-law component with two Gaussian peaks, as detailed in the accompanying
+paper. The model is parameterized with 12 parameters for the primary mass and
+3 parameters for the mass ratio distribution.</p>
+<p>Key Features:
+- Broken power-law distribution with configurable break mass and power-law indices
+- Two Gaussian peaks for modeling specific mass populations
+- Smoothing taper function for physical support enforcement
+- Efficient numerical integration using log-space methods
+- Full support for both PDF evaluation and random sample generation
+- Mass ratio distribution with power-law form</p>
+<dl>
+<dt>Usage:</dt><dd><p>Basic workflow for sampling binary masses:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population.broken_powerlaw_plus_2peaks</span> <span class="kn">import</span> <span class="n">broken_powerlaw_plus_2peaks_rvs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span> <span class="o">=</span> <span class="n">broken_powerlaw_plus_2peaks_rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Copyright (C) 2026 Author Name. Distributed under MIT License.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_pdf" title="ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">broken_powerlaw_plus_2peaks_pdf</span></code></a>(m1[, lam_0, lam_1, ...])</p></td>
+<td><p>Evaluate fully normalized primary-mass probability density (equation B20).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_function" title="ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">broken_powerlaw_plus_2peaks_function</span></code></a>(m1[, lam_0, ...])</p></td>
+<td><p>Compute event rate as function of primary mass (equation B20).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_cdf" title="ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_cdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">broken_powerlaw_plus_2peaks_cdf</span></code></a>(size[, lam_0, lam_1, ...])</p></td>
+<td><p>Compute cumulative distribution function (CDF) for primary masses.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_rvs" title="ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_rvs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">broken_powerlaw_plus_2peaks_rvs</span></code></a>(size[, lam_0, lam_1, ...])</p></td>
+<td><p>Generate random samples from the primary-mass distribution.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_scalar" title="ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_scalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass_ratio_powerlaw_with_smoothing_scalar</span></code></a>(q, m1[, ...])</p></td>
+<td><p>Compute normalized conditional mass ratio density for a scalar secondary mass.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_pdf" title="ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass_ratio_powerlaw_with_smoothing_pdf</span></code></a>(q, m1[, beta, ...])</p></td>
+<td><p>Evaluate fully normalized conditional mass ratio density (equation B22).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_cdf" title="ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_cdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass_ratio_powerlaw_with_smoothing_cdf</span></code></a>(size, m1[, ...])</p></td>
+<td><p>Compute cumulative distribution function for mass ratio distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_rvs" title="ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_rvs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass_ratio_powerlaw_with_smoothing_rvs</span></code></a>(m1[, beta, ...])</p></td>
+<td><p>Generate random samples from the mass ratio distribution.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_pdf">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.broken_powerlaw_plus_2peaks.</span></span><span class="sig-name descname"><span class="pre">broken_powerlaw_plus_2peaks_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam_0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.361</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.586</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mpp_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9.764</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigpp_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.649</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mpp_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32.763</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigpp_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.918</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlow_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.059</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.321</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">break_mass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">35.622</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.728</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalization_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/broken_powerlaw_plus_2peaks.html#broken_powerlaw_plus_2peaks_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_pdf" title="Link to this definition"></a></dt>
+<dd><p>Evaluate fully normalized primary-mass probability density (equation B20).</p>
+<p>Computes the normalized probability density $π(m_1 | Λ)$ by integrating
+the unnormalized mixture in log-space for numerical stability and consistency.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>m1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Primary masses (solar masses).</p>
+</dd>
+<dt><strong>lam_0, lam_1, mpp_1, sigpp_1, mpp_2, sigpp_2, mlow_1, delta_m_1, break_mass, alpha_1, alpha_2, mmax</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Distribution parameters.
++------------+---------+-----------------------------------------------------------+
+| param      | default | description                                               |
++============+=========+===========================================================+
+| lam_0      | 0.361   | Fraction of broken power-law component (0 &lt;= lam_0 &lt;= 1)  |
++------------+---------+-----------------------------------------------------------+
+| lam_1      | 0.586   | Fraction of first Gaussian peak (0 &lt;= lam_1 &lt;= 1)         |
++------------+---------+-----------------------------------------------------------+
+| mpp_1      | 9.764   | Mean of first Gaussian peak (solar masses)                |
++------------+---------+-----------------------------------------------------------+
+| sigpp_1    | 0.649   | Standard deviation of first Gaussian peak (solar masses)  |
++------------+---------+-----------------------------------------------------------+
+| mpp_2      | 32.763  | Mean of second Gaussian peak (solar masses)               |
++------------+---------+-----------------------------------------------------------+
+| sigpp_2    | 3.918   | Standard deviation of second Gaussian peak (solar masses) |
++------------+---------+-----------------------------------------------------------+
+| mlow_1     | 5.059   | Minimum primary mass (solar masses)                       |
++------------+---------+-----------------------------------------------------------+
+| delta_m_1  | 4.321   | Taper width (solar masses)                                |
++------------+---------+-----------------------------------------------------------+
+| break_mass | 35.622  | Power-law break mass (solar masses)                       |
++------------+---------+-----------------------------------------------------------+
+| alpha_1    | 1.728   | Power-law index below break mass                          |
++------------+---------+-----------------------------------------------------------+
+| alpha_2    | 4.512   | Power-law index above break mass                          |
++------------+---------+-----------------------------------------------------------+
+| mmax       | 300.0   | Maximum primary mass (solar masses)                       |
++------------+---------+-----------------------------------------------------------+</p>
+</dd>
+<dt><strong>normalization_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of grid points for numerical integration.
+default: 500</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>pdf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Normalized probability density at each mass value.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population.broken_powerlaw_plus_2peaks</span> <span class="kn">import</span> <span class="n">broken_powerlaw_plus_2peaks_pdf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pdf_values</span> <span class="o">=</span> <span class="n">broken_powerlaw_plus_2peaks_pdf</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pdf_values</span><span class="p">)</span>  
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_function">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.broken_powerlaw_plus_2peaks.</span></span><span class="sig-name descname"><span class="pre">broken_powerlaw_plus_2peaks_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam_0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.361</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.586</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mpp_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9.764</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigpp_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.649</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mpp_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32.763</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigpp_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.918</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlow_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.059</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.321</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">break_mass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">35.622</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.728</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalization_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16.158</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.166</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_eval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/broken_powerlaw_plus_2peaks.html#broken_powerlaw_plus_2peaks_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_function" title="Link to this definition"></a></dt>
+<dd><p>Compute event rate as function of primary mass (equation B20).</p>
+<p>Combines the normalized primary-mass PDF with a redshift-dependent rate,
+modeling the merger rate evolution $R(z) = R_0 (1+z)^κ$.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>m1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Primary masses (solar masses).</p>
+</dd>
+<dt><strong>lam_0, lam_1, mpp_1, sigpp_1, mpp_2, sigpp_2, mlow_1, delta_m_1, break_mass, alpha_1, alpha_2, mmax</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Distribution parameters.
++------------+---------+-----------------------------------------------------------+
+| param      | default | description                                               |
++============+=========+===========================================================+
+| lam_0      | 0.361   | Fraction of broken power-law component (0 &lt;= lam_0 &lt;= 1)  |
++------------+---------+-----------------------------------------------------------+
+| lam_1      | 0.586   | Fraction of first Gaussian peak (0 &lt;= lam_1 &lt;= 1)         |
++------------+---------+-----------------------------------------------------------+
+| mpp_1      | 9.764   | Mean of first Gaussian peak (solar masses)                |
++------------+---------+-----------------------------------------------------------+
+| sigpp_1    | 0.649   | Standard deviation of first Gaussian peak (solar masses)  |
++------------+---------+-----------------------------------------------------------+
+| mpp_2      | 32.763  | Mean of second Gaussian peak (solar masses)               |
++------------+---------+-----------------------------------------------------------+
+| sigpp_2    | 3.918   | Standard deviation of second Gaussian peak (solar masses) |
++------------+---------+-----------------------------------------------------------+
+| mlow_1     | 5.059   | Minimum primary mass (solar masses)                       |
++------------+---------+-----------------------------------------------------------+
+| delta_m_1  | 4.321   | Taper width (solar masses)                                |
++------------+---------+-----------------------------------------------------------+
+| break_mass | 35.622  | Power-law break mass (solar masses)                       |
++------------+---------+-----------------------------------------------------------+
+| alpha_1    | 1.728   | Power-law index below break mass                          |
++------------+---------+-----------------------------------------------------------+
+| alpha_2    | 4.512   | Power-law index above break mass                          |
++------------+---------+-----------------------------------------------------------+
+| mmax       | 300.0   | Maximum primary mass (solar masses)                       |
++------------+---------+-----------------------------------------------------------+</p>
+</dd>
+<dt><strong>normalization_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of grid points for numerical integration.
+default: 500</p>
+</dd>
+<dt><strong>R0</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Local merger rate (Gpc$^{-3}$ yr$^{-1}$).
+default: 16.158</p>
+</dd>
+<dt><strong>kappa</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Power-law index for redshift evolution.
+default: 3.166</p>
+</dd>
+<dt><strong>z_eval</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Redshift at which to evaluate the rate.
+default: 0.2</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>rate</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Differential merger rate $dR/dm_1$ at each mass value.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population.broken_powerlaw_plus_2peaks</span> <span class="kn">import</span> <span class="n">broken_powerlaw_plus_2peaks_function</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_values</span> <span class="o">=</span> <span class="n">broken_powerlaw_plus_2peaks_function</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">rate_values</span><span class="p">)</span>  
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_cdf">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.broken_powerlaw_plus_2peaks.</span></span><span class="sig-name descname"><span class="pre">broken_powerlaw_plus_2peaks_cdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam_0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.361</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.586</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mpp_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9.764</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigpp_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.649</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mpp_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32.763</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigpp_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.918</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlow_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.059</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.321</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">break_mass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">35.622</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.728</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/broken_powerlaw_plus_2peaks.html#broken_powerlaw_plus_2peaks_cdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_cdf" title="Link to this definition"></a></dt>
+<dd><p>Compute cumulative distribution function (CDF) for primary masses.</p>
+<p>Evaluates the CDF using log-space numerical integration for consistency
+with the PDF normalization, enabling inverse transform sampling.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of grid points for CDF computation.</p>
+</dd>
+<dt><strong>lam_0, lam_1, mpp_1, sigpp_1, mpp_2, sigpp_2, mlow_1, delta_m_1, break_mass, alpha_1, alpha_2, mmax</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Distribution parameters.
++------------+---------+-----------------------------------------------------------+
+| param      | default | description                                               |
++============+=========+===========================================================+
+| lam_0      | 0.361   | Fraction of broken power-law component (0 &lt;= lam_0 &lt;= 1)  |
++------------+---------+-----------------------------------------------------------+
+| lam_1      | 0.586   | Fraction of first Gaussian peak (0 &lt;= lam_1 &lt;= 1)         |
++------------+---------+-----------------------------------------------------------+
+| mpp_1      | 9.764   | Mean of first Gaussian peak (solar masses)                |
++------------+---------+-----------------------------------------------------------+
+| sigpp_1    | 0.649   | Standard deviation of first Gaussian peak (solar masses)  |
++------------+---------+-----------------------------------------------------------+
+| mpp_2      | 32.763  | Mean of second Gaussian peak (solar masses)               |
++------------+---------+-----------------------------------------------------------+
+| sigpp_2    | 3.918   | Standard deviation of second Gaussian peak (solar masses) |
++------------+---------+-----------------------------------------------------------+
+| mlow_1     | 5.059   | Minimum primary mass (solar masses)                       |
++------------+---------+-----------------------------------------------------------+
+| delta_m_1  | 4.321   | Taper width (solar masses)                                |
++------------+---------+-----------------------------------------------------------+
+| break_mass | 35.622  | Power-law break mass (solar masses)                       |
++------------+---------+-----------------------------------------------------------+
+| alpha_1    | 1.728   | Power-law index below break mass                          |
++------------+---------+-----------------------------------------------------------+
+| alpha_2    | 4.512   | Power-law index above break mass                          |
++------------+---------+-----------------------------------------------------------+
+| mmax       | 300.0   | Maximum primary mass (solar masses)                       |
++------------+---------+-----------------------------------------------------------+</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>cdf_values</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Normalized CDF values at each grid point.</p>
+</dd>
+<dt><strong>m_grid</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Mass grid points (solar masses).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population.broken_powerlaw_plus_2peaks</span> <span class="kn">import</span> <span class="n">broken_powerlaw_plus_2peaks_cdf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cdf_values</span><span class="p">,</span> <span class="n">m_grid</span> <span class="o">=</span> <span class="n">broken_powerlaw_plus_2peaks_cdf</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cdf_values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># CDF should approach 1</span>
+<span class="go">1.0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_rvs">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.broken_powerlaw_plus_2peaks.</span></span><span class="sig-name descname"><span class="pre">broken_powerlaw_plus_2peaks_rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam_0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.361</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.586</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mpp_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9.764</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigpp_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.649</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mpp_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32.763</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigpp_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.918</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlow_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.059</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.321</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">break_mass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">35.622</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.728</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalization_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/broken_powerlaw_plus_2peaks.html#broken_powerlaw_plus_2peaks_rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_rvs" title="Link to this definition"></a></dt>
+<dd><p>Generate random samples from the primary-mass distribution.</p>
+<p>Draws random samples using inverse transform sampling applied to the CDF,
+which is computed using numerically stable log-space integration.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to generate.</p>
+</dd>
+<dt><strong>lam_0, lam_1, mpp_1, sigpp_1, mpp_2, sigpp_2, mlow_1, delta_m_1, break_mass, alpha_1, alpha_2, mmax</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Distribution parameters.
++------------+---------+-----------------------------------------------------------+
+| param      | default | description                                               |
++============+=========+===========================================================+
+| lam_0      | 0.361   | Fraction of broken power-law component (0 &lt;= lam_0 &lt;= 1)  |
++------------+---------+-----------------------------------------------------------+
+| lam_1      | 0.586   | Fraction of first Gaussian peak (0 &lt;= lam_1 &lt;= 1)         |
++------------+---------+-----------------------------------------------------------+
+| mpp_1      | 9.764   | Mean of first Gaussian peak (solar masses)                |
++------------+---------+-----------------------------------------------------------+
+| sigpp_1    | 0.649   | Standard deviation of first Gaussian peak (solar masses)  |
++------------+---------+-----------------------------------------------------------+
+| mpp_2      | 32.763  | Mean of second Gaussian peak (solar masses)               |
++------------+---------+-----------------------------------------------------------+
+| sigpp_2    | 3.918   | Standard deviation of second Gaussian peak (solar masses) |
++------------+---------+-----------------------------------------------------------+
+| mlow_1     | 5.059   | Minimum primary mass (solar masses)                       |
++------------+---------+-----------------------------------------------------------+
+| delta_m_1  | 4.321   | Taper width (solar masses)                                |
++------------+---------+-----------------------------------------------------------+
+| break_mass | 35.622  | Power-law break mass (solar masses)                       |
++------------+---------+-----------------------------------------------------------+
+| alpha_1    | 1.728   | Power-law index below break mass                          |
++------------+---------+-----------------------------------------------------------+
+| alpha_2    | 4.512   | Power-law index above break mass                          |
++------------+---------+-----------------------------------------------------------+
+| mmax       | 300.0   | Maximum primary mass (solar masses)                       |
++------------+---------+-----------------------------------------------------------+</p>
+</dd>
+<dt><strong>normalization_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of grid points for CDF computation.
+default: 500</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>samples</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Primary masses (solar masses) randomly sampled from the distribution.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population.broken_powerlaw_plus_2peaks</span> <span class="kn">import</span> <span class="n">broken_powerlaw_plus_2peaks_rvs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m1_samples</span> <span class="o">=</span> <span class="n">broken_powerlaw_plus_2peaks_rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">m1_samples</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">(1000,)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_scalar">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.broken_powerlaw_plus_2peaks.</span></span><span class="sig-name descname"><span class="pre">mass_ratio_powerlaw_with_smoothing_scalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.171</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlow_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.551</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.91</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalization_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/broken_powerlaw_plus_2peaks.html#mass_ratio_powerlaw_with_smoothing_scalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_scalar" title="Link to this definition"></a></dt>
+<dd><p>Compute normalized conditional mass ratio density for a scalar secondary mass.</p>
+<p>Evaluates the normalized PDF $p(q | m_1, Λ)$ for a single primary mass value,
+integrating the unnormalized density to determine the normalization constant.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Mass ratio ($m_2 / m_1$), bounded 0 &lt; q ≤ 1.</p>
+</dd>
+<dt><strong>m1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Primary mass (solar masses).</p>
+</dd>
+<dt><strong>beta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Power-law index for mass ratio distribution.
+default: 1.171</p>
+</dd>
+<dt><strong>mlow_2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum secondary mass (solar masses).
+default: 3.551</p>
+</dd>
+<dt><strong>delta_m_2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Taper width for secondary mass (solar masses).
+default: 4.910</p>
+</dd>
+<dt><strong>normalization_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of grid points for numerical integration.
+default: 500</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>pdf_value</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Normalized probability density at the given (q, m1) pair.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_pdf">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.broken_powerlaw_plus_2peaks.</span></span><span class="sig-name descname"><span class="pre">mass_ratio_powerlaw_with_smoothing_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.171</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlow_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.551</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.91</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalization_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/broken_powerlaw_plus_2peaks.html#mass_ratio_powerlaw_with_smoothing_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_pdf" title="Link to this definition"></a></dt>
+<dd><p>Evaluate fully normalized conditional mass ratio density (equation B22).</p>
+<p>Computes the normalized conditional PDF $p(q | m_1, Λ)$ for mass ratio distributions.
+Supports both scalar and array inputs through element-wise evaluation.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Mass ratios ($m_2 / m_1$), bounded 0 &lt; q ≤ 1. Can be scalar or array.</p>
+</dd>
+<dt><strong>m1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Primary masses (solar masses). Must have same shape as q.</p>
+</dd>
+<dt><strong>beta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Power-law index for mass ratio distribution.
+default: 1.171</p>
+</dd>
+<dt><strong>mlow_2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum secondary mass (solar masses).
+default: 3.551</p>
+</dd>
+<dt><strong>delta_m_2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Taper width for secondary mass (solar masses).
+default: 4.910</p>
+</dd>
+<dt><strong>normalization_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of grid points for numerical integration.
+default: 500</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>pdf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> or <code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Normalized probability density at each (q, m1) pair. Returns scalar if input is scalar.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population.broken_powerlaw_plus_2peaks</span> <span class="kn">import</span> <span class="n">mass_ratio_powerlaw_with_smoothing_pdf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">,</span> <span class="mf">40.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pdf_values</span> <span class="o">=</span> <span class="n">mass_ratio_powerlaw_with_smoothing_pdf</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">m1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pdf_values</span><span class="p">)</span>  
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_cdf">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.broken_powerlaw_plus_2peaks.</span></span><span class="sig-name descname"><span class="pre">mass_ratio_powerlaw_with_smoothing_cdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.171</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlow_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.551</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.91</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/broken_powerlaw_plus_2peaks.html#mass_ratio_powerlaw_with_smoothing_cdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_cdf" title="Link to this definition"></a></dt>
+<dd><p>Compute cumulative distribution function for mass ratio distribution.</p>
+<p>Evaluates the CDF $P(q ≤ q_0 | m_1, Λ)$ using spline-based numerical integration,
+enabling efficient inverse transform sampling for a single primary mass value.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of grid points for CDF computation.</p>
+</dd>
+<dt><strong>m1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Primary mass (solar masses).</p>
+</dd>
+<dt><strong>beta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Power-law index for mass ratio distribution.
+default: 1.171</p>
+</dd>
+<dt><strong>mlow_2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum secondary mass (solar masses).
+default: 3.551</p>
+</dd>
+<dt><strong>delta_m_2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Taper width for secondary mass (solar masses).
+default: 4.910</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>cdf_values</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Normalized CDF values at each grid point.</p>
+</dd>
+<dt><strong>q_grid</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Mass ratio grid points (0 &lt; q ≤ 1).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population.broken_powerlaw_plus_2peaks</span> <span class="kn">import</span> <span class="n">mass_ratio_powerlaw_with_smoothing_cdf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cdf_values</span><span class="p">,</span> <span class="n">q_grid</span> <span class="o">=</span> <span class="n">mass_ratio_powerlaw_with_smoothing_cdf</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">m1</span><span class="o">=</span><span class="mf">30.0</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.171</span><span class="p">,</span> <span class="n">mlow_2</span><span class="o">=</span><span class="mf">3.551</span><span class="p">,</span> <span class="n">delta_m_2</span><span class="o">=</span><span class="mf">4.910</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cdf_values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># CDF should approach 1</span>
+<span class="go">1.0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_rvs">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.broken_powerlaw_plus_2peaks.</span></span><span class="sig-name descname"><span class="pre">mass_ratio_powerlaw_with_smoothing_rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.171</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlow_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.551</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.91</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalization_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/broken_powerlaw_plus_2peaks.html#mass_ratio_powerlaw_with_smoothing_rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_rvs" title="Link to this definition"></a></dt>
+<dd><p>Generate random samples from the mass ratio distribution.</p>
+<p>Draws random mass ratios using inverse transform sampling applied to the CDF
+for each primary mass value independently. This function uses parallel processing
+to accelerate sampling for large arrays.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>m1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Primary masses (solar masses).</p>
+</dd>
+<dt><strong>beta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Power-law index for mass ratio distribution.
+default: 1.171</p>
+</dd>
+<dt><strong>mlow_2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum secondary mass (solar masses).
+default: 3.551</p>
+</dd>
+<dt><strong>delta_m_2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Taper width for secondary mass (solar masses).
+default: 4.910</p>
+</dd>
+<dt><strong>normalization_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of grid points for CDF computation.
+default: 500</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>q_samples</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Mass ratio samples ($m_2 / m_1$), bounded 0 &lt; q ≤ 1.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population.broken_powerlaw_plus_2peaks</span> <span class="kn">import</span> <span class="n">mass_ratio_powerlaw_with_smoothing_rvs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">,</span> <span class="mf">40.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q_samples</span> <span class="o">=</span> <span class="n">mass_ratio_powerlaw_with_smoothing_rvs</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">q_samples</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">(3,)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="ler.gw_source_population" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../cbc_source_parameter_distribution/index.html" class="btn btn-neutral float-right" title="ler.gw_source_population.cbc_source_parameter_distribution" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

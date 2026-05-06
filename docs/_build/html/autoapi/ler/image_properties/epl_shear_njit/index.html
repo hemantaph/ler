@@ -1,0 +1,545 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.image_properties.epl_shear_njit &mdash; ler 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=551ad726" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=88a06014" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=8fa8b3e9"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="ler.image_properties.image_properties" href="../image_properties/index.html" />
+    <link rel="prev" title="ler.image_properties.cross_section_njit" href="../cross_section_njit/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../cross_section_njit/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.cross_section_njit</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.epl_shear_njit</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.image_properties</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../multiprocessing_routine_epl_shear/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.multiprocessing_routine_epl_shear</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sample_caustic_points_njit/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.sample_caustic_points_njit</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.epl_shear_njit</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/autoapi/ler/image_properties/epl_shear_njit/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ler.image_properties.epl_shear_njit">
+<span id="ler-image-properties-epl-shear-njit"></span><h1><a class="reference internal" href="#module-ler.image_properties.epl_shear_njit" title="ler.image_properties.epl_shear_njit"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.epl_shear_njit</span></code></a><a class="headerlink" href="#module-ler.image_properties.epl_shear_njit" title="Link to this heading"></a></h1>
+<p>Numba-JIT-compiled EPL + external shear lensing solver.</p>
+<p>Provides analytical image-position finding, magnification computation,
+Fermat-potential evaluation, and a parallel batch solver for
+elliptical power-law (EPL) lens models with external shear.</p>
+<p>The module uses the 1-D lens-equation approach, reducing the 2-D vector
+equation to a scalar root-finding problem parameterised by the
+image-plane angle. All computationally intensive functions are compiled
+with <code class="docutils literal notranslate"><span class="pre">&#64;njit</span></code> (Numba) for performance.</p>
+<p>The top-level entry points are:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#ler.image_properties.epl_shear_njit.image_position_analytical_njit" title="ler.image_properties.epl_shear_njit.image_position_analytical_njit"><code class="xref py py-func docutils literal notranslate"><span class="pre">image_position_analytical_njit()</span></code></a> — single-system solver</p></li>
+<li><p><a class="reference internal" href="#ler.image_properties.epl_shear_njit.create_epl_shear_solver" title="ler.image_properties.epl_shear_njit.create_epl_shear_solver"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_epl_shear_solver()</span></code></a> — factory for a parallel batch solver</p></li>
+</ul>
+<p>Copyright (C) 2026 Author Name. Distributed under MIT License.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.epl_shear_njit.pol_to_ell" title="ler.image_properties.epl_shear_njit.pol_to_ell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pol_to_ell</span></code></a>(r, theta, q)</p></td>
+<td><p>Convert polar coordinates to elliptical coordinates.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.epl_shear_njit.omega_scalar" title="ler.image_properties.epl_shear_njit.omega_scalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">omega_scalar</span></code></a>(phi, t, q[, niter_max, tol])</p></td>
+<td><p>Scalar series expansion of the EPL deflection kernel Omega.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.epl_shear_njit.lensing_diagnostics_scalar" title="ler.image_properties.epl_shear_njit.lensing_diagnostics_scalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lensing_diagnostics_scalar</span></code></a>(z, b, t, gamma1, gamma2, q, ...)</p></td>
+<td><p>Compute magnification and image type at one image position.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.epl_shear_njit.fermat_potential_scalar" title="ler.image_properties.epl_shear_njit.fermat_potential_scalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fermat_potential_scalar</span></code></a>(z, x, y, x_source, y_source, ...)</p></td>
+<td><p>Compute the Fermat potential at one image position.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.epl_shear_njit.image_position_analytical_njit" title="ler.image_properties.epl_shear_njit.image_position_analytical_njit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">image_position_analytical_njit</span></code></a>(x_src, y_src, q, phi, ...)</p></td>
+<td><p>Standalone EPL + external shear analytical image finder.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.epl_shear_njit.create_epl_shear_solver" title="ler.image_properties.epl_shear_njit.create_epl_shear_solver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_epl_shear_solver</span></code></a>([arrival_time_sort, max_img, ...])</p></td>
+<td><p>Create a parallel EPL + shear solver for batched lens systems.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.epl_shear_njit.EPS" title="ler.image_properties.epl_shear_njit.EPS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EPS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.epl_shear_njit.MAX_ROOTS" title="ler.image_properties.epl_shear_njit.MAX_ROOTS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAX_ROOTS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.epl_shear_njit.MAX_IMGS" title="ler.image_properties.epl_shear_njit.MAX_IMGS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAX_IMGS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.epl_shear_njit.C_LIGHT" title="ler.image_properties.epl_shear_njit.C_LIGHT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">C_LIGHT</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="ler.image_properties.epl_shear_njit.EPS">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.epl_shear_njit.</span></span><span class="sig-name descname"><span class="pre">EPS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'1e-16'</span></em><a class="reference internal" href="../../../../_modules/ler/image_properties/epl_shear_njit.html#EPS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.epl_shear_njit.EPS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="ler.image_properties.epl_shear_njit.MAX_ROOTS">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.epl_shear_njit.</span></span><span class="sig-name descname"><span class="pre">MAX_ROOTS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'16'</span></em><a class="reference internal" href="../../../../_modules/ler/image_properties/epl_shear_njit.html#MAX_ROOTS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.epl_shear_njit.MAX_ROOTS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="ler.image_properties.epl_shear_njit.MAX_IMGS">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.epl_shear_njit.</span></span><span class="sig-name descname"><span class="pre">MAX_IMGS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'5'</span></em><a class="reference internal" href="../../../../_modules/ler/image_properties/epl_shear_njit.html#MAX_IMGS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.epl_shear_njit.MAX_IMGS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="ler.image_properties.epl_shear_njit.C_LIGHT">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.epl_shear_njit.</span></span><span class="sig-name descname"><span class="pre">C_LIGHT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'299792458.0'</span></em><a class="reference internal" href="../../../../_modules/ler/image_properties/epl_shear_njit.html#C_LIGHT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.epl_shear_njit.C_LIGHT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.epl_shear_njit.pol_to_ell">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.epl_shear_njit.</span></span><span class="sig-name descname"><span class="pre">pol_to_ell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/epl_shear_njit.html#pol_to_ell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.epl_shear_njit.pol_to_ell" title="Link to this definition"></a></dt>
+<dd><p>Convert polar coordinates to elliptical coordinates.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>r</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Polar radial coordinate.</p>
+</dd>
+<dt><strong>theta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Polar angle in radians.</p>
+</dd>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Axis ratio of the ellipse (0 &lt; q ≤ 1).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>rell</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Elliptical radial coordinate,
+<code class="docutils literal notranslate"><span class="pre">rell</span> <span class="pre">=</span> <span class="pre">r</span> <span class="pre">*</span> <span class="pre">sqrt(q^2*cos^2(theta)</span> <span class="pre">+</span> <span class="pre">sin^2(theta))</span></code>.</p>
+</dd>
+<dt><strong>phi</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Elliptical angle in radians,
+<code class="docutils literal notranslate"><span class="pre">phi</span> <span class="pre">=</span> <span class="pre">arctan2(sin(theta),</span> <span class="pre">cos(theta)*q)</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.image_properties.epl_shear_njit</span> <span class="kn">import</span> <span class="n">pol_to_ell</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rell</span><span class="p">,</span> <span class="n">phi</span> <span class="o">=</span> <span class="n">pol_to_ell</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.epl_shear_njit.omega_scalar">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.epl_shear_njit.</span></span><span class="sig-name descname"><span class="pre">omega_scalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">niter_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-16</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/epl_shear_njit.html#omega_scalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.epl_shear_njit.omega_scalar" title="Link to this definition"></a></dt>
+<dd><p>Scalar series expansion of the EPL deflection kernel Omega.</p>
+<p>Evaluates the convergent series for the EPL Omega function at a
+single elliptical angle, avoiding temporary array allocation.
+The series converges geometrically with ratio
+<code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">(1-q)/(1+q)</span></code>.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>phi</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Elliptical angle in radians.</p>
+</dd>
+<dt><strong>t</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>EPL slope parameter (<code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">gamma</span> <span class="pre">-</span> <span class="pre">1</span></code>).</p>
+</dd>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Axis ratio (0 &lt; q ≤ 1).</p>
+</dd>
+<dt><strong>niter_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Maximum number of series iterations.
+default: 200</p>
+</dd>
+<dt><strong>tol</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Convergence tolerance for series truncation.
+default: 1e-16</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>omega_sum</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">complex</span></code></span></dt><dd><p>Complex EPL deflection kernel value at angle <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.image_properties.epl_shear_njit</span> <span class="kn">import</span> <span class="n">omega_scalar</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">omega</span> <span class="o">=</span> <span class="n">omega_scalar</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.epl_shear_njit.lensing_diagnostics_scalar">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.epl_shear_njit.</span></span><span class="sig-name descname"><span class="pre">lensing_diagnostics_scalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Omega</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/epl_shear_njit.html#lensing_diagnostics_scalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.epl_shear_njit.lensing_diagnostics_scalar" title="Link to this definition"></a></dt>
+<dd><p>Compute magnification and image type at one image position.</p>
+<p>Evaluates the total Hessian of the lensing potential (EPL +
+external shear), then derives the Jacobian determinant and trace
+to classify the image and compute its signed magnification.
+Inputs <code class="docutils literal notranslate"><span class="pre">z</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, <code class="docutils literal notranslate"><span class="pre">t</span></code>, <code class="docutils literal notranslate"><span class="pre">q</span></code>, <code class="docutils literal notranslate"><span class="pre">phi</span></code>, and <code class="docutils literal notranslate"><span class="pre">Omega</span></code> are all
+scalars, not arrays.</p>
+<p>Image type convention:
+- 1: Type I  (minimum of the Fermat potential)
+- 2: Type II (saddle point)
+- 3: Type III (maximum of the Fermat potential)
+- 0: undefined / degenerate (on a critical curve)</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>z</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">complex</span></code></span></dt><dd><p>Image position in the axis-aligned frame
+(<code class="docutils literal notranslate"><span class="pre">z</span> <span class="pre">=</span> <span class="pre">exp(-i*phi)</span> <span class="pre">*</span> <span class="pre">(x</span> <span class="pre">+</span> <span class="pre">i*y)</span></code>).</p>
+</dd>
+<dt><strong>b</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>EPL scale parameter (<code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">theta_E</span> <span class="pre">*</span> <span class="pre">sqrt(q)</span></code>).</p>
+</dd>
+<dt><strong>t</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>EPL slope parameter (<code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">gamma</span> <span class="pre">-</span> <span class="pre">1</span></code>).</p>
+</dd>
+<dt><strong>gamma1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>External shear component 1.</p>
+</dd>
+<dt><strong>gamma2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>External shear component 2.</p>
+</dd>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Axis ratio (0 &lt; q ≤ 1).</p>
+</dd>
+<dt><strong>phi</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Lens position angle in radians.</p>
+</dd>
+<dt><strong>Omega</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">complex</span></code></span></dt><dd><p>EPL deflection kernel at the image elliptical angle.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>mu</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Signed magnification <code class="docutils literal notranslate"><span class="pre">1/det(A)</span></code>; <code class="docutils literal notranslate"><span class="pre">np.inf</span></code> on a critical curve.</p>
+</dd>
+<dt><strong>image_type</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Image-type code (0, 1, 2, or 3).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.image_properties.epl_shear_njit</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="n">lensing_diagnostics_scalar</span><span class="p">,</span> <span class="n">omega_scalar</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.8</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="mf">0.3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">phi_ell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">real</span> <span class="o">*</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">z</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Omega</span> <span class="o">=</span> <span class="n">omega_scalar</span><span class="p">(</span><span class="n">phi_ell</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mu</span><span class="p">,</span> <span class="n">itype</span> <span class="o">=</span> <span class="n">lensing_diagnostics_scalar</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">z</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.894</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">gamma1</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">gamma2</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Omega</span><span class="o">=</span><span class="n">Omega</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.epl_shear_njit.fermat_potential_scalar">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.epl_shear_njit.</span></span><span class="sig-name descname"><span class="pre">fermat_potential_scalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Omega</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/epl_shear_njit.html#fermat_potential_scalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.epl_shear_njit.fermat_potential_scalar" title="Link to this definition"></a></dt>
+<dd><p>Compute the Fermat potential at one image position.</p>
+<p>Returns the geometric minus gravitational time-delay contribution:
+<code class="docutils literal notranslate"><span class="pre">tau</span> <span class="pre">=</span> <span class="pre">0.5*|theta</span> <span class="pre">-</span> <span class="pre">beta|^2</span> <span class="pre">-</span> <span class="pre">psi_EPL(theta)</span> <span class="pre">-</span> <span class="pre">psi_shear(theta)</span></code></p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>z</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">complex</span></code></span></dt><dd><p>Image position in the axis-aligned frame
+(<code class="docutils literal notranslate"><span class="pre">z</span> <span class="pre">=</span> <span class="pre">exp(-i*phi)</span> <span class="pre">*</span> <span class="pre">(x</span> <span class="pre">+</span> <span class="pre">i*y)</span></code>).</p>
+</dd>
+<dt><strong>x</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Image x-coordinate in sky frame.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Image y-coordinate in sky frame.</p>
+</dd>
+<dt><strong>x_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Source x-coordinate in sky frame.</p>
+</dd>
+<dt><strong>y_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Source y-coordinate in sky frame.</p>
+</dd>
+<dt><strong>b</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>EPL scale parameter (<code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">theta_E</span> <span class="pre">*</span> <span class="pre">sqrt(q)</span></code>).</p>
+</dd>
+<dt><strong>t</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>EPL slope parameter (<code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">gamma</span> <span class="pre">-</span> <span class="pre">1</span></code>).</p>
+</dd>
+<dt><strong>gamma1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>External shear component 1.</p>
+</dd>
+<dt><strong>gamma2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>External shear component 2.</p>
+</dd>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Axis ratio (0 &lt; q ≤ 1).</p>
+</dd>
+<dt><strong>phi</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Lens position angle in radians.</p>
+</dd>
+<dt><strong>Omega</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">complex</span></code></span></dt><dd><p>EPL deflection kernel at the image elliptical angle.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>tau</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Fermat potential (dimensionless; proportional to arrival-time delay).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.epl_shear_njit.image_position_analytical_njit">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.epl_shear_njit.</span></span><span class="sig-name descname"><span class="pre">image_position_analytical_njit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_src</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_src</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta_E</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_scaling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnification_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nmeas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nmeas_extra</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">80</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/epl_shear_njit.html#image_position_analytical_njit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.epl_shear_njit.image_position_analytical_njit" title="Link to this definition"></a></dt>
+<dd><p>Standalone EPL + external shear analytical image finder.</p>
+<p>Locates all lensed images for a given source position, computes
+signed magnifications, Fermat potentials (arrival-time proxies),
+and image types. Results are sorted by ascending arrival time and
+filtered by a minimum magnification threshold.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>x_src</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Source x-coordinate (normalised to Einstein radius).</p>
+</dd>
+<dt><strong>y_src</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Source y-coordinate (normalised to Einstein radius).</p>
+</dd>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Lens axis ratio (0 &lt; q ≤ 1).</p>
+</dd>
+<dt><strong>phi</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Lens position angle in radians.</p>
+</dd>
+<dt><strong>gamma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>EPL power-law slope (<code class="docutils literal notranslate"><span class="pre">gamma</span> <span class="pre">=</span> <span class="pre">2</span></code> for isothermal).</p>
+</dd>
+<dt><strong>gamma1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>External shear component 1.</p>
+</dd>
+<dt><strong>gamma2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>External shear component 2.</p>
+</dd>
+<dt><strong>theta_E</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Einstein radius.
+default: 1.0</p>
+</dd>
+<dt><strong>alpha_scaling</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Deflection scaling applied as
+<code class="docutils literal notranslate"><span class="pre">theta_E_eff</span> <span class="pre">=</span> <span class="pre">theta_E</span> <span class="pre">*</span> <span class="pre">alpha_scaling^(1/(gamma-1))</span></code>.
+default: 1.0</p>
+</dd>
+<dt><strong>magnification_limit</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum <code class="docutils literal notranslate"><span class="pre">|mu|</span></code> for an image to be retained.
+default: 0.01</p>
+</dd>
+<dt><strong>Nmeas</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of uniformly-spaced angle samples for root finding.
+default: 400</p>
+</dd>
+<dt><strong>Nmeas_extra</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of extra refinement samples near the source angle.
+default: 80</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>x_img</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Image x-coordinates.</p>
+</dd>
+<dt><strong>y_img</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Image y-coordinates.</p>
+</dd>
+<dt><strong>fermat_pot</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Fermat potentials at each image.</p>
+</dd>
+<dt><strong>magnification</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Signed magnifications at each image.</p>
+</dd>
+<dt><strong>image_type</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Image-type codes (1 = min, 2 = saddle, 3 = max, 0 = degenerate).</p>
+</dd>
+<dt><strong>nimg</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of valid images retained.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.image_properties.epl_shear_njit</span> <span class="kn">import</span> <span class="n">image_position_analytical_njit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x_img</span><span class="p">,</span> <span class="n">y_img</span><span class="p">,</span> <span class="n">fermat_pot</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">itype</span><span class="p">,</span> <span class="n">nimg</span> <span class="o">=</span> <span class="n">image_position_analytical_njit</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">x_src</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">y_src</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">q</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">gamma1</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">gamma2</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">nimg</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.epl_shear_njit.create_epl_shear_solver">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.epl_shear_njit.</span></span><span class="sig-name descname"><span class="pre">create_epl_shear_solver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrival_time_sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_th</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maginf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_source_sample_attempts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_scaling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnification_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nmeas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nmeas_extra</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">80</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/epl_shear_njit.html#create_epl_shear_solver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.epl_shear_njit.create_epl_shear_solver" title="Link to this definition"></a></dt>
+<dd><p>Create a parallel EPL + shear solver for batched lens systems.</p>
+<p>Returns a JIT-compiled function that, for each system in a batch,
+samples a source from the double caustic and solves for image
+positions, magnifications, time delays, and image types.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>arrival_time_sort</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>Whether to sort images by arrival time.</p>
+<p>default: True</p>
+</dd>
+<dt><strong>max_img</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Maximum number of images to store per system.</p>
+<p>default: 4</p>
+</dd>
+<dt><strong>num_th</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Angular samples for caustic construction.</p>
+<p>default: 500</p>
+</dd>
+<dt><strong>maginf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Magnification cutoff for caustic boundary.</p>
+<p>default: -100.0</p>
+</dd>
+<dt><strong>max_source_sample_attempts</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Maximum draws from <code class="docutils literal notranslate"><span class="pre">sample_source_from_double_caustic</span></code> per system
+when the returned <code class="docutils literal notranslate"><span class="pre">(beta_x,</span> <span class="pre">beta_y)</span></code> are non-finite (invalid
+caustic / geometry). Stops early on the first finite pair.</p>
+<p>default: 128</p>
+</dd>
+<dt><strong>alpha_scaling</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Deflection scaling factor.</p>
+<p>default: 1.0</p>
+</dd>
+<dt><strong>magnification_limit</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum <code class="docutils literal notranslate"><span class="pre">abs(mu)</span></code> threshold for image retention.</p>
+<p>default: 0.01</p>
+</dd>
+<dt><strong>Nmeas</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Angular root-finding grid size.</p>
+<p>default: 400</p>
+</dd>
+<dt><strong>Nmeas_extra</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Extra refinement points.</p>
+<p>default: 80</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>solve_epl_shear_multithreaded</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Parallel solver function with signature</p>
+<p><code class="docutils literal notranslate"><span class="pre">(theta_E,</span> <span class="pre">D_dt,</span> <span class="pre">q,</span> <span class="pre">phi,</span> <span class="pre">gamma,</span> <span class="pre">gamma1,</span> <span class="pre">gamma2)</span></code></p>
+<p>returning a tuple of result arrays.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">solver</span> <span class="o">=</span> <span class="n">create_epl_shear_solver</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">solver</span><span class="p">(</span><span class="n">theta_E</span><span class="p">,</span> <span class="n">D_dt</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../cross_section_njit/index.html" class="btn btn-neutral float-left" title="ler.image_properties.cross_section_njit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../image_properties/index.html" class="btn btn-neutral float-right" title="ler.image_properties.image_properties" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

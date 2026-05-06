@@ -1,0 +1,359 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1) Event-level inference (Bilby PE): what \(p_0(\theta\mid d)\) means &mdash; ler 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+      <link rel="stylesheet" type="text/css" href="_static/scalefix.css?v=551ad726" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=88a06014" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8fa8b3e9"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/design-tabs.js?v=f930bc37"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "processEnvironments": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore", "processHtmlClass": "tex2jax_process"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">1) Event-level inference (Bilby PE): what <span class="math notranslate nohighlight">\(p_0(\theta\mid d)\)</span> means</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/hierarchichal_analysis.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p>Below is a clean “from-first-principles” explanation of what the handwritten note is doing, with the key goal:</p>
+<blockquote>
+<div><p>infer the hyper-parameter <span class="math notranslate nohighlight">\(\tau\)</span> that controls the source redshift distribution <span class="math notranslate nohighlight">\(p(z_s\mid\tau)\)</span>, using multiple GW datasets <span class="math notranslate nohighlight">\(\{\vec d_i\}_{i=1}^{N}\)</span>, including the selection effect (i.e. conditioning on detection).</p>
+</div></blockquote>
+<p>The notation follows the note, where the subscript “0” means Bilby PE done with a simplified prior <span class="math notranslate nohighlight">\(p_0(\theta)\)</span>.</p>
+<hr class="docutils" />
+<section id="event-level-inference-bilby-pe-what-p-0-theta-mid-d-means">
+<h1>1) Event-level inference (Bilby PE): what <span class="math notranslate nohighlight">\(p_0(\theta\mid d)\)</span> means<a class="headerlink" href="#event-level-inference-bilby-pe-what-p-0-theta-mid-d-means" title="Link to this heading"></a></h1>
+<p>For one event with data <span class="math notranslate nohighlight">\(\vec d\)</span>, Bilby returns posterior samples from</p>
+<div class="math notranslate nohighlight">
+\[
+p_0(\theta \mid \vec d)
+=\frac{p_0(\vec d\mid \theta)\,p_0(\theta)}{p_0(\vec d)}\,,
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\theta\)</span> = event parameters (masses, spins, distance or <span class="math notranslate nohighlight">\(z\)</span>, sky location, etc.)</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_0(\theta)\)</span> = the Bilby sampling prior (simplified)</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_0(\vec d)\)</span> = the evidence under that prior</p></li>
+</ul>
+<p>The evidence is</p>
+<div class="math notranslate nohighlight">
+\[
+p_0(\vec d)=\int p_0(\vec d\mid\theta)\,p_0(\theta)\,d\theta.
+\]</div>
+<p>This “0” posterior is not yet a population inference result; it is just the per-event posterior under the PE prior.</p>
+<hr class="docutils" />
+</section>
+<section id="population-model-what-you-want-to-infer">
+<h1>2) Population model: what you want to infer<a class="headerlink" href="#population-model-what-you-want-to-infer" title="Link to this heading"></a></h1>
+<p>You want a population model in which the source redshift distribution is described by a hyper-parameter <span class="math notranslate nohighlight">\(\tau\)</span> :</p>
+<div class="math notranslate nohighlight">
+\[
+p(z_s\mid\tau)
+\]</div>
+<p>In practice, the population model is over all event parameters :</p>
+<div class="math notranslate nohighlight">
+\[
+p(\theta\mid\tau),
+\]</div>
+<p>and <span class="math notranslate nohighlight">\(\theta\)</span> contains <span class="math notranslate nohighlight">\(z_s\)</span> (and everything else).</p>
+<section id="common-factorization">
+<h2>Common factorization<a class="headerlink" href="#common-factorization" title="Link to this heading"></a></h2>
+<p>Often one uses</p>
+<div class="math notranslate nohighlight">
+\[
+p(\theta\mid\tau)=p(z_s\mid\tau)\,p(\lambda)\,,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda\)</span> denotes the “other parameters” (masses/spins/orientation), possibly with their own hyper-parameters (but you can keep them fixed if the only target is <span class="math notranslate nohighlight">\(z_s\)</span>).</p>
+<hr class="docutils" />
+</section>
+</section>
+<section id="where-selection-effects-enter-the-conceptual-point">
+<h1>3) Where selection effects enter (the conceptual point)<a class="headerlink" href="#where-selection-effects-enter-the-conceptual-point" title="Link to this heading"></a></h1>
+<p>The catalog you analyze is a set of detected events, not “all events that occurred”.</p>
+<p>So the correct likelihood is always conditioned on detection:</p>
+<div class="math notranslate nohighlight">
+\[
+p(\vec d \mid \tau, {\rm det}).
+\]</div>
+<p>This introduces a normalization by the detection efficiency of the population, written as <span class="math notranslate nohighlight">\(\alpha(\tau)\)</span> (some notes call it <span class="math notranslate nohighlight">\(\sigma(\tau)\)</span> or <span class="math notranslate nohighlight">\(\beta(\tau)\)</span>).</p>
+<hr class="docutils" />
+</section>
+<section id="single-event-likelihood-with-selection-the-role-of-sigma">
+<h1>4) Single-event likelihood with selection (the role of <span class="math notranslate nohighlight">\(\sigma\)</span>)<a class="headerlink" href="#single-event-likelihood-with-selection-the-role-of-sigma" title="Link to this heading"></a></h1>
+<p>A convenient way to write the single-event contribution is</p>
+<div class="math notranslate nohighlight">
+\[
+p(\vec d_i \mid \tau, {\rm det}) =
+\frac{
+\int p(\vec d_i \mid \theta)\,p(\theta\mid\tau)\,d\theta
+}{
+\alpha(\tau)
+}\,,
+\]</div>
+<p>where the selection function is</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha(\tau)=
+p({\rm det}\mid\tau)=
+\int p({\rm det}\mid\theta)\,p(\theta\mid\tau)\,d\theta.
+\]</div>
+<p>Interpretation:</p>
+<ul class="simple">
+<li><p>Numerator: “support of the data under the population prior”</p></li>
+<li><p>Denominator: “fraction of the population that would be detected”</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="multiple-event-hierarchical-posterior-for-tau">
+<h1>5) Multiple-event hierarchical posterior for <span class="math notranslate nohighlight">\(\tau\)</span><a class="headerlink" href="#multiple-event-hierarchical-posterior-for-tau" title="Link to this heading"></a></h1>
+<p>For <span class="math notranslate nohighlight">\(N\)</span> independent detected events <span class="math notranslate nohighlight">\(\{\vec d_i\}\)</span>, the hierarchical posterior is</p>
+<div class="math notranslate nohighlight">
+\[
+p(\tau \mid \{\vec d_i\}, {\rm det})
+\propto
+p(\tau)\,
+\prod_{i=1}^{N}
+p(\vec d_i \mid \tau, {\rm det}).
+\]</div>
+<p>Substituting the selection-corrected event likelihood gives the catalog likelihood</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}(\tau)=
+\prod_{i=1}^N
+\frac{
+\int p(\vec d_i \mid \theta)\,p(\theta\mid\tau)\,d\theta
+}{
+\alpha(\tau)
+}.
+\]</div>
+<hr class="docutils" />
+</section>
+<section id="the-key-computational-trick-reuse-bilby-pe-samples">
+<h1>6) The key computational trick: reuse Bilby PE samples<a class="headerlink" href="#the-key-computational-trick-reuse-bilby-pe-samples" title="Link to this heading"></a></h1>
+<p>Bilby gives</p>
+<div class="math notranslate nohighlight">
+\[
+p_0(\theta \mid \vec d_i)=
+\frac{p(\vec d_i\mid \theta)\,p_0(\theta)}{p_0(\vec d_i)}.
+\]</div>
+<p>Rearranging,</p>
+<div class="math notranslate nohighlight">
+\[
+p(\vec d_i\mid \theta)=
+\frac{p_0(\theta \mid \vec d_i)\,p_0(\vec d_i)}{p_0(\theta)}.
+\]</div>
+<p>Plug into the numerator integral:</p>
+<div class="math notranslate nohighlight">
+\[
+\int p(\vec d_i\mid \theta)\,p(\theta\mid\tau)\,d\theta=
+p_0(\vec d_i)\,
+\int p_0(\theta\mid\vec d_i)\,
+\frac{p(\theta\mid\tau)}{p_0(\theta)}\,d\theta.
+\]</div>
+<p>Approximate the integral using posterior samples <span class="math notranslate nohighlight">\(\{\theta_{ik}\}_{k=1}^{n_i}\sim p_0(\theta\mid\vec d_i)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\int p_0(\theta\mid\vec d_i)\,
+\frac{p(\theta\mid\tau)}{p_0(\theta)}\,d\theta
+\approx
+\frac{1}{n_i}\sum_{k=1}^{n_i}
+\frac{p(\theta_{ik}\mid\tau)}{p_0(\theta_{ik})}.
+\]</div>
+<p>Therefore, up to <span class="math notranslate nohighlight">\(\tau\)</span>-independent constants,</p>
+<div class="math notranslate nohighlight">
+\[
+p(\vec d_i \mid \tau, {\rm det})
+\propto
+\frac{1}{\alpha(\tau)}
+\left\langle
+\frac{p(\theta\mid\tau)}{p_0(\theta)}
+\right\rangle_{\theta\sim p_0(\theta\mid \vec d_i)}.
+\]</div>
+<p>The Bilby evidences <span class="math notranslate nohighlight">\(p_0(\vec d_i)\)</span> drop out because they do not depend on <span class="math notranslate nohighlight">\(\tau\)</span>.</p>
+<hr class="docutils" />
+</section>
+<section id="special-case-redshift-only-hyper-inference">
+<h1>7) Special case: redshift-only hyper-inference<a class="headerlink" href="#special-case-redshift-only-hyper-inference" title="Link to this heading"></a></h1>
+<p>If only the redshift part changes and everything else matches the PE prior, then</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{p(\theta\mid\tau)}{p_0(\theta)}
+\approx
+\frac{p(z_s\mid\tau)}{p_0(z_s)}.
+\]</div>
+<p>So the event contribution becomes</p>
+<div class="math notranslate nohighlight">
+\[
+p(\vec d_i \mid \tau, {\rm det})
+\propto
+\frac{1}{\alpha(\tau)}
+\left\langle
+\frac{p(z_s\mid\tau)}{p_0(z_s)}
+\right\rangle_{z_s\sim p_0(z_s\mid \vec d_i)}.
+\]</div>
+<p>and the catalog likelihood is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}(\tau)
+\propto
+\frac{1}{\alpha(\tau)^N}
+\prod_{i=1}^N
+\left\langle
+\frac{p(z_s\mid\tau)}{p_0(z_s)}
+\right\rangle_{z_s\sim p_0(z_s\mid \vec d_i)}.
+\]</div>
+<hr class="docutils" />
+</section>
+<section id="how-to-compute-alpha-tau-in-practice-injections">
+<h1>8) How to compute <span class="math notranslate nohighlight">\(\alpha(\tau)\)</span> in practice (injections)<a class="headerlink" href="#how-to-compute-alpha-tau-in-practice-injections" title="Link to this heading"></a></h1>
+<p>The selection function is</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha(\tau)=\int p({\rm det}\mid\theta)\,p(\theta\mid\tau)\,d\theta.
+\]</div>
+<p>Monte Carlo with injections <span class="math notranslate nohighlight">\(\theta_j\sim p_{\rm inj}(\theta)\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha(\tau)\approx
+\frac{1}{N_{\rm inj}}
+\sum_{j=1}^{N_{\rm inj}}
+p({\rm det}\mid\theta_j)\,
+\frac{p(\theta_j\mid\tau)}{p_{\rm inj}(\theta_j)}.
+\]</div>
+<hr class="docutils" />
+</section>
+<section id="final-one-line-formula-what-you-implement">
+<h1>9) Final one-line formula (what you implement)<a class="headerlink" href="#final-one-line-formula-what-you-implement" title="Link to this heading"></a></h1>
+<p>The hierarchical posterior is</p>
+<div class="math notranslate nohighlight">
+\[
+p(\tau \mid \{\vec d_i\}, {\rm det})
+\propto
+p(\tau)\,
+\frac{1}{\alpha(\tau)^N}
+\prod_{i=1}^N
+\left[
+\frac{1}{n_i}\sum_{k=1}^{n_i}
+\frac{p(\theta_{ik}\mid\tau)}{p_0(\theta_{ik})}
+\right].
+\]</div>
+<p>This matches the structure in the handwritten note: reweight each event’s PE posterior samples by the ratio of the population prior to the PE prior, then divide by the selection function.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1763,7 +1763,7 @@ def create_epl_shear_solver(
         Deflection scaling factor. \n
         default: 1.0
     magnification_limit : ``float``
-        Minimum |mu| threshold for image retention. \n
+        Minimum ``abs(mu)`` threshold for image retention. \n
         default: 0.01
     Nmeas : ``int``
         Angular root-finding grid size. \n

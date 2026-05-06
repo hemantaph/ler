@@ -116,51 +116,6 @@ class LensGalaxyParameterDistribution(
     >>> lens = LensGalaxyParameterDistribution()
     >>> lensed_params = lens.sample_lens_parameters(size=1000)
     >>> print(lensed_params.keys())
-
-
-    Instance Methods
-    ----------
-    LensGalaxyParameterDistribution has the following methods: \n
-    +-----------------------------------------------------+------------------------------------------------+
-    | Method                                              | Description                                    |
-    +=====================================================+================================================+
-    | :meth:`~sample_lens_parameters`                     | Sample lens and source parameters              |
-    +-----------------------------------------------------+------------------------------------------------+
-    | :meth:`~sample_all_routine_epl_shear_intrinsic`     | Sample EPL+shear lens parameters from          |
-    |                                                     | intrinsic distributions                        |
-    +-----------------------------------------------------+------------------------------------------------+
-    | :meth:`~epl_shear_sl_parameters_rvs`            | Sample EPL+shear lens parameters with strong   |
-    |                                                     | lensing condition                              |
-    +-----------------------------------------------------+------------------------------------------------+
-    | :meth:`~strongly_lensed_source_redshift`            | Sample source redshifts with lensing condition |
-    +-----------------------------------------------------+------------------------------------------------+
-
-    Instance Attributes
-    ----------
-    LensGalaxyParameterDistribution has the following attributes: \n
-    +------------------------------------------------+----------------------+-------+------------------------------------------------+
-    | Attribute                                      | Type                 | Unit  | Description                                    |
-    +================================================+======================+=======+================================================+
-    | :attr:`~npool`                                 | ``int``              |       | Number of processors for parallel computation  |
-    +------------------------------------------------+----------------------+-------+------------------------------------------------+
-    | :attr:`~z_min`                                 | ``float``            |       | Minimum redshift                               |
-    +------------------------------------------------+----------------------+-------+------------------------------------------------+
-    | :attr:`~z_max`                                 | ``float``            |       | Maximum redshift                               |
-    +------------------------------------------------+----------------------+-------+------------------------------------------------+
-    | :attr:`~cosmo`                                 | ``astropy.cosmology``|       | Cosmology object for calculations              |
-    +------------------------------------------------+----------------------+-------+------------------------------------------------+
-    | :attr:`~event_type`                            | ``str``              |       | Type of CBC event (BBH, BNS, NSBH)             |
-    +------------------------------------------------+----------------------+-------+------------------------------------------------+
-    | :attr:`~directory`                             | ``str``              |       | Path to interpolator storage directory         |
-    +------------------------------------------------+----------------------+-------+------------------------------------------------+
-    | :attr:`~lens_priors`                   | ``dict``             |       | Dictionary of lens parameter sampler names     |
-    +------------------------------------------------+----------------------+-------+------------------------------------------------+
-    | :attr:`~lens_priors_params`            | ``dict``             |       | Parameters for lens parameter samplers         |
-    +------------------------------------------------+----------------------+-------+------------------------------------------------+
-    | :attr:`~lens_functions`                        | ``dict``             |       | Dictionary of lens function names              |
-    +------------------------------------------------+----------------------+-------+------------------------------------------------+
-    | :attr:`~normalization_pdf_z_lensed`            | ``float``            |       | Normalization constant for lensed source z pdf |
-    +------------------------------------------------+----------------------+-------+------------------------------------------------+
     """
 
     def __init__(

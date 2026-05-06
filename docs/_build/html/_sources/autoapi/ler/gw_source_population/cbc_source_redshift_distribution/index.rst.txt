@@ -18,7 +18,7 @@
 
        >>> from ler.gw_source_population import CBCSourceRedshiftDistribution
        >>> cbc = CBCSourceRedshiftDistribution(z_min=0.001, z_max=10)
-       >>> zs_samples = cbc.source_redshift(size=1000)
+       >>> zs_samples = cbc.merger_rate_density_based_source_redshift(size=1000)
 
    Copyright (C) 2024 Hemantakumar Phurailatpam. Distributed under MIT License.
 
@@ -147,60 +147,8 @@ Classes
 
    >>> from ler.gw_source_population import CBCSourceRedshiftDistribution
    >>> cbc = CBCSourceRedshiftDistribution(z_min=0.001, z_max=10)
-   >>> zs_samples = cbc.source_redshift(size=1000)
+   >>> zs_samples = cbc.merger_rate_density_based_source_redshift(size=1000)
    >>> rate = cbc.merger_rate_density(zs=0.5)
-
-   Instance Methods
-   ----------
-   CBCSourceRedshiftDistribution has the following methods:
-
-   +-----------------------------------------------------+----------------------------------------------------+
-   | Method                                              | Description                                        |
-   +=====================================================+====================================================+
-   | :meth:`~merger_rate_density_detector_frame`         | Compute merger rate density in detector frame      |
-   +-----------------------------------------------------+----------------------------------------------------+
-   | :meth:`~merger_rate_density_bbh_oguri2018`          | PopI/II merger rate density (Oguri 2018)           |
-   +-----------------------------------------------------+----------------------------------------------------+
-   | :meth:`~sfr_madau_dickinson2014`                    | Star formation rate (Madau & Dickinson 2014)       |
-   +-----------------------------------------------------+----------------------------------------------------+
-   | :meth:`~sfr_with_time_delay`                        | SFR with time delay convolution                    |
-   +-----------------------------------------------------+----------------------------------------------------+
-   | :meth:`~merger_rate_density_bbh_popIII_ken2022`     | PopIII merger rate density (Ng 2022)               |
-   +-----------------------------------------------------+----------------------------------------------------+
-   | :meth:`~merger_rate_density_bbh_primordial_ken2022` | Primordial BBH merger rate density (Ng 2022)       |
-   +-----------------------------------------------------+----------------------------------------------------+
-
-   Instance Attributes
-   ----------
-   CBCSourceRedshiftDistribution has the following attributes:
-
-   +------------------------------------------------+---------------------------+-------+----------------------------------------------+
-   | Attribute                                      | Type                      | Unit  | Description                                  |
-   +================================================+===========================+=======+==============================================+
-   | :attr:`~z_min`                                 | ``float``                 |       | Minimum source redshift                      |
-   +------------------------------------------------+---------------------------+-------+----------------------------------------------+
-   | :attr:`~z_max`                                 | ``float``                 |       | Maximum source redshift                      |
-   +------------------------------------------------+---------------------------+-------+----------------------------------------------+
-   | :attr:`~event_type`                            | ``str``                   |       | Type of CBC event (BBH/BNS/NSBH)             |
-   +------------------------------------------------+---------------------------+-------+----------------------------------------------+
-   | :attr:`~cosmo`                                 | ``astropy.cosmology``     |       | Cosmology for calculations                   |
-   +------------------------------------------------+---------------------------+-------+----------------------------------------------+
-   | :attr:`~directory`                             | ``str``                   |       | Path for storing interpolators               |
-   +------------------------------------------------+---------------------------+-------+----------------------------------------------+
-   | :attr:`~merger_rate_density_param`             | ``dict``                  |       | Merger rate density parameters               |
-   +------------------------------------------------+---------------------------+-------+----------------------------------------------+
-   | :attr:`~normalization_pdf_z`                   | ``float``                 |       | Normalization constant for p(z)              |
-   +------------------------------------------------+---------------------------+-------+----------------------------------------------+
-   | :attr:`~merger_rate_density`                   | ``callable``              |       | Merger rate density function R(z)            |
-   +------------------------------------------------+---------------------------+-------+----------------------------------------------+
-   | :attr:`~available_merger_rate_density_model`   | ``dict``                  |       | Available merger rate density models         |
-   +------------------------------------------------+---------------------------+-------+----------------------------------------------+
-   | :attr:`~source_redshift`                       | ``FunctionConditioning``  |       | Source redshift sampler                      |
-   +------------------------------------------------+---------------------------+-------+----------------------------------------------+
-   | :attr:`~luminosity_distance`                   | ``FunctionConditioning``  |       | Luminosity distance interpolator             |
-   +------------------------------------------------+---------------------------+-------+----------------------------------------------+
-   | :attr:`~differential_comoving_volume`          | ``FunctionConditioning``  |       | dVc/dz interpolator                          |
-   +------------------------------------------------+---------------------------+-------+----------------------------------------------+
 
 
 
@@ -388,34 +336,6 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: create_new_interpolator
-
-      
-      Dictionary controlling interpolator creation settings.
-
-
-
-      :Returns:
-
-          **create_new_interpolator** : ``dict``
-              Dictionary with that controls the creation of new interpolators.
-              Default: {'merger_rate_density': {'create_new': False, 'resolution': 100}, 'luminosity_distance': {'create_new': False, 'resolution': 100}, 'differential_comoving_volume': {'create_new': False, 'resolution': 100}}
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
    .. py:property:: luminosity_distance
 
       
@@ -513,24 +433,34 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: source_redshift
+   .. py:property:: merger_rate_density_based_source_redshift
 
       
-      Class object (of FunctionConditioning) for the source redshift sampler, with rvs/sampler as callback, which samples source redshifts from p(z) ∝ R(z)/(1+z) dVc/dz , where p(z) is the redshift probability distribution, R(z) is the merger rate density, and dVc/dz is the differential comoving volume.
+      FunctionConditioning object for source-redshift sampling.
 
-      The class object contains the following attribute methods:
+      Samples source redshifts from the normalized detector-frame density
 
-      - `rvs`: returns random samples from the source redshift distribution.
+      .. math::
 
-      - `pdf`: returns the source redshift probability density function.
+          p(z) = \frac{1}{\mathcal{N}}
+          \frac{R(z)}{1+z}\frac{dV_c}{dz},
+          \qquad
+          \mathcal{N} = \int_{z_{\min}}^{z_{\max}}
+          \frac{R(z)}{1+z}\frac{dV_c}{dz}\,dz.
 
-      - `function`: returns the source redshift distribution function.
+      The class object contains the following methods:
+
+      - `rvs(size)`: returns random samples from the source redshift distribution.
+
+      - `pdf(z)`: returns the source redshift probability density function.
+
+      - `function(z)`: returns the source redshift distribution function.
 
 
       :Returns:
 
-          **source_redshift** : ``numpy.ndarray``
-              Array of source redshifts (detector frame)
+          **merger_rate_density_based_source_redshift** : ``FunctionConditioning``
+              FunctionConditioning object with redshift distribution methods
 
 
 
@@ -558,6 +488,34 @@ Classes
 
           **normalization_pdf_z** : ``float``
               Integral of the unnormalized p(z) over [z_min, z_max].
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: create_new_interpolator
+
+      
+      Dictionary controlling interpolator creation settings.
+
+
+
+      :Returns:
+
+          **create_new_interpolator** : ``dict``
+              Dictionary that controls the creation of new interpolators.
+              Default: {'merger_rate_density': {'create_new': False, 'resolution': 100}, 'luminosity_distance': {'create_new': False, 'resolution': 100}, 'differential_comoving_volume': {'create_new': False, 'resolution': 100}}
 
 
 
@@ -616,6 +574,10 @@ Classes
               Available models:
 
               - 'merger_rate_density_bbh_oguri2018'
+
+              - 'merger_rate_density_madau_dickinson2014'
+
+              - 'merger_rate_density_madau_dickinson_belczynski_ng'
 
               - 'sfr_with_time_delay'
 
@@ -732,10 +694,10 @@ Classes
    .. py:method:: merger_rate_density_madau_dickinson2014(zs, get_attribute=False, **kwargs)
 
       
-      Compute star formation rate following Madau & Dickinson (2014).
+      Compute merger rate density following Madau & Dickinson (2014).
 
-      Returns the cosmic star formation rate density as given in
-      Equation 15 of Madau & Dickinson (2014).
+      Returns the binary merger rate density using the Madau-Dickinson
+      functional form from Equation 15 of Madau & Dickinson (2014).
 
       :Parameters:
 
@@ -747,12 +709,12 @@ Classes
               default: False
 
           **\*\*kwargs** : ``dict``
-              Override default fitting parameters: R0=19 * 1e-9, a=0.015, b=2.7, c=2.9, d=5.6.
+              Override default fitting parameters: R0=89 * 1e-9, a=0.015, b=2.7, c=2.9, d=5.6.
 
       :Returns:
 
           **rate_density** : ```numpy.ndarray`` or ``FunctionConditioning``
-              Star formation rate density (units: M_sun yr^-1 Mpc^-3).
+              Binary merger rate density (units: Mpc^-3 yr^-1).
 
 
 
@@ -800,7 +762,7 @@ Classes
       :Returns:
 
           **rate_density** : ```numpy.ndarray`` or ``FunctionConditioning``
-              Star formation rate density (units: M_sun yr^-1 Mpc^-3).
+              BBH merger rate density (units: Mpc^-3 yr^-1).
 
 
 
@@ -815,7 +777,7 @@ Classes
 
       >>> from ler.gw_source_population import CBCSourceRedshiftDistribution
       >>> cbc = CBCSourceRedshiftDistribution(merger_rate_density="merger_rate_density_madau_dickinson_belczynski_ng")
-      >>> sfr = cbc.merger_rate_density(zs=2.0)
+      >>> rate = cbc.merger_rate_density(zs=2.0)
 
 
 

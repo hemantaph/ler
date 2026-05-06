@@ -6,13 +6,13 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.rates.ler &mdash; ler 0.5.9 documentation</title>
+  <title>ler.rates.ler &mdash; ler 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=11132fbc" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=551ad726" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=88a06014" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
@@ -20,7 +20,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=9a3cda14"></script>
+      <script src="../../../../_static/documentation_options.js?v=8fa8b3e9"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -120,16 +120,16 @@
 <p>Module for calculating detection rates of gravitational wave events.</p>
 <p>This module contains the main <code class="docutils literal notranslate"><span class="pre">LeR</span></code> class for calculating the rates of
 detectable gravitational wave events, both lensed and unlensed. The class
-inherits from <a class="reference internal" href="../../lens_galaxy_population/index.html#ler.lens_galaxy_population.LensGalaxyParameterDistribution" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code></a>
+inherits from <code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code>
 for source and lens parameters sampling, and utilizes image property calculations.</p>
 <p>The inheritance hierarchy is as follows:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="../../lens_galaxy_population/index.html#ler.lens_galaxy_population.LensGalaxyParameterDistribution" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code></a></p>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code></p>
 <ul>
-<li><p><a class="reference internal" href="../../lens_galaxy_population/index.html#id18" title="ler.lens_galaxy_population.OpticalDepth"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a></p></li>
-<li><p><a class="reference internal" href="../../image_properties/index.html#ler.image_properties.ImageProperties" title="ler.image_properties.ImageProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageProperties</span></code></a></p></li>
-<li><p><a class="reference internal" href="../../gw_source_population/index.html#ler.gw_source_population.CBCSourceParameterDistribution" title="ler.gw_source_population.CBCSourceParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code></a></p></li>
-<li><p><a class="reference internal" href="../../gw_source_population/index.html#id11" title="ler.gw_source_population.CBCSourceRedshiftDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceRedshiftDistribution</span></code></a></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">OpticalDepth</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageProperties</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceRedshiftDistribution</span></code></p></li>
 </ul>
 </li>
 <li><p>Uses the <code class="docutils literal notranslate"><span class="pre">gwsnr</span></code> package for pdet calculation.</p></li>
@@ -162,7 +162,7 @@ for source and lens parameters sampling, and utilizes image property calculation
 <dl class="py class">
 <dt class="sig sig-object py" id="ler.rates.ler.LeR">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.rates.ler.</span></span><span class="sig-name descname"><span class="pre">LeR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">int(4)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BBH'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'epl_shear_galaxy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_finder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolator_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./interpolator_json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_new_interpolator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ler_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./ler_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/rates/ler.html#LeR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.ler.LeR" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../lens_galaxy_population/index.html#ler.lens_galaxy_population.LensGalaxyParameterDistribution" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.LensGalaxyParameterDistribution</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.LensGalaxyParameterDistribution</span></code></p>
 <p>Class to sample lensed and unlensed GW events and calculate their detection rates.</p>
 <p>This class provides functionality for sampling gravitational wave source parameters,
 detection probabilities, and computing detection rates for both lensed and unlensed
@@ -189,7 +189,7 @@ to conserve RAM memory.</p>
 <dt><strong>z_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum redshift of the source population.</p>
 <p>default: 10.0</p>
 </dd>
-<dt><strong>event_type</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Type of event to generate. source_priors and source_priors_params will be set accordingly.</p>
+<dt><strong>event_type</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Type of event to generate. gw_priors and gw_priors_params will be set accordingly.</p>
 <p>Options:</p>
 <ul class="simple">
 <li><p>‘BBH’: Binary Black Hole</p></li>
@@ -198,7 +198,7 @@ to conserve RAM memory.</p>
 </ul>
 <p>default: ‘BBH’</p>
 </dd>
-<dt><strong>lens_type</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Type of lens model to use. lens_functions, lens_functions_params, lens_param_samplers and lens_param_samplers_params will be set accordingly.</p>
+<dt><strong>lens_type</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Type of lens model to use. lens_functions, lens_functions_params, lens_priors and lens_priors_params will be set accordingly.</p>
 <p>Options:</p>
 <ul class="simple">
 <li><p>‘epl_shear_galaxy’: Exponential Power Law Shear Galaxy</p></li>
@@ -247,22 +247,14 @@ lensed_param_detectable=”lensed_param_detectable.json”</p>
 <p>default: True</p>
 </dd>
 <dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Additional keyword arguments passed to parent classes:</p>
-<p><a class="reference internal" href="../../lens_galaxy_population/index.html#ler.lens_galaxy_population.LensGalaxyParameterDistribution" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code></a>,</p>
-<p><a class="reference internal" href="../../gw_source_population/index.html#ler.gw_source_population.CBCSourceParameterDistribution" title="ler.gw_source_population.CBCSourceParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code></a>,</p>
-<p><a class="reference internal" href="../../image_properties/index.html#ler.image_properties.ImageProperties" title="ler.image_properties.ImageProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageProperties</span></code></a>, and</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code>,</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code>,</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageProperties</span></code>, and</p>
 <p><code class="xref py py-class docutils literal notranslate"><span class="pre">GWSNR</span></code> (if snr_finder=’gwsnr’).</p>
 </dd>
 </dl>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">LeR</span></code> class inherits from <a class="reference internal" href="../../lens_galaxy_population/index.html#ler.lens_galaxy_population.LensGalaxyParameterDistribution" title="ler.lens_galaxy_population.LensGalaxyParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code></a>.</p>
-<p>Refer to that class for additional inherited attributes and methods.</p>
-</li>
-<li><p>Parameters are stored in JSON files for memory efficiency and reproducibility.</p></li>
-<li><p>For stable rate estimates, use size &gt;= 1e6 samples.</p></li>
-</ul>
 <p class="rubric">Examples</p>
 <p>Basic usage:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler</span> <span class="kn">import</span> <span class="n">LeR</span>
@@ -274,126 +266,6 @@ lensed_param_detectable=”lensed_param_detectable.json”</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ler</span><span class="o">.</span><span class="n">rate_ratio</span><span class="p">()</span>
 </pre></div>
 </div>
-<section id="instance-methods">
-<h4>Instance Methods<a class="headerlink" href="#instance-methods" title="Link to this heading"></a></h4>
-<p>LeR class has the following methods:</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Method</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.unlensed_cbc_statistics" title="ler.rates.ler.LeR.unlensed_cbc_statistics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">unlensed_cbc_statistics()</span></code></a></p></td>
-<td><p>Generate unlensed GW source parameters</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.unlensed_sampling_routine" title="ler.rates.ler.LeR.unlensed_sampling_routine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">unlensed_sampling_routine()</span></code></a></p></td>
-<td><p>Generate unlensed parameters with batching</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.unlensed_rate" title="ler.rates.ler.LeR.unlensed_rate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">unlensed_rate()</span></code></a></p></td>
-<td><p>Calculate the unlensed detection rate</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.lensed_cbc_statistics" title="ler.rates.ler.LeR.lensed_cbc_statistics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lensed_cbc_statistics()</span></code></a></p></td>
-<td><p>Generate lensed GW source parameters</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.lensed_sampling_routine" title="ler.rates.ler.LeR.lensed_sampling_routine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lensed_sampling_routine()</span></code></a></p></td>
-<td><p>Generate lensed parameters with batching</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.lensed_rate" title="ler.rates.ler.LeR.lensed_rate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lensed_rate()</span></code></a></p></td>
-<td><p>Calculate the lensed detection rate</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.rate_function" title="ler.rates.ler.LeR.rate_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rate_function()</span></code></a></p></td>
-<td><p>General helper for rate calculation</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.rate_ratio" title="ler.rates.ler.LeR.rate_ratio"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rate_ratio()</span></code></a></p></td>
-<td><p>Calculate lensed/unlensed rate ratio</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.rate_comparison_with_rate_calculation" title="ler.rates.ler.LeR.rate_comparison_with_rate_calculation"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rate_comparison_with_rate_calculation()</span></code></a></p></td>
-<td><p>Calculate and compare lensed/unlensed rates</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.selecting_n_unlensed_detectable_events" title="ler.rates.ler.LeR.selecting_n_unlensed_detectable_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">selecting_n_unlensed_detectable_events()</span></code></a></p></td>
-<td><p>Select n unlensed detectable events</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.selecting_n_lensed_detectable_events" title="ler.rates.ler.LeR.selecting_n_lensed_detectable_events"><code class="xref py py-meth docutils literal notranslate"><span class="pre">selecting_n_lensed_detectable_events()</span></code></a></p></td>
-<td><p>Select n lensed detectable events</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="instance-attributes">
-<h4>Instance Attributes<a class="headerlink" href="#instance-attributes" title="Link to this heading"></a></h4>
-<p>LeR class has the following attributes:</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Attribute</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Unit</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.npool" title="ler.rates.ler.LeR.npool"><code class="xref py py-meth docutils literal notranslate"><span class="pre">npool()</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
-<td></td>
-<td><p>Number of parallel processing cores</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.z_min" title="ler.rates.ler.LeR.z_min"><code class="xref py py-meth docutils literal notranslate"><span class="pre">z_min()</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
-<td></td>
-<td><p>Minimum source redshift</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.z_max" title="ler.rates.ler.LeR.z_max"><code class="xref py py-meth docutils literal notranslate"><span class="pre">z_max()</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
-<td></td>
-<td><p>Maximum source redshift</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.event_type" title="ler.rates.ler.LeR.event_type"><code class="xref py py-meth docutils literal notranslate"><span class="pre">event_type()</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
-<td></td>
-<td><p>Type of CBC event (BBH, BNS, NSBH)</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.lens_type" title="ler.rates.ler.LeR.lens_type"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lens_type()</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
-<td></td>
-<td><p>Type of lens galaxy model</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.cosmo" title="ler.rates.ler.LeR.cosmo"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cosmo()</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">Cosmology</span></code></p></td>
-<td></td>
-<td><p>Astropy cosmology object</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.json_file_names" title="ler.rates.ler.LeR.json_file_names"><code class="xref py py-meth docutils literal notranslate"><span class="pre">json_file_names()</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
-<td></td>
-<td><p>JSON file names for parameter storage</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.interpolator_directory" title="ler.rates.ler.LeR.interpolator_directory"><code class="xref py py-meth docutils literal notranslate"><span class="pre">interpolator_directory()</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
-<td></td>
-<td><p>Directory for interpolator files</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.ler_directory" title="ler.rates.ler.LeR.ler_directory"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ler_directory()</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
-<td></td>
-<td><p>Directory for output parameter files</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.pdet_finder" title="ler.rates.ler.LeR.pdet_finder"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pdet_finder()</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
-<td></td>
-<td><p>Detection probability finder function</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.ler_args" title="ler.rates.ler.LeR.ler_args"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ler_args()</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
-<td></td>
-<td><p>All LeR initialization arguments</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.rates.ler.LeR.create_new_interpolator" title="ler.rates.ler.LeR.create_new_interpolator"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_new_interpolator()</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
-<td></td>
-<td><p>Interpolator creation settings</p></td>
-</tr>
-</tbody>
-</table>
 <dl class="py property">
 <dt class="sig sig-object py" id="ler.rates.ler.LeR.npool">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">npool</span></span><a class="reference internal" href="../../../../_modules/ler/rates/ler.html#LeR.npool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.ler.LeR.npool" title="Link to this definition"></a></dt>
@@ -561,39 +433,7 @@ lensed_param_detectable=”lensed_param_detectable.json”</p>
 <li><p>‘resolution’: int or list - Grid resolution for interpolation</p></li>
 </ul>
 <p>Special key ‘gwsnr’ is a bool for GWSNR interpolator creation.
-Default: dict(</p>
-<blockquote>
-<div><p>merger_rate_density = {‘create_new’: False, ‘resolution’: 500},
-redshift_distribution = {‘create_new’: False, ‘resolution’: 500},
-luminosity_distance = {‘create_new’: False, ‘resolution’: 500},
-differential_comoving_volume = {‘create_new’: False, ‘resolution’: 500},
-source_frame_masses = {‘create_new’: False, ‘resolution’: 500},
-geocent_time = {‘create_new’: False, ‘resolution’: 500},
-ra = {‘create_new’: False, ‘resolution’: 500},
-dec = {‘create_new’: False, ‘resolution’: 500},
-phase = {‘create_new’: False, ‘resolution’: 500},
-psi = {‘create_new’: False, ‘resolution’: 500},
-theta_jn = {‘create_new’: False, ‘resolution’: 500},
-a_1 = {‘create_new’: False, ‘resolution’: 500},
-a_2 = {‘create_new’: False, ‘resolution’: 500},
-tilt_1 = {‘create_new’: False, ‘resolution’: 500},
-tilt_2 = {‘create_new’: False, ‘resolution’: 500},
-phi_12 = {‘create_new’: False, ‘resolution’: 500},
-phi_jl = {‘create_new’: False, ‘resolution’: 500},
-velocity_dispersion = {‘create_new’: False, ‘resolution’: 500, ‘zl_resolution’: 48},
-axis_ratio = {‘create_new’: False, ‘resolution’: 500, ‘sigma_resolution’: 48},
-lens_redshift = {‘create_new’: False, ‘resolution’: 48, ‘zl_resolution’: 48},
-lens_redshift_intrinsic = {‘create_new’: False, ‘resolution’: 500},
-optical_depth = {‘create_new’: False, ‘resolution’: 48},
-comoving_distance = {‘create_new’: False, ‘resolution’: 500},
-angular_diameter_distance = {‘create_new’: False, ‘resolution’: 500},
-angular_diameter_distance_z1z2 = {‘create_new’: False, ‘resolution’: 500},
-density_profile_slope = {‘create_new’: False, ‘resolution’: 100},
-lens_parameters_kde_sl = {‘create_new’: False, ‘resolution’: 5000},
-cross_section = {‘create_new’: False, ‘resolution’: [25, 25, 45, 15, 15]},
-gwsnr = False,</p>
-</div></blockquote>
-<p>)</p>
+Default: <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 </dd>
 </dl>
 </dd>
@@ -633,7 +473,7 @@ gwsnr = False,</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.ler.LeR.unlensed_cbc_statistics">
-<span class="sig-name descname"><span class="pre">unlensed_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/rates/ler.html#LeR.unlensed_cbc_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.ler.LeR.unlensed_cbc_statistics" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">unlensed_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/rates/ler.html#LeR.unlensed_cbc_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.ler.LeR.unlensed_cbc_statistics" title="Link to this definition"></a></dt>
 <dd><p>Generate unlensed GW source parameters with detection probabilities.</p>
 <p>This function calls the unlensed_sampling_routine function to generate
 the parameters in batches. The generated parameters are stored in a JSON
@@ -661,93 +501,7 @@ file; and if save_batch=True, it keeps updating the file in batches.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>unlensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of unlensed GW source parameters. The included parameters and their units are as follows (for default settings):</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Units</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>zs</p></td>
-<td></td>
-<td><p>redshift of the source</p></td>
-</tr>
-<tr class="row-odd"><td><p>geocent_time</p></td>
-<td><p>s</p></td>
-<td><p>GPS time of coalescence</p></td>
-</tr>
-<tr class="row-even"><td><p>ra</p></td>
-<td><p>rad</p></td>
-<td><p>right ascension</p></td>
-</tr>
-<tr class="row-odd"><td><p>dec</p></td>
-<td><p>rad</p></td>
-<td><p>declination</p></td>
-</tr>
-<tr class="row-even"><td><p>phase</p></td>
-<td><p>rad</p></td>
-<td><p>phase of GW at reference frequency</p></td>
-</tr>
-<tr class="row-odd"><td><p>psi</p></td>
-<td><p>rad</p></td>
-<td><p>polarization angle</p></td>
-</tr>
-<tr class="row-even"><td><p>theta_jn</p></td>
-<td><p>rad</p></td>
-<td><p>inclination angle</p></td>
-</tr>
-<tr class="row-odd"><td><p>a_1</p></td>
-<td></td>
-<td><p>spin of the primary compact binary</p></td>
-</tr>
-<tr class="row-even"><td><p>a_2</p></td>
-<td></td>
-<td><p>spin of the secondary compact binary</p></td>
-</tr>
-<tr class="row-odd"><td><p>luminosity_distance</p></td>
-<td><p>Mpc</p></td>
-<td><p>luminosity distance</p></td>
-</tr>
-<tr class="row-even"><td><p>mass_1_source</p></td>
-<td><p>Msun</p></td>
-<td><p>mass_1 of the compact binary
-(source frame)</p></td>
-</tr>
-<tr class="row-odd"><td><p>mass_2_source</p></td>
-<td><p>Msun</p></td>
-<td><p>mass_2 of the compact binary
-(source frame)</p></td>
-</tr>
-<tr class="row-even"><td><p>mass_1</p></td>
-<td><p>Msun</p></td>
-<td><p>mass_1 of the compact binary
-(detector frame)</p></td>
-</tr>
-<tr class="row-odd"><td><p>mass_2</p></td>
-<td><p>Msun</p></td>
-<td><p>mass_2 of the compact binary
-(detector frame)</p></td>
-</tr>
-<tr class="row-even"><td><p>pdet_L1</p></td>
-<td></td>
-<td><p>pdet of L1</p></td>
-</tr>
-<tr class="row-odd"><td><p>pdet_H1</p></td>
-<td></td>
-<td><p>pdet of H1</p></td>
-</tr>
-<tr class="row-even"><td><p>pdet_V1</p></td>
-<td></td>
-<td><p>pdet of V1</p></td>
-</tr>
-<tr class="row-odd"><td><p>pdet_net</p></td>
-<td></td>
-<td><p>pdet of the network</p></td>
-</tr>
-</tbody>
-</table>
+<dt><strong>unlensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Sampled unlensed GW source parameters.</p>
 </dd>
 </dl>
 </dd>
@@ -792,7 +546,7 @@ It samples GW source parameters and calculates detection probabilities.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.ler.LeR.unlensed_rate">
-<span class="sig-name descname"><span class="pre">unlensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unlensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'boolean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/rates/ler.html#LeR.unlensed_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.ler.LeR.unlensed_rate" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">unlensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unlensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'boolean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/rates/ler.html#LeR.unlensed_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.ler.LeR.unlensed_rate" title="Link to this definition"></a></dt>
 <dd><p>Function to calculate the unlensed rate.</p>
 <p>This function calculates the detection rate for unlensed events and stores
 the parameters of the detectable events in a JSON file.</p>
@@ -822,93 +576,7 @@ the parameters of the detectable events in a JSON file.</p>
 <dd class="field-even"><dl>
 <dt><strong>total_rate</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Total unlensed rate (yr^-1).</p>
 </dd>
-<dt><strong>unlensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>dictionary of GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Units</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>zs</p></td>
-<td></td>
-<td><p>redshift of the source</p></td>
-</tr>
-<tr class="row-odd"><td><p>geocent_time</p></td>
-<td><p>s</p></td>
-<td><p>GPS time of coalescence</p></td>
-</tr>
-<tr class="row-even"><td><p>ra</p></td>
-<td><p>rad</p></td>
-<td><p>right ascension</p></td>
-</tr>
-<tr class="row-odd"><td><p>dec</p></td>
-<td><p>rad</p></td>
-<td><p>declination</p></td>
-</tr>
-<tr class="row-even"><td><p>phase</p></td>
-<td><p>rad</p></td>
-<td><p>phase of GW at reference frequency</p></td>
-</tr>
-<tr class="row-odd"><td><p>psi</p></td>
-<td><p>rad</p></td>
-<td><p>polarization angle</p></td>
-</tr>
-<tr class="row-even"><td><p>theta_jn</p></td>
-<td><p>rad</p></td>
-<td><p>inclination angle</p></td>
-</tr>
-<tr class="row-odd"><td><p>a_1</p></td>
-<td></td>
-<td><p>spin of the primary compact binary</p></td>
-</tr>
-<tr class="row-even"><td><p>a_2</p></td>
-<td></td>
-<td><p>spin of the secondary compact binary</p></td>
-</tr>
-<tr class="row-odd"><td><p>luminosity_distance</p></td>
-<td><p>Mpc</p></td>
-<td><p>luminosity distance</p></td>
-</tr>
-<tr class="row-even"><td><p>mass_1_source</p></td>
-<td><p>Msun</p></td>
-<td><p>mass_1 of the compact binary
-(source frame)</p></td>
-</tr>
-<tr class="row-odd"><td><p>mass_2_source</p></td>
-<td><p>Msun</p></td>
-<td><p>mass_2 of the compact binary
-(source frame)</p></td>
-</tr>
-<tr class="row-even"><td><p>mass_1</p></td>
-<td><p>Msun</p></td>
-<td><p>mass_1 of the compact binary
-(detector frame)</p></td>
-</tr>
-<tr class="row-odd"><td><p>mass_2</p></td>
-<td><p>Msun</p></td>
-<td><p>mass_2 of the compact binary
-(detector frame)</p></td>
-</tr>
-<tr class="row-even"><td><p>pdet_L1</p></td>
-<td></td>
-<td><p>pdet of L1</p></td>
-</tr>
-<tr class="row-odd"><td><p>pdet_H1</p></td>
-<td></td>
-<td><p>pdet of H1</p></td>
-</tr>
-<tr class="row-even"><td><p>pdet_V1</p></td>
-<td></td>
-<td><p>pdet of V1</p></td>
-</tr>
-<tr class="row-odd"><td><p>pdet_net</p></td>
-<td></td>
-<td><p>pdet of the network</p></td>
-</tr>
-</tbody>
-</table>
+<dt><strong>unlensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Detectable unlensed GW source parameters.</p>
 </dd>
 </dl>
 </dd>
@@ -965,7 +633,7 @@ Monte Carlo integration using the ratio of detectable to total events.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.ler.LeR.lensed_cbc_statistics">
-<span class="sig-name descname"><span class="pre">lensed_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/rates/ler.html#LeR.lensed_cbc_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.ler.LeR.lensed_cbc_statistics" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">lensed_cbc_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/rates/ler.html#LeR.lensed_cbc_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.ler.LeR.lensed_cbc_statistics" title="Link to this definition"></a></dt>
 <dd><p>Generate lensed GW source parameters.</p>
 <p>This function calls the lensed_sampling_routine function to generate
 the parameters in batches. The generated parameters are stored in a JSON
@@ -993,7 +661,7 @@ file; and if save_batch=True, it keeps updating the file in batches.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>lensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of lensed GW source parameters. The included parameters and their units are as follows (for default settings):</p>
+<dt><strong>lensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Sampled lensed GW source parameters.</p>
 </dd>
 </dl>
 </dd>
@@ -1039,7 +707,7 @@ detection probabilities for the images of lensed events.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.rates.ler.LeR.lensed_rate">
-<span class="sig-name descname"><span class="pre">lensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.5,</span> <span class="pre">0.5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan_to_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'boolean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/rates/ler.html#LeR.lensed_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.ler.LeR.lensed_rate" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">lensed_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lensed_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.5,</span> <span class="pre">0.5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_jsonfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan_to_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdet_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'boolean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/rates/ler.html#LeR.lensed_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.rates.ler.LeR.lensed_rate" title="Link to this definition"></a></dt>
 <dd><p>Function to calculate the lensed rate.</p>
 <p>This function calculates the detection rate for lensed events and stores
 the parameters of the detectable events in a JSON file.</p>
@@ -1077,7 +745,7 @@ the parameters of the detectable events in a JSON file.</p>
 <dd class="field-even"><dl>
 <dt><strong>total_rate</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Total lensed rate (yr^-1).</p>
 </dd>
-<dt><strong>lensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of lensed GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):</p>
+<dt><strong>lensed_param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Detectable lensed GW source parameters.</p>
 </dd>
 </dl>
 </dd>
@@ -1236,93 +904,7 @@ number of events and the cumulative rate.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>param_final</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>dictionary of GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Units</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>zs</p></td>
-<td></td>
-<td><p>redshift of the source</p></td>
-</tr>
-<tr class="row-odd"><td><p>geocent_time</p></td>
-<td><p>s</p></td>
-<td><p>GPS time of coalescence</p></td>
-</tr>
-<tr class="row-even"><td><p>ra</p></td>
-<td><p>rad</p></td>
-<td><p>right ascension</p></td>
-</tr>
-<tr class="row-odd"><td><p>dec</p></td>
-<td><p>rad</p></td>
-<td><p>declination</p></td>
-</tr>
-<tr class="row-even"><td><p>phase</p></td>
-<td><p>rad</p></td>
-<td><p>phase of GW at reference frequency</p></td>
-</tr>
-<tr class="row-odd"><td><p>psi</p></td>
-<td><p>rad</p></td>
-<td><p>polarization angle</p></td>
-</tr>
-<tr class="row-even"><td><p>theta_jn</p></td>
-<td><p>rad</p></td>
-<td><p>inclination angle</p></td>
-</tr>
-<tr class="row-odd"><td><p>a_1</p></td>
-<td></td>
-<td><p>spin of the primary compact binary</p></td>
-</tr>
-<tr class="row-even"><td><p>a_2</p></td>
-<td></td>
-<td><p>spin of the secondary compact binary</p></td>
-</tr>
-<tr class="row-odd"><td><p>luminosity_distance</p></td>
-<td><p>Mpc</p></td>
-<td><p>luminosity distance</p></td>
-</tr>
-<tr class="row-even"><td><p>mass_1_source</p></td>
-<td><p>Msun</p></td>
-<td><p>mass of the primary compact binary
-(source frame)</p></td>
-</tr>
-<tr class="row-odd"><td><p>mass_2_source</p></td>
-<td><p>Msun</p></td>
-<td><p>mass of the secondary compact binary
-(source frame)</p></td>
-</tr>
-<tr class="row-even"><td><p>mass_1</p></td>
-<td><p>Msun</p></td>
-<td><p>mass_1 of the compact binary
-(detector frame)</p></td>
-</tr>
-<tr class="row-odd"><td><p>mass_2</p></td>
-<td><p>Msun</p></td>
-<td><p>mass_2 of the compact binary
-(detector frame)</p></td>
-</tr>
-<tr class="row-even"><td><p>pdet_L1</p></td>
-<td></td>
-<td><p>pdet of L1</p></td>
-</tr>
-<tr class="row-odd"><td><p>pdet_H1</p></td>
-<td></td>
-<td><p>pdet of H1</p></td>
-</tr>
-<tr class="row-even"><td><p>pdet_V1</p></td>
-<td></td>
-<td><p>pdet of V1</p></td>
-</tr>
-<tr class="row-odd"><td><p>pdet_net</p></td>
-<td></td>
-<td><p>pdet of the network</p></td>
-</tr>
-</tbody>
-</table>
+<dt><strong>param_final</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Detectable unlensed GW source parameters.</p>
 </dd>
 </dl>
 </dd>
@@ -1406,7 +988,6 @@ number of events and the cumulative rate.</p>
 </div>
 </dd></dl>
 
-</section>
 </dd></dl>
 
 </section>

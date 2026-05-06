@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.gw_source_population.cbc_source_redshift_distribution &mdash; ler 0.5.9 documentation</title>
+  <title>ler.gw_source_population.cbc_source_redshift_distribution &mdash; ler 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -19,7 +19,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=9a3cda14"></script>
+      <script src="../../../_static/documentation_options.js?v=8fa8b3e9"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -91,6 +91,8 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../ler.html">ler</a></li>
+          <li class="breadcrumb-item"><a href="../gw_source_population.html">ler.gw_source_population</a></li>
       <li class="breadcrumb-item active">ler.gw_source_population.cbc_source_redshift_distribution</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -116,7 +118,7 @@
 
 <span class="sd">    &gt;&gt;&gt; from ler.gw_source_population import CBCSourceRedshiftDistribution</span>
 <span class="sd">    &gt;&gt;&gt; cbc = CBCSourceRedshiftDistribution(z_min=0.001, z_max=10)</span>
-<span class="sd">    &gt;&gt;&gt; zs_samples = cbc.source_redshift(size=1000)</span>
+<span class="sd">    &gt;&gt;&gt; zs_samples = cbc.merger_rate_density_based_source_redshift(size=1000)</span>
 
 <span class="sd">Copyright (C) 2024 Hemantakumar Phurailatpam. Distributed under MIT License.</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -141,8 +143,16 @@
 <span class="p">)</span>
 
 
+<span class="k">def</span> <span class="nf">_init_sfr_worker</span><span class="p">():</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">()</span>
+
+    <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">set_num_threads</span>
+
+    <span class="n">set_num_threads</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+
 <div class="viewcode-block" id="CBCSourceRedshiftDistribution">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution">[docs]</a>
 <span class="k">class</span> <span class="nc">CBCSourceRedshiftDistribution</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class for generating compact binary coalescence source redshift distributions.</span>
@@ -205,58 +215,8 @@
 
 <span class="sd">    &gt;&gt;&gt; from ler.gw_source_population import CBCSourceRedshiftDistribution</span>
 <span class="sd">    &gt;&gt;&gt; cbc = CBCSourceRedshiftDistribution(z_min=0.001, z_max=10)</span>
-<span class="sd">    &gt;&gt;&gt; zs_samples = cbc.source_redshift(size=1000)</span>
+<span class="sd">    &gt;&gt;&gt; zs_samples = cbc.merger_rate_density_based_source_redshift(size=1000)</span>
 <span class="sd">    &gt;&gt;&gt; rate = cbc.merger_rate_density(zs=0.5)</span>
-
-<span class="sd">    Instance Methods</span>
-<span class="sd">    ----------</span>
-<span class="sd">    CBCSourceRedshiftDistribution has the following methods: \n</span>
-<span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
-<span class="sd">    | Method                                              | Description                                        |</span>
-<span class="sd">    +=====================================================+====================================================+</span>
-<span class="sd">    | :meth:`~merger_rate_density_detector_frame`         | Compute merger rate density in detector frame      |</span>
-<span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
-<span class="sd">    | :meth:`~merger_rate_density_bbh_oguri2018`          | PopI/II merger rate density (Oguri 2018)           |</span>
-<span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
-<span class="sd">    | :meth:`~sfr_madau_dickinson2014`                    | Star formation rate (Madau &amp; Dickinson 2014)       |</span>
-<span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
-<span class="sd">    | :meth:`~sfr_with_time_delay`                        | SFR with time delay convolution                    |</span>
-<span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
-<span class="sd">    | :meth:`~merger_rate_density_bbh_popIII_ken2022`     | PopIII merger rate density (Ng 2022)               |</span>
-<span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
-<span class="sd">    | :meth:`~merger_rate_density_bbh_primordial_ken2022` | Primordial BBH merger rate density (Ng 2022)       |</span>
-<span class="sd">    +-----------------------------------------------------+----------------------------------------------------+</span>
-
-<span class="sd">    Instance Attributes</span>
-<span class="sd">    ----------</span>
-<span class="sd">    CBCSourceRedshiftDistribution has the following attributes: \n</span>
-<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
-<span class="sd">    | Attribute                                      | Type                      | Unit  | Description                                  |</span>
-<span class="sd">    +================================================+===========================+=======+==============================================+</span>
-<span class="sd">    | :attr:`~z_min`                                 | ``float``                 |       | Minimum source redshift                      |</span>
-<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
-<span class="sd">    | :attr:`~z_max`                                 | ``float``                 |       | Maximum source redshift                      |</span>
-<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
-<span class="sd">    | :attr:`~event_type`                            | ``str``                   |       | Type of CBC event (BBH/BNS/NSBH)             |</span>
-<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
-<span class="sd">    | :attr:`~cosmo`                                 | ``astropy.cosmology``     |       | Cosmology for calculations                   |</span>
-<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
-<span class="sd">    | :attr:`~directory`                             | ``str``                   |       | Path for storing interpolators               |</span>
-<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
-<span class="sd">    | :attr:`~merger_rate_density_param`             | ``dict``                  |       | Merger rate density parameters               |</span>
-<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
-<span class="sd">    | :attr:`~normalization_pdf_z`                   | ``float``                 |       | Normalization constant for p(z)              |</span>
-<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
-<span class="sd">    | :attr:`~merger_rate_density`                   | ``callable``              |       | Merger rate density function R(z)            |</span>
-<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
-<span class="sd">    | :attr:`~available_merger_rate_density_model`   | ``dict``                  |       | Available merger rate density models         |</span>
-<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
-<span class="sd">    | :attr:`~source_redshift`                       | ``FunctionConditioning``  |       | Source redshift sampler                      |</span>
-<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
-<span class="sd">    | :attr:`~luminosity_distance`                   | ``FunctionConditioning``  |       | Luminosity distance interpolator             |</span>
-<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
-<span class="sd">    | :attr:`~differential_comoving_volume`          | ``FunctionConditioning``  |       | dVc/dz interpolator                          |</span>
-<span class="sd">    +------------------------------------------------+---------------------------+-------+----------------------------------------------+</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -288,9 +248,7 @@
         <span class="p">)</span>
 
         <span class="c1"># setting up the interpolator creation parameters</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup_decision_dictionary</span><span class="p">(</span>
-            <span class="n">create_new_interpolator</span><span class="p">,</span> <span class="n">merger_rate_density</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_decision_dictionary</span><span class="p">(</span><span class="n">create_new_interpolator</span><span class="p">,</span> <span class="n">merger_rate_density</span><span class="p">)</span>
 
         <span class="c1"># Initialize cosmological functions</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">luminosity_distance</span> <span class="o">=</span> <span class="n">luminosity_distance</span><span class="p">(</span>
@@ -337,13 +295,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_detector_frame</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="p">)</span></div>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">source_redshift</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_based_source_redshift</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
             <span class="n">function</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_detector_frame</span><span class="o">.</span><span class="n">z_array</span><span class="p">,</span>
             <span class="n">x_array</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_detector_frame</span><span class="o">.</span><span class="n">x_array</span><span class="p">,</span>
             <span class="n">identifier_dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_detector_frame</span><span class="o">.</span><span class="n">info</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;source_redshift&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;source_redshift&quot;</span><span class="p">,</span>
+            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_based_source_redshift&quot;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_based_source_redshift&quot;</span><span class="p">,</span>
             <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span>
                 <span class="s2">&quot;create_new&quot;</span>
             <span class="p">],</span>
@@ -352,10 +310,11 @@
             <span class="n">create_pdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">create_rvs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;rvs&quot;</span><span class="p">,</span>
+            <span class="n">cdf_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">],</span>
         <span class="p">)</span>
 
         <span class="c1"># Normalization of the pdf p(z)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">normalization_pdf_z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_redshift</span><span class="o">.</span><span class="n">pdf_norm_const</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalization_pdf_z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density_based_source_redshift</span><span class="o">.</span><span class="n">pdf_norm_const</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_setup_decision_dictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">create_new_interpolator</span><span class="p">,</span> <span class="n">merger_rate_density</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -375,14 +334,22 @@
 <span class="sd">            Dictionary with interpolator creation settings.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">create_new_interpolator_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">merger_rate_density</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
-            <span class="n">redshift_distribution</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
+            <span class="n">merger_rate_density</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">cdf_size</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
+            <span class="n">redshift_distribution</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">cdf_size</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
             <span class="n">luminosity_distance</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
             <span class="n">differential_comoving_volume</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">create_new_interpolator</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="n">create_new_interpolator_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">create_new_interpolator</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">create_new_interpolator</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">key</span> <span class="ow">in</span> <span class="n">create_new_interpolator_</span>
+                    <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">create_new_interpolator_</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+                <span class="p">):</span>
+                    <span class="n">create_new_interpolator_</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">create_new_interpolator_</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">elif</span> <span class="n">create_new_interpolator</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">create_new_interpolator_</span><span class="p">:</span>
                 <span class="n">create_new_interpolator_</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
@@ -391,7 +358,14 @@
             <span class="k">if</span> <span class="n">merger_rate_density</span> <span class="o">==</span> <span class="s2">&quot;sfr_with_time_delay&quot;</span><span class="p">:</span>
                 <span class="n">create_new_interpolator_</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">48</span>
 
-        <span class="k">return</span> <span class="n">create_new_interpolator_</span>
+        <span class="c1"># update the create_new_interpolator</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span> <span class="o">=</span> <span class="n">create_new_interpolator_</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">create_new_interpolator_</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span> <span class="o">=</span> <span class="n">create_new_interpolator_</span>
 
     <span class="k">def</span> <span class="nf">_merger_rate_density_priors_categorization</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">event_type</span><span class="p">,</span> <span class="n">merger_rate_density</span><span class="p">,</span> <span class="n">merger_rate_density_param</span>
@@ -419,17 +393,27 @@
         <span class="k">if</span> <span class="n">event_type</span> <span class="o">==</span> <span class="s2">&quot;BBH&quot;</span><span class="p">:</span>
             <span class="n">merger_rate_density_</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_madau_dickinson_belczynski_ng&quot;</span>
             <span class="n">merger_rate_density_param_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
+                <span class="n">function_type</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_madau_dickinson_belczynski_ng&quot;</span><span class="p">,</span>
                 <span class="n">R0</span><span class="o">=</span><span class="mi">19</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">alpha_F</span><span class="o">=</span><span class="mf">2.57</span><span class="p">,</span> <span class="n">beta_F</span><span class="o">=</span><span class="mf">5.83</span><span class="p">,</span> <span class="n">c_F</span><span class="o">=</span><span class="mf">3.36</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="n">event_type</span> <span class="o">==</span> <span class="s2">&quot;BNS&quot;</span><span class="p">:</span>
             <span class="n">merger_rate_density_</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_madau_dickinson2014&quot;</span>
             <span class="n">merger_rate_density_param_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
+                <span class="n">function_type</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_madau_dickinson2014&quot;</span><span class="p">,</span>
                 <span class="n">R0</span><span class="o">=</span><span class="mi">89</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">2.7</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">2.9</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">5.6</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="n">event_type</span> <span class="o">==</span> <span class="s2">&quot;NSBH&quot;</span><span class="p">:</span>
             <span class="n">merger_rate_density_</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_madau_dickinson2014&quot;</span>
             <span class="n">merger_rate_density_param_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
+                <span class="n">function_type</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_madau_dickinson2014&quot;</span><span class="p">,</span>
                 <span class="n">R0</span><span class="o">=</span><span class="mi">23</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">2.7</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">2.9</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">5.6</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid event_type=</span><span class="si">{</span><span class="n">event_type</span><span class="si">!r}</span><span class="s2">. Expected one of: &#39;BBH&#39;, &#39;BNS&#39;, &#39;NSBH&#39;.&quot;</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">merger_rate_density</span><span class="p">:</span>
@@ -460,7 +444,12 @@
 <span class="sd">        Compute the merger rate density in the detector frame.</span>
 
 <span class="sd">        The output is unnormalized and accounts for the (1+z) time dilation</span>
-<span class="sd">        factor and differential comoving volume.</span>
+<span class="sd">        factor and differential comoving volume:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            p_{\\rm det-frame}(z) \\propto</span>
+<span class="sd">            \\frac{R_{\\rm source}(z)}{1+z}\\frac{dV_c}{dz}.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -476,7 +465,9 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        rate_density : ``numpy.ndarray`` or ``FunctionConditioning``</span>
-<span class="sd">            Merger rate density in detector frame (units: Mpc^-3 yr^-1 sr^-1).</span>
+<span class="sd">            Unnormalized detector-frame redshift density. Because the</span>
+<span class="sd">            implementation multiplies by the full-sky ``dVc/dz``, this has units</span>
+<span class="sd">            of events per year per redshift before normalization.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -490,30 +481,34 @@
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cosmology&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;event_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span>
-        <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_detector_frame&quot;</span>
+        <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;function_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;function_type&quot;</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;_detector_frame&quot;</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
-            <span class="s2">&quot;merger_rate_density&quot;</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]</span>
         <span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
+        <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]</span>
+        <span class="p">][</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">]</span>
 
         <span class="n">zs_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
             <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_min&quot;</span><span class="p">],</span>
             <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_max&quot;</span><span class="p">],</span>
             <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">],</span>
         <span class="p">)</span>
-        <span class="n">Pzs</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-            <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">z</span><span class="p">)</span>
-            <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">differential_comoving_volume</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="k">def</span> <span class="nf">Pzs</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">merger_rate_density</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+                <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">z</span><span class="p">)</span>
+                <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">differential_comoving_volume</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+            <span class="p">)</span>
 
         <span class="n">Pzs_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
             <span class="n">function</span><span class="o">=</span><span class="n">Pzs</span><span class="p">,</span>
             <span class="n">x_array</span><span class="o">=</span><span class="n">zs_array</span><span class="p">,</span>
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
-            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span>
+            <span class="n">sub_directory</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;function_type&quot;</span><span class="p">],</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]][</span>
                 <span class="s2">&quot;create_new&quot;</span>
             <span class="p">],</span>
             <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -521,12 +516,13 @@
             <span class="n">create_pdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">create_rvs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="n">cdf_size</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">],</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">Pzs_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">Pzs_object</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span>
 
 <div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_bbh_oguri2018">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_oguri2018">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_oguri2018">[docs]</a>
     <span class="k">def</span> <span class="nf">merger_rate_density_bbh_oguri2018</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute PopI/II BBH merger rate density (Oguri et al. 2018).</span>
@@ -559,17 +555,22 @@
 
         <span class="kn">from</span> <span class="nn">.prior_functions</span> <span class="kn">import</span> <span class="n">merger_rate_density_bbh_oguri2018_function</span>
 
-        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
+            <span class="n">function_type</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_bbh_oguri2018&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cosmology&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;event_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span>
-        <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_bbh_oguri2018&quot;</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
-            <span class="s2">&quot;merger_rate_density&quot;</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]</span>
         <span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
+        <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]</span>
+        <span class="p">][</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">]</span>
         <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_merger_rate_density_model</span><span class="p">[</span>
-            <span class="s2">&quot;merger_rate_density_bbh_oguri2018&quot;</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;function_type&quot;</span><span class="p">]</span>
         <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
@@ -579,22 +580,23 @@
             <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_max&quot;</span><span class="p">],</span>
             <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">],</span>
         <span class="p">)</span>
-        <span class="n">Rzs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">zs</span><span class="p">:</span> <span class="n">merger_rate_density_bbh_oguri2018_function</span><span class="p">(</span>
-            <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
-            <span class="n">R0</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;R0&quot;</span><span class="p">],</span>
-            <span class="n">b2</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;b2&quot;</span><span class="p">],</span>
-            <span class="n">b3</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;b3&quot;</span><span class="p">],</span>
-            <span class="n">b4</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;b4&quot;</span><span class="p">],</span>
-        <span class="p">)</span>
+        <span class="k">def</span> <span class="nf">Rzs</span><span class="p">(</span><span class="n">zs</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">merger_rate_density_bbh_oguri2018_function</span><span class="p">(</span>
+                <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
+                <span class="n">R0</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;R0&quot;</span><span class="p">],</span>
+                <span class="n">b2</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;b2&quot;</span><span class="p">],</span>
+                <span class="n">b3</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;b3&quot;</span><span class="p">],</span>
+                <span class="n">b4</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;b4&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
 
         <span class="n">Rzs_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
             <span class="n">function</span><span class="o">=</span><span class="n">Rzs</span><span class="p">,</span>
             <span class="n">x_array</span><span class="o">=</span><span class="n">zs_array</span><span class="p">,</span>
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
-            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span>
+            <span class="n">sub_directory</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;function_type&quot;</span><span class="p">],</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]][</span>
                 <span class="s2">&quot;create_new&quot;</span>
             <span class="p">],</span>
             <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -602,13 +604,14 @@
             <span class="n">create_pdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">create_rvs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="n">cdf_size</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">],</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">Rzs_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">Rzs_object</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CBCSourceRedshiftDistribution.sfr_with_time_delay">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.sfr_with_time_delay">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.sfr_with_time_delay">[docs]</a>
     <span class="k">def</span> <span class="nf">sfr_with_time_delay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute merger rate density with time delay convolution.</span>
@@ -633,17 +636,22 @@
 <span class="sd">            Merger rate density (units: Mpc^-3 yr^-1).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
+            <span class="n">function_type</span><span class="o">=</span><span class="s2">&quot;sfr_with_time_delay&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cosmology&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;event_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span>
-        <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;sfr_with_time_delay&quot;</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
-            <span class="s2">&quot;merger_rate_density&quot;</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]</span>
         <span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
+        <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]</span>
+        <span class="p">][</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">]</span>
         <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_merger_rate_density_model</span><span class="p">[</span>
-            <span class="s2">&quot;sfr_with_time_delay&quot;</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;function_type&quot;</span><span class="p">]</span>
         <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
@@ -659,11 +667,11 @@
         <span class="n">_</span><span class="p">,</span> <span class="n">it_exist</span> <span class="o">=</span> <span class="n">interpolator_json_path</span><span class="p">(</span>
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
-            <span class="n">interpolator_name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+            <span class="n">sub_directory</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">],</span>
+            <span class="n">interpolator_name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;function_type&quot;</span><span class="p">],</span>
         <span class="p">)</span>
 
-        <span class="n">create_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span><span class="s2">&quot;create_new&quot;</span><span class="p">]</span>
+        <span class="n">create_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]][</span><span class="s2">&quot;create_new&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">it_exist</span> <span class="ow">or</span> <span class="n">create_new</span><span class="p">:</span>
             <span class="n">rate_density</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_helper_rate_density_multiprocessing</span><span class="p">(</span>
                 <span class="n">zs_array</span><span class="p">,</span> <span class="n">identifier_dict</span>
@@ -676,14 +684,15 @@
             <span class="n">x_array</span><span class="o">=</span><span class="n">zs_array</span><span class="p">,</span>
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+            <span class="n">sub_directory</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;function_type&quot;</span><span class="p">],</span>
             <span class="n">create_new</span><span class="o">=</span><span class="n">create_new</span><span class="p">,</span>
             <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">create_function</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">create_pdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">create_rvs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="n">cdf_size</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">],</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">rate_density_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">rate_density_object</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span></div>
@@ -732,7 +741,7 @@
         <span class="p">)</span>
         <span class="c1"># with tqdm</span>
         <span class="n">rate_density_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">npool</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">npool</span><span class="p">,</span> <span class="n">initializer</span><span class="o">=</span><span class="n">_init_sfr_worker</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span>
                 <span class="n">pool</span><span class="o">.</span><span class="n">imap_unordered</span><span class="p">(</span><span class="n">sfr_with_time_delay_function</span><span class="p">,</span> <span class="n">input_args</span><span class="p">),</span>
                 <span class="n">total</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
@@ -754,15 +763,15 @@
         <span class="k">return</span> <span class="n">rate_density_array</span>
 
 <div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_madau_dickinson2014">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_madau_dickinson2014">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_madau_dickinson2014">[docs]</a>
     <span class="k">def</span> <span class="nf">merger_rate_density_madau_dickinson2014</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute star formation rate following Madau &amp; Dickinson (2014).</span>
+<span class="sd">        Compute merger rate density following Madau &amp; Dickinson (2014).</span>
 
-<span class="sd">        Returns the cosmic star formation rate density as given in</span>
-<span class="sd">        Equation 15 of Madau &amp; Dickinson (2014).</span>
+<span class="sd">        Returns the binary merger rate density using the Madau-Dickinson</span>
+<span class="sd">        functional form from Equation 15 of Madau &amp; Dickinson (2014).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -772,12 +781,12 @@
 <span class="sd">            If True, return the FunctionConditioning object.</span>
 <span class="sd">            default: False</span>
 <span class="sd">        **kwargs : ``dict``</span>
-<span class="sd">            Override default fitting parameters: R0=19 * 1e-9, a=0.015, b=2.7, c=2.9, d=5.6.</span>
+<span class="sd">            Override default fitting parameters: R0=89 * 1e-9, a=0.015, b=2.7, c=2.9, d=5.6.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        rate_density : ```numpy.ndarray`` or ``FunctionConditioning``</span>
-<span class="sd">            Star formation rate density (units: M_sun yr^-1 Mpc^-3).</span>
+<span class="sd">            Binary merger rate density (units: Mpc^-3 yr^-1).</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -788,17 +797,22 @@
 
         <span class="kn">from</span> <span class="nn">.prior_functions</span> <span class="kn">import</span> <span class="n">merger_rate_density_madau_dickinson2014_function</span>
 
-        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
+            <span class="n">function_type</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_madau_dickinson2014&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cosmology&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;event_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span>
-        <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_madau_dickinson2014&quot;</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
-            <span class="s2">&quot;merger_rate_density&quot;</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]</span>
         <span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
+        <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]</span>
+        <span class="p">][</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">]</span>
         <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_merger_rate_density_model</span><span class="p">[</span>
-            <span class="s2">&quot;merger_rate_density_madau_dickinson2014&quot;</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;function_type&quot;</span><span class="p">]</span>
         <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
@@ -809,23 +823,24 @@
             <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">],</span>
         <span class="p">)</span>
 
-        <span class="n">Rzs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">zs</span><span class="p">:</span> <span class="n">merger_rate_density_madau_dickinson2014_function</span><span class="p">(</span>
-            <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
-            <span class="n">R0</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;R0&quot;</span><span class="p">],</span>
-            <span class="n">a</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span>
-            <span class="n">b</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">],</span>
-            <span class="n">c</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">],</span>
-            <span class="n">d</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">],</span>
-        <span class="p">)</span>
+        <span class="k">def</span> <span class="nf">Rzs</span><span class="p">(</span><span class="n">zs</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">merger_rate_density_madau_dickinson2014_function</span><span class="p">(</span>
+                <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
+                <span class="n">R0</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;R0&quot;</span><span class="p">],</span>
+                <span class="n">a</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span>
+                <span class="n">b</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">],</span>
+                <span class="n">c</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">],</span>
+                <span class="n">d</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
 
         <span class="n">Rzs_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
             <span class="n">function</span><span class="o">=</span><span class="n">Rzs</span><span class="p">,</span>
             <span class="n">x_array</span><span class="o">=</span><span class="n">zs_array</span><span class="p">,</span>
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
-            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span>
+            <span class="n">sub_directory</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;function_type&quot;</span><span class="p">],</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]][</span>
                 <span class="s2">&quot;create_new&quot;</span>
             <span class="p">],</span>
             <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -833,13 +848,14 @@
             <span class="n">create_pdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">create_rvs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="n">cdf_size</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">],</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">Rzs_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">Rzs_object</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_madau_dickinson_belczynski_ng">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_madau_dickinson_belczynski_ng">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_madau_dickinson_belczynski_ng">[docs]</a>
     <span class="k">def</span> <span class="nf">merger_rate_density_madau_dickinson_belczynski_ng</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
@@ -865,30 +881,35 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        rate_density : ```numpy.ndarray`` or ``FunctionConditioning``</span>
-<span class="sd">            Star formation rate density (units: M_sun yr^-1 Mpc^-3).</span>
+<span class="sd">            BBH merger rate density (units: Mpc^-3 yr^-1).</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; from ler.gw_source_population import CBCSourceRedshiftDistribution</span>
 <span class="sd">        &gt;&gt;&gt; cbc = CBCSourceRedshiftDistribution(merger_rate_density=&quot;merger_rate_density_madau_dickinson_belczynski_ng&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; sfr = cbc.merger_rate_density(zs=2.0)</span>
+<span class="sd">        &gt;&gt;&gt; rate = cbc.merger_rate_density(zs=2.0)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="kn">from</span> <span class="nn">.prior_functions</span> <span class="kn">import</span> <span class="p">(</span>
             <span class="n">merger_rate_density_madau_dickinson_belczynski_ng_function</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
+            <span class="n">function_type</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_madau_dickinson_belczynski_ng&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cosmology&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;event_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span>
-        <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_madau_dickinson_belczynski_ng&quot;</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
-            <span class="s2">&quot;merger_rate_density&quot;</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]</span>
         <span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
+        <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]</span>
+        <span class="p">][</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">]</span>
         <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_merger_rate_density_model</span><span class="p">[</span>
-            <span class="s2">&quot;merger_rate_density_madau_dickinson_belczynski_ng&quot;</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;function_type&quot;</span><span class="p">]</span>
         <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
@@ -912,9 +933,9 @@
             <span class="n">x_array</span><span class="o">=</span><span class="n">zs_array</span><span class="p">,</span>
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
-            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span>
+            <span class="n">sub_directory</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;function_type&quot;</span><span class="p">],</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]][</span>
                 <span class="s2">&quot;create_new&quot;</span>
             <span class="p">],</span>
             <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -922,13 +943,14 @@
             <span class="n">create_pdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">create_rvs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="n">cdf_size</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">],</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">Rzs_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">Rzs_object</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_bbh_popIII_ken2022">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_popIII_ken2022">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_popIII_ken2022">[docs]</a>
     <span class="k">def</span> <span class="nf">merger_rate_density_bbh_popIII_ken2022</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute PopIII BBH merger rate density (Ng et al. 2022).</span>
@@ -964,17 +986,22 @@
 
         <span class="kn">from</span> <span class="nn">.prior_functions</span> <span class="kn">import</span> <span class="n">merger_rate_density_bbh_popIII_ken2022_function</span>
 
-        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
+            <span class="n">function_type</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_bbh_popIII_ken2022&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cosmology&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;event_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span>
-        <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_bbh_popIII_ken2022&quot;</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
-            <span class="s2">&quot;merger_rate_density&quot;</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]</span>
         <span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
+        <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]</span>
+        <span class="p">][</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">]</span>
         <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_merger_rate_density_model</span><span class="p">[</span>
-            <span class="s2">&quot;merger_rate_density_bbh_popIII_ken2022&quot;</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;function_type&quot;</span><span class="p">]</span>
         <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
@@ -984,22 +1011,23 @@
             <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_max&quot;</span><span class="p">],</span>
             <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">],</span>
         <span class="p">)</span>
-        <span class="n">Rzs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">zs</span><span class="p">:</span> <span class="n">merger_rate_density_bbh_popIII_ken2022_function</span><span class="p">(</span>
-            <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
-            <span class="n">R0</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;R0&quot;</span><span class="p">],</span>
-            <span class="n">aIII</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;aIII&quot;</span><span class="p">],</span>
-            <span class="n">bIII</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;bIII&quot;</span><span class="p">],</span>
-            <span class="n">zIII</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;zIII&quot;</span><span class="p">],</span>
-        <span class="p">)</span>
+        <span class="k">def</span> <span class="nf">Rzs</span><span class="p">(</span><span class="n">zs</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">merger_rate_density_bbh_popIII_ken2022_function</span><span class="p">(</span>
+                <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
+                <span class="n">R0</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;R0&quot;</span><span class="p">],</span>
+                <span class="n">aIII</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;aIII&quot;</span><span class="p">],</span>
+                <span class="n">bIII</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;bIII&quot;</span><span class="p">],</span>
+                <span class="n">zIII</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;zIII&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
 
         <span class="n">Rzs_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
             <span class="n">function</span><span class="o">=</span><span class="n">Rzs</span><span class="p">,</span>
             <span class="n">x_array</span><span class="o">=</span><span class="n">zs_array</span><span class="p">,</span>
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
-            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span>
+            <span class="n">sub_directory</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;function_type&quot;</span><span class="p">],</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]][</span>
                 <span class="s2">&quot;create_new&quot;</span>
             <span class="p">],</span>
             <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1007,13 +1035,14 @@
             <span class="n">create_pdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">create_rvs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="n">cdf_size</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">],</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">Rzs_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">Rzs_object</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_bbh_primordial_ken2022">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_primordial_ken2022">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_bbh_primordial_ken2022">[docs]</a>
     <span class="k">def</span> <span class="nf">merger_rate_density_bbh_primordial_ken2022</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
@@ -1051,17 +1080,23 @@
 
         <span class="kn">from</span> <span class="nn">.prior_functions</span> <span class="kn">import</span> <span class="n">merger_rate_density_bbh_primordial_ken2022_function</span>
 
-        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">identifier_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
+            <span class="n">function_type</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_bbh_primordial_ken2022&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cosmology&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;event_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_bbh_primordial_ken2022&quot;</span>
         <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
-            <span class="s2">&quot;merger_rate_density&quot;</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]</span>
         <span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
+        <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]</span>
+        <span class="p">][</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">]</span>
         <span class="n">param_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_merger_rate_density_model</span><span class="p">[</span>
-            <span class="s2">&quot;merger_rate_density_bbh_primordial_ken2022&quot;</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;function_type&quot;</span><span class="p">]</span>
         <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">identifier_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
@@ -1071,18 +1106,19 @@
             <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_max&quot;</span><span class="p">],</span>
             <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">],</span>
         <span class="p">)</span>
-        <span class="n">Rzs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">zs</span><span class="p">:</span> <span class="n">merger_rate_density_bbh_primordial_ken2022_function</span><span class="p">(</span>
-            <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span> <span class="n">R0</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;R0&quot;</span><span class="p">],</span> <span class="n">t0</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;t0&quot;</span><span class="p">]</span>
-        <span class="p">)</span>
+        <span class="k">def</span> <span class="nf">Rzs</span><span class="p">(</span><span class="n">zs</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">merger_rate_density_bbh_primordial_ken2022_function</span><span class="p">(</span>
+                <span class="n">zs</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span> <span class="n">R0</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;R0&quot;</span><span class="p">],</span> <span class="n">t0</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;t0&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
 
         <span class="n">Rzs_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
             <span class="n">function</span><span class="o">=</span><span class="n">Rzs</span><span class="p">,</span>
             <span class="n">x_array</span><span class="o">=</span><span class="n">zs_array</span><span class="p">,</span>
             <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-            <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
-            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span>
+            <span class="n">sub_directory</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;function_type&quot;</span><span class="p">],</span>
+            <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]][</span>
                 <span class="s2">&quot;create_new&quot;</span>
             <span class="p">],</span>
             <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1090,6 +1126,7 @@
             <span class="n">create_pdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">create_rvs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;function&quot;</span><span class="p">,</span>
+            <span class="n">cdf_size</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">],</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">Rzs_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">Rzs_object</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span></div>
@@ -1137,13 +1174,18 @@
 
         <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;using user provided custom merger rate density function&quot;</span><span class="p">)</span>
-            <span class="n">identifier_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">identifier_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
+                <span class="n">function_type</span><span class="o">=</span><span class="s2">&quot;custom_function&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span>
             <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span>
-            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;merger_rate_density_custom&quot;</span>
             <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
-                <span class="s2">&quot;merger_rate_density&quot;</span>
+                <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]</span>
             <span class="p">][</span><span class="s2">&quot;resolution&quot;</span><span class="p">]</span>
+            <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span>
+                <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]</span>
+            <span class="p">][</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">]</span>
             <span class="n">zs_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
                 <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_min&quot;</span><span class="p">],</span>
                 <span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;z_max&quot;</span><span class="p">],</span>
@@ -1155,9 +1197,9 @@
                 <span class="n">x_array</span><span class="o">=</span><span class="n">zs_array</span><span class="p">,</span>
                 <span class="n">identifier_dict</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">,</span>
                 <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-                <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
-                <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
-                <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">][</span>
+                <span class="n">sub_directory</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">],</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;function_type&quot;</span><span class="p">],</span>
+                <span class="n">create_new</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_interpolator</span><span class="p">[</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;param_name&quot;</span><span class="p">]][</span>
                     <span class="s2">&quot;create_new&quot;</span>
                 <span class="p">],</span>
                 <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1165,11 +1207,12 @@
                 <span class="n">create_pdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="n">create_rvs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;function&quot;</span><span class="p">,</span>
+                <span class="n">cdf_size</span><span class="o">=</span><span class="n">identifier_dict</span><span class="p">[</span><span class="s2">&quot;cdf_size&quot;</span><span class="p">],</span>
             <span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;merger_rate_density must be a function, FunctionConditioning object, or a string from the available &#39;available_merger_rate_density_model&#39;&quot;</span>
+                <span class="s2">&quot;merger_rate_density must be a function, FunctionConditioning object, or a string from the available merger rate density models&quot;</span>
             <span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -1191,6 +1234,8 @@
     <span class="nd">@npool</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">npool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_npool</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">set_num_threads</span>
+        <span class="n">set_num_threads</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="CBCSourceRedshiftDistribution.z_min">
@@ -1306,7 +1351,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        create_new_interpolator : ``dict``</span>
-<span class="sd">            Dictionary with that controls the creation of new interpolators.</span>
+<span class="sd">            Dictionary that controls the creation of new interpolators.</span>
 <span class="sd">            Default: {&#39;merger_rate_density&#39;: {&#39;create_new&#39;: False, &#39;resolution&#39;: 100}, &#39;luminosity_distance&#39;: {&#39;create_new&#39;: False, &#39;resolution&#39;: 100}, &#39;differential_comoving_volume&#39;: {&#39;create_new&#39;: False, &#39;resolution&#39;: 100}}</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_new_interpolator</span></div>
@@ -1379,27 +1424,58 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_differential_comoving_volume</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-<div class="viewcode-block" id="CBCSourceRedshiftDistribution.source_redshift">
-<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.source_redshift">[docs]</a>
-    <span class="k">def</span> <span class="nf">source_redshift</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CBCSourceRedshiftDistribution.merger_rate_density_based_source_redshift">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution.merger_rate_density_based_source_redshift">[docs]</a>
+    <span class="k">def</span> <span class="nf">merger_rate_density_based_source_redshift</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Class object (of FunctionConditioning) for the source redshift sampler, with rvs/sampler as callback, which samples source redshifts from p(z) ∝ R(z)/(1+z) dVc/dz , where p(z) is the redshift probability distribution, R(z) is the merger rate density, and dVc/dz is the differential comoving volume. \n</span>
-<span class="sd">        The class object contains the following attribute methods: \n</span>
-<span class="sd">        - `rvs`: returns random samples from the source redshift distribution. \n</span>
-<span class="sd">        - `pdf`: returns the source redshift probability density function. \n</span>
-<span class="sd">        - `function`: returns the source redshift distribution function.</span>
+<span class="sd">        FunctionConditioning object for source-redshift sampling.</span>
+
+<span class="sd">        Samples source redshifts from the normalized detector-frame density</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            p(z) = \\frac{1}{\\mathcal{N}}</span>
+<span class="sd">            \\frac{R(z)}{1+z}\\frac{dV_c}{dz},</span>
+<span class="sd">            \\qquad</span>
+<span class="sd">            \\mathcal{N} = \\int_{z_{\\min}}^{z_{\\max}}</span>
+<span class="sd">            \\frac{R(z)}{1+z}\\frac{dV_c}{dz}\\,dz.</span>
+
+<span class="sd">        The class object contains the following methods: \n</span>
+<span class="sd">        - `rvs(size)`: returns random samples from the source redshift distribution. \n</span>
+<span class="sd">        - `pdf(z)`: returns the source redshift probability density function. \n</span>
+<span class="sd">        - `function(z)`: returns the source redshift distribution function.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        source_redshift : ``numpy.ndarray``</span>
-<span class="sd">            Array of source redshifts (detector frame)</span>
+<span class="sd">        merger_rate_density_based_source_redshift : ``FunctionConditioning``</span>
+<span class="sd">            FunctionConditioning object with redshift distribution methods</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_redshift</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merger_rate_density_based_source_redshift</span></div>
 
 
-    <span class="nd">@source_redshift</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">source_redshift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_source_redshift</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="nd">@merger_rate_density_based_source_redshift</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">merger_rate_density_based_source_redshift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">value</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        FunctionConditioning object for source-redshift sampling.</span>
+
+<span class="s2">        Samples source redshifts from the normalized detector-frame density</span>
+
+<span class="s2">        .. math::</span>
+
+<span class="s2">            p(z) = </span><span class="se">\\</span><span class="s2">frac</span><span class="si">{1}</span><span class="s2">{</span><span class="se">\\</span><span class="s2">mathcal</span><span class="si">{N}</span><span class="s2">}</span>
+<span class="s2">            </span><span class="se">\\</span><span class="s2">frac{R(z)}{1+z}</span><span class="se">\\</span><span class="s2">frac</span><span class="si">{dV_c}{dz}</span><span class="s2">.</span>
+
+<span class="s2">        The class object contains the following methods: </span><span class="se">\n</span>
+<span class="s2">        - `rvs(size)`: returns random samples from the source redshift distribution. </span><span class="se">\n</span>
+<span class="s2">        - `pdf(z)`: returns the source redshift probability density function. </span><span class="se">\n</span>
+<span class="s2">        - `function(z)`: returns the source redshift distribution function.</span>
+
+<span class="s2">        Returns</span>
+<span class="s2">        -------</span>
+<span class="s2">        merger_rate_density_based_source_redshift : ``FunctionConditioning``</span>
+<span class="s2">            FunctionConditioning object with redshift distribution methods</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_merger_rate_density_based_source_redshift</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="CBCSourceRedshiftDistribution.normalization_pdf_z">
@@ -1433,6 +1509,8 @@
 <span class="sd">            Dictionary with model names as keys and parameter dicts as values. \n</span>
 <span class="sd">            Available models: \n</span>
 <span class="sd">            - &#39;merger_rate_density_bbh_oguri2018&#39; \n</span>
+<span class="sd">            - &#39;merger_rate_density_madau_dickinson2014&#39; \n</span>
+<span class="sd">            - &#39;merger_rate_density_madau_dickinson_belczynski_ng&#39; \n</span>
 <span class="sd">            - &#39;sfr_with_time_delay&#39; \n</span>
 <span class="sd">            - &#39;merger_rate_density_bbh_popIII_ken2022&#39; \n</span>
 <span class="sd">            - &#39;merger_rate_density_bbh_primordial_ken2022&#39;</span>
@@ -1445,20 +1523,33 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_available_merger_rate_density_model</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_available_merger_rate_density_model</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">merger_rate_density_bbh_oguri2018</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">R0</span><span class="o">=</span><span class="mi">19</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">b3</span><span class="o">=</span><span class="mf">2.1</span><span class="p">,</span> <span class="n">b4</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span>
-            <span class="n">merger_rate_density_madau_dickinson2014</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-                <span class="n">R0</span><span class="o">=</span><span class="mi">19</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">2.7</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">2.9</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">5.6</span>
-            <span class="p">),</span>
             <span class="n">merger_rate_density_madau_dickinson_belczynski_ng</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
+                <span class="n">function_type</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_madau_dickinson_belczynski_ng&quot;</span><span class="p">,</span>
                 <span class="n">R0</span><span class="o">=</span><span class="mi">19</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">alpha_F</span><span class="o">=</span><span class="mf">2.57</span><span class="p">,</span> <span class="n">beta_F</span><span class="o">=</span><span class="mf">5.83</span><span class="p">,</span> <span class="n">c_F</span><span class="o">=</span><span class="mf">3.36</span>
             <span class="p">),</span>
+            <span class="n">merger_rate_density_bbh_oguri2018</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
+                <span class="n">function_type</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_bbh_oguri2018&quot;</span><span class="p">,</span>
+                <span class="n">R0</span><span class="o">=</span><span class="mi">19</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">b3</span><span class="o">=</span><span class="mf">2.1</span><span class="p">,</span> <span class="n">b4</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span>
+            <span class="n">merger_rate_density_madau_dickinson2014</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
+                <span class="n">function_type</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_madau_dickinson2014&quot;</span><span class="p">,</span>
+                <span class="n">R0</span><span class="o">=</span><span class="mi">89</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">2.7</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">2.9</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">5.6</span>
+            <span class="p">),</span>
             <span class="n">sfr_with_time_delay</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
+                <span class="n">function_type</span><span class="o">=</span><span class="s2">&quot;sfr_with_time_delay&quot;</span><span class="p">,</span>
                 <span class="n">R0</span><span class="o">=</span><span class="mi">19</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">2.6</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">3.2</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">6.2</span><span class="p">,</span> <span class="n">td_min</span><span class="o">=</span><span class="mf">10e-3</span><span class="p">,</span> <span class="n">td_max</span><span class="o">=</span><span class="mf">10.0</span>
             <span class="p">),</span>
             <span class="n">merger_rate_density_bbh_popIII_ken2022</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
+                <span class="n">function_type</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_bbh_popIII_ken2022&quot;</span><span class="p">,</span>
                 <span class="n">R0</span><span class="o">=</span><span class="mf">19.2</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">aIII</span><span class="o">=</span><span class="mf">0.66</span><span class="p">,</span> <span class="n">bIII</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">zIII</span><span class="o">=</span><span class="mf">11.6</span>
             <span class="p">),</span>
             <span class="n">merger_rate_density_bbh_primordial_ken2022</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;merger_rate_density&quot;</span><span class="p">,</span>
+                <span class="n">function_type</span><span class="o">=</span><span class="s2">&quot;merger_rate_density_bbh_primordial_ken2022&quot;</span><span class="p">,</span>
                 <span class="n">R0</span><span class="o">=</span><span class="mf">0.044</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="mf">13.786885302009708</span>
             <span class="p">),</span>
         <span class="p">)</span>

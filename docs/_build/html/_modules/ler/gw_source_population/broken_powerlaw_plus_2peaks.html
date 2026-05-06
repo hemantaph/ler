@@ -1,0 +1,931 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.gw_source_population.broken_powerlaw_plus_2peaks &mdash; ler 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css?v=551ad726" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=88a06014" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=8fa8b3e9"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../ler.html">ler</a></li>
+          <li class="breadcrumb-item"><a href="../gw_source_population.html">ler.gw_source_population</a></li>
+      <li class="breadcrumb-item active">ler.gw_source_population.broken_powerlaw_plus_2peaks</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ler.gw_source_population.broken_powerlaw_plus_2peaks</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Broken Power-Law with Two Gaussian Peaks Mass Distribution Model.</span>
+
+<span class="sd">This module implements a primary mass distribution model combining a broken</span>
+<span class="sd">power-law component with two Gaussian peaks, as detailed in the accompanying</span>
+<span class="sd">paper. The model is parameterized with 12 parameters for the primary mass and</span>
+<span class="sd">3 parameters for the mass ratio distribution.</span>
+
+<span class="sd">Key Features:</span>
+<span class="sd">- Broken power-law distribution with configurable break mass and power-law indices</span>
+<span class="sd">- Two Gaussian peaks for modeling specific mass populations</span>
+<span class="sd">- Smoothing taper function for physical support enforcement</span>
+<span class="sd">- Efficient numerical integration using log-space methods</span>
+<span class="sd">- Full support for both PDF evaluation and random sample generation</span>
+<span class="sd">- Mass ratio distribution with power-law form</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">    Basic workflow for sampling binary masses:</span>
+
+<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population.broken_powerlaw_plus_2peaks import broken_powerlaw_plus_2peaks_rvs</span>
+<span class="sd">    &gt;&gt;&gt; m1, m2 = broken_powerlaw_plus_2peaks_rvs(size=1000)</span>
+
+<span class="sd">Copyright (C) 2026 Author Name. Distributed under MIT License.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span>
+<span class="kn">from</span> <span class="nn">.prior_functions</span> <span class="kn">import</span> <span class="n">_smoothing_S</span><span class="p">,</span> <span class="n">powerlaw_with_smoothing</span><span class="p">,</span> <span class="n">truncated_normal_pdf</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">inverse_transform_sampler</span><span class="p">,</span> <span class="n">cumulative_trapezoid</span>
+
+<span class="c1"># GWTC-4 : # lam_0=0.361, lam_1=0.586, mpp_1=9.764, sigpp_1=0.649, mpp_2=32.763, sigpp_2=3.918, mlow_1=5.059, delta_m_1=4.321, break_mass=35.622, alpha_1=1.728, alpha_2=4.512, mmax=300.0, beta=1.171, mlow_2=3.551, delta_m_2=4.910, normalization_size=500</span>
+
+<span class="c1"># ---------------------------------</span>
+<span class="c1"># Primary Mass Distribution</span>
+<span class="c1"># ---------------------------------</span>
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_broken_powerlaw</span><span class="p">(</span>
+    <span class="n">m1</span><span class="p">,</span> <span class="n">break_mass</span><span class="o">=</span><span class="mf">35.622</span><span class="p">,</span> <span class="n">alpha_1</span><span class="o">=</span><span class="mf">1.728</span><span class="p">,</span> <span class="n">alpha_2</span><span class="o">=</span><span class="mf">4.512</span><span class="p">,</span> <span class="n">mlow_1</span><span class="o">=</span><span class="mf">5.059</span><span class="p">,</span> <span class="n">mmax</span><span class="o">=</span><span class="mf">300.0</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute unnormalized broken power-law mass distribution (equation B18).</span>
+
+<span class="sd">    Evaluates the unnormalized broken power-law following the form:</span>
+<span class="sd">    $(1/N)(m_1 / m_{break})^{-α_1}$ for $m_{low,1} ≤ m_1 &lt; m_{break}$</span>
+<span class="sd">    $(1/N)(m_1 / m_{break})^{-α_2}$ for $m_{break} ≤ m_1 &lt; m_{max}$</span>
+<span class="sd">    Support is enforced by returning 0 outside the valid interval.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    m1 : ``numpy.ndarray``</span>
+<span class="sd">        Primary masses (solar masses).</span>
+<span class="sd">    break_mass : ``float``</span>
+<span class="sd">        Mass at which the power-law index transitions.</span>
+<span class="sd">        default: 35.622</span>
+<span class="sd">    alpha_1 : ``float``</span>
+<span class="sd">        Power-law index below the break mass.</span>
+<span class="sd">        default: 1.728</span>
+<span class="sd">    alpha_2 : ``float``</span>
+<span class="sd">        Power-law index above the break mass.</span>
+<span class="sd">        default: 4.512</span>
+<span class="sd">    mlow_1 : ``float``</span>
+<span class="sd">        Minimum primary mass (solar masses).</span>
+<span class="sd">        default: 5.059</span>
+<span class="sd">    mmax : ``float``</span>
+<span class="sd">        Maximum primary mass (solar masses).</span>
+<span class="sd">        default: 300.0</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result : ``numpy.ndarray``</span>
+<span class="sd">        Unnormalized probability density at each mass value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">break_mass</span> <span class="o">*</span> <span class="p">(</span>
+        <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">mlow_1</span> <span class="o">/</span> <span class="n">break_mass</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha_1</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha_1</span><span class="p">))</span>
+        <span class="o">+</span> <span class="p">(((</span><span class="n">mmax</span> <span class="o">/</span> <span class="n">break_mass</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha_2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha_2</span><span class="p">))</span>
+    <span class="p">)</span>
+
+    <span class="n">low_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">m1</span> <span class="o">&gt;=</span> <span class="n">mlow_1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">m1</span> <span class="o">&lt;</span> <span class="n">break_mass</span><span class="p">)</span>
+    <span class="n">high_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">m1</span> <span class="o">&gt;=</span> <span class="n">break_mass</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">m1</span> <span class="o">&lt;</span> <span class="n">mmax</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="n">low_mask</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">m1</span><span class="p">[</span><span class="n">low_mask</span><span class="p">]</span> <span class="o">/</span> <span class="n">break_mass</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">alpha_1</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span>
+    <span class="n">result</span><span class="p">[</span><span class="n">high_mask</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">m1</span><span class="p">[</span><span class="n">high_mask</span><span class="p">]</span> <span class="o">/</span> <span class="n">break_mass</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">alpha_2</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="c1"># @njit</span>
+<span class="c1"># def left_truncated_normal_pdf(m1, mu, sigma, mlow):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Compute left-truncated normal probability density function (equation B20).</span>
+
+<span class="c1">#     Evaluates the left-truncated normal distribution $N_{lt}(m_1 | μ, σ, m_{low})$,</span>
+<span class="c1">#     which is a Gaussian distribution with support only above a minimum value.</span>
+
+<span class="c1">#     Parameters</span>
+<span class="c1">#     ----------</span>
+<span class="c1">#     m1 : ``numpy.ndarray``</span>
+<span class="c1">#         Primary masses (solar masses).</span>
+<span class="c1">#     mu : ``float``</span>
+<span class="c1">#         Mean of the Gaussian distribution.</span>
+<span class="c1">#     sigma : ``float``</span>
+<span class="c1">#         Standard deviation of the Gaussian distribution.</span>
+<span class="c1">#     mlow : ``float``</span>
+<span class="c1">#         Minimum mass (left truncation point).</span>
+
+<span class="c1">#     Returns</span>
+<span class="c1">#     -------</span>
+<span class="c1">#     pdf : ``numpy.ndarray``</span>
+<span class="c1">#         Probability density values, 0 for $m_1 &lt; m_{low}$.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     a = (mlow - mu) / sigma</span>
+<span class="c1">#     tail_norm = 0.5 * (1.0 - math.erf(a / math.sqrt(2.0)))</span>
+<span class="c1">#     z = (m1 - mu) / sigma</span>
+<span class="c1">#     pdf = np.exp(-0.5 * z * z) / (sigma * math.sqrt(2.0 * math.pi) * tail_norm)</span>
+<span class="c1">#     return np.where(m1 &gt;= mlow, pdf, 0.0)</span>
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_broken_powerlaw_plus_2peaks_unnormalized</span><span class="p">(</span>
+    <span class="n">m1</span><span class="p">,</span>
+    <span class="n">lam_0</span><span class="o">=</span><span class="mf">0.361</span><span class="p">,</span>
+    <span class="n">lam_1</span><span class="o">=</span><span class="mf">0.586</span><span class="p">,</span>
+    <span class="n">mpp_1</span><span class="o">=</span><span class="mf">9.764</span><span class="p">,</span>
+    <span class="n">sigpp_1</span><span class="o">=</span><span class="mf">0.649</span><span class="p">,</span>
+    <span class="n">mpp_2</span><span class="o">=</span><span class="mf">32.763</span><span class="p">,</span>
+    <span class="n">sigpp_2</span><span class="o">=</span><span class="mf">3.918</span><span class="p">,</span>
+    <span class="n">mlow_1</span><span class="o">=</span><span class="mf">5.059</span><span class="p">,</span>
+    <span class="n">delta_m_1</span><span class="o">=</span><span class="mf">4.321</span><span class="p">,</span>
+    <span class="n">break_mass</span><span class="o">=</span><span class="mf">35.622</span><span class="p">,</span>
+    <span class="n">alpha_1</span><span class="o">=</span><span class="mf">1.728</span><span class="p">,</span>
+    <span class="n">alpha_2</span><span class="o">=</span><span class="mf">4.512</span><span class="p">,</span>
+    <span class="n">mmax</span><span class="o">=</span><span class="mf">300.0</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute unnormalized mixture of broken power-law and two Gaussian peaks (equation B14).</span>
+
+<span class="sd">    Evaluates the unnormalized primary-mass distribution prior to normalization,</span>
+<span class="sd">    combining a broken power-law with two left-truncated Gaussian peaks. The mixture</span>
+<span class="sd">    is tapered at low masses for smooth support enforcement.</span>
+
+<span class="sd">    The mixture model is:</span>
+<span class="sd">    $π(m_1 | Λ) ∝ [λ_0 p_{BP}(m_1) + λ_1 N_{lt}(m_1|μ_1,σ_1,m_{low,1}) +$</span>
+<span class="sd">    $(1-λ_0-λ_1) N_{lt}(m_1|μ_2,σ_2,m_{low,1})] × S(m_1 | m_{low,1}, δm_1)$</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    m1 : ``numpy.ndarray``</span>
+<span class="sd">        Primary masses (solar masses).</span>
+<span class="sd">    lam_0, lam_1, mpp_1, sigpp_1, mpp_2, sigpp_2, mlow_1, delta_m_1, break_mass, alpha_1, alpha_2, mmax : ``float``</span>
+<span class="sd">        Distribution parameters.</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | param      | default | description                                               |</span>
+<span class="sd">        +============+=========+===========================================================+</span>
+<span class="sd">        | lam_0      | 0.361   | Fraction of broken power-law component (0 &lt;= lam_0 &lt;= 1)  |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | lam_1      | 0.586   | Fraction of first Gaussian peak (0 &lt;= lam_1 &lt;= 1)         |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mpp_1      | 9.764   | Mean of first Gaussian peak (solar masses)                |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | sigpp_1    | 0.649   | Standard deviation of first Gaussian peak (solar masses)  |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mpp_2      | 32.763  | Mean of second Gaussian peak (solar masses)               |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | sigpp_2    | 3.918   | Standard deviation of second Gaussian peak (solar masses) |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mlow_1     | 5.059   | Minimum primary mass (solar masses)                       |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | delta_m_1  | 4.321   | Taper width (solar masses)                                |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | break_mass | 35.622  | Power-law break mass (solar masses)                       |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | alpha_1    | 1.728   | Power-law index below break mass                          |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | alpha_2    | 4.512   | Power-law index above break mass                          |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mmax       | 300.0   | Maximum primary mass (solar masses)                       |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    unnormalized : ``numpy.ndarray``</span>
+<span class="sd">        Unnormalized probability density at each mass value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">bp_term</span> <span class="o">=</span> <span class="n">lam_0</span> <span class="o">*</span> <span class="n">_broken_powerlaw</span><span class="p">(</span>
+        <span class="n">m1</span><span class="p">,</span>
+        <span class="n">break_mass</span><span class="o">=</span><span class="n">break_mass</span><span class="p">,</span>
+        <span class="n">alpha_1</span><span class="o">=</span><span class="n">alpha_1</span><span class="p">,</span>
+        <span class="n">alpha_2</span><span class="o">=</span><span class="n">alpha_2</span><span class="p">,</span>
+        <span class="n">mlow_1</span><span class="o">=</span><span class="n">mlow_1</span><span class="p">,</span>
+        <span class="n">mmax</span><span class="o">=</span><span class="n">mmax</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">peak1_term</span> <span class="o">=</span> <span class="n">lam_1</span> <span class="o">*</span> <span class="n">truncated_normal_pdf</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">mpp_1</span><span class="p">,</span> <span class="n">sigpp_1</span><span class="p">,</span> <span class="n">mlow_1</span><span class="p">)</span>
+    <span class="n">peak2_term</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">lam_0</span> <span class="o">-</span> <span class="n">lam_1</span><span class="p">)</span> <span class="o">*</span> <span class="n">truncated_normal_pdf</span><span class="p">(</span>
+        <span class="n">m1</span><span class="p">,</span> <span class="n">mpp_2</span><span class="p">,</span> <span class="n">sigpp_2</span><span class="p">,</span> <span class="n">mlow_1</span>
+    <span class="p">)</span>
+
+    <span class="n">mixture</span> <span class="o">=</span> <span class="n">bp_term</span> <span class="o">+</span> <span class="n">peak1_term</span> <span class="o">+</span> <span class="n">peak2_term</span>
+
+    <span class="k">return</span> <span class="n">mixture</span> <span class="o">*</span> <span class="n">_smoothing_S</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">mlow_1</span><span class="p">,</span> <span class="n">delta_m_1</span><span class="p">)</span>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="broken_powerlaw_plus_2peaks_pdf">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/broken_powerlaw_plus_2peaks/index.html#ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_pdf">[docs]</a>
+<span class="k">def</span> <span class="nf">broken_powerlaw_plus_2peaks_pdf</span><span class="p">(</span>
+    <span class="n">m1</span><span class="p">,</span>
+    <span class="n">lam_0</span><span class="o">=</span><span class="mf">0.361</span><span class="p">,</span>
+    <span class="n">lam_1</span><span class="o">=</span><span class="mf">0.586</span><span class="p">,</span>
+    <span class="n">mpp_1</span><span class="o">=</span><span class="mf">9.764</span><span class="p">,</span>
+    <span class="n">sigpp_1</span><span class="o">=</span><span class="mf">0.649</span><span class="p">,</span>
+    <span class="n">mpp_2</span><span class="o">=</span><span class="mf">32.763</span><span class="p">,</span>
+    <span class="n">sigpp_2</span><span class="o">=</span><span class="mf">3.918</span><span class="p">,</span>
+    <span class="n">mlow_1</span><span class="o">=</span><span class="mf">5.059</span><span class="p">,</span>
+    <span class="n">delta_m_1</span><span class="o">=</span><span class="mf">4.321</span><span class="p">,</span>
+    <span class="n">break_mass</span><span class="o">=</span><span class="mf">35.622</span><span class="p">,</span>
+    <span class="n">alpha_1</span><span class="o">=</span><span class="mf">1.728</span><span class="p">,</span>
+    <span class="n">alpha_2</span><span class="o">=</span><span class="mf">4.512</span><span class="p">,</span>
+    <span class="n">mmax</span><span class="o">=</span><span class="mf">300.0</span><span class="p">,</span>
+    <span class="n">normalization_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluate fully normalized primary-mass probability density (equation B20).</span>
+
+<span class="sd">    Computes the normalized probability density $π(m_1 | Λ)$ by integrating</span>
+<span class="sd">    the unnormalized mixture in log-space for numerical stability and consistency.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    m1 : ``numpy.ndarray``</span>
+<span class="sd">        Primary masses (solar masses).</span>
+<span class="sd">    lam_0, lam_1, mpp_1, sigpp_1, mpp_2, sigpp_2, mlow_1, delta_m_1, break_mass, alpha_1, alpha_2, mmax : ``float``</span>
+<span class="sd">        Distribution parameters.</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | param      | default | description                                               |</span>
+<span class="sd">        +============+=========+===========================================================+</span>
+<span class="sd">        | lam_0      | 0.361   | Fraction of broken power-law component (0 &lt;= lam_0 &lt;= 1)  |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | lam_1      | 0.586   | Fraction of first Gaussian peak (0 &lt;= lam_1 &lt;= 1)         |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mpp_1      | 9.764   | Mean of first Gaussian peak (solar masses)                |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | sigpp_1    | 0.649   | Standard deviation of first Gaussian peak (solar masses)  |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mpp_2      | 32.763  | Mean of second Gaussian peak (solar masses)               |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | sigpp_2    | 3.918   | Standard deviation of second Gaussian peak (solar masses) |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mlow_1     | 5.059   | Minimum primary mass (solar masses)                       |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | delta_m_1  | 4.321   | Taper width (solar masses)                                |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | break_mass | 35.622  | Power-law break mass (solar masses)                       |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | alpha_1    | 1.728   | Power-law index below break mass                          |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | alpha_2    | 4.512   | Power-law index above break mass                          |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mmax       | 300.0   | Maximum primary mass (solar masses)                       |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">    normalization_size : ``int``</span>
+<span class="sd">        Number of grid points for numerical integration.</span>
+<span class="sd">        default: 500</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pdf : ``numpy.ndarray``</span>
+<span class="sd">        Normalized probability density at each mass value.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population.broken_powerlaw_plus_2peaks import broken_powerlaw_plus_2peaks_pdf</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; m1 = np.array([10.0, 20.0, 50.0])</span>
+<span class="sd">    &gt;&gt;&gt; pdf_values = broken_powerlaw_plus_2peaks_pdf(m1)</span>
+<span class="sd">    &gt;&gt;&gt; print(pdf_values)  # doctest: +SKIP</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># compute normalization constant for p(m1 | Λ) by integrating the unnormalized _broken_powerlaw_plus_2peaks_unnormalized over m1 from mlow_1 to mmax</span>
+
+    <span class="n">m1_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="n">mlow_1</span><span class="p">,</span> <span class="n">mmax</span><span class="p">,</span> <span class="n">normalization_size</span><span class="p">)</span>
+    <span class="n">pdf_unnormalized</span> <span class="o">=</span> <span class="n">_broken_powerlaw_plus_2peaks_unnormalized</span><span class="p">(</span><span class="n">m1_grid</span><span class="p">,</span> <span class="n">lam_0</span><span class="p">,</span> <span class="n">lam_1</span><span class="p">,</span> <span class="n">mpp_1</span><span class="p">,</span> <span class="n">sigpp_1</span><span class="p">,</span> <span class="n">mpp_2</span><span class="p">,</span> <span class="n">sigpp_2</span><span class="p">,</span> <span class="n">mlow_1</span><span class="p">,</span> <span class="n">delta_m_1</span><span class="p">,</span> <span class="n">break_mass</span><span class="p">,</span> <span class="n">alpha_1</span><span class="p">,</span> <span class="n">alpha_2</span><span class="p">,</span> <span class="n">mmax</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">m1_norm</span> <span class="o">=</span> <span class="n">cumulative_trapezoid</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">m1_grid</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">pdf_unnormalized</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_broken_powerlaw_plus_2peaks_unnormalized</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">lam_0</span><span class="p">,</span> <span class="n">lam_1</span><span class="p">,</span> <span class="n">mpp_1</span><span class="p">,</span> <span class="n">sigpp_1</span><span class="p">,</span> <span class="n">mpp_2</span><span class="p">,</span> <span class="n">sigpp_2</span><span class="p">,</span> <span class="n">mlow_1</span><span class="p">,</span> <span class="n">delta_m_1</span><span class="p">,</span> <span class="n">break_mass</span><span class="p">,</span> <span class="n">alpha_1</span><span class="p">,</span> <span class="n">alpha_2</span><span class="p">,</span> <span class="n">mmax</span><span class="p">)</span> <span class="o">/</span> <span class="n">m1_norm</span></div>
+
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="broken_powerlaw_plus_2peaks_function">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/broken_powerlaw_plus_2peaks/index.html#ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_function">[docs]</a>
+<span class="k">def</span> <span class="nf">broken_powerlaw_plus_2peaks_function</span><span class="p">(</span>
+    <span class="n">m1</span><span class="p">,</span>
+    <span class="n">lam_0</span><span class="o">=</span><span class="mf">0.361</span><span class="p">,</span>
+    <span class="n">lam_1</span><span class="o">=</span><span class="mf">0.586</span><span class="p">,</span>
+    <span class="n">mpp_1</span><span class="o">=</span><span class="mf">9.764</span><span class="p">,</span>
+    <span class="n">sigpp_1</span><span class="o">=</span><span class="mf">0.649</span><span class="p">,</span>
+    <span class="n">mpp_2</span><span class="o">=</span><span class="mf">32.763</span><span class="p">,</span>
+    <span class="n">sigpp_2</span><span class="o">=</span><span class="mf">3.918</span><span class="p">,</span>
+    <span class="n">mlow_1</span><span class="o">=</span><span class="mf">5.059</span><span class="p">,</span>
+    <span class="n">delta_m_1</span><span class="o">=</span><span class="mf">4.321</span><span class="p">,</span>
+    <span class="n">break_mass</span><span class="o">=</span><span class="mf">35.622</span><span class="p">,</span>
+    <span class="n">alpha_1</span><span class="o">=</span><span class="mf">1.728</span><span class="p">,</span>
+    <span class="n">alpha_2</span><span class="o">=</span><span class="mf">4.512</span><span class="p">,</span>
+    <span class="n">mmax</span><span class="o">=</span><span class="mf">300.0</span><span class="p">,</span>
+    <span class="n">normalization_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="n">R0</span><span class="o">=</span><span class="mf">16.158</span><span class="p">,</span> 
+    <span class="n">kappa</span><span class="o">=</span><span class="mf">3.166</span><span class="p">,</span> 
+    <span class="n">z_eval</span><span class="o">=</span><span class="mf">0.2</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute event rate as function of primary mass (equation B20).</span>
+
+<span class="sd">    Combines the normalized primary-mass PDF with a redshift-dependent rate,</span>
+<span class="sd">    modeling the merger rate evolution $R(z) = R_0 (1+z)^κ$.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    m1 : ``numpy.ndarray``</span>
+<span class="sd">        Primary masses (solar masses).</span>
+<span class="sd">    lam_0, lam_1, mpp_1, sigpp_1, mpp_2, sigpp_2, mlow_1, delta_m_1, break_mass, alpha_1, alpha_2, mmax : ``float``</span>
+<span class="sd">        Distribution parameters.</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | param      | default | description                                               |</span>
+<span class="sd">        +============+=========+===========================================================+</span>
+<span class="sd">        | lam_0      | 0.361   | Fraction of broken power-law component (0 &lt;= lam_0 &lt;= 1)  |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | lam_1      | 0.586   | Fraction of first Gaussian peak (0 &lt;= lam_1 &lt;= 1)         |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mpp_1      | 9.764   | Mean of first Gaussian peak (solar masses)                |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | sigpp_1    | 0.649   | Standard deviation of first Gaussian peak (solar masses)  |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mpp_2      | 32.763  | Mean of second Gaussian peak (solar masses)               |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | sigpp_2    | 3.918   | Standard deviation of second Gaussian peak (solar masses) |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mlow_1     | 5.059   | Minimum primary mass (solar masses)                       |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | delta_m_1  | 4.321   | Taper width (solar masses)                                |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | break_mass | 35.622  | Power-law break mass (solar masses)                       |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | alpha_1    | 1.728   | Power-law index below break mass                          |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | alpha_2    | 4.512   | Power-law index above break mass                          |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mmax       | 300.0   | Maximum primary mass (solar masses)                       |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">    normalization_size : ``int``</span>
+<span class="sd">        Number of grid points for numerical integration.</span>
+<span class="sd">        default: 500</span>
+<span class="sd">    R0 : ``float``</span>
+<span class="sd">        Local merger rate (Gpc$^{-3}$ yr$^{-1}$).</span>
+<span class="sd">        default: 16.158</span>
+<span class="sd">    kappa : ``float``</span>
+<span class="sd">        Power-law index for redshift evolution.</span>
+<span class="sd">        default: 3.166</span>
+<span class="sd">    z_eval : ``float``</span>
+<span class="sd">        Redshift at which to evaluate the rate.</span>
+<span class="sd">        default: 0.2</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    rate : ``numpy.ndarray``</span>
+<span class="sd">        Differential merger rate $dR/dm_1$ at each mass value.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population.broken_powerlaw_plus_2peaks import broken_powerlaw_plus_2peaks_function</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; m1 = np.array([10.0, 20.0, 50.0])</span>
+<span class="sd">    &gt;&gt;&gt; rate_values = broken_powerlaw_plus_2peaks_function(m1)</span>
+<span class="sd">    &gt;&gt;&gt; print(rate_values)  # doctest: +SKIP</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># get pdf value</span>
+    <span class="n">pdf_m1</span> <span class="o">=</span> <span class="n">broken_powerlaw_plus_2peaks_pdf</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">lam_0</span><span class="p">,</span> <span class="n">lam_1</span><span class="p">,</span> <span class="n">mpp_1</span><span class="p">,</span> <span class="n">sigpp_1</span><span class="p">,</span> <span class="n">mpp_2</span><span class="p">,</span> <span class="n">sigpp_2</span><span class="p">,</span> <span class="n">mlow_1</span><span class="p">,</span> <span class="n">delta_m_1</span><span class="p">,</span> <span class="n">break_mass</span><span class="p">,</span> <span class="n">alpha_1</span><span class="p">,</span> <span class="n">alpha_2</span><span class="p">,</span> <span class="n">mmax</span><span class="p">,</span> <span class="n">normalization_size</span><span class="p">)</span>
+
+    <span class="c1"># rate</span>
+    <span class="n">R_z</span> <span class="o">=</span> <span class="n">R0</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">z_eval</span><span class="p">)</span> <span class="o">**</span> <span class="n">kappa</span>
+
+    <span class="k">return</span> <span class="n">R_z</span> <span class="o">*</span> <span class="n">pdf_m1</span></div>
+
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="broken_powerlaw_plus_2peaks_cdf">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/broken_powerlaw_plus_2peaks/index.html#ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_cdf">[docs]</a>
+<span class="k">def</span> <span class="nf">broken_powerlaw_plus_2peaks_cdf</span><span class="p">(</span>
+    <span class="n">size</span><span class="p">,</span>
+    <span class="n">lam_0</span><span class="o">=</span><span class="mf">0.361</span><span class="p">,</span>
+    <span class="n">lam_1</span><span class="o">=</span><span class="mf">0.586</span><span class="p">,</span>
+    <span class="n">mpp_1</span><span class="o">=</span><span class="mf">9.764</span><span class="p">,</span>
+    <span class="n">sigpp_1</span><span class="o">=</span><span class="mf">0.649</span><span class="p">,</span>
+    <span class="n">mpp_2</span><span class="o">=</span><span class="mf">32.763</span><span class="p">,</span>
+    <span class="n">sigpp_2</span><span class="o">=</span><span class="mf">3.918</span><span class="p">,</span>
+    <span class="n">mlow_1</span><span class="o">=</span><span class="mf">5.059</span><span class="p">,</span>
+    <span class="n">delta_m_1</span><span class="o">=</span><span class="mf">4.321</span><span class="p">,</span>
+    <span class="n">break_mass</span><span class="o">=</span><span class="mf">35.622</span><span class="p">,</span>
+    <span class="n">alpha_1</span><span class="o">=</span><span class="mf">1.728</span><span class="p">,</span>
+    <span class="n">alpha_2</span><span class="o">=</span><span class="mf">4.512</span><span class="p">,</span>
+    <span class="n">mmax</span><span class="o">=</span><span class="mf">300.0</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute cumulative distribution function (CDF) for primary masses.</span>
+
+<span class="sd">    Evaluates the CDF using log-space numerical integration for consistency</span>
+<span class="sd">    with the PDF normalization, enabling inverse transform sampling.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    size : ``int``</span>
+<span class="sd">        Number of grid points for CDF computation.</span>
+<span class="sd">    lam_0, lam_1, mpp_1, sigpp_1, mpp_2, sigpp_2, mlow_1, delta_m_1, break_mass, alpha_1, alpha_2, mmax : ``float``</span>
+<span class="sd">        Distribution parameters.</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | param      | default | description                                               |</span>
+<span class="sd">        +============+=========+===========================================================+</span>
+<span class="sd">        | lam_0      | 0.361   | Fraction of broken power-law component (0 &lt;= lam_0 &lt;= 1)  |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | lam_1      | 0.586   | Fraction of first Gaussian peak (0 &lt;= lam_1 &lt;= 1)         |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mpp_1      | 9.764   | Mean of first Gaussian peak (solar masses)                |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | sigpp_1    | 0.649   | Standard deviation of first Gaussian peak (solar masses)  |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mpp_2      | 32.763  | Mean of second Gaussian peak (solar masses)               |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | sigpp_2    | 3.918   | Standard deviation of second Gaussian peak (solar masses) |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mlow_1     | 5.059   | Minimum primary mass (solar masses)                       |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | delta_m_1  | 4.321   | Taper width (solar masses)                                |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | break_mass | 35.622  | Power-law break mass (solar masses)                       |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | alpha_1    | 1.728   | Power-law index below break mass                          |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | alpha_2    | 4.512   | Power-law index above break mass                          |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mmax       | 300.0   | Maximum primary mass (solar masses)                       |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cdf_values : ``numpy.ndarray``</span>
+<span class="sd">        Normalized CDF values at each grid point.</span>
+<span class="sd">    m_grid : ``numpy.ndarray``</span>
+<span class="sd">        Mass grid points (solar masses).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population.broken_powerlaw_plus_2peaks import broken_powerlaw_plus_2peaks_cdf</span>
+<span class="sd">    &gt;&gt;&gt; cdf_values, m_grid = broken_powerlaw_plus_2peaks_cdf(size=100)</span>
+<span class="sd">    &gt;&gt;&gt; print(cdf_values[-1])  # CDF should approach 1</span>
+<span class="sd">    1.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">m_try</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="n">mlow_1</span><span class="p">,</span> <span class="n">mmax</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">pdf_unnormalized</span> <span class="o">=</span> <span class="n">_broken_powerlaw_plus_2peaks_unnormalized</span><span class="p">(</span><span class="n">m_try</span><span class="p">,</span> <span class="n">lam_0</span><span class="p">,</span> <span class="n">lam_1</span><span class="p">,</span> <span class="n">mpp_1</span><span class="p">,</span> <span class="n">sigpp_1</span><span class="p">,</span> <span class="n">mpp_2</span><span class="p">,</span> <span class="n">sigpp_2</span><span class="p">,</span> <span class="n">mlow_1</span><span class="p">,</span> <span class="n">delta_m_1</span><span class="p">,</span> <span class="n">break_mass</span><span class="p">,</span> <span class="n">alpha_1</span><span class="p">,</span> <span class="n">alpha_2</span><span class="p">,</span> <span class="n">mmax</span><span class="p">)</span>
+
+    <span class="n">cdf_values</span><span class="p">,</span> <span class="n">m_try</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cumulative_trapezoid</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">m_try</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">pdf_unnormalized</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mf">0.0</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cdf_values</span><span class="p">,</span> <span class="n">m_try</span></div>
+
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="broken_powerlaw_plus_2peaks_rvs">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/broken_powerlaw_plus_2peaks/index.html#ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_rvs">[docs]</a>
+<span class="k">def</span> <span class="nf">broken_powerlaw_plus_2peaks_rvs</span><span class="p">(</span>
+    <span class="n">size</span><span class="p">,</span>
+    <span class="n">lam_0</span><span class="o">=</span><span class="mf">0.361</span><span class="p">,</span>
+    <span class="n">lam_1</span><span class="o">=</span><span class="mf">0.586</span><span class="p">,</span>
+    <span class="n">mpp_1</span><span class="o">=</span><span class="mf">9.764</span><span class="p">,</span>
+    <span class="n">sigpp_1</span><span class="o">=</span><span class="mf">0.649</span><span class="p">,</span>
+    <span class="n">mpp_2</span><span class="o">=</span><span class="mf">32.763</span><span class="p">,</span>
+    <span class="n">sigpp_2</span><span class="o">=</span><span class="mf">3.918</span><span class="p">,</span>
+    <span class="n">mlow_1</span><span class="o">=</span><span class="mf">5.059</span><span class="p">,</span>
+    <span class="n">delta_m_1</span><span class="o">=</span><span class="mf">4.321</span><span class="p">,</span>
+    <span class="n">break_mass</span><span class="o">=</span><span class="mf">35.622</span><span class="p">,</span>
+    <span class="n">alpha_1</span><span class="o">=</span><span class="mf">1.728</span><span class="p">,</span>
+    <span class="n">alpha_2</span><span class="o">=</span><span class="mf">4.512</span><span class="p">,</span>
+    <span class="n">mmax</span><span class="o">=</span><span class="mf">300.0</span><span class="p">,</span>
+    <span class="n">normalization_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate random samples from the primary-mass distribution.</span>
+
+<span class="sd">    Draws random samples using inverse transform sampling applied to the CDF,</span>
+<span class="sd">    which is computed using numerically stable log-space integration.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    size : ``int``</span>
+<span class="sd">        Number of samples to generate.</span>
+<span class="sd">    lam_0, lam_1, mpp_1, sigpp_1, mpp_2, sigpp_2, mlow_1, delta_m_1, break_mass, alpha_1, alpha_2, mmax : ``float``</span>
+<span class="sd">        Distribution parameters.</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | param      | default | description                                               |</span>
+<span class="sd">        +============+=========+===========================================================+</span>
+<span class="sd">        | lam_0      | 0.361   | Fraction of broken power-law component (0 &lt;= lam_0 &lt;= 1)  |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | lam_1      | 0.586   | Fraction of first Gaussian peak (0 &lt;= lam_1 &lt;= 1)         |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mpp_1      | 9.764   | Mean of first Gaussian peak (solar masses)                |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | sigpp_1    | 0.649   | Standard deviation of first Gaussian peak (solar masses)  |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mpp_2      | 32.763  | Mean of second Gaussian peak (solar masses)               |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | sigpp_2    | 3.918   | Standard deviation of second Gaussian peak (solar masses) |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mlow_1     | 5.059   | Minimum primary mass (solar masses)                       |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | delta_m_1  | 4.321   | Taper width (solar masses)                                |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | break_mass | 35.622  | Power-law break mass (solar masses)                       |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | alpha_1    | 1.728   | Power-law index below break mass                          |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | alpha_2    | 4.512   | Power-law index above break mass                          |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">        | mmax       | 300.0   | Maximum primary mass (solar masses)                       |</span>
+<span class="sd">        +------------+---------+-----------------------------------------------------------+</span>
+<span class="sd">    normalization_size : ``int``</span>
+<span class="sd">        Number of grid points for CDF computation.</span>
+<span class="sd">        default: 500</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    samples : ``numpy.ndarray``</span>
+<span class="sd">        Primary masses (solar masses) randomly sampled from the distribution.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population.broken_powerlaw_plus_2peaks import broken_powerlaw_plus_2peaks_rvs</span>
+<span class="sd">    &gt;&gt;&gt; m1_samples = broken_powerlaw_plus_2peaks_rvs(size=1000)</span>
+<span class="sd">    &gt;&gt;&gt; print(m1_samples.shape)</span>
+<span class="sd">    (1000,)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">cdf_values</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">broken_powerlaw_plus_2peaks_cdf</span><span class="p">(</span><span class="n">normalization_size</span><span class="p">,</span> <span class="n">lam_0</span><span class="p">,</span> <span class="n">lam_1</span><span class="p">,</span> <span class="n">mpp_1</span><span class="p">,</span> <span class="n">sigpp_1</span><span class="p">,</span> <span class="n">mpp_2</span><span class="p">,</span> <span class="n">sigpp_2</span><span class="p">,</span> <span class="n">mlow_1</span><span class="p">,</span> <span class="n">delta_m_1</span><span class="p">,</span> <span class="n">break_mass</span><span class="p">,</span> <span class="n">alpha_1</span><span class="p">,</span> <span class="n">alpha_2</span><span class="p">,</span> <span class="n">mmax</span><span class="p">)</span>
+
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">inverse_transform_sampler</span><span class="p">(</span>
+        <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
+        <span class="n">cdf</span><span class="o">=</span><span class="n">cdf_values</span><span class="p">,</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">samples</span></div>
+
+
+<span class="c1"># ---------------------------------</span>
+<span class="c1"># Mass Ratio Distribution</span>
+<span class="c1"># ---------------------------------</span>
+<span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="mass_ratio_powerlaw_with_smoothing_scalar">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/broken_powerlaw_plus_2peaks/index.html#ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_scalar">[docs]</a>
+<span class="k">def</span> <span class="nf">mass_ratio_powerlaw_with_smoothing_scalar</span><span class="p">(</span>
+    <span class="n">q</span><span class="p">,</span> 
+    <span class="n">m1</span><span class="p">,</span> 
+    <span class="n">beta</span><span class="o">=</span><span class="mf">1.171</span><span class="p">,</span> 
+    <span class="n">mlow_2</span><span class="o">=</span><span class="mf">3.551</span><span class="p">,</span> 
+    <span class="n">delta_m_2</span><span class="o">=</span><span class="mf">4.910</span><span class="p">,</span> 
+    <span class="n">normalization_size</span><span class="o">=</span><span class="mi">500</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute normalized conditional mass ratio density for a scalar secondary mass.</span>
+
+<span class="sd">    Evaluates the normalized PDF $p(q | m_1, Λ)$ for a single primary mass value,</span>
+<span class="sd">    integrating the unnormalized density to determine the normalization constant.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    q : ``float``</span>
+<span class="sd">        Mass ratio ($m_2 / m_1$), bounded 0 &lt; q ≤ 1.</span>
+<span class="sd">    m1 : ``float``</span>
+<span class="sd">        Primary mass (solar masses).</span>
+<span class="sd">    beta : ``float``</span>
+<span class="sd">        Power-law index for mass ratio distribution.</span>
+<span class="sd">        default: 1.171</span>
+<span class="sd">    mlow_2 : ``float``</span>
+<span class="sd">        Minimum secondary mass (solar masses).</span>
+<span class="sd">        default: 3.551</span>
+<span class="sd">    delta_m_2 : ``float``</span>
+<span class="sd">        Taper width for secondary mass (solar masses).</span>
+<span class="sd">        default: 4.910</span>
+<span class="sd">    normalization_size : ``int``</span>
+<span class="sd">        Number of grid points for numerical integration.</span>
+<span class="sd">        default: 500</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pdf_value : ``float``</span>
+<span class="sd">        Normalized probability density at the given (q, m1) pair.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># compute normalization constant for p(q | m1, Λ) by integrating over q from q_min to 1</span>
+    <span class="n">q_min</span> <span class="o">=</span> <span class="n">mlow_2</span> <span class="o">/</span> <span class="n">m1</span>
+    <span class="n">q_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">q_min</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">normalization_size</span><span class="p">)</span>
+    <span class="n">q_pdf_unnormalized</span> <span class="o">=</span> <span class="n">powerlaw_with_smoothing</span><span class="p">(</span>
+        <span class="n">q_grid</span><span class="p">,</span> <span class="n">q_grid</span> <span class="o">*</span> <span class="n">m1</span><span class="p">,</span> <span class="n">mlow_2</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">delta_m_2</span>
+    <span class="p">)</span>
+
+    <span class="n">pdf</span> <span class="o">=</span> <span class="p">(</span><span class="n">q</span><span class="o">**</span><span class="n">beta</span><span class="p">)</span> <span class="o">*</span> <span class="n">_smoothing_S</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">m1</span> <span class="o">*</span> <span class="n">q</span><span class="p">]),</span> <span class="n">mlow_2</span><span class="p">,</span> <span class="n">delta_m_2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">norm</span> <span class="o">=</span> <span class="n">cumulative_trapezoid</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">q_grid</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">q_pdf_unnormalized</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mf">0.0</span>
+    <span class="p">)</span>  <span class="c1"># total integral for normalization</span>
+
+    <span class="k">return</span> <span class="n">pdf</span> <span class="o">/</span> <span class="n">norm</span></div>
+
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="mass_ratio_powerlaw_with_smoothing_pdf">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/broken_powerlaw_plus_2peaks/index.html#ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_pdf">[docs]</a>
+<span class="k">def</span> <span class="nf">mass_ratio_powerlaw_with_smoothing_pdf</span><span class="p">(</span>
+    <span class="n">q</span><span class="p">,</span> 
+    <span class="n">m1</span><span class="p">,</span> 
+    <span class="n">beta</span><span class="o">=</span><span class="mf">1.171</span><span class="p">,</span> 
+    <span class="n">mlow_2</span><span class="o">=</span><span class="mf">3.551</span><span class="p">,</span> 
+    <span class="n">delta_m_2</span><span class="o">=</span><span class="mf">4.910</span><span class="p">,</span> 
+    <span class="n">normalization_size</span><span class="o">=</span><span class="mi">500</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluate fully normalized conditional mass ratio density (equation B22).</span>
+
+<span class="sd">    Computes the normalized conditional PDF $p(q | m_1, Λ)$ for mass ratio distributions.</span>
+<span class="sd">    Supports both scalar and array inputs through element-wise evaluation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    q : ``numpy.ndarray``</span>
+<span class="sd">        Mass ratios ($m_2 / m_1$), bounded 0 &lt; q ≤ 1. Can be scalar or array.</span>
+<span class="sd">    m1 : ``numpy.ndarray``</span>
+<span class="sd">        Primary masses (solar masses). Must have same shape as q.</span>
+<span class="sd">    beta : ``float``</span>
+<span class="sd">        Power-law index for mass ratio distribution.</span>
+<span class="sd">        default: 1.171</span>
+<span class="sd">    mlow_2 : ``float``</span>
+<span class="sd">        Minimum secondary mass (solar masses).</span>
+<span class="sd">        default: 3.551</span>
+<span class="sd">    delta_m_2 : ``float``</span>
+<span class="sd">        Taper width for secondary mass (solar masses).</span>
+<span class="sd">        default: 4.910</span>
+<span class="sd">    normalization_size : ``int``</span>
+<span class="sd">        Number of grid points for numerical integration.</span>
+<span class="sd">        default: 500</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pdf : ``numpy.ndarray`` or ``float``</span>
+<span class="sd">        Normalized probability density at each (q, m1) pair. Returns scalar if input is scalar.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population.broken_powerlaw_plus_2peaks import mass_ratio_powerlaw_with_smoothing_pdf</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; q = np.array([0.5, 0.7, 0.9])</span>
+<span class="sd">    &gt;&gt;&gt; m1 = np.array([20.0, 30.0, 40.0])</span>
+<span class="sd">    &gt;&gt;&gt; pdf_values = mass_ratio_powerlaw_with_smoothing_pdf(q, m1)</span>
+<span class="sd">    &gt;&gt;&gt; print(pdf_values)  # doctest: +SKIP</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mass_ratio_powerlaw_with_smoothing_scalar</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">m1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">beta</span><span class="p">,</span> <span class="n">mlow_2</span><span class="p">,</span> <span class="n">delta_m_2</span><span class="p">,</span> <span class="n">normalization_size</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="mass_ratio_powerlaw_with_smoothing_cdf">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/broken_powerlaw_plus_2peaks/index.html#ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_cdf">[docs]</a>
+<span class="k">def</span> <span class="nf">mass_ratio_powerlaw_with_smoothing_cdf</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.171</span><span class="p">,</span> <span class="n">mlow_2</span><span class="o">=</span><span class="mf">3.551</span><span class="p">,</span> <span class="n">delta_m_2</span><span class="o">=</span><span class="mf">4.910</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute cumulative distribution function for mass ratio distribution.</span>
+
+<span class="sd">    Evaluates the CDF $P(q ≤ q_0 | m_1, Λ)$ using spline-based numerical integration,</span>
+<span class="sd">    enabling efficient inverse transform sampling for a single primary mass value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    size : ``int``</span>
+<span class="sd">        Number of grid points for CDF computation.</span>
+<span class="sd">    m1 : ``float``</span>
+<span class="sd">        Primary mass (solar masses).</span>
+<span class="sd">    beta : ``float``</span>
+<span class="sd">        Power-law index for mass ratio distribution.</span>
+<span class="sd">        default: 1.171</span>
+<span class="sd">    mlow_2 : ``float``</span>
+<span class="sd">        Minimum secondary mass (solar masses).</span>
+<span class="sd">        default: 3.551</span>
+<span class="sd">    delta_m_2 : ``float``</span>
+<span class="sd">        Taper width for secondary mass (solar masses).</span>
+<span class="sd">        default: 4.910</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cdf_values : ``numpy.ndarray``</span>
+<span class="sd">        Normalized CDF values at each grid point.</span>
+<span class="sd">    q_grid : ``numpy.ndarray``</span>
+<span class="sd">        Mass ratio grid points (0 &lt; q ≤ 1).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population.broken_powerlaw_plus_2peaks import mass_ratio_powerlaw_with_smoothing_cdf</span>
+<span class="sd">    &gt;&gt;&gt; cdf_values, q_grid = mass_ratio_powerlaw_with_smoothing_cdf(size=100, m1=30.0, beta=1.171, mlow_2=3.551, delta_m_2=4.910)</span>
+<span class="sd">    &gt;&gt;&gt; print(cdf_values[-1])  # CDF should approach 1</span>
+<span class="sd">    1.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># beta, mlow_2, delta_m_2 = params</span>
+
+    <span class="n">q_try</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">mlow_2</span> <span class="o">/</span> <span class="n">m1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">pdf_unnormalized</span> <span class="o">=</span> <span class="n">powerlaw_with_smoothing</span><span class="p">(</span>
+        <span class="n">q_try</span><span class="p">,</span> <span class="n">q_try</span> <span class="o">*</span> <span class="n">m1</span><span class="p">,</span> <span class="n">mlow_2</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">delta_m_2</span>
+    <span class="p">)</span>
+
+    <span class="n">cdf_values</span><span class="p">,</span> <span class="n">q_try</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cumulative_trapezoid</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">q_try</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">pdf_unnormalized</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mf">0.0</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cdf_values</span><span class="p">,</span> <span class="n">q_try</span></div>
+
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="mass_ratio_powerlaw_with_smoothing_rvs">
+<a class="viewcode-back" href="../../../autoapi/ler/gw_source_population/broken_powerlaw_plus_2peaks/index.html#ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_rvs">[docs]</a>
+<span class="k">def</span> <span class="nf">mass_ratio_powerlaw_with_smoothing_rvs</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.171</span><span class="p">,</span> <span class="n">mlow_2</span><span class="o">=</span><span class="mf">3.551</span><span class="p">,</span> <span class="n">delta_m_2</span><span class="o">=</span><span class="mf">4.910</span><span class="p">,</span> <span class="n">normalization_size</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate random samples from the mass ratio distribution.</span>
+
+<span class="sd">    Draws random mass ratios using inverse transform sampling applied to the CDF</span>
+<span class="sd">    for each primary mass value independently. This function uses parallel processing</span>
+<span class="sd">    to accelerate sampling for large arrays.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    m1 : ``numpy.ndarray``</span>
+<span class="sd">        Primary masses (solar masses).</span>
+<span class="sd">    beta : ``float``</span>
+<span class="sd">        Power-law index for mass ratio distribution.</span>
+<span class="sd">        default: 1.171</span>
+<span class="sd">    mlow_2 : ``float``</span>
+<span class="sd">        Minimum secondary mass (solar masses).</span>
+<span class="sd">        default: 3.551</span>
+<span class="sd">    delta_m_2 : ``float``</span>
+<span class="sd">        Taper width for secondary mass (solar masses).</span>
+<span class="sd">        default: 4.910</span>
+<span class="sd">    normalization_size : ``int``</span>
+<span class="sd">        Number of grid points for CDF computation.</span>
+<span class="sd">        default: 500</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    q_samples : ``numpy.ndarray``</span>
+<span class="sd">        Mass ratio samples ($m_2 / m_1$), bounded 0 &lt; q ≤ 1.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from ler.gw_source_population.broken_powerlaw_plus_2peaks import mass_ratio_powerlaw_with_smoothing_rvs</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; m1 = np.array([20.0, 30.0, 40.0])</span>
+<span class="sd">    &gt;&gt;&gt; q_samples = mass_ratio_powerlaw_with_smoothing_rvs(m1)</span>
+<span class="sd">    &gt;&gt;&gt; print(q_samples.shape)</span>
+<span class="sd">    (3,)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">m1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+        <span class="c1"># Guard: if m1 is too small for a valid q range, return q=1</span>
+        <span class="n">q_min</span> <span class="o">=</span> <span class="n">mlow_2</span> <span class="o">/</span> <span class="n">m1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">q_min</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="n">samples</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="k">continue</span>
+
+        <span class="n">cdf_values</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">mass_ratio_powerlaw_with_smoothing_cdf</span><span class="p">(</span><span class="n">normalization_size</span><span class="p">,</span> <span class="n">m1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">beta</span><span class="p">,</span> <span class="n">mlow_2</span><span class="p">,</span> <span class="n">delta_m_2</span><span class="p">)</span>
+
+        <span class="n">samples</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">inverse_transform_sampler</span><span class="p">(</span>
+            <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">cdf</span><span class="o">=</span><span class="n">cdf_values</span><span class="p">,</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">samples</span></div>
+
+<span class="c1"># ---------------------------------</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

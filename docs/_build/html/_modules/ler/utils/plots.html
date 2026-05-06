@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.utils.plots &mdash; ler 0.5.9 documentation</title>
+  <title>ler.utils.plots &mdash; ler 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -19,7 +19,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=9a3cda14"></script>
+      <script src="../../../_static/documentation_options.js?v=8fa8b3e9"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -91,6 +91,8 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../ler.html">ler</a></li>
+          <li class="breadcrumb-item"><a href="../utils.html">ler.utils</a></li>
       <li class="breadcrumb-item active">ler.utils.plots</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -109,12 +111,11 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">gaussian_kde</span>
-<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
 
 <span class="kn">from</span> <span class="nn">ler.utils.utils</span> <span class="kn">import</span> <span class="n">get_param_from_json</span>
 
 <div class="viewcode-block" id="param_plot">
-<a class="viewcode-back" href="../../../autoapi/ler/utils/plots/index.html#ler.utils.param_plot">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/utils/plots/index.html#ler.utils.plots.param_plot">[docs]</a>
 <span class="k">def</span> <span class="nf">param_plot</span><span class="p">(</span>
         <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;zs&quot;</span><span class="p">,</span>
         <span class="n">param_dict</span><span class="o">=</span><span class="s2">&quot;./gw_params.json&quot;</span><span class="p">,</span>
@@ -137,21 +138,15 @@
 <span class="sd">    param_dict : `dict` or `str`</span>
 <span class="sd">        dictionary of GW source parameters or json file name.</span>
 <span class="sd">        default param_dict = &#39;./gw_params.json&#39;.</span>
-<span class="sd">    param_xlabel : `str`</span>
-<span class="sd">        x-axis label.</span>
-<span class="sd">        default param_xlabel = &#39;source redshift&#39;.</span>
-<span class="sd">    param_ylabel : `str`</span>
-<span class="sd">        y-axis label.</span>
-<span class="sd">        default param_ylabel = &#39;probability density&#39;.</span>
+<span class="sd">    plot_label : `str`</span>
+<span class="sd">        label used for the plotted histogram/KDE curve.</span>
+<span class="sd">        default plot_label = &#39;zs&#39;.</span>
 <span class="sd">    param_min : `float`</span>
 <span class="sd">        minimum value of the parameter.</span>
 <span class="sd">        default param_min = None.</span>
 <span class="sd">    param_max : `float`</span>
 <span class="sd">        maximum value of the parameter.</span>
 <span class="sd">        default param_max = None.</span>
-<span class="sd">    figsize : `tuple`</span>
-<span class="sd">        figure size.</span>
-<span class="sd">        default figsize = (4, 4).</span>
 <span class="sd">    kde : `bool`</span>
 <span class="sd">        if True, kde will be plotted.</span>
 <span class="sd">        default kde = True.</span>
@@ -184,7 +179,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># get gw params from json file if not provided</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param_dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;getting gw_params from json file </span><span class="si">{</span><span class="n">param_dict</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
         <span class="n">param_dict</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
 
@@ -210,7 +205,7 @@
 
 
 <div class="viewcode-block" id="relative_mu_dt_unlensed">
-<a class="viewcode-back" href="../../../autoapi/ler/utils/plots/index.html#ler.utils.relative_mu_dt_unlensed">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/utils/plots/index.html#ler.utils.plots.relative_mu_dt_unlensed">[docs]</a>
 <span class="k">def</span> <span class="nf">relative_mu_dt_unlensed</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">randomize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to generate relative magnification vs time delay difference for unlensed samples.</span>
@@ -270,14 +265,14 @@
 
 
 <div class="viewcode-block" id="relative_mu_dt_lensed">
-<a class="viewcode-back" href="../../../autoapi/ler/utils/plots/index.html#ler.utils.relative_mu_dt_lensed">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/utils/plots/index.html#ler.utils.plots.relative_mu_dt_lensed">[docs]</a>
 <span class="k">def</span> <span class="nf">relative_mu_dt_lensed</span><span class="p">(</span>
     <span class="n">lensed_param</span><span class="p">,</span> 
-    <span class="n">pdet_threshold</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> 
+    <span class="n">pdet_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
     <span class="n">classification_type</span><span class="o">=</span><span class="s1">&#39;morse_phase&#39;</span>
     <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Function to classify the lensed images wrt to the morse phase difference.</span>
+<span class="sd">    Classify lensed image pairs by Morse-phase difference or arrival time.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -318,6 +313,9 @@
 <span class="sd">                &quot;mu_34&quot;: np.array of relative magnification for image 3 and image 4,</span>
 <span class="sd">            }</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">pdet_threshold</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pdet_threshold</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
 
     <span class="c1"># get magnifications, time_delays and snr</span>
     <span class="n">mu</span> <span class="o">=</span> <span class="n">lensed_param</span><span class="p">[</span><span class="s2">&quot;magnifications&quot;</span><span class="p">]</span>
@@ -436,7 +434,7 @@
 
 
 <div class="viewcode-block" id="mu_vs_dt_plot">
-<a class="viewcode-back" href="../../../autoapi/ler/utils/plots/index.html#ler.utils.mu_vs_dt_plot">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/utils/plots/index.html#ler.utils.plots.mu_vs_dt_plot">[docs]</a>
 <span class="k">def</span> <span class="nf">mu_vs_dt_plot</span><span class="p">(</span>
     <span class="n">x_array</span><span class="p">,</span>
     <span class="n">y_array</span><span class="p">,</span>
@@ -444,8 +442,8 @@
     <span class="n">yscale</span> <span class="o">=</span> <span class="s1">&#39;log10&#39;</span><span class="p">,</span>
     <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
     <span class="n">extent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">contour_levels</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span>
-    <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">],</span>
+    <span class="n">contour_levels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to generate 2D KDE and plot the relative magnification vs time delay difference for lensed samples.</span>
@@ -494,8 +492,8 @@
 <span class="sd">        &gt;&gt;&gt; mu_vs_dt_plot(ans[&#39;dt_rel0&#39;], ans[&#39;mu_rel0&#39;], colors=&#39;g&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; mu_vs_dt_plot(dt, dmu, colors=&#39;r&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; # Create proxy artists for legend</span>
-<span class="sd">        &gt;&gt;&gt; proxy1 = plt.Line2D([0], [0], linestyle=&#39;-&#39;, color=&#39;b&#39;, label=r&#39;Lensed ($\Delta \phi=90$)&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; proxy2 = plt.Line2D([0], [0], linestyle=&#39;-&#39;, color=&#39;g&#39;, label=r&#39;Lensed ($\Delta \phi=0$)&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; proxy1 = plt.Line2D([0], [0], linestyle=&#39;-&#39;, color=&#39;b&#39;, label=r&#39;Lensed ($\\Delta \\phi=90$)&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; proxy2 = plt.Line2D([0], [0], linestyle=&#39;-&#39;, color=&#39;g&#39;, label=r&#39;Lensed ($\\Delta \\phi=0$)&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; proxy3 = plt.Line2D([0], [0], linestyle=&#39;-&#39;, color=&#39;r&#39;, label=r&#39;Unlensed&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; plt.legend(handles=[proxy1, proxy2, proxy3], loc=&#39;upper left&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; plt.xlim(-5, 2.5)</span>
@@ -503,6 +501,11 @@
 <span class="sd">        &gt;&gt;&gt; plt.grid(alpha=0.4)</span>
 <span class="sd">        &gt;&gt;&gt; plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">contour_levels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">contour_levels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">95</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">colors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">]</span>
 
     <span class="n">x_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">x_array</span><span class="p">)</span>
     <span class="n">x_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">x_array</span><span class="p">)</span>
@@ -533,21 +536,32 @@
         <span class="n">y_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y_min</span><span class="p">)</span>
         <span class="n">y_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y_max</span><span class="p">)</span>
 
-    <span class="c1"># Perform a kernel density estimation (KDE)</span>
+    <span class="c1"># Perform a kernel density estimation (KDE) - reuse kde object</span>
     <span class="n">xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">x_array</span><span class="p">,</span> <span class="n">y_array</span><span class="p">])</span>
-    <span class="n">kde</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">xy</span><span class="p">)(</span><span class="n">xy</span><span class="p">)</span>
+    <span class="n">kde</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">xy</span><span class="p">)</span>
+    
+    <span class="c1"># Evaluate KDE on data points for percentile calculation</span>
+    <span class="n">kde_values</span> <span class="o">=</span> <span class="n">kde</span><span class="p">(</span><span class="n">xy</span><span class="p">)</span>
 
     <span class="c1"># Define the levels for contour as percentiles of the density</span>
-    <span class="n">levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">kde</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">95</span><span class="p">])</span>
+    <span class="n">levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">kde_values</span><span class="p">,</span> <span class="n">contour_levels</span><span class="p">)</span>
+    <span class="c1"># Ensure levels are strictly increasing (remove duplicates and sort)</span>
+    <span class="n">levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">levels</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">levels</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="c1"># If we have less than 2 unique levels, create some linearly spaced ones</span>
+        <span class="n">levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">kde_values</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">kde_values</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">contour_levels</span><span class="p">)))</span>
 
-    <span class="c1"># Create a grid for contour plot</span>
-    <span class="n">xgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-    <span class="n">ygrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+    <span class="c1"># Create a grid for contour plot (200x200 is sufficient for smooth contours)</span>
+    <span class="n">xgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+    <span class="n">ygrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
     <span class="n">X1</span><span class="p">,</span> <span class="n">Y1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">ygrid</span><span class="p">)</span>
-    <span class="n">Z1</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">xy</span><span class="p">)(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">X1</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">Y1</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">Z1</span> <span class="o">=</span> <span class="n">kde</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">X1</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">Y1</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">colors</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">contour_levels</span><span class="p">)</span>
+    <span class="c1"># Adjust colors to match the number of levels</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">levels</span><span class="p">):</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">levels</span><span class="p">)]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">levels</span><span class="p">)</span> <span class="k">else</span> <span class="n">colors</span> <span class="o">+</span> <span class="p">[</span><span class="n">colors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">levels</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">))</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">Y1</span><span class="p">,</span> <span class="n">Z1</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span></div>
 

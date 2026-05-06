@@ -1067,25 +1067,25 @@ def gaussian_plus_isotropic_joint_pdf(x1, x2, mu_t=0.426, sigma_t=1.222, zeta=0.
 @njit(fastmath=True)
 def powerlaw_pdf(x, alpha=-7.7, x_min=1.0, x_max=2.5):
     """
-        Compute normalized power-law distribution.
-        p(x) ∝ x^{-alpha}, x in [x_min, x_max]
+    Compute normalized power-law distribution.
 
-        Parameters
-        ----------
-        x : ``numpy.ndarray``
-            Input values.
-        alpha : ``float``
-            Power-law spectral index.
-        x_min : ``float``
-            Minimum value.
-        x_max : ``float``
-            Maximum value.
-            Maximum mass.
+    p(x) is proportional to ``x**(-alpha)`` for ``x`` in ``[x_min, x_max]``.
 
-        Returns
-        -------
-        pdf : ``numpy.ndarray``
-            Normalized power-law PDF.
+    Parameters
+    ----------
+    x : ``numpy.ndarray``
+        Input values.
+    alpha : ``float``
+        Power-law spectral index.
+    x_min : ``float``
+        Minimum value.
+    x_max : ``float``
+        Maximum value.
+
+    Returns
+    -------
+    pdf : ``numpy.ndarray``
+        Normalized power-law PDF.
     """
     normalization = (x_max ** (-alpha + 1)) / (-alpha + 1) - (x_min ** (-alpha + 1)) / (-alpha + 1)
     pdf = x ** (-alpha) / normalization

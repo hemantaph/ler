@@ -6,13 +6,13 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.lens_galaxy_population.lens_functions &mdash; ler 0.5.9 documentation</title>
+  <title>ler.lens_galaxy_population.lens_functions &mdash; ler 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=11132fbc" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=551ad726" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=88a06014" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
@@ -20,13 +20,15 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=9a3cda14"></script>
+      <script src="../../../../_static/documentation_options.js?v=8fa8b3e9"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../../../_static/copybutton.js?v=f281be69"></script>
       <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "processEnvironments": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore", "processHtmlClass": "tex2jax_process"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       <script src="../../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
       <script src="../../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../../../../_static/js/theme.js"></script>
@@ -137,8 +139,8 @@ EPL+Shear lens models.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_functions.phi_cut_SIE" title="ler.lens_galaxy_population.lens_functions.phi_cut_SIE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_cut_SIE</span></code></a>(q)</p></td>
 <td><p>Calculate cross-section scaling factor for SIE lens galaxy from SIS.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_functions.phi_q2_ellipticity" title="ler.lens_galaxy_population.lens_functions.phi_q2_ellipticity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_q2_ellipticity</span></code></a>(phi, q)</p></td>
-<td><p>Convert position angle and axis ratio to ellipticity components.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_functions.einstein_radius" title="ler.lens_galaxy_population.lens_functions.einstein_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">einstein_radius</span></code></a>(sigma, zl, zs[, cosmo])</p></td>
+<td><p>Compute the Einstein radius for an SIS/SIE lens galaxy.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_functions.cross_section" title="ler.lens_galaxy_population.lens_functions.cross_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_section</span></code></a>(theta_E, e1, e2, gamma, gamma1, gamma2)</p></td>
 <td><p>Compute the strong lensing cross-section for an EPL+Shear lens.</p></td>
@@ -150,7 +152,12 @@ EPL+Shear lens models.</p>
 <span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.lens_functions.</span></span><span class="sig-name descname"><span class="pre">phi_cut_SIE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_functions.html#phi_cut_SIE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_functions.phi_cut_SIE" title="Link to this definition"></a></dt>
 <dd><p>Calculate cross-section scaling factor for SIE lens galaxy from SIS.</p>
 <p>Computes the ratio of the SIE (Singular Isothermal Ellipsoid) cross-section
-to the SIS (Singular Isothermal Sphere) cross-section for a given axis ratio.</p>
+to the SIS (Singular Isothermal Sphere) cross-section for a given axis ratio.
+For the regular branch this is</p>
+<div class="math notranslate nohighlight">
+\[\phi_{\rm cut}(q) =
+\frac{2q\ln q}{q^2 - 1},\]</div>
+<p>normalized so that <code class="docutils literal notranslate"><span class="pre">phi_cut_SIE(q=1)</span> <span class="pre">=</span> <span class="pre">1</span></code>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -170,23 +177,29 @@ to the SIS (Singular Isothermal Sphere) cross-section for a given axis ratio.</p
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_functions.phi_q2_ellipticity">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.lens_functions.</span></span><span class="sig-name descname"><span class="pre">phi_q2_ellipticity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_functions.html#phi_q2_ellipticity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_functions.phi_q2_ellipticity" title="Link to this definition"></a></dt>
-<dd><p>Convert position angle and axis ratio to ellipticity components.</p>
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_functions.einstein_radius">
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.lens_functions.</span></span><span class="sig-name descname"><span class="pre">einstein_radius</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_functions.html#einstein_radius"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_functions.einstein_radius" title="Link to this definition"></a></dt>
+<dd><p>Compute the Einstein radius for an SIS/SIE lens galaxy.</p>
+<div class="math notranslate nohighlight">
+\[\theta_E = 4\pi \left(\frac{\sigma}{c}\right)^2
+\frac{D_{ls}}{D_s}.\]</div>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>phi</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Position angle of the major axis (radians).</p>
+<dt><strong>sigma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Lens velocity dispersion in km/s.</p>
 </dd>
-<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Axis ratio (0 &lt; q &lt;= 1).</p>
+<dt><strong>zl</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Lens redshift.</p>
+</dd>
+<dt><strong>zs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Source redshift.</p>
+</dd>
+<dt><strong>cosmo</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">astropy.cosmology</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Cosmology used for angular-diameter distances. If None, the package
+default LambdaCDM cosmology is used.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>e1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>First ellipticity component.</p>
-</dd>
-<dt><strong>e2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Second ellipticity component.</p>
+<dt><strong>theta_E</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">astropy.units.Quantity</span></code></span></dt><dd><p>Einstein radius in radians.</p>
 </dd>
 </dl>
 </dd>
@@ -198,7 +211,9 @@ to the SIS (Singular Isothermal Sphere) cross-section for a given axis ratio.</p
 <span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.lens_functions.</span></span><span class="sig-name descname"><span class="pre">cross_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta_E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_functions.html#cross_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_functions.cross_section" title="Link to this definition"></a></dt>
 <dd><p>Compute the strong lensing cross-section for an EPL+Shear lens.</p>
 <p>Uses lenstronomy to compute the caustic structure and returns the
-area enclosed by the double-image (outer) caustic.</p>
+area enclosed by the double-image (outer) caustic:</p>
+<div class="math notranslate nohighlight">
+\[\sigma_{\rm SL} = \int_{\mathcal{C}_{\rm double}} d^2\beta.\]</div>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>

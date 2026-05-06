@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LeR Advanced Sampling — Generating Detectable Events &mdash; ler 0.5.9 documentation</title>
+  <title>LeR Advanced Sampling — Generating Detectable Events &mdash; ler 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/scalefix.css?v=11132fbc" />
+      <link rel="stylesheet" type="text/css" href="../_static/scalefix.css?v=551ad726" />
       <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88a06014" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
@@ -21,7 +21,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=9a3cda14"></script>
+      <script src="../_static/documentation_options.js?v=8fa8b3e9"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -180,7 +180,7 @@
 </ul>
 <p>Outputs are saved to <code class="docutils literal notranslate"><span class="pre">./ler_data</span></code> by default.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import LeR</span>
@@ -188,7 +188,7 @@
 
 <span class="c1"># Initialize LeR with default settings</span>
 <span class="c1"># npool: number of parallel processes for sampling</span>
-<span class="c1"># use this gwsnr&#39;s input args if you want SNR values in the output, besides the boolean detection probability values. This will increase the output dictionary size and the runtime of the code.:</span>
+<span class="c1"># use this gwsnr&#39;s input args if you want SNR values in the output, besides the boolean detection probability values. This will increase the output dictionary size and the runtime of the code. For details, refer to https://gwsnr.hemantaph.com/examples/pdet_generation.html.:</span>
 <span class="c1"># pdet_kwargs=dict(snr_th=10.0, snr_th_net=10.0, pdet_type=&quot;boolean&quot;, distribution_type=&quot;noncentral_chi2&quot;, include_optimal_snr=True, include_observed_snr=True)</span>
 <span class="n">ler</span> <span class="o">=</span> <span class="n">LeR</span><span class="p">(</span><span class="n">npool</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 </pre></div>
@@ -199,6 +199,7 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
+Extracting interpolator data from package to the current working directory.
 
 Initializing LeR class...
 
@@ -214,20 +215,20 @@ angular_diameter_distance interpolator will be loaded from ./interpolator_json/a
 differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_0.json
 using ler available velocity dispersion function : velocity_dispersion_ewoud
 velocity_dispersion_ewoud interpolator will be loaded from ./interpolator_json/velocity_dispersion/velocity_dispersion_ewoud_0.json
-using ler available axis_ratio function : axis_ratio_rayleigh
-axis_ratio_rayleigh interpolator will be loaded from ./interpolator_json/axis_ratio/axis_ratio_rayleigh_1.json
-using ler available axis_rotation_angle function : axis_rotation_angle_uniform
-using ler available density_profile_slope function : density_profile_slope_normal
-using ler available external_shear function : external_shear_normal
-Cross section interpolation data points loaded from ./interpolator_json/cross_section_function/cross_section_function_0.json
-using ler available lens_redshift function : lens_redshift_strongly_lensed_numerical
+using ler available axis_ratio function : rayleigh
+rayleigh interpolator will be loaded from ./interpolator_json/axis_ratio/rayleigh_0.json
+using ler available axis_rotation_angle function : uniform
+using ler available density_profile_slope function : normal
+using ler available external_shear1 function : normal
+using ler available external_shear2 function : normal
+using ler available cross_section function : cross_section_epl_shear_njit
+using ler available lens_redshift_sl function : lens_redshift_strongly_lensed_numerical
 Numerically solving the lens redshift distribution...
-lens_redshift_strongly_lensed_numerical_epl_shear_galaxy interpolator will be loaded from ./interpolator_json/lens_redshift/lens_redshift_strongly_lensed_numerical_epl_shear_galaxy_1.json
-lens_redshift_intrinsic interpolator will be loaded from ./interpolator_json/lens_redshift_intrinsic/lens_redshift_intrinsic_1.json
-using ler available density_profile_slope_sl function : density_profile_slope_normal
-using ler available external_shear_sl function : external_shear_normal
+lens_redshift_strongly_lensed_numerical interpolator will be loaded from ./interpolator_json/lens_redshift_sl/lens_redshift_strongly_lensed_numerical_0.json
+using ler available lens_redshift function : lens_redshift_intrinsic_numerical
+lens_redshift_intrinsic_numerical interpolator will be loaded from ./interpolator_json/lens_redshift/lens_redshift_intrinsic_numerical_1.json
 using ler available optical depth function : optical_depth_numerical
-optical_depth_numerical interpolator will be loaded from ./interpolator_json/optical_depth/optical_depth_numerical_1.json
+optical_depth_numerical interpolator will be loaded from ./interpolator_json/optical_depth/optical_depth_numerical_0.json
 
 Initializing CBCSourceRedshiftDistribution class...
 
@@ -235,21 +236,34 @@ luminosity_distance interpolator will be loaded from ./interpolator_json/luminos
 differential_comoving_volume interpolator will be loaded from ./interpolator_json/differential_comoving_volume/differential_comoving_volume_0.json
 using ler available merger rate density model: merger_rate_density_madau_dickinson_belczynski_ng
 merger_rate_density_madau_dickinson_belczynski_ng interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_madau_dickinson_belczynski_ng_0.json
-merger_rate_density_detector_frame interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_detector_frame_1.json
-source_redshift interpolator will be loaded from ./interpolator_json/source_redshift/source_redshift_0.json
+merger_rate_density_madau_dickinson_belczynski_ng_detector_frame interpolator will be loaded from ./interpolator_json/merger_rate_density/merger_rate_density_madau_dickinson_belczynski_ng_detector_frame_1.json
+merger_rate_density_based_source_redshift interpolator will be loaded from ./interpolator_json/merger_rate_density_based_source_redshift/merger_rate_density_based_source_redshift_0.json
 
 Initializing CBCSourceParameterDistribution class...
 
-using ler available zs function : source_redshift
-using ler available source_frame_masses function : binary_masses_BBH_powerlaw_gaussian
-using ler available geocent_time function : sampler_uniform
-using ler available ra function : sampler_uniform
+using ler available zs function : merger_rate_density_based_source_redshift
+using ler available mass_1_source function : broken_powerlaw_plus_2peaks
+broken_powerlaw_plus_2peaks interpolator will be loaded from ./interpolator_json/mass_1_source/broken_powerlaw_plus_2peaks_0.json
+using ler available mass_ratio function : powerlaw_with_smoothing
+powerlaw_with_smoothing interpolator will be loaded from ./interpolator_json/mass_ratio/powerlaw_with_smoothing_0.json
+No mass_2_source prior provided. mass_2_source = mass_1_source * mass_ratio
+using ler available geocent_time function : uniform
+using ler available ra function : uniform
 using ler available dec function : sampler_cosine
-using ler available phase function : sampler_uniform
-using ler available psi function : sampler_uniform
+using ler available phase function : uniform
+using ler available psi function : uniform
 using ler available theta_jn function : sampler_sine
-using ler available a_1 function : sampler_uniform
-using ler available a_2 function : sampler_uniform
+using ler available a_1 function : uniform
+using ler available a_2 function : uniform
+No tilt_1 prior provided. tilt_1 prior will be set to None
+No tilt_2 prior provided. tilt_2 prior will be set to None
+No phi_12 prior provided. phi_12 prior will be set to None
+No phi_jl prior provided. phi_jl prior will be set to None
+Initializing GW parameter samplers...
+
+initializing epl shear njit solver
+using ler available zs_sl function : strongly_lensed_source_redshift
+strongly_lensed_source_redshift interpolator will be loaded from ./interpolator_json/zs_sl/strongly_lensed_source_redshift_0.json
 Faster, njitted and importance sampling based lens parameter sampler will be used.
 
 Initializing GWSNR class...
@@ -261,26 +275,26 @@ Interpolator will be loaded for V1 detector from ./interpolator_json/V1/partialS
 
 Chosen GWSNR initialization parameters:
 
-npool:  4
+npool:  6
 snr type:  interpolation_aligned_spins
 waveform approximant:  IMRPhenomD
 sampling frequency:  2048.0
 minimum frequency (fmin):  20.0
 reference frequency (f_ref):  20.0
 mtot=mass1+mass2
-min(mtot):  9.96
+min(mtot):  1.0
 max(mtot) (with the given fmin=20.0): 500.0
 detectors:  [&#39;L1&#39;, &#39;H1&#39;, &#39;V1&#39;]
 psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
        4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
        6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
-      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x17d2bac50&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x144c70130&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
        4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
        6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
-      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x17d25fba0&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x144c70c70&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
         9954.0389  ,  9976.993   , 10000.      ], shape=(3000,)), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,
        1.51304203e-43, 1.52010157e-43, 1.52719372e-43],
-      shape=(3000,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x17cf21580&gt;]]
+      shape=(3000,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x144c70f90&gt;]]
 
 
 #-------------------------------------
@@ -288,13 +302,13 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
 #-------------------------------------
 
     # LeR set up input arguments:
-    npool = 4,
+    npool = 6,
     z_min = 0.0,
     z_max = 10.0,
     event_type = &#39;BBH&#39;,
     lens_type = &#39;epl_shear_galaxy&#39;,
     cosmology = LambdaCDM(H0=70.0 km / (Mpc s), Om0=0.3, Ode0=0.7, Tcmb0=0.0 K, Neff=3.04, m_nu=None, Ob0=0.0),
-    pdet_finder = &lt;bound method GWSNR.pdet of &lt;gwsnr.core.gwsnr.GWSNR object at 0x17b778dc0&gt;&gt;,
+    pdet_finder = &lt;bound method GWSNR.pdet of &lt;gwsnr.core.gwsnr.GWSNR object at 0x1361da500&gt;&gt;,
     json_file_names = dict(
         ler_params = &#39;ler_params.json&#39;,
         unlensed_param = &#39;unlensed_param.json&#39;,
@@ -305,110 +319,133 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
     interpolator_directory = &#39;./interpolator_json&#39;,
     ler_directory = &#39;./ler_data&#39;,
     create_new_interpolator = dict(
-        merger_rate_density = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        redshift_distribution = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        luminosity_distance = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        differential_comoving_volume = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        source_frame_masses = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        geocent_time = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        ra = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        dec = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        phase = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        psi = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        theta_jn = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        a_1 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        a_2 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        tilt_1 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        tilt_2 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        phi_12 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        phi_jl = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        velocity_dispersion = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500, &#39;zl_resolution&#39;: 48},
-        axis_ratio = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500, &#39;sigma_resolution&#39;: 48},
-        lens_redshift = {&#39;create_new&#39;: False, &#39;resolution&#39;: 48, &#39;zl_resolution&#39;: 48},
-        lens_redshift_intrinsic = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        optical_depth = {&#39;create_new&#39;: False, &#39;resolution&#39;: 48},
+        velocity_dispersion = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;zl_resolution&#39;: 48, &#39;cdf_size&#39;: 400},
+        axis_ratio = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;sigma_resolution&#39;: 48, &#39;cdf_size&#39;: 400},
+        lens_redshift_sl = {&#39;create_new&#39;: False, &#39;resolution&#39;: 16, &#39;zl_resolution&#39;: 48, &#39;cdf_size&#39;: 400},
+        lens_redshift = {&#39;create_new&#39;: False, &#39;resolution&#39;: 16, &#39;zl_resolution&#39;: 48, &#39;cdf_size&#39;: 400},
+        optical_depth = {&#39;create_new&#39;: False, &#39;resolution&#39;: 16, &#39;cdf_size&#39;: 500},
         comoving_distance = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
         angular_diameter_distance = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
         angular_diameter_distance_z1z2 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
-        density_profile_slope = {&#39;create_new&#39;: False, &#39;resolution&#39;: 100},
-        lens_parameters_kde_sl = {&#39;create_new&#39;: False, &#39;resolution&#39;: 5000},
-        cross_section = {&#39;create_new&#39;: False, &#39;resolution&#39;: [25, 25, 45, 15, 15]},
+        differential_comoving_volume = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
+        zs_sl = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        cross_section = {&#39;create_new&#39;: False, &#39;resolution&#39;: [25, 25, 45, 15, 15], &#39;spacing_config&#39;: {&#39;e1&#39;: {&#39;mode&#39;: &#39;two_sided_mixed_grid&#39;, &#39;power_law_part&#39;: &#39;lower&#39;, &#39;spacing_trend&#39;: &#39;increasing&#39;, &#39;power&#39;: 2.5, &#39;value_transition_fraction&#39;: 0.7, &#39;num_transition_fraction&#39;: 0.9, &#39;auto_match_slope&#39;: True}, &#39;e2&#39;: {&#39;mode&#39;: &#39;two_sided_mixed_grid&#39;, &#39;power_law_part&#39;: &#39;lower&#39;, &#39;spacing_trend&#39;: &#39;increasing&#39;, &#39;power&#39;: 2.5, &#39;value_transition_fraction&#39;: 0.7, &#39;num_transition_fraction&#39;: 0.9, &#39;auto_match_slope&#39;: True}, &#39;gamma&#39;: {&#39;mode&#39;: &#39;two_sided_mixed_grid&#39;, &#39;power_law_part&#39;: &#39;lower&#39;, &#39;spacing_trend&#39;: &#39;increasing&#39;, &#39;power&#39;: 2.5, &#39;value_transition_fraction&#39;: 0.7, &#39;num_transition_fraction&#39;: 0.9, &#39;auto_match_slope&#39;: True}, &#39;gamma1&#39;: {&#39;mode&#39;: &#39;two_sided_mixed_grid&#39;, &#39;power_law_part&#39;: &#39;lower&#39;, &#39;spacing_trend&#39;: &#39;increasing&#39;, &#39;power&#39;: 2.5, &#39;value_transition_fraction&#39;: 0.7, &#39;num_transition_fraction&#39;: 0.9, &#39;auto_match_slope&#39;: True}, &#39;gamma2&#39;: {&#39;mode&#39;: &#39;two_sided_mixed_grid&#39;, &#39;power_law_part&#39;: &#39;lower&#39;, &#39;spacing_trend&#39;: &#39;increasing&#39;, &#39;power&#39;: 2.5, &#39;value_transition_fraction&#39;: 0.7, &#39;num_transition_fraction&#39;: 0.9, &#39;auto_match_slope&#39;: True}}},
+        merger_rate_density = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        redshift_distribution = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        luminosity_distance = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},
+        mass_1_source = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        mass_ratio = {&#39;create_new&#39;: False, &#39;resolution&#39;: 100, &#39;m1_resolution&#39;: 200, &#39;cdf_size&#39;: 200},
+        mass_2_source = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        geocent_time = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        ra = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        dec = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        phase = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        psi = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        theta_jn = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        a_1 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        a_2 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        tilt_1 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        tilt_2 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;tilt_1_resolution&#39;: 100, &#39;cdf_size&#39;: 200},
+        phi_12 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
+        phi_jl = {&#39;create_new&#39;: False, &#39;resolution&#39;: 200, &#39;cdf_size&#39;: 500},
     ),
 
     # LeR also takes other CBCSourceParameterDistribution class input arguments as kwargs, as follows:
-    source_priors = dict(
+    gw_functions = dict(
         merger_rate_density = &#39;merger_rate_density_madau_dickinson_belczynski_ng&#39;,
-        zs = &#39;source_redshift&#39;,
-        source_frame_masses = &#39;binary_masses_BBH_powerlaw_gaussian&#39;,
-        geocent_time = &#39;sampler_uniform&#39;,
-        ra = &#39;sampler_uniform&#39;,
-        dec = &#39;sampler_cosine&#39;,
-        phase = &#39;sampler_uniform&#39;,
-        psi = &#39;sampler_uniform&#39;,
-        theta_jn = &#39;sampler_sine&#39;,
-        a_1 = &#39;sampler_uniform&#39;,
-        a_2 = &#39;sampler_uniform&#39;,
+        param_sampler_type = &#39;gw_parameters_rvs&#39;,
     ),
-    source_priors_params = dict(
-        merger_rate_density = {&#39;R0&#39;: 1.9e-08, &#39;alpha_F&#39;: 2.57, &#39;beta_F&#39;: 5.83, &#39;c_F&#39;: 3.36},
+    gw_functions_params = dict(
+        merger_rate_density = {&#39;param_name&#39;: &#39;merger_rate_density&#39;, &#39;function_type&#39;: &#39;merger_rate_density_madau_dickinson_belczynski_ng&#39;, &#39;R0&#39;: 1.9e-08, &#39;alpha_F&#39;: 2.57, &#39;beta_F&#39;: 5.83, &#39;c_F&#39;: 3.36},
+        param_sampler_type = None,
+    ),
+    gw_priors = dict(
+        zs = &#39;merger_rate_density_based_source_redshift&#39;,
+        mass_1_source = &#39;broken_powerlaw_plus_2peaks&#39;,
+        mass_ratio = &#39;powerlaw_with_smoothing&#39;,
+        mass_2_source = None,
+        geocent_time = &#39;uniform&#39;,
+        ra = &#39;uniform&#39;,
+        dec = &#39;sampler_cosine&#39;,
+        phase = &#39;uniform&#39;,
+        psi = &#39;uniform&#39;,
+        theta_jn = &#39;sampler_sine&#39;,
+        a_1 = &#39;uniform&#39;,
+        a_2 = &#39;uniform&#39;,
+        tilt_1 = None,
+        tilt_2 = None,
+        phi_12 = None,
+        phi_jl = None,
+    ),
+    gw_priors_params = dict(
         zs = None,
-        source_frame_masses = {&#39;mminbh&#39;: 4.98, &#39;mmaxbh&#39;: 112.5, &#39;alpha&#39;: 3.78, &#39;mu_g&#39;: 32.27, &#39;sigma_g&#39;: 3.88, &#39;lambda_peak&#39;: 0.03, &#39;delta_m&#39;: 4.8, &#39;beta&#39;: 0.81},
-        geocent_time = {&#39;xmin&#39;: 1238166018, &#39;xmax&#39;: 1269702018},
-        ra = {&#39;xmin&#39;: 0.0, &#39;xmax&#39;: 6.283185307179586},
-        dec = None,
-        phase = {&#39;xmin&#39;: 0.0, &#39;xmax&#39;: 6.283185307179586},
-        psi = {&#39;xmin&#39;: 0.0, &#39;xmax&#39;: 3.141592653589793},
-        theta_jn = None,
-        a_1 = {&#39;xmin&#39;: -0.8, &#39;xmax&#39;: 0.8},
-        a_2 = {&#39;xmin&#39;: -0.8, &#39;xmax&#39;: 0.8},
+        mass_1_source = {&#39;param_name&#39;: &#39;mass_1_source&#39;, &#39;sampler_type&#39;: &#39;broken_powerlaw_plus_2peaks&#39;, &#39;lam_0&#39;: 0.361, &#39;lam_1&#39;: 0.586, &#39;mpp_1&#39;: 9.764, &#39;sigpp_1&#39;: 0.649, &#39;mpp_2&#39;: 32.763, &#39;sigpp_2&#39;: 3.918, &#39;mlow_1&#39;: 5.059, &#39;delta_m_1&#39;: 4.321, &#39;break_mass&#39;: 35.622, &#39;alpha_1&#39;: 1.728, &#39;alpha_2&#39;: 4.512, &#39;mmax&#39;: 300.0, &#39;normalization_size&#39;: 500},
+        mass_ratio = {&#39;param_name&#39;: &#39;mass_ratio&#39;, &#39;sampler_type&#39;: &#39;powerlaw_with_smoothing&#39;, &#39;q_min&#39;: 0.01, &#39;q_max&#39;: 1.0, &#39;mlow_2&#39;: 3.551, &#39;mmax&#39;: 300.0, &#39;beta&#39;: 1.171, &#39;delta_m&#39;: 4.91, &#39;mmin&#39;: 3.551},
+        mass_2_source = None,
+        geocent_time = {&#39;param_name&#39;: &#39;geocent_time&#39;, &#39;sampler_type&#39;: &#39;uniform&#39;, &#39;x_min&#39;: 1238166018, &#39;x_max&#39;: 1269702018},
+        ra = {&#39;param_name&#39;: &#39;ra&#39;, &#39;sampler_type&#39;: &#39;uniform&#39;, &#39;x_min&#39;: 0.0, &#39;x_max&#39;: 6.283185307179586},
+        dec = {&#39;param_name&#39;: &#39;dec&#39;, &#39;sampler_type&#39;: &#39;sampler_cosine&#39;, &#39;x_min&#39;: -1.5707963267948966, &#39;x_max&#39;: 1.5707963267948966},
+        phase = {&#39;param_name&#39;: &#39;phase&#39;, &#39;sampler_type&#39;: &#39;uniform&#39;, &#39;x_min&#39;: 0.0, &#39;x_max&#39;: 6.283185307179586},
+        psi = {&#39;param_name&#39;: &#39;psi&#39;, &#39;sampler_type&#39;: &#39;uniform&#39;, &#39;x_min&#39;: 0.0, &#39;x_max&#39;: 3.141592653589793},
+        theta_jn = {&#39;param_name&#39;: &#39;theta_jn&#39;, &#39;sampler_type&#39;: &#39;sampler_sine&#39;, &#39;x_min&#39;: 0.0, &#39;x_max&#39;: 3.141592653589793},
+        a_1 = {&#39;param_name&#39;: &#39;a_1&#39;, &#39;sampler_type&#39;: &#39;uniform&#39;, &#39;x_min&#39;: -1.0, &#39;x_max&#39;: 1.0},
+        a_2 = {&#39;param_name&#39;: &#39;a_2&#39;, &#39;sampler_type&#39;: &#39;uniform&#39;, &#39;x_min&#39;: -1.0, &#39;x_max&#39;: 1.0},
+        tilt_1 = None,
+        tilt_2 = None,
+        phi_12 = None,
+        phi_jl = None,
     ),
     spin_zero = False,
     spin_precession = False,
 
     # LeR also takes other LensGalaxyParameterDistribution class input arguments as kwargs, as follows:
     lens_functions = dict(
-        param_sampler_type = &#39;sample_all_routine_epl_shear_sl&#39;,
-        cross_section_based_sampler = &#39;importance_sampling_with_cross_section&#39;,
+        param_sampler_type = &#39;epl_shear_sl_parameters_rvs&#39;,
+        cross_section_based_sampler = &#39;importance_sampler_partial&#39;,
         optical_depth = &#39;optical_depth_numerical&#39;,
-        cross_section = &#39;cross_section_epl_shear_interpolation&#39;,
+        cross_section = &#39;cross_section_epl_shear_njit&#39;,
     ),
     lens_functions_params = dict(
         param_sampler_type = None,
-        cross_section_based_sampler = {&#39;n_prop&#39;: 200},
-        optical_depth = None,
-        cross_section = None,
+        cross_section_based_sampler = {&#39;n_prop&#39;: 50, &#39;threshold_factor&#39;: 0.0001, &#39;sigma_min&#39;: 100.0, &#39;sigma_max&#39;: 400.0, &#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0, &#39;phi_min&#39;: 0.0, &#39;phi_max&#39;: 6.283185307179586, &#39;gamma_min&#39;: 1.4, &#39;gamma_max&#39;: 2.7, &#39;shear_min&#39;: -0.22, &#39;shear_max&#39;: 0.2},
+        optical_depth = {&#39;param_name&#39;: &#39;optical_depth&#39;, &#39;function_type&#39;: &#39;optical_depth_numerical&#39;},
+        cross_section = {&#39;num_th&#39;: 500, &#39;maginf&#39;: -100.0},
     ),
-    lens_param_samplers = dict(
+    lens_priors = dict(
         zs_sl = &#39;strongly_lensed_source_redshift&#39;,
-        lens_redshift = &#39;lens_redshift_strongly_lensed_numerical&#39;,
+        lens_redshift_sl = &#39;lens_redshift_strongly_lensed_numerical&#39;,
+        lens_redshift = &#39;lens_redshift_intrinsic_numerical&#39;,
         velocity_dispersion = &#39;velocity_dispersion_ewoud&#39;,
-        axis_ratio = &#39;axis_ratio_rayleigh&#39;,
-        axis_rotation_angle = &#39;axis_rotation_angle_uniform&#39;,
-        external_shear = &#39;external_shear_normal&#39;,
-        density_profile_slope = &#39;density_profile_slope_normal&#39;,
-        external_shear_sl = &#39;external_shear_normal&#39;,
-        density_profile_slope_sl = &#39;density_profile_slope_normal&#39;,
+        axis_ratio = &#39;rayleigh&#39;,
+        axis_rotation_angle = &#39;uniform&#39;,
+        external_shear1 = &#39;normal&#39;,
+        external_shear2 = &#39;normal&#39;,
+        density_profile_slope = &#39;normal&#39;,
     ),
-    lens_param_samplers_params = dict(
-        zs_sl = None,
-        lens_redshift = {&#39;integration_size&#39;: 25000, &#39;use_multiprocessing&#39;: False},
-        velocity_dispersion = {&#39;sigma_min&#39;: 100.0, &#39;sigma_max&#39;: 400.0, &#39;alpha&#39;: 0.94, &#39;beta&#39;: 1.85, &#39;phistar&#39;: np.float64(0.02099), &#39;sigmastar&#39;: 113.78, &#39;name&#39;: &#39;velocity_dispersion_ewoud&#39;},
-        axis_ratio = {&#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0, &#39;name&#39;: &#39;axis_ratio_rayleigh&#39;},
-        axis_rotation_angle = {&#39;phi_min&#39;: 0.0, &#39;phi_max&#39;: 6.283185307179586, &#39;name&#39;: &#39;axis_rotation_angle_uniform&#39;},
-        external_shear = {&#39;mean&#39;: 0.0, &#39;std&#39;: 0.05, &#39;name&#39;: &#39;external_shear_normal&#39;},
-        density_profile_slope = {&#39;mean&#39;: 1.99, &#39;std&#39;: 0.149, &#39;name&#39;: &#39;density_profile_slope_normal&#39;},
-        external_shear_sl = {&#39;mean&#39;: 0.0, &#39;std&#39;: 0.05},
-        density_profile_slope_sl = {&#39;mean&#39;: 2.078, &#39;std&#39;: 0.16},
+    lens_priors_params = dict(
+        zs_sl = {&#39;tau_approximation&#39;: True},
+        lens_redshift_sl = {&#39;param_name&#39;: &#39;lens_redshift_sl&#39;, &#39;sampler_type&#39;: &#39;lens_redshift_strongly_lensed_numerical&#39;, &#39;lens_type&#39;: &#39;epl_shear_galaxy&#39;, &#39;integration_size&#39;: 50000, &#39;use_multiprocessing&#39;: False, &#39;cross_section_epl_shear_interpolation&#39;: False},
+        lens_redshift = None,
+        velocity_dispersion = {&#39;param_name&#39;: &#39;velocity_dispersion&#39;, &#39;sampler_type&#39;: &#39;velocity_dispersion_ewoud&#39;, &#39;sigma_min&#39;: 100.0, &#39;sigma_max&#39;: 400.0, &#39;alpha&#39;: 0.94, &#39;beta&#39;: 1.85, &#39;phistar&#39;: np.float64(0.02099), &#39;sigmastar&#39;: 113.78},
+        axis_ratio = {&#39;param_name&#39;: &#39;axis_ratio&#39;, &#39;sampler_type&#39;: &#39;rayleigh&#39;, &#39;q_min&#39;: 0.2, &#39;q_max&#39;: 1.0},
+        axis_rotation_angle = {&#39;param_name&#39;: &#39;axis_rotation_angle&#39;, &#39;sampler_type&#39;: &#39;uniform&#39;, &#39;x_min&#39;: 0.0, &#39;x_max&#39;: 6.283185307179586},
+        external_shear1 = {&#39;param_name&#39;: &#39;external_shear1&#39;, &#39;sampler_type&#39;: &#39;normal&#39;, &#39;mu&#39;: 0.0, &#39;sigma&#39;: 0.05},
+        external_shear2 = {&#39;param_name&#39;: &#39;external_shear2&#39;, &#39;sampler_type&#39;: &#39;normal&#39;, &#39;mu&#39;: 0.0, &#39;sigma&#39;: 0.05},
+        density_profile_slope = {&#39;param_name&#39;: &#39;density_profile_slope&#39;, &#39;sampler_type&#39;: &#39;normal&#39;, &#39;mu&#39;: 1.99, &#39;sigma&#39;: 0.149},
     ),
 
     # LeR also takes other ImageProperties class input arguments as kwargs, as follows:
     n_min_images = 2,
     n_max_images = 4,
-    time_window = 630720000,
+    time_window = 31536000.0,
+    include_effective_parameters = False,
     lens_model_list = [&#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;],
+    image_properties_function = image_properties_epl_shear_njit,
+    multiprocessing_verbose = True,
+    include_redundant_parameters = False,
 
     # LeR also takes other gwsnr.GWSNR input arguments as kwargs, as follows:
-    npool = 4,
+    npool = 6,
     snr_method = &#39;interpolation_aligned_spins&#39;,
     snr_type = &#39;optimal_snr&#39;,
     gwsnr_verbose = True,
@@ -421,7 +458,7 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
         include_optimal_snr = False,
         include_observed_snr = False,
     ),
-    mtot_min = 9.96,
+    mtot_min = 1.0,
     mtot_max = 500.0,
     ratio_min = 0.1,
     ratio_max = 1.0,
@@ -451,13 +488,13 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
     psds_list = [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
        4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
        6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
-      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x17d2bac50&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x144c70130&gt;], [array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
        4984.081  , 4995.378  ], shape=(2736,)), array([4.43925574e-41, 4.22777986e-41, 4.02102594e-41, ...,
        6.51153524e-46, 6.43165104e-46, 6.55252996e-46],
-      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x17d25fba0&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
+      shape=(2736,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x144c70c70&gt;], [array([   10.      ,    10.02306 ,    10.046173, ...,
         9954.0389  ,  9976.993   , 10000.      ], shape=(3000,)), array([1.22674387e-42, 1.20400299e-42, 1.18169466e-42, ...,
        1.51304203e-43, 1.52010157e-43, 1.52719372e-43],
-      shape=(3000,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x17cf21580&gt;]],
+      shape=(3000,)), &lt;scipy.interpolate._interpolate.interp1d object at 0x144c70f90&gt;]],
 </pre></div></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># To print all initialization input arguments, use:</span>
@@ -474,7 +511,7 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
 <h3>2.1 Unlensed Events<a class="headerlink" href="#2.1-Unlensed-Events" title="Link to this heading"></a></h3>
 <p>Key parameters: - <code class="docutils literal notranslate"><span class="pre">size</span></code>: Target number of detectable events - <code class="docutils literal notranslate"><span class="pre">batch_size</span></code>: Events sampled per batch - <code class="docutils literal notranslate"><span class="pre">stopping_criteria</span></code>: Convergence conditions - <code class="docutils literal notranslate"><span class="pre">pdet_threshold</span></code>: Detection probability threshold - <code class="docutils literal notranslate"><span class="pre">resume</span></code>: Resume from previous session</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample until we have at least 10,000 detectable unlensed events with converged rates</span>
@@ -497,6 +534,7 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Unlensed N-Event Sampling Results ===&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Detectable event rate: </span><span class="si">{</span><span class="n">detectable_rate_unlensed</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2"> events per year&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total detectable events collected: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">unlensed_param_detectable_n</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># expected time: 12.9s</span>
 </pre></div>
 </div>
 </div>
@@ -507,19 +545,167 @@ psds:  [[array([  10.21659,   10.23975,   10.26296, ..., 4972.81   ,
 <div class="highlight"><pre>
 stopping criteria set to when relative difference of total rate for the last 4 cumulative batches is less than 0.1%.
 sample collection will stop when the stopping criteria is met and number of detectable events exceeds the specified size.
-Resuming from 11062.0 detectable events.
-percentage difference of total rate for the last 4 cumulative batches = [0.01807991 0.00109575 0.00877408 0.        ]
+data on output file ./ler_data/unlensed_params_n_detectable.json not found or corrupted. Starting from scratch.
+removing ./ler_data/unlensed_params_n_detectable.json if it exists
+removing ./ler_data/meta_unlensed.json if it exists
+data on meta data file ./ler_data/meta_unlensed.json not found or corrupted. Starting from scratch.
+removing ./ler_data/unlensed_params_n_detectable.json if it exists
+removing ./ler_data/meta_unlensed.json if it exists
+collected number of detectable events =  0
+collected number of detectable events (batch) =  367
+collected number of detectable events (cumulative) =  367
+total number of events =  100000
+total rate (yr^-1): 336.1125442971944
+collected number of detectable events (batch) =  365
+collected number of detectable events (cumulative) =  732
+total number of events =  200000
+total rate (yr^-1): 335.1967063018342
+collected number of detectable events (batch) =  376
+collected number of detectable events (cumulative) =  1108
+total number of events =  300000
+total rate (yr^-1): 338.24949961970157
+collected number of detectable events (batch) =  388
+collected number of detectable events (cumulative) =  1496
+total number of events =  400000
+total rate (yr^-1): 342.52341026471584
+collected number of detectable events (batch) =  397
+collected number of detectable events (cumulative) =  1893
+total number of events =  500000
+total rate (yr^-1): 346.7362650433727
+percentage difference of total rate for the last 4 cumulative batches = [3.32805071 2.44761402 1.21500264 0.        ]
+collected number of detectable events (batch) =  357
+collected number of detectable events (cumulative) =  2250
+total number of events =  600000
+total rate (yr^-1): 343.43924826007606
+percentage difference of total rate for the last 4 cumulative batches = [1.51111111 0.26666667 0.96       0.        ]
+collected number of detectable events (batch) =  343
+collected number of detectable events (cumulative) =  2593
+total number of events =  700000
+total rate (yr^-1): 339.25256028128655
+percentage difference of total rate for the last 4 cumulative batches = [0.96413421 2.20593907 1.23409179 0.        ]
+collected number of detectable events (batch) =  408
+collected number of detectable events (cumulative) =  3001
+total number of events =  800000
+total rate (yr^-1): 343.553728009496
+percentage difference of total rate for the last 4 cumulative batches = [0.92635788 0.03332223 1.25196363 0.        ]
+collected number of detectable events (batch) =  397
+collected number of detectable events (cumulative) =  3398
+total number of events =  900000
+total rate (yr^-1): 345.7797231371077
+percentage difference of total rate for the last 4 cumulative batches = [0.67686875 1.88766501 0.64376104 0.        ]
+collected number of detectable events (batch) =  399
+collected number of detectable events (cumulative) =  3797
+total number of events =  1000000
+total rate (yr^-1): 347.743686838269
+percentage difference of total rate for the last 4 cumulative batches = [2.44177734 1.2048986  0.56477336 0.        ]
+collected number of detectable events (batch) =  358
+collected number of detectable events (cumulative) =  4155
+total number of events =  1100000
+total rate (yr^-1): 345.93698824742205
+percentage difference of total rate for the last 4 cumulative batches = [0.688929   0.04546062 0.52226233 0.        ]
+collected number of detectable events (batch) =  357
+collected number of detectable events (cumulative) =  4512
+total number of events =  1200000
+total rate (yr^-1): 344.3550862554362
+percentage difference of total rate for the last 4 cumulative batches = [0.41371158 0.98404255 0.45938104 0.        ]
+collected number of detectable events (batch) =  375
+collected number of detectable events (cumulative) =  4887
+total number of events =  1300000
+total rate (yr^-1): 344.28463717887007
+percentage difference of total rate for the last 4 cumulative batches = [1.00470636 0.4799375  0.02046245 0.        ]
+collected number of detectable events (batch) =  392
+collected number of detectable events (cumulative) =  5279
+total number of events =  1400000
+total rate (yr^-1): 345.33634125046507
+percentage difference of total rate for the last 4 cumulative batches = [0.17393101 0.28414472 0.30454486 0.        ]
+collected number of detectable events (batch) =  416
+collected number of detectable events (cumulative) =  5695
+total number of events =  1500000
+total rate (yr^-1): 347.7131589050903
+percentage difference of total rate for the last 4 cumulative batches = [0.96575944 0.98602013 0.683557   0.        ]
+collected number of detectable events (batch) =  358
+collected number of detectable events (cumulative) =  6053
+total number of events =  1600000
+total rate (yr^-1): 346.47296161970667
+percentage difference of total rate for the last 4 cumulative batches = [0.63160035 0.32805457 0.35794923 0.        ]
+collected number of detectable events (batch) =  381
+collected number of detectable events (cumulative) =  6434
+total number of events =  1700000
+total rate (yr^-1): 346.61774483220853
+percentage difference of total rate for the last 4 cumulative batches = [0.36968782 0.31602943 0.04177028 0.        ]
+collected number of detectable events (batch) =  373
+collected number of detectable events (cumulative) =  6807
+total number of events =  1800000
+total rate (yr^-1): 346.33940191205
+percentage difference of total rate for the last 4 cumulative batches = [0.39665051 0.03856324 0.0803671  0.        ]
+collected number of detectable events (batch) =  342
+collected number of detectable events (cumulative) =  7149
+total number of events =  1900000
+total rate (yr^-1): 344.59609625421524
+percentage difference of total rate for the last 4 cumulative batches = [0.5446566  0.58667193 0.50589826 0.        ]
+collected number of detectable events (batch) =  411
+collected number of detectable events (cumulative) =  7560
+total number of events =  2000000
+total rate (yr^-1): 346.18676224615666
+percentage difference of total rate for the last 4 cumulative batches = [0.12449424 0.04409171 0.45948204 0.        ]
+collected number of detectable events (batch) =  353
+collected number of detectable events (cumulative) =  7913
+total number of events =  2100000
+total rate (yr^-1): 345.0964789183469
+percentage difference of total rate for the last 4 cumulative batches = [0.36016681 0.1449979  0.3159358  0.        ]
+collected number of detectable events (batch) =  369
+collected number of detectable events (cumulative) =  8282
+total number of events =  2200000
+total rate (yr^-1): 344.7713762533272
+percentage difference of total rate for the last 4 cumulative batches = [0.05083949 0.41052886 0.09429514 0.        ]
+collected number of detectable events (batch) =  358
+collected number of detectable events (cumulative) =  8640
+total number of events =  2300000
+total rate (yr^-1): 344.03653390922403
+percentage difference of total rate for the last 4 cumulative batches = [0.625      0.30809083 0.21359428 0.        ]
+collected number of detectable events (batch) =  424
+collected number of detectable events (cumulative) =  9064
+total number of events =  2400000
+total rate (yr^-1): 345.8814829143699
+percentage difference of total rate for the last 4 cumulative batches = [0.22695751 0.32095001 0.53340497 0.        ]
+collected number of detectable events (batch) =  381
+collected number of detectable events (cumulative) =  9445
+total number of events =  2500000
+total rate (yr^-1): 346.00359464708464
+percentage difference of total rate for the last 4 cumulative batches = [0.35612878 0.56850876 0.03529204 0.        ]
+collected number of detectable events (batch) =  386
+collected number of detectable events (cumulative) =  9831
+total number of events =  2600000
+total rate (yr^-1): 346.2924358610059
+percentage difference of total rate for the last 4 cumulative batches = [0.65144419 0.11867223 0.08340962 0.        ]
+collected number of detectable events (batch) =  361
+collected number of detectable events (cumulative) =  10192
+total number of events =  2700000
+total rate (yr^-1): 345.7118832855995
+percentage difference of total rate for the last 4 cumulative batches = [0.04905808 0.08437991 0.1679296  0.        ]
+Given size=10000 reached
+
+collected number of detectable events (batch) =  382
+collected number of detectable events (cumulative) =  10574
+total number of events =  2800000
+total rate (yr^-1): 345.85967724781375
+percentage difference of total rate for the last 4 cumulative batches = [0.0416115  0.12512549 0.04273235 0.        ]
+Given size=10000 reached
+
+collected number of detectable events (batch) =  383
+collected number of detectable events (cumulative) =  10957
+total number of events =  2900000
+total rate (yr^-1): 346.0288591435083
+percentage difference of total rate for the last 4 cumulative batches = [0.07617189 0.09160388 0.04889242 0.        ]
 stopping criteria of rate relative difference of 0.1% for the last 4 cumulative batches reached.
 Given size=10000 reached
 
-Stopping criteria met. There will be no more samples collected.
-collected number of detectable events =  11062.0
 stored detectable unlensed params in ./ler_data/unlensed_params_n_detectable.json
 stored meta data in ./ler_data/meta_unlensed.json
 
 === Unlensed N-Event Sampling Results ===
-Detectable event rate: 2.8946e+02 events per year
-Total detectable events collected: 11062
+Detectable event rate: 3.4603e+02 events per year
+Total detectable events collected: 10957
 </pre></div></div>
 </div>
 </section>
@@ -604,9 +790,9 @@ Total detectable events collected: 11062
 <div class="highlight"><pre>
 === Unlensed Rate Stability Analysis ===
 Number of batches analyzed: 4
-Mean rate: 2.8944e+02 events/year
-Standard deviation: 2.2384e-02 events/year
-Relative uncertainty: 0.008%
+Mean rate: 3.4597e+02 events/year
+Standard deviation: 2.1574e-01 events/year
+Relative uncertainty: 0.062%
 </pre></div></div>
 </div>
 </section>
@@ -615,14 +801,14 @@ Relative uncertainty: 0.008%
 <p>Generate lensed detectable events. For lensed events, we can specify: - <code class="docutils literal notranslate"><span class="pre">pdet_threshold</span></code>: List of detection thresholds for each image - <code class="docutils literal notranslate"><span class="pre">num_img</span></code>: Number of images that must meet each corresponding threshold</p>
 <p>Here, <code class="docutils literal notranslate"><span class="pre">stopping_criteria=None</span></code> with <code class="docutils literal notranslate"><span class="pre">size=1000</span></code> means sampling continues until at least 1000 detectable lensed events are collected.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample until we have at least 1,000 detectable lensed events</span>
 <span class="c1"># use &#39;print(ler.selecting_n_lensed_detectable_events.__doc__)&#39; to see all input args</span>
 <span class="n">detectable_rate_lensed</span><span class="p">,</span> <span class="n">lensed_param_detectable_n</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">selecting_n_lensed_detectable_events</span><span class="p">(</span>
-    <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>                           <span class="c1"># Target number of detectable events</span>
-    <span class="n">batch_size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span>                    <span class="c1"># Events per batch</span>
+    <span class="n">size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>                           <span class="c1"># Target number of detectable events</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span>                    <span class="c1"># Events per batch</span>
     <span class="n">stopping_criteria</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>              <span class="c1"># No stopping criteria (sample until size is reached)</span>
     <span class="n">pdet_threshold</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>           <span class="c1"># Detection thresholds for images</span>
     <span class="n">num_img</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>                      <span class="c1"># Number of images required per threshold</span>
@@ -636,6 +822,7 @@ Relative uncertainty: 0.008%
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Lensed N-Event Sampling Results ===&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Detectable event rate: </span><span class="si">{</span><span class="n">detectable_rate_lensed</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2"> events per year&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total detectable events collected: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">lensed_param_detectable_n</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># initial batch will take longer as it needs to compile the numba njit functions; expected time: ~50s in first batch, then ~15s per subsequent batch</span>
 </pre></div>
 </div>
 </div>
@@ -645,29 +832,65 @@ Relative uncertainty: 0.008%
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 stopping criteria not set. sample collection will stop when number of detectable events exceeds the specified size.
-Resuming from 1014.0 detectable events.
-Given size=1000 reached
+data on output file ./ler_data/lensed_params_n_detectable.json not found or corrupted. Starting from scratch.
+removing ./ler_data/lensed_params_n_detectable.json if it exists
+removing ./ler_data/meta_lensed.json if it exists
+data on meta data file ./ler_data/meta_lensed.json not found or corrupted. Starting from scratch.
+removing ./ler_data/lensed_params_n_detectable.json if it exists
+removing ./ler_data/meta_lensed.json if it exists
+collected number of detectable events =  0
+collected number of detectable events (batch) =  64
+collected number of detectable events (cumulative) =  64
+total number of events =  50000
+total rate (yr^-1): 0.1422831772378339
+collected number of detectable events (batch) =  59
+collected number of detectable events (cumulative) =  123
+total number of events =  100000
+total rate (yr^-1): 0.13672524062698102
+collected number of detectable events (batch) =  66
+collected number of detectable events (cumulative) =  189
+total number of events =  150000
+total rate (yr^-1): 0.14006000259349274
+collected number of detectable events (batch) =  65
+collected number of detectable events (cumulative) =  254
+total number of events =  200000
+total rate (yr^-1): 0.14117158991566334
+collected number of detectable events (batch) =  71
+collected number of detectable events (cumulative) =  325
+total number of events =  250000
+total rate (yr^-1): 0.1445063518821751
+collected number of detectable events (batch) =  73
+collected number of detectable events (cumulative) =  398
+total number of events =  300000
+total rate (yr^-1): 0.1474705847412966
+collected number of detectable events (batch) =  63
+collected number of detectable events (cumulative) =  461
+total number of events =  350000
+total rate (yr^-1): 0.1464119301487532
+collected number of detectable events (batch) =  60
+collected number of detectable events (cumulative) =  521
+total number of events =  400000
+total rate (yr^-1): 0.1447842487127177
+Given size=500 reached
 
-Stopping criteria met. There will be no more samples collected.
-collected number of detectable events =  1014.0
 storing detectable lensed params in ./ler_data/lensed_params_n_detectable.json
 storing meta data in ./ler_data/meta_lensed.json
 
 === Lensed N-Event Sampling Results ===
-Detectable event rate: 9.5750e-02 events per year
-Total detectable events collected: 1014
+Detectable event rate: 1.4478e-01 events per year
+Total detectable events collected: 521
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># include other useful parameters in the output dictionary.</span>
 <span class="c1"># It is omitted by default to save runtime and memory.</span>
 <span class="c1"># For theta_E, n_images, mass_1, mass_2, luminosity_distance:</span>
-<span class="n">lensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">recover_redundant_parameters</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">)</span>
+<span class="n">lensed_param_detectable_n</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">recover_redundant_parameters</span><span class="p">(</span><span class="n">lensed_param_detectable_n</span><span class="p">)</span>
 <span class="c1"># For effective_luminosity_distance, effective_geocent_time, effective_phase, effective_ra, effective_dec:</span>
-<span class="n">lensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">produce_effective_params</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">)</span>
+<span class="n">lensed_param_detectable_n</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">produce_effective_params</span><span class="p">(</span><span class="n">lensed_param_detectable_n</span><span class="p">)</span>
 
 <span class="c1"># or you can simply set &#39;include_redundant_parameters=True, include_effective_parameters=True&#39; in the input args of LeR initialization to include these parameters in the output dictionary by default.</span>
 </pre></div>
@@ -678,7 +901,7 @@ Total detectable events collected: 1014
 <h3>2.5 Rate Convergence (Lensed)<a class="headerlink" href="#2.5-Rate-Convergence-(Lensed)" title="Link to this heading"></a></h3>
 <p>Visualize the lensed detection rate evolution across batches.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -722,7 +945,7 @@ Total detectable events collected: 1014
 <h3>2.6 Rate Stability (Lensed)<a class="headerlink" href="#2.6-Rate-Stability-(Lensed)" title="Link to this heading"></a></h3>
 <p>Quantify convergence using mean and standard deviation from the last few batches.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -755,9 +978,9 @@ Total detectable events collected: 1014
 <div class="highlight"><pre>
 === Lensed Rate Stability Analysis ===
 Number of batches analyzed: 4
-Mean rate: 9.6567e-02 events/year
-Standard deviation: 5.2511e-04 events/year
-Relative uncertainty: 0.544%
+Mean rate: 1.4579e-01 events/year
+Standard deviation: 1.2114e-03 events/year
+Relative uncertainty: 0.831%
 </pre></div></div>
 </div>
 </section>
@@ -765,7 +988,7 @@ Relative uncertainty: 0.544%
 <h3>2.7 Rate Comparison<a class="headerlink" href="#2.7-Rate-Comparison" title="Link to this heading"></a></h3>
 <p>Compare detection rates between lensed and unlensed events.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare lensed vs unlensed rates</span>
@@ -782,9 +1005,9 @@ Relative uncertainty: 0.544%
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 === Detection Rate Comparison ===
-Unlensed detectable rate: 2.8944e+02 events/year
-Lensed detectable rate:   9.6567e-02 events/year
-Ratio (Unlensed/Lensed):  2997.28
+Unlensed detectable rate: 3.4597e+02 events/year
+Lensed detectable rate:   1.4579e-01 events/year
+Ratio (Unlensed/Lensed):  2373.04
 </pre></div></div>
 </div>
 </section>
@@ -797,11 +1020,11 @@ Ratio (Unlensed/Lensed):  2997.28
 <h3>3.1 Unlensed Events<a class="headerlink" href="#3.1-Unlensed-Events" title="Link to this heading"></a></h3>
 <p>Generate a large sample of all unlensed events (both detectable and non-detectable) for comparison.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a large sample of all unlensed events for comparison</span>
-<span class="n">unlensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="s1">&#39;unlensed_params_all.json&#39;</span><span class="p">)</span>
+<span class="n">unlensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">unlensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="s1">&#39;unlensed_params_all.json&#39;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total unlensed events sampled: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">unlensed_param</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
@@ -813,19 +1036,14 @@ Ratio (Unlensed/Lensed):  2997.28
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 unlensed params will be stored in ./ler_data/unlensed_params_all.json
-removing ./ler_data/unlensed_params_all.json if it exists
 resuming from ./ler_data/unlensed_params_all.json
-Batch no. 1
-sampling gw source params...
-calculating pdet...
 unlensed parameters already sampled.
-saving all unlensed parameters in ./ler_data/unlensed_params_all.json
 Total unlensed events sampled: 50000
 </pre></div></div>
 </div>
 <p>Corner plot comparing all sampled events vs detectable events:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">corner</span>
@@ -838,13 +1056,17 @@ Total unlensed events sampled: 50000
 <span class="n">param</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="s1">&#39;./ler_data/unlensed_params_all.json&#39;</span><span class="p">)</span>
 <span class="n">param_detectable</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="s1">&#39;./ler_data/unlensed_params_n_detectable.json&#39;</span><span class="p">)</span>
 
+<span class="c1"># select mass_1_source less than 90 solar masses to focus on the more common stellar-mass black hole events</span>
+<span class="n">mask_all</span> <span class="o">=</span> <span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="s1">&#39;mass_1_source&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">60</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">6.0</span><span class="p">)</span>
+<span class="n">mask_detectable</span> <span class="o">=</span> <span class="p">(</span><span class="n">param_detectable</span><span class="p">[</span><span class="s1">&#39;mass_1_source&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">60</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">param_detectable</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">6.0</span><span class="p">)</span>
+
 <span class="c1"># Parameters to compare</span>
 <span class="n">param_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">,</span> <span class="s1">&#39;ra&#39;</span><span class="p">,</span> <span class="s1">&#39;dec&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_jn&#39;</span><span class="p">,</span> <span class="s1">&#39;mass_1_source&#39;</span><span class="p">,</span> <span class="s1">&#39;mass_2_source&#39;</span><span class="p">]</span>
 <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$z_s$&#39;</span><span class="p">,</span> <span class="s1">&#39;RA&#39;</span><span class="p">,</span> <span class="s1">&#39;Dec&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$\theta_</span><span class="si">{JN}</span><span class="s1">$&#39;</span><span class="p">,</span> <span class="s1">&#39;$m_1$ [$M_\odot$]&#39;</span><span class="p">,</span> <span class="s1">&#39;$m_2$ [$M_\odot$]&#39;</span><span class="p">]</span>
 
 <span class="c1"># Prepare data for corner plot</span>
-<span class="n">samples_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">param</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">param_names</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">samples_detectable</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">param_detectable</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">param_names</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">samples_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">param</span><span class="p">[</span><span class="n">p</span><span class="p">][</span><span class="n">mask_all</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">param_names</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">samples_detectable</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">param_detectable</span><span class="p">[</span><span class="n">p</span><span class="p">][</span><span class="n">mask_detectable</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">param_names</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># Create corner plot for all events</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span>
@@ -855,6 +1077,7 @@ Total unlensed events sampled: 50000
     <span class="n">plot_density</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">plot_datapoints</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">smooth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
     <span class="n">hist_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;density&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
 <span class="p">)</span>
 
@@ -868,6 +1091,7 @@ Total unlensed events sampled: 50000
     <span class="n">plot_density</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">plot_datapoints</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">smooth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
     <span class="n">hist_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;density&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
 <span class="p">)</span>
 
@@ -882,19 +1106,42 @@ Total unlensed events sampled: 50000
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-WARNING:root:Too few points to create valid contours
-</pre></div></div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_LeR_advanced_sampling_22_0.png" src="../_images/examples_LeR_advanced_sampling_22_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot param[&#39;mass_1_source&#39;]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="s1">&#39;mass_1_source&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;All events&#39;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">param_detectable</span><span class="p">[</span><span class="s1">&#39;mass_1_source&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Detectable only&#39;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+
+<span class="n">mass_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">mass_pdf</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">mass_1_source</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">mass_arr</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mass_arr</span><span class="p">,</span> <span class="n">mass_pdf</span><span class="p">,</span> <span class="s1">&#39;b--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;All events (PDF)&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Primary Mass $m_1$ ($M_</span><span class="se">\\</span><span class="s1">odot$)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Density&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_LeR_advanced_sampling_22_1.png" src="../_images/examples_LeR_advanced_sampling_22_1.png" />
+<img alt="../_images/examples_LeR_advanced_sampling_23_0.png" src="../_images/examples_LeR_advanced_sampling_23_0.png" />
 </div>
 </div>
 </section>
@@ -902,17 +1149,17 @@ WARNING:root:Too few points to create valid contours
 <h3>3.2 Lensed Events<a class="headerlink" href="#3.2-Lensed-Events" title="Link to this heading"></a></h3>
 <p>Compare intrinsic, strongly lensed, and detectable lensed event distributions. First, generate strongly lensed events:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a large sample of all lensed events for comparison</span>
-<span class="n">lensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">lensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="s1">&#39;lensed_params_all.json&#39;</span><span class="p">)</span>
+<span class="n">lensed_param</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">lensed_cbc_statistics</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="o">=</span><span class="s1">&#39;lensed_params_all.json&#39;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total lensed events sampled: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
@@ -922,32 +1169,17 @@ removing ./ler_data/lensed_params_all.json if it exists
 resuming from ./ler_data/lensed_params_all.json
 Batch no. 1
 sampling lensed params...
-sampling lens parameters with sample_all_routine_epl_shear_sl...
-solving lens equations...
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-100%|███████████████████████████████████████████████████████| 50000/50000 [00:11&lt;00:00, 4235.41it/s]
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
+sampling lens parameters with epl_shear_sl_parameters_rvs...
+Invalid sample found. Resampling 149 lensed events...
+sampling lens parameters with epl_shear_sl_parameters_rvs...
 calculating pdet...
-lensed parameters already sampled.
 saving all lensed parameters in ./ler_data/lensed_params_all.json
 Total lensed events sampled: 50000
 </pre></div></div>
 </div>
 <p>Generate intrinsic parameters (without strong lensing selection):</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a large sample of all lensed events for comparison</span>
@@ -971,7 +1203,7 @@ Total lensed events sampled: 50000
 </div>
 <p>Corner plot comparing intrinsic, strongly lensed, and detectable events:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">corner</span>
@@ -1049,7 +1281,89 @@ Total lensed events sampled: 50000
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_LeR_advanced_sampling_28_0.png" src="../_images/examples_LeR_advanced_sampling_28_0.png" />
+<img alt="../_images/examples_LeR_advanced_sampling_29_0.png" src="../_images/examples_LeR_advanced_sampling_29_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">corner</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.lines</span> <span class="k">as</span> <span class="nn">mlines</span>
+<span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">get_param_from_json</span>
+
+<span class="c1"># Load data</span>
+<span class="n">param</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="s1">&#39;./ler_data/lensed_params_all.json&#39;</span><span class="p">)</span>
+<span class="n">param_detectable</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="s1">&#39;./ler_data/lensed_params_n_detectable.json&#39;</span><span class="p">)</span>
+<span class="n">param_intrinsic</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="s1">&#39;./ler_data/lensed_param_intrinsic.json&#39;</span><span class="p">)</span>
+<span class="c1"># lensed_param_intrinsic is already in memory from cell 24</span>
+
+<span class="c1"># Lensing-specific parameters to compare</span>
+<span class="n">param_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">,</span> <span class="s1">&#39;zl&#39;</span><span class="p">,</span> <span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;gamma&#39;</span><span class="p">]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$z_s$&#39;</span><span class="p">,</span> <span class="s1">&#39;$z_l$&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$\sigma$ [km/s]&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$\gamma$&#39;</span><span class="p">]</span>
+
+<span class="c1"># Prepare data for corner plot</span>
+<span class="n">samples_intrinsic</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">param_intrinsic</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">param_names</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">samples_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">param</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">param_names</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">samples_detectable</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">param_detectable</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">param_names</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Create corner plot for intrinsic events</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span>
+    <span class="n">samples_intrinsic</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C2&#39;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">plot_density</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_datapoints</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">smooth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">hist_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;density&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># Overlay strongly lensed events</span>
+<span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span>
+    <span class="n">samples_all</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">fig</span><span class="o">=</span><span class="n">fig</span><span class="p">,</span>
+    <span class="n">plot_density</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_datapoints</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">smooth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">hist_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;density&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># Overlay detectable events</span>
+<span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span>
+    <span class="n">samples_detectable</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C1&#39;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">fig</span><span class="o">=</span><span class="n">fig</span><span class="p">,</span>
+    <span class="n">plot_density</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_datapoints</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">smooth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">hist_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;density&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># Add legend</span>
+<span class="n">green_line</span> <span class="o">=</span> <span class="n">mlines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C2&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Intrinsic&#39;</span><span class="p">)</span>
+<span class="n">blue_line</span> <span class="o">=</span> <span class="n">mlines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Strongly lensed&#39;</span><span class="p">)</span>
+<span class="n">orange_line</span> <span class="o">=</span> <span class="n">mlines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C1&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Detectable only&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="p">[</span><span class="n">green_line</span><span class="p">,</span> <span class="n">blue_line</span><span class="p">,</span> <span class="n">orange_line</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span>
+           <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Lensed Events: Intrinsic vs. Strongly Lensed vs. Detectable&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_LeR_advanced_sampling_30_0.png" src="../_images/examples_LeR_advanced_sampling_30_0.png" />
 </div>
 </div>
 </section>
@@ -1062,7 +1376,7 @@ Total lensed events sampled: 50000
 <h3>4.1 Redshift Distribution<a class="headerlink" href="#4.1-Redshift-Distribution" title="Link to this heading"></a></h3>
 <p>Compare redshift distributions of intrinsic and detected populations.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">get_param_from_json</span>
@@ -1075,8 +1389,8 @@ Total lensed events sampled: 50000
 <span class="c1"># Load data</span>
 <span class="n">unlensed_params_det</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="s1">&#39;./ler_data/unlensed_params_n_detectable.json&#39;</span><span class="p">)</span>
 <span class="n">lensed_params_det</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="s1">&#39;./ler_data/lensed_params_n_detectable.json&#39;</span><span class="p">)</span>
-<span class="n">unlensed_params</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="s1">&#39;./ler_data/unlensed_param.json&#39;</span><span class="p">)</span>
-<span class="n">lensed_params</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="s1">&#39;./ler_data/lensed_param.json&#39;</span><span class="p">)</span>
+<span class="n">unlensed_params</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="s1">&#39;./ler_data/unlensed_params_all.json&#39;</span><span class="p">)</span>
+<span class="n">lensed_params</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="s1">&#39;./ler_data/lensed_params_all.json&#39;</span><span class="p">)</span>
 <span class="n">lensed_params_intrinsic</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="s1">&#39;./ler_data/lensed_param_intrinsic.json&#39;</span><span class="p">)</span>
 
 <span class="n">bbh_pop_intrinsic</span> <span class="o">=</span> <span class="n">unlensed_params</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">]</span>
@@ -1178,14 +1492,14 @@ Total lensed events sampled: 50000
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Chosen detected lensed event index: 10
+Chosen detected lensed event index: 14
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_LeR_advanced_sampling_30_1.png" src="../_images/examples_LeR_advanced_sampling_30_1.png" />
+<img alt="../_images/examples_LeR_advanced_sampling_32_1.png" src="../_images/examples_LeR_advanced_sampling_32_1.png" />
 </div>
 </div>
 </section>
@@ -1193,7 +1507,7 @@ Chosen detected lensed event index: 10
 <h3>4.2 Magnification Ratio vs Time Delay<a class="headerlink" href="#4.2-Magnification-Ratio-vs-Time-Delay" title="Link to this heading"></a></h3>
 <p>Relative magnification vs time delay distinguishes lensed from unlensed events.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">relative_mu_dt_unlensed</span><span class="p">,</span> <span class="n">relative_mu_dt_lensed</span><span class="p">,</span> <span class="n">mu_vs_dt_plot</span>
@@ -1229,14 +1543,13 @@ Chosen detected lensed event index: 10
 <span class="p">}</span>
 
 <span class="c1"># Use your existing helper without modification</span>
-<span class="n">mu_vs_dt_plot</span><span class="p">(</span><span class="n">dt_unlensed</span><span class="p">,</span> <span class="n">dmu_unlensed</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">]]</span><span class="o">*</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">mu_vs_dt_plot</span><span class="p">(</span><span class="n">dt_unlensed</span><span class="p">,</span> <span class="n">dmu_unlensed</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;grey&#39;</span><span class="p">]]</span><span class="o">*</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">mu_vs_dt_plot</span><span class="p">(</span><span class="n">dt_lensed</span><span class="p">,</span>   <span class="n">dmu_lensed</span><span class="p">,</span>   <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;violet&#39;</span><span class="p">]]</span><span class="o">*</span><span class="mi">5</span><span class="p">)</span>
 
 <span class="c1"># Proxy artists for legend</span>
 <span class="c1"># Proxy artists for legend</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">],</span>  <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Unlensed detectable events&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;grey&#39;</span><span class="p">],</span>  <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Unlensed detectable events&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;violet&#39;</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Lensed detectable events&#39;</span><span class="p">,</span>   <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-
 
 <span class="c1"># Chosen example point</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
@@ -1244,6 +1557,13 @@ Chosen detected lensed event index: 10
     <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">110</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Example detected lensed event&#39;</span>
 <span class="p">)</span>
+
+<span class="c1"># plot line for 1s, 1hr, 1day, 1week, 1month time delays</span>
+<span class="n">time_delays</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">24</span><span class="p">,</span> <span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">7</span><span class="p">,</span> <span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">30</span><span class="p">]</span>
+<span class="n">labels_td</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1s&#39;</span><span class="p">,</span> <span class="s1">&#39;1min&#39;</span><span class="p">,</span> <span class="s1">&#39;1hr&#39;</span><span class="p">,</span> <span class="s1">&#39;1day&#39;</span><span class="p">,</span> <span class="s1">&#39;1week&#39;</span><span class="p">,</span> <span class="s1">&#39;1month&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">td</span> <span class="ow">in</span> <span class="n">time_delays</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">td</span><span class="o">/</span><span class="p">(</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">24</span><span class="p">)),</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">td</span><span class="o">/</span><span class="p">(</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">24</span><span class="p">)),</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">*-</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">labels_td</span><span class="p">[</span><span class="n">time_delays</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">td</span><span class="p">)],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
 
 <span class="c1"># ---------- Legend ----------</span>
 <span class="n">legend</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
@@ -1265,7 +1585,7 @@ Chosen detected lensed event index: 10
 <span class="c1"># ---------- Axes, ticks, grid ----------</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\log_</span><span class="si">{10}</span><span class="s1">(\Delta t_</span><span class="si">{ij}</span><span class="s1"> \,/\, \mathrm</span><span class="si">{days}</span><span class="s1">)$&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\log_</span><span class="si">{10}</span><span class="s1">(|\mu_i / \mu_j|)$&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">5.2</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">AutoMinorLocator</span><span class="p">())</span>
@@ -1283,22 +1603,30 @@ Chosen detected lensed event index: 10
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_LeR_advanced_sampling_32_0.png" src="../_images/examples_LeR_advanced_sampling_32_0.png" />
+<img alt="../_images/examples_LeR_advanced_sampling_34_0.png" src="../_images/examples_LeR_advanced_sampling_34_0.png" />
 </div>
 </div>
 </section>
 <section id="4.3-Caustic-Plot">
 <h3>4.3 Caustic Plot<a class="headerlink" href="#4.3-Caustic-Plot" title="Link to this heading"></a></h3>
 <p>Lens configuration for an example event, showing caustics, critical curves, and image positions.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lenstronomy.LensModel.lens_model</span> <span class="kn">import</span> <span class="n">LensModel</span>
-<span class="kn">from</span> <span class="nn">lenstronomy.LensModel.Solver.lens_equation_solver</span> <span class="kn">import</span> <span class="n">LensEquationSolver</span>
-<span class="kn">from</span> <span class="nn">lenstronomy.LensModel.Solver.epl_shear_solver</span> <span class="kn">import</span> <span class="n">caustics_epl_shear</span>
-<span class="c1"># import phi_q2_ellipticity</span>
-<span class="kn">from</span> <span class="nn">lenstronomy.Util.param_util</span> <span class="kn">import</span> <span class="n">phi_q2_ellipticity</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># include other useful parameters in the output dictionary.</span>
+<span class="c1"># It is omitted by default to save runtime and memory.</span>
+<span class="c1"># For theta_E, n_images, mass_1, mass_2, luminosity_distance:</span>
+<span class="n">lensed_params_det</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">recover_redundant_parameters</span><span class="p">(</span><span class="n">lensed_params_det</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ler.image_properties.cross_section_njit</span> <span class="kn">import</span> <span class="n">caustic_points_epl_shear</span>
+<span class="kn">from</span> <span class="nn">ler.image_properties.epl_shear_njit</span> <span class="kn">import</span> <span class="n">image_position_analytical_njit</span>
 
 <span class="c1"># ---------- Custom color palette ----------</span>
 <span class="n">colors</span> <span class="o">=</span> <span class="p">{</span>
@@ -1312,53 +1640,38 @@ Chosen detected lensed event index: 10
     <span class="s2">&quot;orange&quot;</span><span class="p">:</span> <span class="s2">&quot;#FB8C00&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="c1"># ----- Lens setup -----</span>
-<span class="n">lens_model_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;EPL&quot;</span><span class="p">,</span> <span class="s2">&quot;SHEAR&quot;</span><span class="p">]</span>
-<span class="n">lensModel</span> <span class="o">=</span> <span class="n">LensModel</span><span class="p">(</span><span class="n">lens_model_list</span><span class="o">=</span><span class="n">lens_model_list</span><span class="p">)</span>
-<span class="n">lens_eq_solver</span> <span class="o">=</span> <span class="n">LensEquationSolver</span><span class="p">(</span><span class="n">lensModel</span><span class="p">)</span>
-
+<span class="c1"># ----- Lens parameters -----</span>
 <span class="n">q</span>   <span class="o">=</span> <span class="n">lensed_params_det</span><span class="p">[</span><span class="s1">&#39;q&#39;</span><span class="p">][</span><span class="n">chosen_idx</span><span class="p">]</span>
 <span class="n">phi</span> <span class="o">=</span> <span class="n">lensed_params_det</span><span class="p">[</span><span class="s1">&#39;phi&#39;</span><span class="p">][</span><span class="n">chosen_idx</span><span class="p">]</span>
-<span class="n">e1</span><span class="p">,</span> <span class="n">e2</span> <span class="o">=</span> <span class="n">phi_q2_ellipticity</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
-<span class="n">kwargs_spep</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;theta_E&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-    <span class="s1">&#39;e1&#39;</span><span class="p">:</span> <span class="n">e1</span><span class="p">,</span>
-    <span class="s1">&#39;e2&#39;</span><span class="p">:</span> <span class="n">e2</span><span class="p">,</span>
-    <span class="s1">&#39;gamma&#39;</span><span class="p">:</span> <span class="n">lensed_params_det</span><span class="p">[</span><span class="s1">&#39;gamma&#39;</span><span class="p">][</span><span class="n">chosen_idx</span><span class="p">],</span>
-    <span class="s1">&#39;center_x&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="s1">&#39;center_y&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-<span class="p">}</span>
-<span class="n">kwargs_shear</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;gamma1&#39;</span><span class="p">:</span> <span class="n">lensed_params_det</span><span class="p">[</span><span class="s1">&#39;gamma1&#39;</span><span class="p">][</span><span class="n">chosen_idx</span><span class="p">],</span>
-    <span class="s1">&#39;gamma2&#39;</span><span class="p">:</span> <span class="n">lensed_params_det</span><span class="p">[</span><span class="s1">&#39;gamma2&#39;</span><span class="p">][</span><span class="n">chosen_idx</span><span class="p">]</span>
-<span class="p">}</span>
-<span class="n">kwargs_lens</span> <span class="o">=</span> <span class="p">[</span><span class="n">kwargs_spep</span><span class="p">,</span> <span class="n">kwargs_shear</span><span class="p">]</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="n">lensed_params_det</span><span class="p">[</span><span class="s1">&#39;gamma&#39;</span><span class="p">][</span><span class="n">chosen_idx</span><span class="p">]</span>
+<span class="n">gamma1</span> <span class="o">=</span> <span class="n">lensed_params_det</span><span class="p">[</span><span class="s1">&#39;gamma1&#39;</span><span class="p">][</span><span class="n">chosen_idx</span><span class="p">]</span>
+<span class="n">gamma2</span> <span class="o">=</span> <span class="n">lensed_params_det</span><span class="p">[</span><span class="s1">&#39;gamma2&#39;</span><span class="p">][</span><span class="n">chosen_idx</span><span class="p">]</span>
+<span class="n">theta_E</span> <span class="o">=</span> <span class="n">lensed_params_det</span><span class="p">[</span><span class="s1">&#39;theta_E&#39;</span><span class="p">][</span><span class="n">chosen_idx</span><span class="p">]</span>
 
 <span class="c1"># ----- Solve image configuration -----</span>
-<span class="n">theta_E</span> <span class="o">=</span> <span class="n">lensed_params_det</span><span class="p">[</span><span class="s1">&#39;theta_E&#39;</span><span class="p">][</span><span class="n">chosen_idx</span><span class="p">]</span>
 <span class="c1"># unscaled source position</span>
-<span class="n">beta_ra</span>  <span class="o">=</span> <span class="n">lensed_params_det</span><span class="p">[</span><span class="s1">&#39;x_source&#39;</span><span class="p">][</span><span class="n">chosen_idx</span><span class="p">]</span><span class="o">/</span><span class="n">theta_E</span>
-<span class="n">beta_dec</span> <span class="o">=</span> <span class="n">lensed_params_det</span><span class="p">[</span><span class="s1">&#39;y_source&#39;</span><span class="p">][</span><span class="n">chosen_idx</span><span class="p">]</span><span class="o">/</span><span class="n">theta_E</span>
-<span class="n">theta_ra</span><span class="p">,</span> <span class="n">theta_dec</span> <span class="o">=</span> <span class="n">lens_eq_solver</span><span class="o">.</span><span class="n">image_position_from_source</span><span class="p">(</span>
-    <span class="n">sourcePos_x</span><span class="o">=</span><span class="n">beta_ra</span><span class="p">,</span> <span class="n">sourcePos_y</span><span class="o">=</span><span class="n">beta_dec</span><span class="p">,</span> <span class="n">kwargs_lens</span><span class="o">=</span><span class="n">kwargs_lens</span><span class="p">,</span>
-    <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;analytical&quot;</span><span class="p">,</span> <span class="n">magnification_limit</span><span class="o">=</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">arrival_time_sort</span><span class="o">=</span><span class="kc">True</span>
+<span class="n">beta_ra</span>  <span class="o">=</span> <span class="n">lensed_params_det</span><span class="p">[</span><span class="s1">&#39;x_source&#39;</span><span class="p">][</span><span class="n">chosen_idx</span><span class="p">]</span> <span class="o">/</span> <span class="n">theta_E</span>
+<span class="n">beta_dec</span> <span class="o">=</span> <span class="n">lensed_params_det</span><span class="p">[</span><span class="s1">&#39;y_source&#39;</span><span class="p">][</span><span class="n">chosen_idx</span><span class="p">]</span> <span class="o">/</span> <span class="n">theta_E</span>
+
+<span class="n">x_img</span><span class="p">,</span> <span class="n">y_img</span><span class="p">,</span> <span class="n">fermat_pot</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">image_type</span><span class="p">,</span> <span class="n">nimg</span> <span class="o">=</span> <span class="n">image_position_analytical_njit</span><span class="p">(</span>
+    <span class="n">beta_ra</span><span class="p">,</span> <span class="n">beta_dec</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">,</span>
+    <span class="n">theta_E</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">magnification_limit</span><span class="o">=</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">100.0</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">magnifications</span> <span class="o">=</span> <span class="n">lensModel</span><span class="o">.</span><span class="n">magnification</span><span class="p">(</span><span class="n">theta_ra</span><span class="p">,</span> <span class="n">theta_dec</span><span class="p">,</span> <span class="n">kwargs_lens</span><span class="p">)</span>
-<span class="n">magnifications</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">magnifications</span><span class="p">))</span>
-<span class="c1"># print(f&quot;Magnifications calculated: {magnifications}&quot;)</span>
+<span class="n">theta_ra</span> <span class="o">=</span> <span class="n">x_img</span><span class="p">[:</span><span class="n">nimg</span><span class="p">]</span>
+<span class="n">theta_dec</span> <span class="o">=</span> <span class="n">y_img</span><span class="p">[:</span><span class="n">nimg</span><span class="p">]</span>
+<span class="n">magnifications</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu</span><span class="p">[:</span><span class="n">nimg</span><span class="p">])</span>
 
 <span class="c1"># ----- Figure -----</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>  <span class="c1"># wider figure</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>  <span class="c1"># wider figure</span>
 
 <span class="c1"># Caustics</span>
-<span class="n">cp</span> <span class="o">=</span> <span class="n">caustics_epl_shear</span><span class="p">(</span><span class="n">kwargs_lens</span><span class="p">,</span> <span class="n">return_which</span><span class="o">=</span><span class="s2">&quot;double&quot;</span><span class="p">,</span> <span class="n">maginf</span><span class="o">=-</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">cp</span> <span class="o">=</span> <span class="n">caustic_points_epl_shear</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">,</span> <span class="n">num_th</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">maginf</span><span class="o">=-</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">quad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;brown&#39;</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Double Caustic&#39;</span><span class="p">)</span>
-<span class="n">cp</span> <span class="o">=</span> <span class="n">caustics_epl_shear</span><span class="p">(</span><span class="n">kwargs_lens</span><span class="p">,</span> <span class="n">return_which</span><span class="o">=</span><span class="s2">&quot;quad&quot;</span><span class="p">,</span> <span class="n">maginf</span><span class="o">=-</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">cp</span> <span class="o">=</span> <span class="n">caustic_points_epl_shear</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">,</span> <span class="n">num_th</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">maginf</span><span class="o">=-</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">quad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cp</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;violet&#39;</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Quad Caustic&#39;</span><span class="p">)</span>
 
 <span class="c1"># Einstein ring</span>
-<span class="n">theta_E</span> <span class="o">=</span> <span class="mf">1.0</span>
-<span class="n">circle</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">theta_E</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;grey&#39;</span><span class="p">],</span> <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="n">circle</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;grey&#39;</span><span class="p">],</span> <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                     <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dotted&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Einstein Ring&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
 
@@ -1366,9 +1679,9 @@ Chosen detected lensed event index: 10
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">beta_ra</span><span class="p">,</span> <span class="n">beta_dec</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Source&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
 <span class="c1"># Image positions</span>
-<span class="n">img_colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">],</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;violet&#39;</span><span class="p">],</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;brown&#39;</span><span class="p">],</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">]]</span>
+<span class="n">img_colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">],</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;violet&#39;</span><span class="p">],</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;brown&#39;</span><span class="p">],</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;grey&#39;</span><span class="p">]]</span>
 <span class="n">pdet_image</span> <span class="o">=</span> <span class="n">lensed_params_det</span><span class="p">[</span><span class="s1">&#39;pdet_net&#39;</span><span class="p">][</span><span class="n">chosen_idx</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">theta_ra</span><span class="p">)):</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nimg</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">pdet_image</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">:</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta_ra</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">theta_dec</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span>
                 <span class="n">color</span><span class="o">=</span><span class="n">img_colors</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">img_colors</span><span class="p">)],</span>
@@ -1380,7 +1693,7 @@ Chosen detected lensed event index: 10
 <span class="c1"># Axes &amp; Grid</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;RA [arcsec]&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Dec [arcsec]&#39;</span><span class="p">)</span>
-<span class="n">dim_x</span><span class="p">,</span> <span class="n">dim_y</span> <span class="o">=</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">1.5</span>  <span class="c1"># rectangular window</span>
+<span class="n">dim_x</span><span class="p">,</span> <span class="n">dim_y</span> <span class="o">=</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">1.8</span>  <span class="c1"># rectangular window</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="n">dim_x</span><span class="p">,</span> <span class="n">dim_x</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="n">dim_y</span><span class="p">,</span> <span class="n">dim_y</span><span class="p">)</span>
 
@@ -1418,7 +1731,134 @@ Chosen detected lensed event index: 10
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_LeR_advanced_sampling_34_0.png" src="../_images/examples_LeR_advanced_sampling_34_0.png" />
+<img alt="../_images/examples_LeR_advanced_sampling_37_0.png" src="../_images/examples_LeR_advanced_sampling_37_0.png" />
+</div>
+</div>
+<ul class="simple">
+<li><p>If you want to use lenstronomy to solve the lens configuration and plot the lensing caustics, critical curves, and image positions, you can use the following code snippet:</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># from lenstronomy.LensModel.lens_model import LensModel</span>
+<span class="c1"># from lenstronomy.LensModel.Solver.lens_equation_solver import LensEquationSolver</span>
+<span class="c1"># from lenstronomy.LensModel.Solver.epl_shear_solver import caustics_epl_shear</span>
+<span class="c1"># # import phi_q2_ellipticity</span>
+<span class="c1"># from lenstronomy.Util.param_util import phi_q2_ellipticity</span>
+
+<span class="c1"># # ---------- Custom color palette ----------</span>
+<span class="c1"># colors = {</span>
+<span class="c1">#     &quot;black&quot;: &quot;#000000&quot;,</span>
+<span class="c1">#     &quot;violet&quot;: &quot;#7E57C2&quot;,</span>
+<span class="c1">#     &quot;brown&quot;:  &quot;#8D6E63&quot;,</span>
+<span class="c1">#     &quot;grey&quot;:   &quot;#616161&quot;,</span>
+<span class="c1">#     &quot;red&quot;:    &quot;#E53935&quot;,</span>
+<span class="c1">#     &quot;blue&quot;:   &quot;#1E88E5&quot;,</span>
+<span class="c1">#     &quot;green&quot;:  &quot;#43A047&quot;,</span>
+<span class="c1">#     &quot;orange&quot;: &quot;#FB8C00&quot;,</span>
+<span class="c1"># }</span>
+
+<span class="c1"># # ----- Lens setup -----</span>
+<span class="c1"># lens_model_list = [&quot;EPL&quot;, &quot;SHEAR&quot;]</span>
+<span class="c1"># lensModel = LensModel(lens_model_list=lens_model_list)</span>
+<span class="c1"># lens_eq_solver = LensEquationSolver(lensModel)</span>
+
+<span class="c1"># q   = lensed_params_det[&#39;q&#39;][chosen_idx]</span>
+<span class="c1"># phi = lensed_params_det[&#39;phi&#39;][chosen_idx]</span>
+<span class="c1"># e1, e2 = phi_q2_ellipticity(phi, q)</span>
+<span class="c1"># kwargs_spep = {</span>
+<span class="c1">#     &#39;theta_E&#39;: 1.0,</span>
+<span class="c1">#     &#39;e1&#39;: e1,</span>
+<span class="c1">#     &#39;e2&#39;: e2,</span>
+<span class="c1">#     &#39;gamma&#39;: lensed_params_det[&#39;gamma&#39;][chosen_idx],</span>
+<span class="c1">#     &#39;center_x&#39;: 0.0,</span>
+<span class="c1">#     &#39;center_y&#39;: 0.0,</span>
+<span class="c1"># }</span>
+<span class="c1"># kwargs_shear = {</span>
+<span class="c1">#     &#39;gamma1&#39;: lensed_params_det[&#39;gamma1&#39;][chosen_idx],</span>
+<span class="c1">#     &#39;gamma2&#39;: lensed_params_det[&#39;gamma2&#39;][chosen_idx]</span>
+<span class="c1"># }</span>
+<span class="c1"># kwargs_lens = [kwargs_spep, kwargs_shear]</span>
+
+<span class="c1"># # ----- Solve image configuration -----</span>
+<span class="c1"># theta_E = lensed_params_det[&#39;theta_E&#39;][chosen_idx]</span>
+<span class="c1"># # unscaled source position</span>
+<span class="c1"># beta_ra  = lensed_params_det[&#39;x_source&#39;][chosen_idx]/theta_E</span>
+<span class="c1"># beta_dec = lensed_params_det[&#39;y_source&#39;][chosen_idx]/theta_E</span>
+<span class="c1"># theta_ra, theta_dec = lens_eq_solver.image_position_from_source(</span>
+<span class="c1">#     sourcePos_x=beta_ra, sourcePos_y=beta_dec, kwargs_lens=kwargs_lens,</span>
+<span class="c1">#     solver=&quot;analytical&quot;, magnification_limit=1.0/100.0, arrival_time_sort=True</span>
+<span class="c1"># )</span>
+<span class="c1"># magnifications = lensModel.magnification(theta_ra, theta_dec, kwargs_lens)</span>
+<span class="c1"># magnifications = np.abs(np.array(magnifications))</span>
+<span class="c1"># # print(f&quot;Magnifications calculated: {magnifications}&quot;)</span>
+
+<span class="c1"># # ----- Figure -----</span>
+<span class="c1"># fig, ax = plt.subplots(figsize=(8, 7))  # wider figure</span>
+
+<span class="c1"># # Caustics</span>
+<span class="c1"># cp = caustics_epl_shear(kwargs_lens, return_which=&quot;double&quot;, maginf=-100)</span>
+<span class="c1"># ax.plot(cp[0], cp[1], color=colors[&#39;brown&#39;], linewidth=1.5, linestyle=&#39;--&#39;, label=&#39;Double Caustic&#39;)</span>
+<span class="c1"># cp = caustics_epl_shear(kwargs_lens, return_which=&quot;quad&quot;, maginf=-100)</span>
+<span class="c1"># ax.plot(cp[0], cp[1], color=colors[&#39;violet&#39;], linewidth=1.5, linestyle=&#39;-&#39;, label=&#39;Quad Caustic&#39;)</span>
+
+<span class="c1"># # Einstein ring</span>
+<span class="c1"># theta_E = 1.0</span>
+<span class="c1"># circle = plt.Circle((0, 0), theta_E, color=colors[&#39;grey&#39;], fill=False,</span>
+<span class="c1">#                     linestyle=&#39;dotted&#39;, linewidth=1.5, label=&#39;Einstein Ring&#39;)</span>
+<span class="c1"># ax.add_artist(circle)</span>
+
+<span class="c1"># # Source position</span>
+<span class="c1"># ax.plot(beta_ra, beta_dec, marker=&#39;x&#39;, ls=&#39;None&#39;, color=colors[&#39;red&#39;], label=&#39;Source&#39;, markersize=10)</span>
+
+<span class="c1"># # Image positions</span>
+<span class="c1"># img_colors = [colors[&#39;blue&#39;], colors[&#39;violet&#39;], colors[&#39;brown&#39;], colors[&#39;black&#39;]]</span>
+<span class="c1"># pdet_image = lensed_params_det[&#39;pdet_net&#39;][chosen_idx]</span>
+<span class="c1"># for i in range(len(theta_ra)):</span>
+<span class="c1">#     if pdet_image[i] &gt;= 0.5:</span>
+<span class="c1">#         ax.plot(theta_ra[i], theta_dec[i], marker=&#39;*&#39;, ls=&#39;None&#39;,</span>
+<span class="c1">#                 color=img_colors[i % len(img_colors)],</span>
+<span class="c1">#                 label=f&#39;Image {i+1} (detected)\nMagnification: {magnifications[i]:.1f}&#39;, markersize=15)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         ax.plot(theta_ra[i], theta_dec[i], marker=&#39;.&#39;, ls=&#39;None&#39;,</span>
+<span class="c1">#                 color=img_colors[i % len(img_colors)],</span>
+<span class="c1">#                 label=f&#39;Image {i+1} (not detected)\nMagnification: {magnifications[i]:.1f}&#39;, markersize=10)</span>
+<span class="c1"># # Axes &amp; Grid</span>
+<span class="c1"># ax.set_xlabel(&#39;RA [arcsec]&#39;)</span>
+<span class="c1"># ax.set_ylabel(&#39;Dec [arcsec]&#39;)</span>
+<span class="c1"># dim_x, dim_y = 1.8, 1.8  # rectangular window</span>
+<span class="c1"># ax.set_xlim(-dim_x, dim_x)</span>
+<span class="c1"># ax.set_ylim(-dim_y, dim_y)</span>
+
+<span class="c1"># # Relax the aspect ratio → visually rectangular (with adjustable=&#39;box&#39; to respect figure size)</span>
+<span class="c1"># ax.set_aspect(6/8, adjustable=&#39;box&#39;)</span>
+
+<span class="c1"># ax.xaxis.set_minor_locator(AutoMinorLocator())</span>
+<span class="c1"># ax.yaxis.set_minor_locator(AutoMinorLocator())</span>
+<span class="c1"># ax.grid(alpha=0.4, linestyle=&#39;--&#39;, linewidth=0.6)</span>
+
+<span class="c1"># # Legend on the side</span>
+<span class="c1"># legend = ax.legend(</span>
+<span class="c1">#     handlelength=2.5,</span>
+<span class="c1">#     loc=&#39;center left&#39;,</span>
+<span class="c1">#     bbox_to_anchor=(1.03, 0.5),</span>
+<span class="c1">#     frameon=True,</span>
+<span class="c1">#     fontsize=12,</span>
+<span class="c1">#     edgecolor=&#39;lightgray&#39;,</span>
+<span class="c1">#     numpoints=1,  # Show only one marker per legend entry</span>
+<span class="c1">#     scatterpoints=1</span>
+<span class="c1"># )</span>
+<span class="c1"># legend.get_frame().set_boxstyle(&#39;Round&#39;, pad=0.0, rounding_size=0.2)</span>
+<span class="c1"># for handle in legend.get_lines():</span>
+<span class="c1">#     handle.set_linewidth(1.5)</span>
+<span class="c1">#     handle.set_alpha(0.85)</span>
+<span class="c1"># # add title</span>
+<span class="c1"># ax.set_title(&#39;Lens Configuration for Example Detected Lensed Event&#39;, fontsize=14)</span>
+<span class="c1"># plt.tight_layout()</span>
+<span class="c1"># # plt.savefig(&#39;lens_configuration_rectangular.svg&#39;, dpi=600, bbox_inches=&#39;tight&#39;, transparent=True)</span>
+<span class="c1"># plt.show()</span>
+</pre></div>
 </div>
 </div>
 </section>

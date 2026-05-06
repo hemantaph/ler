@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.utils.gwsnr_training_data_generator &mdash; ler 0.5.9 documentation</title>
+  <title>ler.utils.gwsnr_training_data_generator &mdash; ler 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -19,7 +19,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=9a3cda14"></script>
+      <script src="../../../_static/documentation_options.js?v=8fa8b3e9"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -91,6 +91,8 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../ler.html">ler</a></li>
+          <li class="breadcrumb-item"><a href="../utils.html">ler.utils</a></li>
       <li class="breadcrumb-item active">ler.utils.gwsnr_training_data_generator</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -103,13 +105,11 @@
   <h1>Source code for ler.utils.gwsnr_training_data_generator</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
-<span class="kn">from</span> <span class="nn">gwsnr</span> <span class="kn">import</span> <span class="n">GWSNR</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">append_json</span><span class="p">,</span> <span class="n">get_param_from_json</span>
 
 <div class="viewcode-block" id="TrainingDataGenerator">
-<a class="viewcode-back" href="../../../autoapi/ler/utils/index.html#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/utils/gwsnr_training_data_generator/index.html#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator">[docs]</a>
 <span class="k">class</span> <span class="nc">TrainingDataGenerator</span><span class="p">():</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -170,7 +170,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ler_init_args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
 <div class="viewcode-block" id="TrainingDataGenerator.gw_parameters_generator">
-<a class="viewcode-back" href="../../../autoapi/ler/utils/index.html#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.gw_parameters_generator">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/utils/gwsnr_training_data_generator/index.html#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.gw_parameters_generator">[docs]</a>
     <span class="k">def</span> <span class="nf">gw_parameters_generator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
         <span class="n">size</span><span class="p">,</span> 
         <span class="n">batch_size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> 
@@ -178,9 +178,12 @@
         <span class="n">trim_to_size</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
         <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
         <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
-        <span class="n">data_distribution_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
+        <span class="n">data_distribution_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">output_jsonfile</span><span class="o">=</span><span class="s2">&quot;gw_parameters.json&quot;</span><span class="p">,</span>
     <span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">data_distribution_range</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data_distribution_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span>
 
         <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_init_args</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">snr_recalculation</span><span class="p">:</span>
@@ -278,7 +281,7 @@
 
 
 <div class="viewcode-block" id="TrainingDataGenerator.helper_data_distribution">
-<a class="viewcode-back" href="../../../autoapi/ler/utils/index.html#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.helper_data_distribution">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/utils/gwsnr_training_data_generator/index.html#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.helper_data_distribution">[docs]</a>
     <span class="k">def</span> <span class="nf">helper_data_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gw_param</span><span class="p">,</span> <span class="n">data_distribution_range</span><span class="p">):</span>
     <span class="c1"># optimal SNR </span>
         <span class="n">snr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">gw_param</span><span class="p">[</span><span class="s1">&#39;snr_net&#39;</span><span class="p">])</span>
@@ -321,16 +324,19 @@
 
 
 <div class="viewcode-block" id="TrainingDataGenerator.combine_dicts">
-<a class="viewcode-back" href="../../../autoapi/ler/utils/index.html#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.combine_dicts">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/utils/gwsnr_training_data_generator/index.html#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.combine_dicts">[docs]</a>
     <span class="k">def</span> <span class="nf">combine_dicts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
         <span class="n">file_name_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">path_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
         <span class="n">detector</span><span class="o">=</span><span class="s1">&#39;L1&#39;</span><span class="p">,</span>
-        <span class="n">parameter_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mass_1&#39;</span><span class="p">,</span> <span class="s1">&#39;mass_2&#39;</span><span class="p">,</span> <span class="s1">&#39;luminosity_distance&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_jn&#39;</span><span class="p">,</span> <span class="s1">&#39;psi&#39;</span><span class="p">,</span> <span class="s1">&#39;geocent_time&#39;</span><span class="p">,</span> <span class="s1">&#39;ra&#39;</span><span class="p">,</span> <span class="s1">&#39;dec&#39;</span><span class="p">,</span> <span class="s1">&#39;a_1&#39;</span><span class="p">,</span> <span class="s1">&#39;a_2&#39;</span><span class="p">,</span> <span class="s1">&#39;tilt_1&#39;</span><span class="p">,</span> <span class="s1">&#39;tilt_2&#39;</span><span class="p">],</span>
+        <span class="n">parameter_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">output_jsonfile</span><span class="o">=</span><span class="s2">&quot;combined_data.json&quot;</span><span class="p">,</span>
     <span class="p">):</span>
 
-        <span class="n">parameter_list</span> <span class="o">+=</span> <span class="p">[</span><span class="n">detector</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">parameter_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parameter_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mass_1&#39;</span><span class="p">,</span> <span class="s1">&#39;mass_2&#39;</span><span class="p">,</span> <span class="s1">&#39;luminosity_distance&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_jn&#39;</span><span class="p">,</span> <span class="s1">&#39;psi&#39;</span><span class="p">,</span> <span class="s1">&#39;geocent_time&#39;</span><span class="p">,</span> <span class="s1">&#39;ra&#39;</span><span class="p">,</span> <span class="s1">&#39;dec&#39;</span><span class="p">,</span> <span class="s1">&#39;a_1&#39;</span><span class="p">,</span> <span class="s1">&#39;a_2&#39;</span><span class="p">,</span> <span class="s1">&#39;tilt_1&#39;</span><span class="p">,</span> <span class="s1">&#39;tilt_2&#39;</span><span class="p">]</span>
+
+        <span class="n">parameter_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">parameter_list</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">detector</span><span class="p">]</span>
         <span class="n">combined_dict</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="n">file_name_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -357,7 +363,7 @@
 
 
 <div class="viewcode-block" id="TrainingDataGenerator.delete_json_file">
-<a class="viewcode-back" href="../../../autoapi/ler/utils/index.html#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.delete_json_file">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/utils/gwsnr_training_data_generator/index.html#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.delete_json_file">[docs]</a>
     <span class="k">def</span> <span class="nf">delete_json_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_list</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">path_list</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>

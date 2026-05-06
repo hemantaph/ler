@@ -1,0 +1,1168 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.image_properties.cross_section_njit &mdash; ler 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css?v=551ad726" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=88a06014" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=8fa8b3e9"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../ler.html">ler</a></li>
+          <li class="breadcrumb-item"><a href="../image_properties.html">ler.image_properties</a></li>
+      <li class="breadcrumb-item active">ler.image_properties.cross_section_njit</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ler.image_properties.cross_section_njit</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module for analytical caustic computation and cross-section evaluation.</span>
+
+<span class="sd">Provides numba-accelerated routines for computing critical curves, caustic</span>
+<span class="sd">boundaries, polygon areas, and lensing cross sections for EPL (Elliptical</span>
+<span class="sd">Power-Law) + external shear lens models. All core functions are decorated</span>
+<span class="sd">with ``@njit`` for high performance.</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">    Basic workflow example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from ler.image_properties.cross_section_njit import caustic_points_epl_shear</span>
+<span class="sd">    &gt;&gt;&gt; pts = caustic_points_epl_shear(theta_E=1.0, q=0.8, phi=0.0, gamma=2.0, gamma1=0.03, gamma2=-0.01)</span>
+
+<span class="sd">Copyright (C) 2026 Phurailatpam Hemantakumar. Distributed under MIT License.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span>
+
+<div class="viewcode-block" id="C_LIGHT">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/cross_section_njit/index.html#ler.image_properties.cross_section_njit.C_LIGHT">[docs]</a>
+<span class="n">C_LIGHT</span> <span class="o">=</span> <span class="mf">299792458.0</span>  <span class="c1"># m/s</span></div>
+
+<div class="viewcode-block" id="PI">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/cross_section_njit/index.html#ler.image_properties.cross_section_njit.PI">[docs]</a>
+<span class="n">PI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span></div>
+
+<div class="viewcode-block" id="TWO_PI">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/cross_section_njit/index.html#ler.image_properties.cross_section_njit.TWO_PI">[docs]</a>
+<span class="n">TWO_PI</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">PI</span></div>
+
+<div class="viewcode-block" id="EPS">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/cross_section_njit/index.html#ler.image_properties.cross_section_njit.EPS">[docs]</a>
+<span class="n">EPS</span> <span class="o">=</span> <span class="mf">1e-16</span></div>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="phi_q2_ellipticity">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/cross_section_njit/index.html#ler.image_properties.cross_section_njit.phi_q2_ellipticity">[docs]</a>
+<span class="k">def</span> <span class="nf">phi_q2_ellipticity</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert lens orientation and axis ratio to ellipticity components.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    phi : ``float``</span>
+<span class="sd">        Position angle of the lens major axis in radians. \n</span>
+<span class="sd">    q : ``float``</span>
+<span class="sd">        Axis ratio (minor/major), where ``0 &lt; q &lt;= 1``. \n</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    e1 : ``float``</span>
+<span class="sd">        First ellipticity component. \n</span>
+<span class="sd">    e2 : ``float``</span>
+<span class="sd">        Second ellipticity component. \n</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; e1, e2 = phi_q2_ellipticity(phi=0.25, q=0.8)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">q</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">q</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">e</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">phi</span><span class="p">),</span> <span class="n">e</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">phi</span><span class="p">)</span></div>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_shear_cartesian2polar</span><span class="p">(</span><span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert Cartesian shear components to polar form.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    gamma1 : ``float``</span>
+<span class="sd">        First Cartesian shear component. \n</span>
+<span class="sd">    gamma2 : ``float``</span>
+<span class="sd">        Second Cartesian shear component. \n</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    phi : ``float``</span>
+<span class="sd">        Shear position angle in radians. \n</span>
+<span class="sd">    gamma : ``float``</span>
+<span class="sd">        Shear magnitude. \n</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">gamma2</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">gamma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">gamma1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">gamma2</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="ellipticity2phi_q">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/cross_section_njit/index.html#ler.image_properties.cross_section_njit.ellipticity2phi_q">[docs]</a>
+<span class="k">def</span> <span class="nf">ellipticity2phi_q</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert complex ellipticity moduli to orientation angle and axis ratio.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    e1 : ``float``</span>
+<span class="sd">        First ellipticity component. \n</span>
+<span class="sd">    e2 : ``float``</span>
+<span class="sd">        Second ellipticity component. \n</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    phi : ``float``</span>
+<span class="sd">        Orientation angle in radians. \n</span>
+<span class="sd">    q : ``float``</span>
+<span class="sd">        Axis ratio (minor/major). \n</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; phi, q = ellipticity2phi_q(0.1, 0.05)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">e2</span><span class="p">,</span> <span class="n">e1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">e1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">e2</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="mf">0.9999</span><span class="p">)</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">c</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">phi</span><span class="p">,</span> <span class="n">q</span></div>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_shear_polar2cartesian</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert polar shear representation to Cartesian components.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    phi : ``float``</span>
+<span class="sd">        Shear position angle in radians. \n</span>
+<span class="sd">    gamma : ``float``</span>
+<span class="sd">        Shear magnitude. \n</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    gamma1 : ``float``</span>
+<span class="sd">        First Cartesian shear component. \n</span>
+<span class="sd">    gamma2 : ``float``</span>
+<span class="sd">        Second Cartesian shear component. \n</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">gamma1</span> <span class="o">=</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">phi</span><span class="p">)</span>
+    <span class="n">gamma2</span> <span class="o">=</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">phi</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span>
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_rotmat</span><span class="p">(</span><span class="n">th</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute a 2D rotation matrix.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    th : ``float``</span>
+<span class="sd">        Rotation angle in radians. \n</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    M : ``numpy.ndarray``</span>
+<span class="sd">        2×2 rotation matrix. \n</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">th</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">th</span><span class="p">)],</span> <span class="p">[</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">th</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">th</span><span class="p">)]])</span>
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="omega">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/cross_section_njit/index.html#ler.image_properties.cross_section_njit.omega">[docs]</a>
+<span class="k">def</span> <span class="nf">omega</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">niter_max</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-16</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluate the complex angular function Omega for the EPL profile.</span>
+
+<span class="sd">    This series expansion converges geometrically with ratio</span>
+<span class="sd">    ``f = (1 - q)/(1 + q)``. The ``fastmath`` flag provides ~4x speedup</span>
+<span class="sd">    due to the reduction nature of the summation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    phi : ``numpy.ndarray``</span>
+<span class="sd">        Azimuthal angles in radians. \n</span>
+<span class="sd">    t : ``float``</span>
+<span class="sd">        EPL slope exponent (``t = gamma - 1``). \n</span>
+<span class="sd">    q : ``float``</span>
+<span class="sd">        Axis ratio. \n</span>
+<span class="sd">    niter_max : ``int``</span>
+<span class="sd">        Maximum number of series terms. \n</span>
+<span class="sd">        default: 200</span>
+<span class="sd">    tol : ``float``</span>
+<span class="sd">        Convergence tolerance. \n</span>
+<span class="sd">        default: 1e-16</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    omegas : ``numpy.ndarray``</span>
+<span class="sd">        Complex Omega values at each angle. \n</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; phi = np.linspace(0, 2 * np.pi, 100)</span>
+<span class="sd">    &gt;&gt;&gt; omegas = omega(phi, t=1.0, q=0.8)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">q</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">q</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">f</span> <span class="o">&lt;=</span> <span class="n">EPS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phi</span><span class="p">)</span>
+        
+    <span class="n">omegas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+    <span class="n">niter</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
+        <span class="n">niter_max</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tol</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">f</span><span class="p">))</span> <span class="o">+</span> <span class="mi">2</span>
+    <span class="p">)</span>  <span class="c1"># The absolute value of each summand is always less than f, hence this limit for the number of iterations.</span>
+    <span class="n">Omega</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phi</span><span class="p">)</span>
+    <span class="n">fact</span> <span class="o">=</span> <span class="o">-</span><span class="n">f</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="n">j</span> <span class="o">*</span> <span class="n">phi</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">niter</span><span class="p">):</span>
+        <span class="n">omegas</span> <span class="o">+=</span> <span class="n">Omega</span>
+        <span class="n">Omega</span> <span class="o">*=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">-</span> <span class="p">(</span><span class="mi">2</span> <span class="o">-</span> <span class="n">t</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span> <span class="o">-</span> <span class="n">t</span><span class="p">))</span> <span class="o">*</span> <span class="n">fact</span>
+    <span class="n">omegas</span> <span class="o">+=</span> <span class="n">Omega</span>
+
+    <span class="k">return</span> <span class="n">omegas</span></div>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="cdot">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/cross_section_njit/index.html#ler.image_properties.cross_section_njit.cdot">[docs]</a>
+<span class="k">def</span> <span class="nf">cdot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the real-valued dot product of two complex numbers.</span>
+
+<span class="sd">    Equivalent to ``Re(a) * Re(b) + Im(a) * Im(b)``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a : ``complex``</span>
+<span class="sd">        First complex number. \n</span>
+<span class="sd">    b : ``complex``</span>
+<span class="sd">        Second complex number. \n</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result : ``float``</span>
+<span class="sd">        Real-valued dot product. \n</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; cdot(1+2j, 3+4j)</span>
+<span class="sd">    11.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">real</span> <span class="o">*</span> <span class="n">b</span><span class="o">.</span><span class="n">real</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">imag</span> <span class="o">*</span> <span class="n">b</span><span class="o">.</span><span class="n">imag</span></div>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_solvequadeq</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solve a quadratic equation with numerically careful root selection.</span>
+
+<span class="sd">    Uses sign-stabilized formulas to avoid loss of significance.</span>
+<span class="sd">    See https://en.wikipedia.org/wiki/Loss_of_significance.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a : ``numpy.ndarray``</span>
+<span class="sd">        Quadratic coefficient. \n</span>
+<span class="sd">    b : ``numpy.ndarray``</span>
+<span class="sd">        Linear coefficient. \n</span>
+<span class="sd">    c : ``numpy.ndarray``</span>
+<span class="sd">        Constant coefficient. \n</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x1 : ``numpy.ndarray``</span>
+<span class="sd">        First root. \n</span>
+<span class="sd">    x2 : ``numpy.ndarray``</span>
+<span class="sd">        Second root. \n</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># # Clamp discriminant: angles with no real critical curve get a repeated root</span>
+    <span class="c1"># # instead of NaN from sqrt(negative).</span>
+    <span class="c1"># disc = np.maximum(b**2 - 4.0 * a * c, 0.0)</span>
+    <span class="c1"># sD = np.sqrt(disc)</span>
+    <span class="c1"># denominator = -b - np.sign(b) * sD</span>
+    <span class="c1"># x1 = np.where(np.abs(denominator) &gt; 1e-30, denominator / (2 * a), -sD / (2.0 * a))</span>
+    <span class="c1"># x2 = np.where(np.abs(denominator) &gt; 1e-30, 2 * c / denominator, sD / (2.0 * a))</span>
+    <span class="c1"># return x1, x2</span>
+
+    <span class="n">sD</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="n">c</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">sD</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">c</span> <span class="o">/</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">sD</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+            <span class="n">b</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> 
+            <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+                <span class="n">a</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> 
+                <span class="n">x1</span><span class="p">,</span> 
+                <span class="o">-</span><span class="n">c</span> <span class="o">/</span> <span class="n">b</span>
+            <span class="p">),</span> 
+            <span class="o">-</span><span class="p">((</span><span class="o">-</span><span class="n">c</span> <span class="o">/</span> <span class="n">a</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="p">),</span> 
+        <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+            <span class="n">b</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> 
+            <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+                <span class="n">a</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> 
+                <span class="n">x2</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span> <span class="n">b</span> <span class="o">+</span> <span class="mf">1e-8</span>
+            <span class="p">),</span> 
+            <span class="o">+</span><span class="p">((</span><span class="o">-</span><span class="n">c</span> <span class="o">/</span> <span class="n">a</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="pol_to_cart">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/cross_section_njit/index.html#ler.image_properties.cross_section_njit.pol_to_cart">[docs]</a>
+<span class="k">def</span> <span class="nf">pol_to_cart</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">th</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert polar coordinates to Cartesian coordinates.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    r : ``float`` or ``numpy.ndarray``</span>
+<span class="sd">        Radial coordinate. \n</span>
+<span class="sd">    th : ``float`` or ``numpy.ndarray``</span>
+<span class="sd">        Polar angle in radians. \n</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x : ``float`` or ``numpy.ndarray``</span>
+<span class="sd">        Cartesian x-coordinate. \n</span>
+<span class="sd">    y : ``float`` or ``numpy.ndarray``</span>
+<span class="sd">        Cartesian y-coordinate. \n</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; x, y = pol_to_cart(1.0, np.pi / 4)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">th</span><span class="p">),</span> <span class="n">r</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">th</span><span class="p">)</span></div>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_alpha_epl_shear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">,</span> <span class="n">Omega</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the complex deflection of an EPL + external shear lens.</span>
+
+<span class="sd">    alpha_EPL = (2 * b) / (1 + q) * (b / R)^t * R / b * Omega</span>
+<span class="sd">    alpha_Shear = gamma1 * x + gamma2 * y + i * (gamma2 * x - gamma1 * y)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : ``numpy.ndarray``</span>
+<span class="sd">        Cartesian x-coordinate. \n</span>
+<span class="sd">    y : ``numpy.ndarray``</span>
+<span class="sd">        Cartesian y-coordinate. \n</span>
+<span class="sd">    b : ``float``</span>
+<span class="sd">        EPL scale radius. \n</span>
+<span class="sd">    q : ``float``</span>
+<span class="sd">        Axis ratio. \n</span>
+<span class="sd">    t : ``float``</span>
+<span class="sd">        EPL slope exponent (``t = gamma - 1``). \n</span>
+<span class="sd">    gamma1 : ``float``</span>
+<span class="sd">        First shear component. \n</span>
+<span class="sd">    gamma2 : ``float``</span>
+<span class="sd">        Second shear component. \n</span>
+<span class="sd">    Omega : ``numpy.ndarray``</span>
+<span class="sd">        Complex angular function Omega. \n</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    alpha : ``numpy.ndarray``</span>
+<span class="sd">        Complex deflection array. \n</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">zz</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">q</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">y</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">zz</span><span class="p">)</span>
+    <span class="c1">#alph = (2 * b) / (1 + q) * np.nan_to_num((b / R) ** t * R / b) * Omega</span>
+    <span class="n">alph</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span> <span class="n">b</span><span class="o">**</span><span class="n">t</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">q</span><span class="p">)</span> <span class="o">*</span> <span class="n">R</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">Omega</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">alph</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">gamma1</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">gamma2</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span>
+        <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">gamma2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">gamma1</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="cart_to_pol">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/cross_section_njit/index.html#ler.image_properties.cross_section_njit.cart_to_pol">[docs]</a>
+<span class="k">def</span> <span class="nf">cart_to_pol</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert Cartesian coordinates to polar coordinates.</span>
+
+<span class="sd">    The returned angle is wrapped to ``[0, 2π)``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : ``float`` or ``numpy.ndarray``</span>
+<span class="sd">        Cartesian x-coordinate. \n</span>
+<span class="sd">    y : ``float`` or ``numpy.ndarray``</span>
+<span class="sd">        Cartesian y-coordinate. \n</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    r : ``float`` or ``numpy.ndarray``</span>
+<span class="sd">        Radial coordinate. \n</span>
+<span class="sd">    theta : ``float`` or ``numpy.ndarray``</span>
+<span class="sd">        Polar angle in radians, wrapped to ``[0, 2π)``. \n</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; r, theta = cart_to_pol(1.0, 1.0)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span></div>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_interp_periodic</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">period</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform numba-compatible periodic linear interpolation.</span>
+
+<span class="sd">    Equivalent to ``np.interp`` with the ``period`` keyword.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : ``numpy.ndarray``</span>
+<span class="sd">        Query points. \n</span>
+<span class="sd">    xp : ``numpy.ndarray``</span>
+<span class="sd">        Known x-values, sorted and within ``[0, period)``. \n</span>
+<span class="sd">    fp : ``numpy.ndarray``</span>
+<span class="sd">        Known function values corresponding to ``xp``. \n</span>
+<span class="sd">    period : ``float``</span>
+<span class="sd">        Period of the function. \n</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result : ``numpy.ndarray``</span>
+<span class="sd">        Interpolated values at query points. \n</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">xi</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">%</span> <span class="n">period</span>
+        <span class="c1"># binary search in sorted xp (assumed sorted and within [0, period))</span>
+        <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">lo</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">:</span>
+            <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="k">if</span> <span class="n">xp</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">xi</span><span class="p">:</span>
+                <span class="n">lo</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">hi</span> <span class="o">=</span> <span class="n">mid</span>
+        <span class="c1"># lo is the index of the first element &gt;= xi</span>
+        <span class="k">if</span> <span class="n">lo</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># xi is before the first point – wrap around</span>
+            <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">xp</span><span class="p">[</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">period</span><span class="p">,</span> <span class="n">xp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">f0</span><span class="p">,</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">fp</span><span class="p">[</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">fp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">xp</span><span class="p">[</span><span class="n">lo</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">xp</span><span class="p">[</span><span class="n">lo</span><span class="p">]</span>
+            <span class="n">f0</span><span class="p">,</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">fp</span><span class="p">[</span><span class="n">lo</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">fp</span><span class="p">[</span><span class="n">lo</span><span class="p">]</span>
+
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dx</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-30</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">f0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">f0</span> <span class="o">+</span> <span class="p">(</span><span class="n">f1</span> <span class="o">-</span> <span class="n">f0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">xi</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">/</span> <span class="n">dx</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_rotmat</span><span class="p">(</span><span class="n">th</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute a 2D rotation matrix.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    th : ``float``</span>
+<span class="sd">        Rotation angle in radians. \n</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    M : ``numpy.ndarray``</span>
+<span class="sd">        2×2 rotation matrix. \n</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">th</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">th</span><span class="p">)],</span> <span class="p">[</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">th</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">th</span><span class="p">)]])</span>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_helper_caustic_epl_shear</span><span class="p">(</span>
+    <span class="n">q</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">,</span> <span class="n">theta_E</span><span class="p">,</span>
+    <span class="n">theta</span><span class="p">,</span> <span class="n">cos_th</span><span class="p">,</span> <span class="n">sin_th</span><span class="p">,</span> <span class="n">cos_2th</span><span class="p">,</span> <span class="n">sin_2th</span><span class="p">,</span>
+    <span class="n">maginf</span><span class="o">=-</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">quad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">half_only</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates the unrotated radial boundaries of the EPL+shear caustic </span>
+<span class="sd">    and writes them into the provided workspace arrays.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    q : ``float``</span>
+<span class="sd">        Axis ratio. \n</span>
+<span class="sd">    phi : ``float``</span>
+<span class="sd">        Position angle of the lens major axis in radians. \n</span>
+<span class="sd">    gamma : ``float``</span>
+<span class="sd">        EPL slope exponent. \n</span>
+<span class="sd">    gamma1 : ``float``</span>
+<span class="sd">        First shear component. \n</span>
+<span class="sd">    gamma2 : ``float``</span>
+<span class="sd">        Second shear component. \n</span>
+<span class="sd">    theta_E : ``float``</span>
+<span class="sd">        Einstein radius. \n</span>
+<span class="sd">    theta : ``numpy.ndarray``</span>
+<span class="sd">        Array of angles. \n</span>
+<span class="sd">    cos_th : ``numpy.ndarray``</span>
+<span class="sd">        Array of cosine of angles. \n</span>
+<span class="sd">    sin_th : ``numpy.ndarray``</span>
+<span class="sd">        Array of sine of angles. \n</span>
+<span class="sd">    cos_2th : ``numpy.ndarray``</span>
+<span class="sd">        Array of cosine of 2*angles. \n</span>
+<span class="sd">    sin_2th : ``numpy.ndarray``</span>
+<span class="sd">        Array of sine of 2*angles. \n</span>
+<span class="sd">    maginf : ``float``</span>
+<span class="sd">        Magnification cut threshold. \n</span>
+<span class="sd">        default: -100.0</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pos_tosample : ``numpy.ndarray``</span>
+<span class="sd">        Cartesian coordinates of the radial boundaries. \n</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">t</span> <span class="o">=</span> <span class="n">gamma</span> <span class="o">-</span> <span class="mf">1.0</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">*</span> <span class="n">theta_E</span>
+
+    <span class="c1"># rotation M is done outside this helper to avoid redundant computation</span>
+
+    <span class="c1"># convert shear to polar form and rotate into lens-aligned coordinates</span>
+    <span class="n">theta_gamma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">gamma2</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">gamma_mag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">gamma1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">gamma2</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">theta_gamma</span> <span class="o">-=</span> <span class="n">phi</span> <span class="c1"># rotate shear into lens-aligned coordinates</span>
+    <span class="n">gamma1_rot</span> <span class="o">=</span> <span class="n">gamma_mag</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">theta_gamma</span><span class="p">)</span>
+    <span class="n">gamma2_rot</span> <span class="o">=</span> <span class="n">gamma_mag</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">theta_gamma</span><span class="p">)</span>
+
+    <span class="c1"># R=np.sqrt(q**2 * x**2 + y**2), with x=cos(theta), y=sin(theta)</span>
+    <span class="c1"># (x,y) are the coordinates of the unit circle, so this is just the elliptical radius at each angle.</span>
+    <span class="c1"># theta is the polar angle of the unit circle, so phi_theta_ell is the corresponding angle in the elliptical coordinate system.</span>
+    <span class="c1"># theta = np.linspace(0, 2 * np.pi * (1.0 - 1.0 / num_th), num_th)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">R_theta_ell</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">q</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">cos_th</span>
+     <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">sin_th</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">phi_theta_ell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">sin_th</span><span class="p">,</span> <span class="n">cos_th</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span>
+    <span class="c1"># angular part of the deflection</span>
+    <span class="c1"># deflection = fn1(R) x fn2(theta), where fn1 is the radial scaling and fn2 is the angular function Omega.</span>
+    <span class="c1"># no output, just populate the given Omega array</span>
+    <span class="n">Omega</span> <span class="o">=</span> <span class="n">omega</span><span class="p">(</span><span class="n">phi_theta_ell</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="c1"># check with the scalar version also</span>
+
+    <span class="c1"># Assemble quadratic coefficients for inverse-radius solutions</span>
+    <span class="c1"># (K^2 - |\vec{\Gamma}|^2) u^2 - (2K + 2\vec{\Gamma} \cdot \vec{\gamma}_{ext}) u + (1 - |\vec{\gamma}_{ext}|^2) = 0</span>
+    <span class="c1"># \vec{\Gamma} = gammaint_fac , </span>
+    <span class="c1"># aa = 1 - |gamma_ext|^2</span>
+    <span class="c1"># bb = -2(2-t)/2 - 2 * cdot(gamma, gammaint_fac)</span>
+    <span class="c1"># cc = K**2 - gammaint_fac**2 , K = (2-t)/2</span>
+    <span class="c1"># cc = 2*K*A*Re(exp(i*theta)*Omega) - A^2*|Omega|^2, A = (1-t)*2/(1+q)/R</span>
+
+    <span class="c1"># constant term </span>
+    <span class="n">aa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">gamma_ext</span> <span class="o">=</span> <span class="n">gamma1_rot</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">gamma2_rot</span> <span class="c1"># external shear, np.abs(gamma_ext)**2 = gamma1_rot**2 + gamma2_rot**2</span>
+    <span class="n">aa</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gamma_ext</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    
+    <span class="c1"># linear term</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="mi">2</span> <span class="o">-</span> <span class="n">t</span><span class="p">))</span>
+    <span class="n">frac_roverR</span> <span class="o">=</span> <span class="n">r</span> <span class="o">/</span> <span class="n">R_theta_ell</span>
+    <span class="c1"># internal shear contribution</span>
+    <span class="c1"># replace np.exp(2j * theta) with cos_2th + 1j*sin_2th and np.exp(1j * theta) with cos_th + 1j*sin_th </span>
+    <span class="n">gammaint_fac</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="o">-</span><span class="p">(</span><span class="n">cos_2th</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">sin_2th</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">cos_th</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">sin_th</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">q</span><span class="p">)</span> <span class="o">*</span> <span class="n">Omega</span> <span class="o">/</span> <span class="n">frac_roverR</span>
+    <span class="p">)</span> <span class="c1"># gamma_internal = gammaint_fac * u</span>
+    <span class="c1"># external shear contribution to the linear term of the quadratic system</span>
+    <span class="n">bb</span> <span class="o">-=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">cdot</span><span class="p">(</span><span class="n">gamma_ext</span><span class="p">,</span> <span class="n">gammaint_fac</span><span class="p">)</span>
+
+    <span class="c1"># quadratic term</span>
+    <span class="n">cc</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span>
+        <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span>
+        <span class="o">*</span> <span class="p">(</span><span class="n">cdot</span><span class="p">(</span><span class="n">cos_th</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">sin_th</span><span class="p">,</span> <span class="n">Omega</span><span class="p">))</span>
+        <span class="o">/</span> <span class="n">frac_roverR</span>
+        <span class="o">*</span> <span class="mi">2</span>
+        <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">q</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">cc</span> <span class="o">-=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">q</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Omega</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">frac_roverR</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="c1"># Solve for the main (quad) critical curve branch</span>
+    <span class="c1"># solve for u = (R/r)^t</span>
+    <span class="c1"># u = (R/r)^t is physically a positive radial ratio; negative roots are</span>
+    <span class="c1"># unphysical (occur when cc &lt; 0, aa &gt; 0). np.abs preserves the correct</span>
+    <span class="c1"># magnitude while keeping the result real.</span>
+    <span class="n">x1_4</span><span class="p">,</span> <span class="n">x2_4</span> <span class="o">=</span> <span class="n">_solvequadeq</span><span class="p">(</span><span class="n">cc</span><span class="p">,</span> <span class="n">bb</span><span class="p">,</span> <span class="n">aa</span><span class="p">)</span>
+    <span class="c1"># if usol[:, 1] &lt; 1e-30:</span>
+    <span class="c1">#     u4 = usol[:, 0]</span>
+    <span class="c1"># else:</span>
+    <span class="c1">#     u4 = usol[:, 1]</span>
+    <span class="n">u4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x2_4</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">x2_4</span><span class="p">,</span> <span class="n">x1_4</span><span class="p">)</span>
+    <span class="n">xcr_4</span><span class="p">,</span> <span class="n">ycr_4</span> <span class="o">=</span> <span class="n">pol_to_cart</span><span class="p">(</span>
+        <span class="n">b</span> <span class="o">*</span> <span class="n">u4</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">frac_roverR</span><span class="p">,</span>
+        <span class="n">theta</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Solve the secondary branch (cut) with t-dependent magnification convention</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">t</span> <span class="o">&gt;</span> <span class="mi">1</span>
+    <span class="p">):</span>  <span class="c1"># If t&gt;1, get the approximate outer caustic instead (where inverse magnification = maginf).</span>
+        <span class="n">x1_cut</span><span class="p">,</span> <span class="n">x2_cut</span> <span class="o">=</span> <span class="n">_solvequadeq</span><span class="p">(</span><span class="n">cc</span><span class="p">,</span> <span class="n">bb</span><span class="p">,</span> <span class="n">aa</span> <span class="o">-</span> <span class="n">maginf</span><span class="p">)</span>
+        <span class="n">u_cut</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x2_cut</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">x2_cut</span><span class="p">,</span> <span class="n">x1_cut</span><span class="p">)</span>
+        <span class="n">xcr_cut</span><span class="p">,</span> <span class="n">ycr_cut</span> <span class="o">=</span> <span class="n">pol_to_cart</span><span class="p">(</span>
+            <span class="n">b</span> <span class="o">*</span> <span class="n">u_cut</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">frac_roverR</span><span class="p">,</span>
+            <span class="n">theta</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">x1_cut</span><span class="p">,</span> <span class="n">x2_cut</span> <span class="o">=</span> <span class="n">_solvequadeq</span><span class="p">(</span><span class="n">cc</span><span class="p">,</span> <span class="n">bb</span><span class="p">,</span> <span class="n">aa</span> <span class="o">+</span> <span class="n">maginf</span><span class="p">)</span>
+        <span class="n">u_cut</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x1_cut</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">x1_cut</span><span class="p">,</span> <span class="n">x2_cut</span><span class="p">)</span>
+        <span class="n">xcr_cut</span><span class="p">,</span> <span class="n">ycr_cut</span> <span class="o">=</span> <span class="n">pol_to_cart</span><span class="p">(</span>
+            <span class="n">b</span> <span class="o">*</span> <span class="n">u_cut</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">frac_roverR</span><span class="p">,</span>
+            <span class="n">theta</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Compute deflection and map critical curves to caustics </span>
+    <span class="n">al_cut</span> <span class="o">=</span> <span class="n">_alpha_epl_shear</span><span class="p">(</span><span class="n">xcr_cut</span><span class="p">,</span> <span class="n">ycr_cut</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">gamma1_rot</span><span class="p">,</span> <span class="n">gamma2_rot</span><span class="p">,</span> <span class="n">Omega</span><span class="o">=</span><span class="n">Omega</span><span class="p">)</span>
+    <span class="n">al_4</span> <span class="o">=</span> <span class="n">_alpha_epl_shear</span><span class="p">(</span><span class="n">xcr_4</span><span class="p">,</span> <span class="n">ycr_4</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">gamma1_rot</span><span class="p">,</span> <span class="n">gamma2_rot</span><span class="p">,</span> <span class="n">Omega</span><span class="o">=</span><span class="n">Omega</span><span class="p">)</span>
+
+    <span class="n">xca_cut</span><span class="p">,</span> <span class="n">yca_cut</span> <span class="o">=</span> <span class="n">xcr_cut</span> <span class="o">-</span> <span class="n">al_cut</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">ycr_cut</span> <span class="o">-</span> <span class="n">al_cut</span><span class="o">.</span><span class="n">imag</span>
+    <span class="n">xca_4</span><span class="p">,</span> <span class="n">yca_4</span> <span class="o">=</span> <span class="n">xcr_4</span> <span class="o">-</span> <span class="n">al_4</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">ycr_4</span> <span class="o">-</span> <span class="n">al_4</span><span class="o">.</span><span class="n">imag</span>
+    <span class="c1"># If not source plane, the caustic points are just the critical curve points, so no deflection mapping.</span>
+    <span class="c1"># xca_cut, yca_cut = xcr_cut, ycr_cut</span>
+    <span class="c1"># xca_4, yca_4 = xcr_4, ycr_4</span>
+
+    <span class="c1"># # Return individual branches early when explicitly requested</span>
+    <span class="c1"># if return_which == &quot;caustic&quot;:</span>
+    <span class="c1">#     return M @ np.stack((xca_4, yca_4)) + cen</span>
+    <span class="c1"># if return_which == &quot;cut&quot;:</span>
+    <span class="c1">#     return M @ np.stack((xca_cut, yca_cut)) + cen</span>
+
+    <span class="c1"># Interpolate cut radius onto caustic angles for boundary composition</span>
+    <span class="n">rcut</span><span class="p">,</span> <span class="n">thcut</span> <span class="o">=</span> <span class="n">cart_to_pol</span><span class="p">(</span><span class="n">xca_cut</span><span class="p">,</span> <span class="n">yca_cut</span><span class="p">)</span>
+    <span class="n">r</span><span class="p">,</span> <span class="n">th</span> <span class="o">=</span> <span class="n">cart_to_pol</span><span class="p">(</span><span class="n">xca_4</span><span class="p">,</span> <span class="n">yca_4</span><span class="p">)</span>
+    <span class="c1"># Sort cut data by angle for interpolation.</span>
+    <span class="c1"># When half_only=True the input theta covers only [0, π).  Both caustic</span>
+    <span class="c1"># branches have inversion symmetry: rcut[i+h] == rcut[i] and</span>
+    <span class="c1"># thcut[i+h] == (thcut[i] + π) % 2π.  Mirror the half cut-branch to</span>
+    <span class="c1"># reconstruct full-circle coverage before the periodic interpolation.</span>
+    <span class="k">if</span> <span class="n">half_only</span><span class="p">:</span>
+        <span class="n">nh</span> <span class="o">=</span> <span class="n">thcut</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># Compute mirrored angles via Cartesian negation: arctan2(-y,-x) is</span>
+        <span class="c1"># more numerically stable than (arctan2(y,x) + π) % 2π, especially</span>
+        <span class="c1"># near 0 and π where modular arithmetic can lose a ULP.</span>
+        <span class="n">thcut_mir</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">nh</span><span class="p">)</span>
+        <span class="n">rcut_mir</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">nh</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nh</span><span class="p">):</span>
+            <span class="n">th_i</span> <span class="o">=</span> <span class="n">thcut</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">thcut_mir</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">th_i</span>
+            <span class="n">th_shift</span> <span class="o">=</span> <span class="n">th_i</span> <span class="o">+</span> <span class="n">PI</span>
+            <span class="k">if</span> <span class="n">th_shift</span> <span class="o">&gt;=</span> <span class="n">TWO_PI</span><span class="p">:</span>
+                <span class="n">th_shift</span> <span class="o">-=</span> <span class="n">TWO_PI</span>
+            <span class="n">thcut_mir</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">nh</span><span class="p">]</span> <span class="o">=</span> <span class="n">th_shift</span>
+            <span class="n">rcut_mir</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rcut</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">rcut_mir</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">nh</span><span class="p">]</span> <span class="o">=</span> <span class="n">rcut</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">sort_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">thcut_mir</span><span class="p">)</span>
+        <span class="n">thcut_sorted</span> <span class="o">=</span> <span class="n">thcut_mir</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]</span>
+        <span class="n">rcut_sorted</span> <span class="o">=</span> <span class="n">rcut_mir</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sort_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">thcut</span><span class="p">)</span>
+        <span class="n">thcut_sorted</span> <span class="o">=</span> <span class="n">thcut</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]</span>
+        <span class="n">rcut_sorted</span> <span class="o">=</span> <span class="n">rcut</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]</span>
+    <span class="n">r2</span> <span class="o">=</span> <span class="n">_interp_periodic</span><span class="p">(</span><span class="n">th</span><span class="p">,</span> <span class="n">thcut_sorted</span><span class="p">,</span> <span class="n">rcut_sorted</span><span class="p">,</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+
+    <span class="c1"># Build either the double-image or quad-image sampling boundary</span>
+    <span class="k">if</span> <span class="n">quad</span><span class="p">:</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fmin</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">r2</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fmax</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">r2</span><span class="p">)</span>
+
+    <span class="c1"># Convert the selected radial boundary back to Cartesian samples</span>
+    <span class="n">num_th</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">pos_tosample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_th</span><span class="p">))</span>
+    <span class="n">pos_tosample</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos_tosample</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pol_to_cart</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">th</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pos_tosample</span>
+
+    <span class="c1"># return pol_to_cart(r, th)</span>
+
+<span class="c1"># 3. THE POINT CALCULATOR</span>
+<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="caustic_points_epl_shear">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/cross_section_njit/index.html#ler.image_properties.cross_section_njit.caustic_points_epl_shear">[docs]</a>
+<span class="k">def</span> <span class="nf">caustic_points_epl_shear</span><span class="p">(</span>
+    <span class="n">theta_E</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">,</span> <span class="n">num_th</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">maginf</span><span class="o">=-</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">quad</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the 2D coordinates of the caustic for a SINGLE lens.</span>
+<span class="sd">    Accepts scalar float values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    theta_E : ``float``</span>
+<span class="sd">        Einstein radius. \n</span>
+<span class="sd">    q : ``float``</span>
+<span class="sd">        Axis ratio. \n</span>
+<span class="sd">    phi : ``float``</span>
+<span class="sd">        Position angle of the lens major axis in radians. \n</span>
+<span class="sd">    gamma : ``float``</span>
+<span class="sd">        EPL slope exponent. \n</span>
+<span class="sd">    gamma1 : ``float``</span>
+<span class="sd">        First shear component. \n</span>
+<span class="sd">    gamma2 : ``float``</span>
+<span class="sd">        Second shear component. \n</span>
+<span class="sd">    num_th : ``int``</span>
+<span class="sd">        Number of angular samples. \n</span>
+<span class="sd">        default: 500</span>
+<span class="sd">    maginf : ``float``</span>
+<span class="sd">        Magnification cut threshold. \n</span>
+<span class="sd">        default: -100.0</span>
+<span class="sd">    quad : ``bool``</span>
+<span class="sd">        If True, return the quad (inner) caustic. If False, return the double (outer) caustic. \n</span>
+<span class="sd">        default: False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    rotated : ``numpy.ndarray``</span>
+<span class="sd">        Shape ``(2, num_th)`` Cartesian coordinates of the caustic. \n</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; pts = caustic_points_epl_shear(theta_E=1.0, q=0.8, phi=0.0, gamma=2.0, gamma1=0.03, gamma2=-0.01)</span>
+<span class="sd">    &gt;&gt;&gt; pts_quad = caustic_points_epl_shear(theta_E=1.0, q=0.8, phi=0.0, gamma=2.0, gamma1=0.03, gamma2=-0.01, quad=True)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Exploit exact 2-fold symmetry C(θ+π) = -C(θ): only compute the first</span>
+    <span class="c1"># half of the boundary (theta in [0, π)) and mirror to reconstruct the</span>
+    <span class="c1"># second half.  half_only=True makes _helper extend the cut-branch angles</span>
+    <span class="c1"># to [0, 2π) for correct _interp_periodic coverage even though the input</span>
+    <span class="c1"># only covers [0, π).  The full (2, num_th) output has exactly the same</span>
+    <span class="c1"># values as calling the helper with all num_th angles.</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">num_th</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">theta_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">PI</span> <span class="o">/</span> <span class="n">num_th</span><span class="p">)</span>
+
+    <span class="n">cos_th</span><span class="p">,</span> <span class="n">sin_th</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_h</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_h</span><span class="p">)</span>
+    <span class="n">cos_2th</span><span class="p">,</span> <span class="n">sin_2th</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">theta_h</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">theta_h</span><span class="p">)</span>
+
+    <span class="n">pos_half</span> <span class="o">=</span> <span class="n">_helper_caustic_epl_shear</span><span class="p">(</span>
+        <span class="n">q</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">,</span> <span class="n">theta_E</span><span class="p">,</span>
+        <span class="n">theta_h</span><span class="p">,</span> <span class="n">cos_th</span><span class="p">,</span> <span class="n">sin_th</span><span class="p">,</span> <span class="n">cos_2th</span><span class="p">,</span> <span class="n">sin_2th</span><span class="p">,</span>
+        <span class="n">maginf</span><span class="o">=</span><span class="n">maginf</span><span class="p">,</span> <span class="n">quad</span><span class="o">=</span><span class="n">quad</span><span class="p">,</span> <span class="n">half_only</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Reconstruct full (2, num_th) output: second half is the antipodal of the first</span>
+    <span class="n">pos_full</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_th</span><span class="p">))</span>
+    <span class="n">pos_full</span><span class="p">[:,</span> <span class="p">:</span><span class="n">h</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos_half</span>
+    <span class="n">pos_full</span><span class="p">[:,</span> <span class="n">h</span><span class="p">:]</span> <span class="o">=</span> <span class="o">-</span><span class="n">pos_half</span>
+
+    <span class="n">M</span> <span class="o">=</span> <span class="n">_rotmat</span><span class="p">(</span><span class="o">-</span><span class="n">phi</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">M</span> <span class="o">@</span> <span class="n">pos_full</span></div>
+
+    <span class="c1"># # Numba-friendly explicit 2D rotation (equivalent to _rotmat(-phi) @ pos_tosample)</span>
+    <span class="c1"># c = np.cos(phi)</span>
+    <span class="c1"># s = np.sin(phi)</span>
+    <span class="c1"># rotated = np.empty_like(pos_tosample)</span>
+    <span class="c1"># for i in range(pos_tosample.shape[1]):</span>
+    <span class="c1">#     x = pos_tosample[0, i]</span>
+    <span class="c1">#     y = pos_tosample[1, i]</span>
+    <span class="c1">#     rotated[0, i] = c * x - s * y</span>
+    <span class="c1">#     rotated[1, i] = s * x + c * y</span>
+    <span class="c1"># return rotated</span>
+
+<span class="c1"># 2. THE AREA CALCULATOR</span>
+<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="caustic_area_epl_shear">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/cross_section_njit/index.html#ler.image_properties.cross_section_njit.caustic_area_epl_shear">[docs]</a>
+<span class="k">def</span> <span class="nf">caustic_area_epl_shear</span><span class="p">(</span>
+    <span class="n">q</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">,</span> <span class="n">theta_E</span><span class="p">,</span>
+    <span class="n">theta</span><span class="p">,</span> <span class="n">cos_th</span><span class="p">,</span> <span class="n">sin_th</span><span class="p">,</span> <span class="n">cos_2th</span><span class="p">,</span> <span class="n">sin_2th</span><span class="p">,</span>
+    <span class="n">maginf</span><span class="o">=-</span><span class="mf">100.0</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the area of the double caustic for a SINGLE lens.</span>
+<span class="sd">    Accepts scalar float values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    q : ``float``</span>
+<span class="sd">        Axis ratio. \n</span>
+<span class="sd">    phi : ``float``</span>
+<span class="sd">        Position angle of the lens major axis in radians. \n</span>
+<span class="sd">    gamma : ``float``</span>
+<span class="sd">        EPL slope exponent. \n</span>
+<span class="sd">    gamma1 : ``float``</span>
+<span class="sd">        First shear component. \n</span>
+<span class="sd">    gamma2 : ``float``</span>
+<span class="sd">        Second shear component. \n</span>
+<span class="sd">    theta_E : ``float``</span>
+<span class="sd">        Einstein radius. \n</span>
+<span class="sd">    theta : ``numpy.ndarray``</span>
+<span class="sd">        Array of angles. \n</span>
+<span class="sd">    cos_th : ``numpy.ndarray``</span>
+<span class="sd">        Array of cosine of angles. \n</span>
+<span class="sd">    sin_th : ``numpy.ndarray``</span>
+<span class="sd">        Array of sine of angles. \n</span>
+<span class="sd">    cos_2th : ``numpy.ndarray``</span>
+<span class="sd">        Array of cosine of 2*angles. \n</span>
+<span class="sd">    sin_2th : ``numpy.ndarray``</span>
+<span class="sd">        Array of sine of 2*angles. \n</span>
+<span class="sd">    maginf : ``float``</span>
+<span class="sd">        Magnification cut threshold. \n</span>
+<span class="sd">        default: -100.0</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    area : ``float``</span>
+<span class="sd">        Area of the caustic. \n</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; num_th = 500</span>
+<span class="sd">    &gt;&gt;&gt; theta = np.linspace(0, 2*np.pi*(num_th//2 - 1)/num_th, num_th//2)</span>
+<span class="sd">    &gt;&gt;&gt; area = caustic_area_epl_shear(0.8, 0.0, 2.0, 0.03, -0.01, 1.0, theta, np.cos(theta), np.sin(theta), np.cos(2*theta), np.sin(2*theta))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># theta, cos_th, sin_th, cos_2th, sin_2th must cover [0, π) with num_th//2</span>
+    <span class="c1"># points — i.e. the first half of the full linspace.  The caller is</span>
+    <span class="c1"># responsible for pre-building half-size arrays so that no slicing or</span>
+    <span class="c1"># extra allocation is needed here.  Close the half-polygon via the</span>
+    <span class="c1"># antipodal of the start point (exact by 2-fold symmetry) and multiply</span>
+    <span class="c1"># the area by 2.</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">pos_half</span> <span class="o">=</span> <span class="n">_helper_caustic_epl_shear</span><span class="p">(</span>
+        <span class="n">q</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">,</span> <span class="n">theta_E</span><span class="p">,</span>
+        <span class="n">theta</span><span class="p">,</span> <span class="n">cos_th</span><span class="p">,</span> <span class="n">sin_th</span><span class="p">,</span> <span class="n">cos_2th</span><span class="p">,</span> <span class="n">sin_2th</span><span class="p">,</span>
+        <span class="n">maginf</span><span class="o">=</span><span class="n">maginf</span><span class="p">,</span> <span class="n">half_only</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">half_symmetric_polygon_area</span><span class="p">(</span><span class="n">pos_half</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos_half</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div>
+
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="half_symmetric_polygon_area">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/cross_section_njit/index.html#ler.image_properties.cross_section_njit.half_symmetric_polygon_area">[docs]</a>
+<span class="k">def</span> <span class="nf">half_symmetric_polygon_area</span><span class="p">(</span><span class="n">xh</span><span class="p">,</span> <span class="n">yh</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Area of a centrally symmetric closed polygon from half-boundary samples.</span>
+
+<span class="sd">    The full boundary is [v_0, ..., v_{h-1}, -v_0, ..., -v_{h-1}],</span>
+<span class="sd">    so the total area is twice the area of the half polygon closed by -v_0.</span>
+<span class="sd">    This avoids allocating temporary arrays of length h+1.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">xh</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">h</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+
+    <span class="n">area2_half</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="n">x_prev</span> <span class="o">=</span> <span class="n">xh</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y_prev</span> <span class="o">=</span> <span class="n">yh</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+        <span class="n">x_i</span> <span class="o">=</span> <span class="n">xh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">y_i</span> <span class="o">=</span> <span class="n">yh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">area2_half</span> <span class="o">+=</span> <span class="n">x_prev</span> <span class="o">*</span> <span class="n">y_i</span> <span class="o">-</span> <span class="n">x_i</span> <span class="o">*</span> <span class="n">y_prev</span>
+        <span class="n">x_prev</span> <span class="o">=</span> <span class="n">x_i</span>
+        <span class="n">y_prev</span> <span class="o">=</span> <span class="n">y_i</span>
+
+    <span class="n">area2_half</span> <span class="o">+=</span> <span class="n">x_prev</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">yh</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="o">-</span><span class="n">xh</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">y_prev</span>
+
+    <span class="k">if</span> <span class="n">area2_half</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">area2_half</span>
+    <span class="k">return</span> <span class="n">area2_half</span></div>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="polygon_area">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/cross_section_njit/index.html#ler.image_properties.cross_section_njit.polygon_area">[docs]</a>
+<span class="k">def</span> <span class="nf">polygon_area</span><span class="p">(</span><span class="n">xv</span><span class="p">,</span> <span class="n">yv</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the area of a simple polygon using the Shoelace formula.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xv : ``numpy.ndarray``</span>
+<span class="sd">        x-coordinates of the polygon vertices. \n</span>
+<span class="sd">    yv : ``numpy.ndarray``</span>
+<span class="sd">        y-coordinates of the polygon vertices. \n</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    area : ``float``</span>
+<span class="sd">        Area of the polygon. \n</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; area = polygon_area(np.array([0., 1., 0.]), np.array([0., 0., 1.]))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">xv</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">area</span> <span class="o">+=</span> <span class="n">xv</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">yv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">xv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">yv</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">area</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span></div>
+
+
+<div class="viewcode-block" id="make_cross_section_area_reinit">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/cross_section_njit/index.html#ler.image_properties.cross_section_njit.make_cross_section_area_reinit">[docs]</a>
+<span class="k">def</span> <span class="nf">make_cross_section_area_reinit</span><span class="p">(</span><span class="n">Da_instance</span><span class="p">,</span> <span class="n">num_th</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">maginf</span><span class="o">=-</span><span class="mf">100.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Make a jitted function to compute double-caustic cross sections.</span>
+
+<span class="sd">    Drop-in replacement with trig arrays closed over (faster),</span>
+<span class="sd">    safe memory layout, and optional chunking for huge batches.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Da_instance : ``callable``</span>
+<span class="sd">        Angular diameter distance function. \n</span>
+<span class="sd">    num_th : ``int``</span>
+<span class="sd">        Number of points to sample. \n</span>
+<span class="sd">        default: 500</span>
+<span class="sd">    maginf : ``float``</span>
+<span class="sd">        Magnification cut threshold. \n</span>
+<span class="sd">        default: -100.0</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cross_section_area : ``callable``</span>
+<span class="sd">        Jitted function to compute cross section areas. \n</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; cross_section_fn = make_cross_section_area_reinit(Da_instance)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Build only the first half of the theta grid — covers [0, π).</span>
+    <span class="c1"># This halves memory for all five trig arrays (closed over by the inner</span>
+    <span class="c1"># function) and removes the [:h] slicing overhead on every call to</span>
+    <span class="c1"># caustic_area_epl_shear.</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">num_th</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">num_th</span><span class="p">)</span>
+
+    <span class="c1"># Closed-over constants (no recomputation)</span>
+    <span class="n">cos_th</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">sin_th</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">cos_2th</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">theta</span><span class="p">)</span>
+    <span class="n">sin_2th</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">theta</span><span class="p">)</span>
+
+    <span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">cross_section_area</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">zl</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">):</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">zs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">cs_area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+        <span class="n">Ds</span> <span class="o">=</span> <span class="n">Da_instance</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span>
+        <span class="n">Dl</span> <span class="o">=</span> <span class="n">Da_instance</span><span class="p">(</span><span class="n">zl</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">Dls</span> <span class="o">=</span> <span class="p">(</span><span class="n">Ds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">zs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">-</span> <span class="n">Dl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">zl</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">zs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">theta_E</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">PI</span> <span class="o">*</span> <span class="p">(</span><span class="n">sigma</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1000.0</span> <span class="o">/</span> <span class="n">C_LIGHT</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">Dls</span> <span class="o">/</span> <span class="n">Ds</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+            <span class="n">area</span> <span class="o">=</span> <span class="n">caustic_area_epl_shear</span><span class="p">(</span>
+                <span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">phi</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">gamma</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">gamma1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">gamma2</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">theta_E</span><span class="p">,</span>
+                <span class="n">theta</span><span class="p">,</span> <span class="n">cos_th</span><span class="p">,</span> <span class="n">sin_th</span><span class="p">,</span> <span class="n">cos_2th</span><span class="p">,</span> <span class="n">sin_2th</span><span class="p">,</span>
+                <span class="n">maginf</span>
+            <span class="p">)</span>
+
+            <span class="n">cs_area</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">area</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">area</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.0</span>
+
+        <span class="k">return</span> <span class="n">cs_area</span>
+
+    <span class="k">return</span> <span class="n">cross_section_area</span></div>
+
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="cross_section_epl_shear_unit">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/cross_section_njit/index.html#ler.image_properties.cross_section_njit.cross_section_epl_shear_unit">[docs]</a>
+<span class="k">def</span> <span class="nf">cross_section_epl_shear_unit</span><span class="p">(</span>
+    <span class="n">e1</span><span class="p">,</span> 
+    <span class="n">e2</span><span class="p">,</span>
+    <span class="n">gamma</span><span class="p">,</span> 
+    <span class="n">gamma1</span><span class="p">,</span> 
+    <span class="n">gamma2</span><span class="p">,</span>
+    <span class="n">num_th</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="n">maginf</span><span class="o">=-</span><span class="mf">100.0</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute double-caustic cross sections for batched lens parameters.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    e1 : ``numpy.ndarray``</span>
+<span class="sd">        First ellipticity component array. \n</span>
+<span class="sd">    e2 : ``numpy.ndarray``</span>
+<span class="sd">        Second ellipticity component array. \n</span>
+<span class="sd">    gamma : ``numpy.ndarray``</span>
+<span class="sd">        EPL slope exponent array. \n</span>
+<span class="sd">    gamma1 : ``numpy.ndarray``</span>
+<span class="sd">        First shear component array. \n</span>
+<span class="sd">    gamma2 : ``numpy.ndarray``</span>
+<span class="sd">        Second shear component array. \n</span>
+<span class="sd">    num_th : ``int``</span>
+<span class="sd">        Number of points to sample. \n</span>
+<span class="sd">        default: 500</span>
+<span class="sd">    maginf : ``float``</span>
+<span class="sd">        Magnification cut threshold. \n</span>
+<span class="sd">        default: -100.0</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cross_section_area : ``callable``</span>
+<span class="sd">        Jitted function to compute cross section areas. \n</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; calculate_area = cross_section_epl_shear_unit(np.array([0.1]), np.array([0.05]), np.array([2.0]), np.array([0.03]), np.array([-0.01]))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Build only the first half of the theta grid — covers [0, π).</span>
+    <span class="c1"># Halves memory for all five trig arrays and removes [:h] slicing overhead</span>
+    <span class="c1"># on every caustic_area_epl_shear call inside the serial loop.</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">num_th</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">num_th</span><span class="p">)</span>
+
+    <span class="n">phi</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">ellipticity2phi_q</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">)</span>
+
+    <span class="n">cos_th</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">sin_th</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">cos_2th</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">theta</span><span class="p">)</span>
+    <span class="n">sin_2th</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">theta</span><span class="p">)</span>
+
+    <span class="n">size</span> <span class="o">=</span> <span class="n">e1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">cs_area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">theta_E</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+
+        <span class="n">area</span> <span class="o">=</span> <span class="n">caustic_area_epl_shear</span><span class="p">(</span>
+            <span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">phi</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">gamma</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">gamma1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">gamma2</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">theta_E</span><span class="p">,</span>
+            <span class="n">theta</span><span class="p">,</span> <span class="n">cos_th</span><span class="p">,</span> <span class="n">sin_th</span><span class="p">,</span> <span class="n">cos_2th</span><span class="p">,</span> <span class="n">sin_2th</span><span class="p">,</span>
+            <span class="n">maginf</span>
+        <span class="p">)</span>
+
+        <span class="n">cs_area</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">area</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">area</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.0</span>
+
+    <span class="k">return</span> <span class="n">cs_area</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

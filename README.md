@@ -1,101 +1,128 @@
 # LeR
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8087461.svg)](https://doi.org/10.5281/zenodo.8087461) [![PyPI version](https://badge.fury.io/py/ler.svg)](https://badge.fury.io/py/ler) [![DOCS](https://img.shields.io/badge/docs-GitHub%20Pages-orange)](https://ler.hemantaph.com/)
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8087461.svg)](https://doi.org/10.5281/zenodo.8087461)
+[![PyPI version](https://badge.fury.io/py/ler.svg)](https://badge.fury.io/py/ler)
+[![DOCS](https://img.shields.io/badge/docs-GitHub%20Pages-orange)](https://ler.hemantaph.com/)
 
 <p align="center">
-  <img src="lerlogo.png" alt="Your Logo" width="30%">
+  <img src="lerlogo.png" alt="ler logo" width="30%">
 </p>
+
+`ler` is a statistics-based Python package for simulating compact-binary
+gravitational-wave (GW) populations and calculating detectable event rates. It
+supports both unlensed and strongly lensed events, with workflows for source
+populations, lens populations, image properties, detector selection effects,
+and rate estimation.
+
+`ler` is intended for gravitational-wave population studies, lensing studies,
+and forecasting for current and future detector networks.
 
 ## Installation
 
+`ler` supports Python 3.10+; Python 3.11 is recommended in the
+documentation.
+
+Recommended installation with `uv`:
+
+```bash
+uv add ler
 ```
+
+You can also install with `pip`:
+
+```bash
 pip install ler
 ```
 
-## Parallelism best practices (multiprocessing + numba)
-
-LeR uses both process-level parallelism (Python multiprocessing) and thread-level parallelism (Numba `njit(parallel=True)`). To avoid CPU oversubscription and platform-specific runtime issues:
-
-- On macOS, prefer `spawn` start method (default in LeR).
-- On Linux, `fork` is default, but `spawn` can still be used if other native libraries conflict.
-- In multiprocessing workers, keep Numba threads at 1 (LeR workers already do this where needed).
-- For pure Numba multithreading paths, set `npool` to the number of threads you actually want.
-- Run multiprocessing code under `if __name__ == "__main__":` in user scripts.
-
-Recommended environment variables:
+For development, clone the repository and install in editable mode:
 
 ```bash
-# Keep BLAS/OpenMP libraries from spawning extra threads per process
-export OMP_NUM_THREADS=1
-export MKL_NUM_THREADS=1
-export OPENBLAS_NUM_THREADS=1
-
-# Optional: explicitly choose multiprocessing start method behavior
-export LER_USE_SPAWN=True   # safest on macOS and when mixing native threaded libs
-# export LER_USE_FORK=True  # Linux-only advanced override if needed
+git clone https://github.com/hemantaph/ler.git
+cd ler
+pip install -e ".[dev]"
 ```
 
-Typical tuning guidance:
+## Quick start
 
-- Multiprocessing-heavy runs: choose `npool` close to physical/logical cores; worker-side Numba threads should stay at 1.
-- Numba-parallel-only runs: set `npool` to desired Numba threads and avoid wrapping that same workload in multiprocessing.
-- Avoid running process pools and independent heavy thread pools at full core count at the same time.
+```python
+from ler import LeR
 
-## About
+ler = LeR(npool=4) # npool sets the number of parallel processes for sampling and integration. It should be set according to your system's capabilities.
 
-<p align="center">
-  <img src="docs/_static/sl.png" alt="Your Logo" width="100%">
-</p>
+# Generate simulated populations and save parameters in json files
+unlensed_param = ler.unlensed_cbc_statistics(size=100000)
+lensed_param = ler.lensed_cbc_statistics(size=100000)
 
-LeR is a Python package designed for the statistical simulation and forecasting of gravitational wave (GW) events and their rates. It is tailored to support both GW population study groups and GW lensing research groups by providing a comprehensive suite of tools for GW event analysis. The package is organized into the following main components:
+# Calculate detectable rates, saving detected parameters in json files
+unlensed_rate, unlensed_param_detected = ler.unlensed_rate()
+lensed_rate, lensed_param_detected = ler.lensed_rate()
 
-## Sampling Gravitational Wave Source Properties:
-- The source's redshift ($z_s$) sampling distribution, $R_m^U(z_s)$, is derived from the merger rate density of compact binaries, which is based on the star formation rate. The code is designed for easy integration of future updates or user-specified distributions.
-- The sampling of both intrinsic and extrinsic parameters of GW sources, represented by $\theta_i$, utilizes the prior distributions ( $P\left(\theta_i \right)$ ) available within the `gwcosmo` and `bilby` Python packages. Users can manually alter any relevant parameters as needed.
+# Compare lensed and unlensed rates
+ratio = ler.rate_ratio()
+```
 
-## Lensing Related:
-- **Sampling of Lens Galaxies Attributes and Source Redshifts:**
-    - For lensed cases, the source redshift ($z_s$) is sampled under the strong lensing condition (SL) based on the precomputed probability of strong lensing with source at $z_s$ ( optical depth: $P\left(\text{SL}|z_s\right)$ ). This probability can be recalculated for specified configurations of lens galaxies, leveraging multiprocessing and njit functionalities for efficiency.
-    - The package uses the Elliptical Power Law with external shear (EPL+Shear) model for galaxy parameter ($\theta_L$) sampling, following [Wierda et. al 2021](https://arxiv.org/abs/2106.06303). Rejection sampling is applied to these samples based on whether the event is strongly lensed or not, $P\left(\text{SL}|z_s,\theta_L\right)$.
+## What `ler` does
 
-- **Generation of Image Properties:**
-    - Source position ($\beta$) is sampled from the caustic in the source plane.
-    - Sampled lens properties and source position are fed into `Lenstronomy` to generate image properties. This is the slowest part of the simulation, which LeR tackles through parallelization with multiprocessing.
-    - Image properties like magnification ($\mu_i$) and time delay ($\Delta t_i$) modify the original source signal strength, affecting the signal-to-noise ratio (SNR) and our ability to detect.
+- samples compact-binary source populations, including BBH, BNS, and NSBH
+  systems
+- calculates detectable unlensed gravitational-wave event rates
+- samples strongly lensed source and lens populations
+- computes lensing image properties such as magnifications and time delays
+- calculates detectable strongly lensed event rates using image-level
+  detection criteria
+- supports configurable source, lens, and detection models
+- uses `gwsnr` for efficient signal-to-noise ratio and detection-probability
+  calculations
+- uses `lenstronomy` and in-house EPL+Shear routines for lensing calculations
+- uses Monte Carlo integration, multiprocessing, and `numba`-compiled routines
+  for large simulations
 
-## Calculation of Detectable Merger Rates Per Year:
-- The calculation of rates involves integration over simulated events that meet specific detection criteria, including computing SNRs ($\rho$) for each event or its lensed images and assessing them against a predetermined threshold ($\rho_{th}$).
-- SNR calculations are optimized using [gwsnr](https://github.com/hemantaph/gwsnr), leveraging interpolation, artificial neural networks, and multiprocessing for accuracy and speed.
-- Simulated events and rate results, along with input configurations, are systematically archived for easy access and future analysis. All interpolators used in the process are preserved for future applications.
+## Method overview
 
-LeR is developed to meet the needs of both the LIGO-Virgo-KAGRA Scientific Collaboration and researchers in astrophysics. It is currently used in generating detectable lensing events and GW lensing rates for current and future detectors, contributing to the ongoing effort to detect lensed GWs, ([arXiv:2306.03827](https://arxiv.org/abs/2306.03827)). The package is designed with upgradability in mind to include additional statistics as required by related research.
+Unlensed rates are estimated by drawing source parameters from astrophysical
+priors, evaluating the probability of detection, and averaging over the
+population:
 
-Key features of LeR include efficient sampling, optimized SNR calculations, and systematic archiving of results. It leverages array operations and linear algebra from the `numpy` library, interpolation methods from `scipy`, and parallel processing capabilities from Python's `multiprocessing` module, with performance further optimized using the `numba` library's Just-In-Time compilation.
+$$
+\frac{\Delta N^{\mathrm{obs}}_{\mathrm{U}}}{\Delta t} = \mathcal{N}_{\mathrm{U}} \bigg\langle P(\mathrm{obs} \mid \vec{\theta}) \bigg\rangle_{\vec{\theta} \sim P(\vec{\theta})}
+$$
 
-For more information and usage examples, please refer to [LeR documentation](https://arxiv.org/abs/2306.03827).
+Strongly lensed rates extend the same idea by sampling source redshift, lens
+redshift, lens parameters, and source position under the strong-lensing
+condition:
 
-**Detectable Gravitational Wave Event Rates:**
+$$
+\frac{\Delta N^{\mathrm{obs}}_{\mathrm{L}}}{\Delta t} = \mathcal{N}_{\mathrm{L}} \bigg\langle P(\mathrm{obs}\mid \vec{\theta}_{\mathrm{U}}, \vec{\theta}_{\mathrm{L}}, \vec{\beta}, \mathrm{SL}) \bigg\rangle_{\substack{ \vec{\theta}_{\mathrm{U}},\vec{\theta}_{\mathrm{L}} \sim P(\vec{\theta}_{\mathrm{U}},\vec{\theta}_{\mathrm{L}} \mid z_L, z_s, \mathrm{SL}) \\ \vec{\beta} \sim P(\vec{\beta} \mid z_s, \vec{\theta}_{\mathrm{L}}, \mathrm{SL}) }} \, ,
+$$
 
-$$R_U = \int dz_s R_m^U(z_s) \; \Theta[\rho(z_s,\theta)-\rho_{th}] \; P(\theta) d\theta$$
+The lensed workflow uses the optical depth, the multi-image caustic
+cross-section, lens-equation solutions, and a requirement that at least two
+lensed images satisfy the chosen detection criterion.
 
-* $z_s$: GW source redshift, $R_m^U(z_s)$: source frame merger rate density in the co-moving volume at $z_s$, $\theta$: GW source parameters, $P$: probability distribution, $\rho$: SNR, $\rho_{th}$: SNR threshold, $\Theta$: Heaviside function to select detectable events.
+## Documentation
 
-**Detectable Lensed Gravitational Wave Event Rates:**
+The documentation is available at:
 
-$$ R_L = \int dz_s R_m^L(z_s) \,O_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) P(\theta) P(\theta_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta d\theta_L dz_s $$
+https://ler.hemantaph.com/
 
-* $R_m^L(z_s)$: strongly lensed source frame merger rate density in the co-moving volume at $z_s$, $\theta_L$: lens parameters, $\beta$: image properties, $\mu$: image magnification, $\Delta t$: image time delay, $O_{images}$: logical OR operator applied across all $\Theta_i$ of the images, $\text{SL}$: strong lensing condition.
+Useful sections include:
 
-## Distribution binary black hole (BBH) in terms of redshift.
+- [Installation](https://ler.hemantaph.com/Installation.html)
+- [Code overview](https://ler.hemantaph.com/code_overview.html)
+- [Unlensed event-rate formulation](https://ler.hemantaph.com/analytical_formulation_unlensed.html)
+- [Lensed event-rate formulation](https://ler.hemantaph.com/analytical_formulation_lensed.html)
+- [Examples](https://ler.hemantaph.com/examples/LeR_short_examples.html)
 
-* The following plot generated using `LeR`. This considers O4 design sensitivity of the GW detectors.
+## Community guidelines
 
-<p align="center">
-  <img src="docs/_static/zs_all.png" alt="Your Logo" width="80%">
-</p>
+Guidelines for contributing, reporting issues, and seeking support are available
+in [CONTRIBUTING.md](CONTRIBUTING.md).
 
-# Documentation
+Issues can be reported at:
 
-The `ler` package documentation is available at [ler Documentation](https://ler.hemantaph.com/).
+https://github.com/hemantaph/ler/issues
 
+## Citation
 
-
+If `ler` supports your research, please cite the project as described in the
+documentation and repository metadata.

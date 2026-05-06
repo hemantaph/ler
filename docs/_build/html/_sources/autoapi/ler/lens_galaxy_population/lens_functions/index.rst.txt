@@ -29,7 +29,7 @@ Functions
 .. autoapisummary::
 
    ler.lens_galaxy_population.lens_functions.phi_cut_SIE
-   ler.lens_galaxy_population.lens_functions.phi_q2_ellipticity
+   ler.lens_galaxy_population.lens_functions.einstein_radius
    ler.lens_galaxy_population.lens_functions.cross_section
 
 
@@ -41,6 +41,14 @@ Functions
 
    Computes the ratio of the SIE (Singular Isothermal Ellipsoid) cross-section
    to the SIS (Singular Isothermal Sphere) cross-section for a given axis ratio.
+   For the regular branch this is
+
+   .. math::
+
+       \phi_{\rm cut}(q) =
+       \frac{2q\ln q}{q^2 - 1},
+
+   normalized so that ``phi_cut_SIE(q=1) = 1``.
 
    :Parameters:
 
@@ -71,27 +79,35 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: phi_q2_ellipticity(phi, q)
+.. py:function:: einstein_radius(sigma, zl, zs, cosmo=None)
 
    
-   Convert position angle and axis ratio to ellipticity components.
+   Compute the Einstein radius for an SIS/SIE lens galaxy.
 
+   .. math::
+
+       \theta_E = 4\pi \left(\frac{\sigma}{c}\right)^2
+       \frac{D_{ls}}{D_s}.
 
    :Parameters:
 
-       **phi** : ``numpy.ndarray``
-           Position angle of the major axis (radians).
+       **sigma** : ``float`` or ``numpy.ndarray``
+           Lens velocity dispersion in km/s.
 
-       **q** : ``numpy.ndarray``
-           Axis ratio (0 < q <= 1).
+       **zl** : ``float`` or ``numpy.ndarray``
+           Lens redshift.
+
+       **zs** : ``float`` or ``numpy.ndarray``
+           Source redshift.
+
+       **cosmo** : ``astropy.cosmology`` or ``None``
+           Cosmology used for angular-diameter distances. If None, the package
+           default LambdaCDM cosmology is used.
 
    :Returns:
 
-       **e1** : ``numpy.ndarray``
-           First ellipticity component.
-
-       **e2** : ``numpy.ndarray``
-           Second ellipticity component.
+       **theta_E** : ``astropy.units.Quantity``
+           Einstein radius in radians.
 
 
 
@@ -114,7 +130,11 @@ Functions
    Compute the strong lensing cross-section for an EPL+Shear lens.
 
    Uses lenstronomy to compute the caustic structure and returns the
-   area enclosed by the double-image (outer) caustic.
+   area enclosed by the double-image (outer) caustic:
+
+   .. math::
+
+       \sigma_{\rm SL} = \int_{\mathcal{C}_{\rm double}} d^2\beta.
 
    :Parameters:
 

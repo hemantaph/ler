@@ -1,0 +1,728 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.utils.cosmological_conversions &mdash; ler 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css?v=551ad726" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=88a06014" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=8fa8b3e9"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../ler.html">ler</a></li>
+          <li class="breadcrumb-item"><a href="../utils.html">ler.utils</a></li>
+      <li class="breadcrumb-item active">ler.utils.cosmological_conversions</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ler.utils.cosmological_conversions</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
+<span class="kn">from</span> <span class="nn">.function_interpolation</span> <span class="kn">import</span> <span class="n">FunctionConditioning</span>
+<span class="c1"># for redshift to luminosity distance conversion</span>
+<span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">LambdaCDM</span>
+
+
+<div class="viewcode-block" id="generate_mixed_grid">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/cosmological_conversions/index.html#ler.utils.cosmological_conversions.generate_mixed_grid">[docs]</a>
+<span class="k">def</span> <span class="nf">generate_mixed_grid</span><span class="p">(</span>
+    <span class="n">x_min</span><span class="p">,</span>
+    <span class="n">x_max</span><span class="p">,</span>
+    <span class="n">resolution</span><span class="p">,</span>
+    <span class="n">power_law_part</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span>
+    <span class="n">geomspace_part</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">spacing_trend</span><span class="o">=</span><span class="s1">&#39;increasing&#39;</span><span class="p">,</span>
+    <span class="n">power</span><span class="o">=</span><span class="mf">2.3</span><span class="p">,</span>
+    <span class="n">value_transition_fraction</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+    <span class="n">num_transition_fraction</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">auto_match_slope</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generalized mixed spacing grid generator. Safely handles negative ranges.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x_min : float</span>
+<span class="sd">        Minimum value of the grid.</span>
+<span class="sd">    x_max : float</span>
+<span class="sd">        Maximum value of the grid.</span>
+<span class="sd">    resolution : int</span>
+<span class="sd">        Total number of grid points.</span>
+<span class="sd">    power_law_part : str, optional</span>
+<span class="sd">        Which part of the grid should follow the power-law spacing. Options: &#39;lower&#39; or &#39;upper&#39;. Default is &#39;lower&#39;.</span>
+<span class="sd">    geomspace_part : bool or str, optional</span>
+<span class="sd">        If `False`, keep the existing linear + power-law behavior. If `&#39;lower&#39;` or `&#39;upper&#39;`,</span>
+<span class="sd">        replace that segment with geometric spacing while keeping the other segment linear.</span>
+<span class="sd">        Geometric spacing is only used when the selected segment endpoints are strictly positive;</span>
+<span class="sd">        otherwise the function falls back to the standard mixed-grid construction. Default is `False`.</span>
+<span class="sd">    spacing_trend : str, optional</span>
+<span class="sd">        Whether the power-law spacing should be increasing or decreasing. Options: &#39;increasing&#39; or &#39;decreasing&#39;. Default is &#39;increasing&#39;.</span>
+<span class="sd">    power : float, optional</span>
+<span class="sd">        The power-law exponent. Higher values lead to more extreme spacing. Default is 2.3.</span>
+<span class="sd">    value_transition_fraction : float, optional</span>
+<span class="sd">        The fraction of the total value range at which to transition from linear to power-law spacing. Must be between 0 and 1. Default is 0.6.</span>
+<span class="sd">    num_transition_fraction : float, optional</span>
+<span class="sd">        The fraction of the total number of points at which to transition from linear to power-law spacing. Must be between 0 and 1. Default is 0.8.</span>
+<span class="sd">    auto_match_slope : bool, optional</span>
+<span class="sd">        Whether to automatically adjust the power-law exponent to match the slope of the linear spacing at the transition point. Default is True.</span>
+<span class="sd">        This is ignored for the geometric-spacing segment when `geomspace_part` is used.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        The generated grid points.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from ler.utils import generate_mixed_grid</span>
+<span class="sd">    &gt;&gt;&gt; resolution = 20</span>
+<span class="sd">    &gt;&gt;&gt; x = generate_mixed_grid(</span>
+<span class="sd">    ...     x_min=0.0,</span>
+<span class="sd">    ...     x_max=10.0,</span>
+<span class="sd">    ...     resolution=resolution,</span>
+<span class="sd">    ...     power_law_part=&#39;upper&#39;,</span>
+<span class="sd">    ...     spacing_trend=&#39;decreasing&#39;,</span>
+<span class="sd">    ...     power=2.5,</span>
+<span class="sd">    ...     value_transition_fraction=0.6,</span>
+<span class="sd">    ...     num_transition_fraction=0.3,</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">x_max</span> <span class="o">&lt;=</span> <span class="n">x_min</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">)</span>
+
+    <span class="c1"># 1. Normalized transition parameter</span>
+    <span class="n">u_trans</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">value_transition_fraction</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+    
+    <span class="k">if</span> <span class="n">u_trans</span> <span class="o">&lt;=</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">u_trans</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">num_transition_fraction</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">num_transition_fraction</span> <span class="o">=</span> <span class="n">u_trans</span>
+
+    <span class="n">n_low</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">resolution</span> <span class="o">*</span> <span class="n">num_transition_fraction</span><span class="p">))</span>
+    <span class="n">n_low</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">n_low</span><span class="p">,</span> <span class="n">resolution</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">n_high</span> <span class="o">=</span> <span class="n">resolution</span> <span class="o">-</span> <span class="n">n_low</span>
+    <span class="n">x_trans</span> <span class="o">=</span> <span class="n">x_min</span> <span class="o">+</span> <span class="n">u_trans</span> <span class="o">*</span> <span class="p">(</span><span class="n">x_max</span> <span class="o">-</span> <span class="n">x_min</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">geomspace_part</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="s1">&#39;upper&#39;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;geomspace_part must be False, &#39;lower&#39; or &#39;upper&#39;&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">geomspace_part</span> <span class="o">==</span> <span class="s1">&#39;lower&#39;</span> <span class="ow">and</span> <span class="n">x_min</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">x_trans</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">x_low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_trans</span><span class="p">,</span> <span class="n">n_low</span><span class="p">)</span>
+        <span class="n">x_high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_trans</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">n_high</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">x_low</span><span class="p">,</span> <span class="n">x_high</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">geomspace_part</span> <span class="o">==</span> <span class="s1">&#39;upper&#39;</span> <span class="ow">and</span> <span class="n">x_trans</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">x_max</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">x_low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_trans</span><span class="p">,</span> <span class="n">n_low</span><span class="p">)</span>
+        <span class="n">x_high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="n">x_trans</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">n_high</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">x_low</span><span class="p">,</span> <span class="n">x_high</span><span class="p">])</span>
+
+    <span class="c1"># 2. Build the grid in normalized [0, 1] space</span>
+    <span class="k">if</span> <span class="n">power_law_part</span> <span class="o">==</span> <span class="s1">&#39;lower&#39;</span><span class="p">:</span>
+        <span class="n">du_lin</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">u_trans</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_high</span>
+        <span class="n">ratio</span> <span class="o">=</span> <span class="n">du_lin</span> <span class="o">/</span> <span class="n">u_trans</span>
+        <span class="n">N_int</span> <span class="o">=</span> <span class="n">n_low</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">auto_match_slope</span> <span class="ow">and</span> <span class="n">N_int</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ratio</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+                <span class="n">power</span><span class="p">,</span> <span class="n">spacing_trend</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;increasing&#39;</span>
+            <span class="k">elif</span> <span class="n">ratio</span> <span class="o">&gt;</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">N_int</span><span class="p">:</span>
+                <span class="n">spacing_trend</span> <span class="o">=</span> <span class="s1">&#39;increasing&#39;</span>
+                <span class="n">power</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">ratio</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="n">N_int</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">N_int</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">spacing_trend</span> <span class="o">=</span> <span class="s1">&#39;decreasing&#39;</span>
+                <span class="n">power</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ratio</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">N_int</span><span class="p">)</span>
+
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">n_low</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">spacing_trend</span> <span class="o">==</span> <span class="s1">&#39;increasing&#39;</span><span class="p">:</span>
+            <span class="n">u_low</span> <span class="o">=</span> <span class="n">u_trans</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span> <span class="o">**</span> <span class="n">power</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">u_low</span> <span class="o">=</span> <span class="n">u_trans</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span> <span class="o">**</span> <span class="n">power</span><span class="p">)</span>
+        
+        <span class="n">u_high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">u_trans</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">n_high</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">u_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">u_low</span><span class="p">,</span> <span class="n">u_high</span><span class="p">])</span>
+
+    <span class="k">elif</span> <span class="n">power_law_part</span> <span class="o">==</span> <span class="s1">&#39;upper&#39;</span><span class="p">:</span>
+        <span class="n">du_lin</span> <span class="o">=</span> <span class="n">u_trans</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_low</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ratio</span> <span class="o">=</span> <span class="n">du_lin</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">u_trans</span><span class="p">)</span>
+        <span class="n">N_int</span> <span class="o">=</span> <span class="n">n_high</span>
+
+        <span class="k">if</span> <span class="n">auto_match_slope</span> <span class="ow">and</span> <span class="n">N_int</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ratio</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+                <span class="n">power</span><span class="p">,</span> <span class="n">spacing_trend</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;increasing&#39;</span>
+            <span class="k">elif</span> <span class="n">ratio</span> <span class="o">&lt;</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">N_int</span><span class="p">:</span>
+                <span class="n">spacing_trend</span> <span class="o">=</span> <span class="s1">&#39;increasing&#39;</span>
+                <span class="n">power</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ratio</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">N_int</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">spacing_trend</span> <span class="o">=</span> <span class="s1">&#39;decreasing&#39;</span>
+                <span class="n">power</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">ratio</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="n">N_int</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">N_int</span><span class="p">)</span>
+
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">n_high</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">if</span> <span class="n">spacing_trend</span> <span class="o">==</span> <span class="s1">&#39;increasing&#39;</span><span class="p">:</span>
+            <span class="n">u_high</span> <span class="o">=</span> <span class="n">u_trans</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">u_trans</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span> <span class="o">**</span> <span class="n">power</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">u_high</span> <span class="o">=</span> <span class="n">u_trans</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">u_trans</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span> <span class="o">**</span> <span class="n">power</span><span class="p">)</span>
+
+        <span class="n">u_low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">u_trans</span><span class="p">,</span> <span class="n">n_low</span><span class="p">)</span>
+        <span class="n">u_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">u_low</span><span class="p">,</span> <span class="n">u_high</span><span class="p">])</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;power_law_part must be &#39;lower&#39; or &#39;upper&#39;&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 3. Map the normalized grid [0, 1] to the physical domain [x_min, x_max]</span>
+    <span class="k">return</span> <span class="n">x_min</span> <span class="o">+</span> <span class="n">u_grid</span> <span class="o">*</span> <span class="p">(</span><span class="n">x_max</span> <span class="o">-</span> <span class="n">x_min</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="luminosity_distance">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/cosmological_conversions/index.html#ler.utils.cosmological_conversions.luminosity_distance">[docs]</a>
+<span class="k">def</span> <span class="nf">luminosity_distance</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span> <span class="n">cosmo</span><span class="o">=</span><span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;./interpolator_json&quot;</span><span class="p">,</span> <span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to create a lookup table for luminosity distance as a function of redshift.</span>
+
+<span class="sd">    The interpolated quantity is</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        D_L(z) = (1+z) D_C(z),</span>
+
+<span class="sd">    as returned by ``astropy.cosmology`` for the supplied cosmology.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : `numpy.ndarray` or `float`</span>
+<span class="sd">        Source redshifts</span>
+<span class="sd">    z_min : `float`</span>
+<span class="sd">        Minimum redshift of the source population</span>
+<span class="sd">    z_max : `float`</span>
+<span class="sd">        Maximum redshift of the source population</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z_to_luminosity_distance : `ler.utils.FunctionConditioning`</span>
+<span class="sd">        Object of FunctionConditioning class containing luminosity distance as a</span>
+<span class="sd">        function of redshift.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">z_min</span> <span class="o">=</span> <span class="mf">0.001</span> <span class="k">if</span> <span class="n">z_min</span> <span class="o">==</span> <span class="mf">0.</span> <span class="k">else</span> <span class="n">z_min</span>
+
+    <span class="n">zs</span> <span class="o">=</span> <span class="n">generate_mixed_grid</span><span class="p">(</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">)</span>
+    <span class="n">Dl</span> <span class="o">=</span> <span class="n">cosmo</span><span class="o">.</span><span class="n">luminosity_distance</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+    
+    <span class="n">luminosity_distance_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
+        <span class="n">function</span><span class="o">=</span><span class="n">Dl</span><span class="p">,</span>
+        <span class="n">x_array</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
+        <span class="n">conditioned_y_array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">identifier_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span> <span class="n">cosmology</span><span class="o">=</span><span class="n">cosmo</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span> <span class="n">details</span><span class="o">=</span><span class="s2">&quot;luminosity_distance from astropy.cosmology&quot;</span><span class="p">),</span>
+        <span class="n">directory</span><span class="o">=</span><span class="n">directory</span><span class="p">,</span>
+        <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;luminosity_distance&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;luminosity_distance&quot;</span><span class="p">,</span>
+        <span class="n">create_new</span><span class="o">=</span><span class="n">create_new</span><span class="p">,</span>
+        <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">create_function</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">create_pdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">create_rvs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;function&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">luminosity_distance_object</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Redshift to luminosity distance conversion.</span>
+
+<span class="s2">    .. math::</span>
+
+<span class="s2">        D_L(z) = (1+z) D_C(z).</span>
+
+<span class="s2">    Parameters</span>
+<span class="s2">    ----------</span>
+<span class="s2">    zs : `numpy.ndarray` or `float`</span>
+<span class="s2">        Source redshifts</span>
+
+<span class="s2">    Returns</span>
+<span class="s2">    -------</span>
+<span class="s2">    luminosity_distance : `numpy.ndarray`</span>
+<span class="s2">        luminosity distance in Mpc</span>
+
+<span class="s2">    Examples</span>
+<span class="s2">    --------</span>
+<span class="s2">    &gt;&gt;&gt; import numpy as np</span>
+<span class="s2">    &gt;&gt;&gt; from ler.utils import luminosity_distance</span>
+<span class="s2">    &gt;&gt;&gt; dl = luminosity_distance(get_attribute=True)</span>
+<span class="s2">    &gt;&gt;&gt; distances = dl.function(np.array([1., 2.]))</span>
+<span class="s2">    &gt;&gt;&gt; redshift = dl.function_inverse(np.array([100., 200.]))</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">luminosity_distance_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">luminosity_distance_object</span><span class="p">(</span><span class="n">z</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="differential_comoving_volume">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/cosmological_conversions/index.html#ler.utils.cosmological_conversions.differential_comoving_volume">[docs]</a>
+<span class="k">def</span> <span class="nf">differential_comoving_volume</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span> <span class="n">cosmo</span><span class="o">=</span><span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;./interpolator_json&quot;</span><span class="p">,</span> <span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a FunctionConditioning object for the differential comoving volume dVc/dz.</span>
+
+<span class="sd">    The stored table is full-sky:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \\frac{dV_c}{dz} = 4\\pi \\frac{dV_c}{dz\\,d\\Omega}.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : ``float`` or ``numpy.ndarray`` or ``None``</span>
+<span class="sd">        Redshift(s) at which to evaluate. If None, returns the FunctionConditioning object.</span>
+<span class="sd">    z_min : ``float``</span>
+<span class="sd">        Minimum redshift. default: 0.001</span>
+<span class="sd">    z_max : ``float``</span>
+<span class="sd">        Maximum redshift. default: 10.0</span>
+<span class="sd">    cosmo : ``astropy.cosmology``</span>
+<span class="sd">        Cosmology object. default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</span>
+<span class="sd">    directory : ``str``</span>
+<span class="sd">        Directory for storing interpolator JSON files. default: &#39;./interpolator_json&#39;</span>
+<span class="sd">    create_new : ``bool``</span>
+<span class="sd">        If True, create new interpolator. default: False</span>
+<span class="sd">    resolution : ``int``</span>
+<span class="sd">        Number of grid points for the interpolator. default: 500</span>
+<span class="sd">    get_attribute : ``bool``</span>
+<span class="sd">        If True, return the FunctionConditioning object. default: True</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    differential_comoving_volume : ``FunctionConditioning`` or ``numpy.ndarray``</span>
+<span class="sd">        dVc/dz in Mpc^3 sr^-1 (multiplied by 4*pi for full sky).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">z_min</span> <span class="o">=</span> <span class="mf">0.001</span> <span class="k">if</span> <span class="n">z_min</span> <span class="o">==</span> <span class="mf">0.</span> <span class="k">else</span> <span class="n">z_min</span>
+
+    <span class="c1"># get differential co-moving volume interpolator</span>
+    <span class="n">zs</span> <span class="o">=</span> <span class="n">generate_mixed_grid</span><span class="p">(</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">)</span>
+    <span class="n">dVcdz</span> <span class="o">=</span> <span class="n">cosmo</span><span class="o">.</span><span class="n">differential_comoving_volume</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>  <span class="c1"># volume of shell in Mpc^3</span>
+    <span class="n">differential_comoving_volume_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
+        <span class="n">function</span><span class="o">=</span><span class="n">dVcdz</span><span class="p">,</span>
+        <span class="n">x_array</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
+        <span class="n">conditioned_y_array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">identifier_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span> <span class="n">cosmology</span><span class="o">=</span><span class="n">cosmo</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span> <span class="n">details</span><span class="o">=</span><span class="s2">&quot;differential_comoving_volume from astropy.cosmology&quot;</span><span class="p">),</span>
+        <span class="n">directory</span><span class="o">=</span><span class="n">directory</span><span class="p">,</span>
+        <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;differential_comoving_volume&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;differential_comoving_volume&quot;</span><span class="p">,</span>
+        <span class="n">create_new</span><span class="o">=</span><span class="n">create_new</span><span class="p">,</span>
+        <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">create_function</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">create_pdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">create_rvs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;function&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">differential_comoving_volume_object</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Redshift to differential comoving volume conversion.</span>
+
+<span class="s2">    The returned values are full-sky ``dVc/dz`` in ``Mpc^3`` per unit redshift.</span>
+
+<span class="s2">    Parameters</span>
+<span class="s2">    ----------</span>
+<span class="s2">    zs : `numpy.ndarray` or `float`</span>
+<span class="s2">        Source redshifts</span>
+
+<span class="s2">    Returns</span>
+<span class="s2">    -------</span>
+<span class="s2">    differential_comoving_volume : `numpy.ndarray`</span>
+<span class="s2">        differential comoving volume in Mpc^3 per unit redshift.</span>
+
+<span class="s2">    Examples</span>
+<span class="s2">    --------</span>
+<span class="s2">    &gt;&gt;&gt; import numpy as np</span>
+<span class="s2">    &gt;&gt;&gt; from ler.utils import differential_comoving_volume</span>
+<span class="s2">    &gt;&gt;&gt; dvc_dz = differential_comoving_volume(get_attribute=True)</span>
+<span class="s2">    &gt;&gt;&gt; values = dvc_dz.function(np.array([1., 2.]))</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">differential_comoving_volume_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">differential_comoving_volume_object</span><span class="p">(</span><span class="n">z</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="comoving_distance">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/cosmological_conversions/index.html#ler.utils.cosmological_conversions.comoving_distance">[docs]</a>
+<span class="k">def</span> <span class="nf">comoving_distance</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span> <span class="n">cosmo</span><span class="o">=</span><span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;./interpolator_json&quot;</span><span class="p">,</span> <span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a FunctionConditioning object for the comoving distance.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        D_C(z) = c \\int_0^z \\frac{dz&#39;}{H(z&#39;)}.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : ``float`` or ``numpy.ndarray`` or ``None``</span>
+<span class="sd">        Redshift(s) at which to evaluate. If None, returns the FunctionConditioning object.</span>
+<span class="sd">    z_min : ``float``</span>
+<span class="sd">        Minimum redshift. default: 0.001</span>
+<span class="sd">    z_max : ``float``</span>
+<span class="sd">        Maximum redshift. default: 10.0</span>
+<span class="sd">    cosmo : ``astropy.cosmology``</span>
+<span class="sd">        Cosmology object. default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</span>
+<span class="sd">    directory : ``str``</span>
+<span class="sd">        Directory for storing interpolator JSON files. default: &#39;./interpolator_json&#39;</span>
+<span class="sd">    create_new : ``bool``</span>
+<span class="sd">        If True, create new interpolator. default: False</span>
+<span class="sd">    resolution : ``int``</span>
+<span class="sd">        Number of grid points for the interpolator. default: 500</span>
+<span class="sd">    get_attribute : ``bool``</span>
+<span class="sd">        If True, return the FunctionConditioning object. default: True</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    comoving_distance : ``FunctionConditioning`` or ``numpy.ndarray``</span>
+<span class="sd">        Comoving distance in Mpc.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">z_min</span> <span class="o">=</span> <span class="mf">0.001</span> <span class="k">if</span> <span class="n">z_min</span> <span class="o">==</span> <span class="mf">0.</span> <span class="k">else</span> <span class="n">z_min</span>
+    <span class="n">zs</span> <span class="o">=</span> <span class="n">generate_mixed_grid</span><span class="p">(</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">)</span>
+
+    <span class="n">Dc</span> <span class="o">=</span> <span class="n">cosmo</span><span class="o">.</span><span class="n">comoving_distance</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>  <span class="c1"># co-moving distance in Mpc</span>
+    <span class="n">comoving_distance_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
+        <span class="n">function</span><span class="o">=</span><span class="n">Dc</span><span class="p">,</span>
+        <span class="n">x_array</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
+        <span class="n">conditioned_y_array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">identifier_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">z_min</span><span class="o">=</span><span class="n">z_min</span><span class="p">,</span>
+            <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span>
+            <span class="n">cosmology</span><span class="o">=</span><span class="n">cosmo</span><span class="p">,</span>
+            <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span>
+            <span class="n">details</span><span class="o">=</span><span class="s2">&quot;comoving_distance from astropy.cosmology&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">directory</span><span class="o">=</span><span class="n">directory</span><span class="p">,</span>
+        <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;comoving_distance&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;comoving_distance&quot;</span><span class="p">,</span>
+        <span class="n">create_new</span><span class="o">=</span><span class="n">create_new</span><span class="p">,</span>
+        <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">create_function</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">create_pdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">create_rvs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;function&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">comoving_distance_object</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Redshift to comoving distance conversion.</span>
+
+<span class="s2">    .. math::</span>
+
+<span class="s2">        D_C(z) = c </span><span class="se">\\</span><span class="s2">int_0^z </span><span class="se">\\</span><span class="s2">frac{dz&#39;}{H(z&#39;)}.</span>
+
+<span class="s2">    Parameters</span>
+<span class="s2">    ----------</span>
+<span class="s2">    zs : `numpy.ndarray` or `float`</span>
+<span class="s2">        Source redshifts</span>
+
+<span class="s2">    Returns</span>
+<span class="s2">    -------</span>
+<span class="s2">    comoving_distance : `numpy.ndarray`</span>
+<span class="s2">        comoving distance in Mpc</span>
+
+<span class="s2">    Examples</span>
+<span class="s2">    --------</span>
+<span class="s2">    &gt;&gt;&gt; import numpy as np</span>
+<span class="s2">    &gt;&gt;&gt; from ler.utils import comoving_distance</span>
+<span class="s2">    &gt;&gt;&gt; dc = comoving_distance(get_attribute=True)</span>
+<span class="s2">    &gt;&gt;&gt; distances = dc.function(np.array([1., 2.]))</span>
+<span class="s2">    &gt;&gt;&gt; redshift = dc.function_inverse(np.array([100., 200.]))</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">comoving_distance_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">comoving_distance_object</span><span class="p">(</span><span class="n">z</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="angular_diameter_distance">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/cosmological_conversions/index.html#ler.utils.cosmological_conversions.angular_diameter_distance">[docs]</a>
+<span class="k">def</span> <span class="nf">angular_diameter_distance</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span> <span class="n">cosmo</span><span class="o">=</span><span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;./interpolator_json&quot;</span><span class="p">,</span> <span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>    
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a FunctionConditioning object for the angular diameter distance.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        D_A(z) = \\frac{D_C(z)}{1+z}.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : ``float`` or ``numpy.ndarray`` or ``None``</span>
+<span class="sd">        Redshift(s) at which to evaluate. If None, returns the FunctionConditioning object.</span>
+<span class="sd">    z_min : ``float``</span>
+<span class="sd">        Minimum redshift. default: 0.001</span>
+<span class="sd">    z_max : ``float``</span>
+<span class="sd">        Maximum redshift. default: 10.0</span>
+<span class="sd">    cosmo : ``astropy.cosmology``</span>
+<span class="sd">        Cosmology object. default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</span>
+<span class="sd">    directory : ``str``</span>
+<span class="sd">        Directory for storing interpolator JSON files. default: &#39;./interpolator_json&#39;</span>
+<span class="sd">    create_new : ``bool``</span>
+<span class="sd">        If True, create new interpolator. default: False</span>
+<span class="sd">    resolution : ``int``</span>
+<span class="sd">        Number of grid points for the interpolator. default: 500</span>
+<span class="sd">    get_attribute : ``bool``</span>
+<span class="sd">        If True, return the FunctionConditioning object. default: True</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    angular_diameter_distance : ``FunctionConditioning`` or ``numpy.ndarray``</span>
+<span class="sd">        Angular diameter distance in Mpc.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">z_min</span> <span class="o">=</span> <span class="mf">0.001</span> <span class="k">if</span> <span class="n">z_min</span> <span class="o">==</span> <span class="mf">0.</span> <span class="k">else</span> <span class="n">z_min</span>
+    <span class="n">zs</span> <span class="o">=</span> <span class="n">generate_mixed_grid</span><span class="p">(</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">)</span>
+
+    <span class="n">Da</span> <span class="o">=</span> <span class="n">cosmo</span><span class="o">.</span><span class="n">angular_diameter_distance</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+    <span class="n">angular_diameter_distance_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
+        <span class="n">function</span><span class="o">=</span><span class="n">Da</span><span class="p">,</span>
+        <span class="n">x_array</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
+        <span class="n">conditioned_y_array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">identifier_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">z_min</span><span class="o">=</span><span class="n">z_min</span><span class="p">,</span>
+            <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span>
+            <span class="n">cosmology</span><span class="o">=</span><span class="n">cosmo</span><span class="p">,</span>
+            <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span>
+            <span class="n">details</span><span class="o">=</span><span class="s2">&quot;angular_diameter_distance from astropy.cosmology&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">directory</span><span class="o">=</span><span class="n">directory</span><span class="p">,</span>
+        <span class="n">sub_directory</span><span class="o">=</span><span class="s2">&quot;angular_diameter_distance&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;angular_diameter_distance&quot;</span><span class="p">,</span>
+        <span class="n">create_new</span><span class="o">=</span><span class="n">create_new</span><span class="p">,</span>
+        <span class="n">create_function_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">create_function</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">create_pdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">create_rvs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;function&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">angular_diameter_distance_object</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Redshift to angular diameter distance conversion.</span>
+
+<span class="s2">    .. math::</span>
+
+<span class="s2">        D_A(z) = </span><span class="se">\\</span><span class="s2">frac{D_C(z)}{1+z}.</span>
+
+<span class="s2">    Parameters</span>
+<span class="s2">    ----------</span>
+<span class="s2">    zs : `numpy.ndarray` or `float`</span>
+<span class="s2">        Source redshifts</span>
+
+<span class="s2">    Returns</span>
+<span class="s2">    -------</span>
+<span class="s2">    angular_diameter_distance : `numpy.ndarray`</span>
+<span class="s2">        angular diameter distance in Mpc</span>
+
+<span class="s2">    Examples</span>
+<span class="s2">    --------</span>
+<span class="s2">    &gt;&gt;&gt; import numpy as np</span>
+<span class="s2">    &gt;&gt;&gt; from ler.utils import angular_diameter_distance</span>
+<span class="s2">    &gt;&gt;&gt; da = angular_diameter_distance(get_attribute=True)</span>
+<span class="s2">    &gt;&gt;&gt; distances = da.function(np.array([1., 2.]))</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">angular_diameter_distance_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">angular_diameter_distance_object</span><span class="p">(</span><span class="n">z</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="angular_diameter_distance_z1z2">
+<a class="viewcode-back" href="../../../autoapi/ler/utils/cosmological_conversions/index.html#ler.utils.cosmological_conversions.angular_diameter_distance_z1z2">[docs]</a>
+<span class="k">def</span> <span class="nf">angular_diameter_distance_z1z2</span><span class="p">(</span><span class="n">z1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z_min</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span> <span class="n">cosmo</span><span class="o">=</span><span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;./interpolator_json&quot;</span><span class="p">,</span> <span class="n">create_new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a FunctionConditioning object for the angular diameter distance between two redshifts.</span>
+
+<span class="sd">    Uses the relation</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        D_A(z_1, z_2) =</span>
+<span class="sd">        \\frac{D_A(z_2)(1+z_2) - D_A(z_1)(1+z_1)}{1+z_2}.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z1 : ``float`` or ``numpy.ndarray`` or ``None``</span>
+<span class="sd">        Lens redshift(s).</span>
+<span class="sd">    z2 : ``float`` or ``numpy.ndarray`` or ``None``</span>
+<span class="sd">        Source redshift(s).</span>
+<span class="sd">    z_min : ``float``</span>
+<span class="sd">        Minimum redshift. default: 0.001</span>
+<span class="sd">    z_max : ``float``</span>
+<span class="sd">        Maximum redshift. default: 10.0</span>
+<span class="sd">    cosmo : ``astropy.cosmology``</span>
+<span class="sd">        Cosmology object. default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)</span>
+<span class="sd">    directory : ``str``</span>
+<span class="sd">        Directory for storing interpolator JSON files. default: &#39;./interpolator_json&#39;</span>
+<span class="sd">    create_new : ``bool``</span>
+<span class="sd">        If True, create new interpolator. default: False</span>
+<span class="sd">    resolution : ``int``</span>
+<span class="sd">        Number of grid points for the interpolator. default: 500</span>
+<span class="sd">    get_attribute : ``bool``</span>
+<span class="sd">        If True, return the FunctionConditioning object. default: True</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    angular_diameter_distance_z1z2 : ``FunctionConditioning`` or ``numpy.ndarray``</span>
+<span class="sd">        Angular diameter distance between z1 and z2 in Mpc.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">z_min</span> <span class="o">=</span> <span class="mf">0.001</span> <span class="k">if</span> <span class="n">z_min</span> <span class="o">==</span> <span class="mf">0.</span> <span class="k">else</span> <span class="n">z_min</span>
+
+    <span class="n">angular_diameter_distance_object</span> <span class="o">=</span> <span class="n">angular_diameter_distance</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span> <span class="n">cosmo</span><span class="o">=</span><span class="n">cosmo</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="n">directory</span><span class="p">,</span> <span class="n">create_new</span><span class="o">=</span><span class="n">create_new</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span> <span class="n">get_attribute</span><span class="o">=</span><span class="n">get_attribute</span><span class="p">)</span>
+
+    <span class="c1"># for angular diameter distance between two redshifts</span>
+    <span class="n">_Da</span> <span class="o">=</span> <span class="n">angular_diameter_distance_object</span><span class="o">.</span><span class="n">function</span>
+    <span class="nd">@njit</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">angular_diameter_distance_z1z2</span><span class="p">(</span><span class="n">zl0</span><span class="p">,</span> <span class="n">zs0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">_Da</span><span class="p">(</span><span class="n">zs0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">zs0</span><span class="p">)</span> <span class="o">-</span> <span class="n">_Da</span><span class="p">(</span><span class="n">zl0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">zl0</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">zs0</span><span class="p">)</span>
+
+    <span class="n">angular_diameter_distance_z1z2_object</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
+        <span class="n">function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">x_array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">identifier_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">z_min</span><span class="o">=</span><span class="n">z_min</span><span class="p">,</span>
+            <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span>
+            <span class="n">cosmology</span><span class="o">=</span><span class="n">cosmo</span><span class="p">,</span>
+            <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span>
+            <span class="n">details</span><span class="o">=</span><span class="s2">&quot;angular_diameter_distance_z1z2 from astropy.cosmology&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">create_function</span><span class="o">=</span><span class="n">angular_diameter_distance_z1z2</span><span class="p">,</span>
+        <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;function&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">angular_diameter_distance_z1z2_object</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Angular diameter distance between two redshifts.</span>
+
+<span class="s2">    .. math::</span>
+
+<span class="s2">        D_A(z_l, z_s) =</span>
+<span class="s2">        </span><span class="se">\\</span><span class="s2">frac{D_A(z_s)(1+z_s) - D_A(z_l)(1+z_l)}{1+z_s}.</span>
+
+<span class="s2">    Parameters</span>
+<span class="s2">    ----------</span>
+<span class="s2">    zl0 : `numpy.ndarray` or `float`</span>
+<span class="s2">        Lens redshifts</span>
+<span class="s2">    zs0 : `numpy.ndarray` or `float`</span>
+<span class="s2">        Source redshifts</span>
+
+<span class="s2">    Returns</span>
+<span class="s2">    -------</span>
+<span class="s2">    angular_diameter_distance_z1z2 : `numpy.ndarray`</span>
+<span class="s2">        angular diameter distance between ``zl0`` and ``zs0`` in Mpc.</span>
+
+<span class="s2">    Examples</span>
+<span class="s2">    --------</span>
+<span class="s2">    &gt;&gt;&gt; import numpy as np</span>
+<span class="s2">    &gt;&gt;&gt; from ler.utils import angular_diameter_distance_z1z2</span>
+<span class="s2">    &gt;&gt;&gt; da_z1z2 = angular_diameter_distance_z1z2(get_attribute=True)</span>
+<span class="s2">    &gt;&gt;&gt; distances = da_z1z2.function(np.array([0.5, 1.0]), np.array([1.0, 2.0]))</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">angular_diameter_distance_z1z2_object</span> <span class="k">if</span> <span class="n">get_attribute</span> <span class="k">else</span> <span class="n">angular_diameter_distance_z1z2_object</span><span class="p">(</span><span class="n">z1</span><span class="p">,</span> <span class="n">z2</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

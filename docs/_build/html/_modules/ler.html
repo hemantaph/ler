@@ -1,0 +1,298 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler &mdash; ler 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+      <link rel="stylesheet" type="text/css" href="../_static/scalefix.css?v=551ad726" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88a06014" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8fa8b3e9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ler</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ler</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Gravitational-wave lensed-event rate code for LVK compact binary coalescences.</span>
+
+<span class="sd">``import ler`` only configures lightweight threading defaults; the main classes</span>
+<span class="sd">``LeR`` and ``GWRATES`` are loaded on first access (see ``__getattr__``).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="c1"># disable OpenMP warnings</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;KMP_WARNINGS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;off&quot;</span>
+
+<span class="c1"># Set default thread counts before numba/MKL/OpenBLAS are imported.</span>
+<span class="c1"># NUMBA_NUM_THREADS: controls Numba prange parallelism (default: all cores).</span>
+<span class="c1">#   Dynamically adjusted to npool via numba.set_num_threads() at call sites,</span>
+<span class="c1">#   and set to 1 inside multiprocessing workers to avoid CPU oversubscription.</span>
+<span class="c1"># OMP/MKL/OPENBLAS: default to 1 so BLAS libraries don&#39;t compete with</span>
+<span class="c1">#   Numba&#39;s own thread pool or multiprocessing workers.</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;NUMBA_NUM_THREADS&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()))</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;OMP_NUM_THREADS&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;MKL_NUM_THREADS&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;OPENBLAS_NUM_THREADS&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="set_multiprocessing_start_method">
+<a class="viewcode-back" href="../autoapi/ler/index.html#ler.set_multiprocessing_start_method">[docs]</a>
+<span class="k">def</span> <span class="nf">set_multiprocessing_start_method</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set ``multiprocessing`` start method once per process when explicitly called.</span>
+
+<span class="sd">    Default choices: ``spawn`` on macOS, ``fork`` on other POSIX systems. Windows</span>
+<span class="sd">    is left unchanged (``spawn``).</span>
+
+<span class="sd">    Environment overrides (POSIX): ``LER_USE_SPAWN=True`` or ``LER_USE_FORK=True``</span>
+<span class="sd">    (if both are set, ``spawn`` is used and a warning is issued).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;posix&quot;</span><span class="p">:</span>
+        <span class="n">use_spawn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LER_USE_SPAWN&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span>
+        <span class="n">use_fork</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LER_USE_FORK&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span>
+
+        <span class="k">if</span> <span class="n">use_spawn</span> <span class="ow">and</span> <span class="n">use_fork</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;ler: Both LER_USE_SPAWN=True and LER_USE_FORK=True are set. &quot;</span>
+                <span class="s2">&quot;Using &#39;spawn&#39;.&quot;</span>
+            <span class="p">)</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;spawn&quot;</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;ler: Setting multiprocessing start method to &#39;spawn&#39; per environment variable.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">use_spawn</span><span class="p">:</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;spawn&quot;</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;ler: Setting multiprocessing start method to &#39;spawn&#39; per environment variable.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">use_fork</span><span class="p">:</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;fork&quot;</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;ler: Setting multiprocessing start method to &#39;fork&#39; per environment variable.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;spawn&quot;</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">uname</span><span class="p">()</span><span class="o">.</span><span class="n">sysname</span> <span class="o">==</span> <span class="s2">&quot;Darwin&quot;</span> <span class="k">else</span> <span class="s2">&quot;fork&quot;</span>
+
+        <span class="n">current</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">get_start_method</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">current</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">mp</span><span class="o">.</span><span class="n">set_start_method</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;ler: Could not set multiprocessing start method to &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                    <span class="s2">&quot;This is usually because the start method was already set by another library or your script, &quot;</span>
+                    <span class="s2">&quot;or because it is being set too late.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;If you need to control the multiprocessing start method, set it at the very beginning of your script.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;To use the &#39;spawn&#39; method instead, set the environment variable LER_USE_SPAWN=True before running your script.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;Command line (single line):</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;    LER_USE_SPAWN=True python yourscript.py</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;In a Python script (before importing ler):</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;    import os</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;    os.environ[&#39;LER_USE_SPAWN&#39;] = &#39;True&#39;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;    import ler</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">current</span> <span class="o">!=</span> <span class="n">method</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;ler: Multiprocessing start method is already &#39;</span><span class="si">{</span><span class="n">current</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Requested &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39; was not applied.&quot;</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># For Windows, default is already &#39;spawn&#39;, nothing to do.</span>
+        <span class="k">pass</span></div>
+
+
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">._version</span> <span class="kn">import</span> <span class="n">__version__</span>
+
+<span class="c1"># Package metadata</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;LeR&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GWRATES&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rates&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;set_multiprocessing_start_method&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__version__&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Hemantakumar Phurailatpam &lt;hemantaphurailatpam@gmail.com&gt;&quot;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s2">&quot;hemantaphurailatpam@gmail.com&quot;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s2">&quot;Hemantakumar Phurailatpam&quot;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s2">&quot;Development&quot;</span>
+<span class="n">__url__</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/hemantaph/ler&quot;</span>
+<span class="n">__description__</span> <span class="o">=</span> <span class="s2">&quot;ler is a statistical based python package whose core function is to calculate detectable rates of gravitational waves events (both lensed and un-lensed events).&quot;</span>
+<span class="n">__version_info__</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">__version__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)))</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="s2">&quot;Wswiglal-redir-stdio&quot;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">NullHandler</span><span class="p">())</span>
+
+<span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resolve ``LeR``, ``GWRATES``, or the ``rates`` subpackage on first use.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Attribute name on the ``ler`` package.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    type or module</span>
+<span class="sd">        ``LeR`` or ``GWRATES`` from ``ler.rates``, or the ``ler.rates`` package.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    AttributeError</span>
+<span class="sd">        If ``name`` is not one of the names exported via this hook.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;rates&quot;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">rates</span> <span class="k">as</span> <span class="n">_rates</span>
+        <span class="nb">globals</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">_rates</span>
+        <span class="k">return</span> <span class="n">_rates</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;LeR&quot;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">.rates</span> <span class="kn">import</span> <span class="n">LeR</span> <span class="k">as</span> <span class="n">_LeR</span>
+        <span class="nb">globals</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">_LeR</span>
+        <span class="k">return</span> <span class="n">_LeR</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;GWRATES&quot;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">.rates</span> <span class="kn">import</span> <span class="n">GWRATES</span> <span class="k">as</span> <span class="n">_GWRATES</span>
+        <span class="nb">globals</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">_GWRATES</span>
+        <span class="k">return</span> <span class="n">_GWRATES</span>
+    <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;module </span><span class="si">{</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2"> has no attribute </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># Multiprocessing entry points (see package internals):</span>
+<span class="c1"># - ler.lens_galaxy_population.optical_depth.cross_section_epl_shear_numerical_mp</span>
+<span class="c1">#   (lenstronomy EPL+shear caustics for double-image region).</span>
+<span class="c1"># - ler.lens_galaxy_population.optical_depth._lens_redshift_multiprocessing</span>
+<span class="c1">#   (ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_mp).</span>
+<span class="c1"># Numba prange is used in, e.g., ler.image_properties.cross_section_njit,</span>
+<span class="c1"># epl_shear_njit, sample_caustic_points_njit; cross_section_interpolator;</span>
+<span class="c1"># lens_galaxy_population.mp / sampler_functions. Nested prange may serialize</span>
+<span class="c1"># inside Numba depending on build and runtime.</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

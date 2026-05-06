@@ -1,0 +1,373 @@
+:py:mod:`ler.utils.cosmological_conversions`
+============================================
+
+.. py:module:: ler.utils.cosmological_conversions
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   ler.utils.cosmological_conversions.generate_mixed_grid
+   ler.utils.cosmological_conversions.luminosity_distance
+   ler.utils.cosmological_conversions.differential_comoving_volume
+   ler.utils.cosmological_conversions.comoving_distance
+   ler.utils.cosmological_conversions.angular_diameter_distance
+   ler.utils.cosmological_conversions.angular_diameter_distance_z1z2
+
+
+
+.. py:function:: generate_mixed_grid(x_min, x_max, resolution, power_law_part='lower', geomspace_part=False, spacing_trend='increasing', power=2.3, value_transition_fraction=0.6, num_transition_fraction=0.8, auto_match_slope=True)
+
+   
+   Generalized mixed spacing grid generator. Safely handles negative ranges.
+
+
+   :Parameters:
+
+       **x_min** : float
+           Minimum value of the grid.
+
+       **x_max** : float
+           Maximum value of the grid.
+
+       **resolution** : int
+           Total number of grid points.
+
+       **power_law_part** : str, optional
+           Which part of the grid should follow the power-law spacing. Options: 'lower' or 'upper'. Default is 'lower'.
+
+       **geomspace_part** : bool or str, optional
+           If `False`, keep the existing linear + power-law behavior. If `'lower'` or `'upper'`,
+           replace that segment with geometric spacing while keeping the other segment linear.
+           Geometric spacing is only used when the selected segment endpoints are strictly positive;
+           otherwise the function falls back to the standard mixed-grid construction. Default is `False`.
+
+       **spacing_trend** : str, optional
+           Whether the power-law spacing should be increasing or decreasing. Options: 'increasing' or 'decreasing'. Default is 'increasing'.
+
+       **power** : float, optional
+           The power-law exponent. Higher values lead to more extreme spacing. Default is 2.3.
+
+       **value_transition_fraction** : float, optional
+           The fraction of the total value range at which to transition from linear to power-law spacing. Must be between 0 and 1. Default is 0.6.
+
+       **num_transition_fraction** : float, optional
+           The fraction of the total number of points at which to transition from linear to power-law spacing. Must be between 0 and 1. Default is 0.8.
+
+       **auto_match_slope** : bool, optional
+           Whether to automatically adjust the power-law exponent to match the slope of the linear spacing at the transition point. Default is True.
+           This is ignored for the geometric-spacing segment when `geomspace_part` is used.
+
+   :Returns:
+
+       numpy.ndarray
+           The generated grid points.
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   >>> from ler.utils import generate_mixed_grid
+   >>> resolution = 20
+   >>> x = generate_mixed_grid(
+   ...     x_min=0.0,
+   ...     x_max=10.0,
+   ...     resolution=resolution,
+   ...     power_law_part='upper',
+   ...     spacing_trend='decreasing',
+   ...     power=2.5,
+   ...     value_transition_fraction=0.6,
+   ...     num_transition_fraction=0.3,
+   ... )
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: luminosity_distance(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
+
+   
+   Function to create a lookup table for luminosity distance as a function of redshift.
+
+   The interpolated quantity is
+
+   .. math::
+
+       D_L(z) = (1+z) D_C(z),
+
+   as returned by ``astropy.cosmology`` for the supplied cosmology.
+
+   :Parameters:
+
+       **z** : `numpy.ndarray` or `float`
+           Source redshifts
+
+       **z_min** : `float`
+           Minimum redshift of the source population
+
+       **z_max** : `float`
+           Maximum redshift of the source population
+
+
+
+
+
+
+
+
+
+
+
+
+   :Attributes:
+
+       **z_to_luminosity_distance** : `ler.utils.FunctionConditioning`
+           Object of FunctionConditioning class containing luminosity distance as a
+           function of redshift.
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: differential_comoving_volume(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
+
+   
+   Create a FunctionConditioning object for the differential comoving volume dVc/dz.
+
+   The stored table is full-sky:
+
+   .. math::
+
+       \frac{dV_c}{dz} = 4\pi \frac{dV_c}{dz\,d\Omega}.
+
+   :Parameters:
+
+       **z** : ``float`` or ``numpy.ndarray`` or ``None``
+           Redshift(s) at which to evaluate. If None, returns the FunctionConditioning object.
+
+       **z_min** : ``float``
+           Minimum redshift. default: 0.001
+
+       **z_max** : ``float``
+           Maximum redshift. default: 10.0
+
+       **cosmo** : ``astropy.cosmology``
+           Cosmology object. default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+
+       **directory** : ``str``
+           Directory for storing interpolator JSON files. default: './interpolator_json'
+
+       **create_new** : ``bool``
+           If True, create new interpolator. default: False
+
+       **resolution** : ``int``
+           Number of grid points for the interpolator. default: 500
+
+       **get_attribute** : ``bool``
+           If True, return the FunctionConditioning object. default: True
+
+   :Returns:
+
+       **differential_comoving_volume** : ``FunctionConditioning`` or ``numpy.ndarray``
+           dVc/dz in Mpc^3 sr^-1 (multiplied by 4*pi for full sky).
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: comoving_distance(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
+
+   
+   Create a FunctionConditioning object for the comoving distance.
+
+   .. math::
+
+       D_C(z) = c \int_0^z \frac{dz'}{H(z')}.
+
+   :Parameters:
+
+       **z** : ``float`` or ``numpy.ndarray`` or ``None``
+           Redshift(s) at which to evaluate. If None, returns the FunctionConditioning object.
+
+       **z_min** : ``float``
+           Minimum redshift. default: 0.001
+
+       **z_max** : ``float``
+           Maximum redshift. default: 10.0
+
+       **cosmo** : ``astropy.cosmology``
+           Cosmology object. default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+
+       **directory** : ``str``
+           Directory for storing interpolator JSON files. default: './interpolator_json'
+
+       **create_new** : ``bool``
+           If True, create new interpolator. default: False
+
+       **resolution** : ``int``
+           Number of grid points for the interpolator. default: 500
+
+       **get_attribute** : ``bool``
+           If True, return the FunctionConditioning object. default: True
+
+   :Returns:
+
+       **comoving_distance** : ``FunctionConditioning`` or ``numpy.ndarray``
+           Comoving distance in Mpc.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: angular_diameter_distance(z=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
+
+   
+   Create a FunctionConditioning object for the angular diameter distance.
+
+   .. math::
+
+       D_A(z) = \frac{D_C(z)}{1+z}.
+
+   :Parameters:
+
+       **z** : ``float`` or ``numpy.ndarray`` or ``None``
+           Redshift(s) at which to evaluate. If None, returns the FunctionConditioning object.
+
+       **z_min** : ``float``
+           Minimum redshift. default: 0.001
+
+       **z_max** : ``float``
+           Maximum redshift. default: 10.0
+
+       **cosmo** : ``astropy.cosmology``
+           Cosmology object. default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+
+       **directory** : ``str``
+           Directory for storing interpolator JSON files. default: './interpolator_json'
+
+       **create_new** : ``bool``
+           If True, create new interpolator. default: False
+
+       **resolution** : ``int``
+           Number of grid points for the interpolator. default: 500
+
+       **get_attribute** : ``bool``
+           If True, return the FunctionConditioning object. default: True
+
+   :Returns:
+
+       **angular_diameter_distance** : ``FunctionConditioning`` or ``numpy.ndarray``
+           Angular diameter distance in Mpc.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: angular_diameter_distance_z1z2(z1=None, z2=None, z_min=0.001, z_max=10.0, cosmo=LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0), directory='./interpolator_json', create_new=False, resolution=500, get_attribute=True)
+
+   
+   Create a FunctionConditioning object for the angular diameter distance between two redshifts.
+
+   Uses the relation
+
+   .. math::
+
+       D_A(z_1, z_2) =
+       \frac{D_A(z_2)(1+z_2) - D_A(z_1)(1+z_1)}{1+z_2}.
+
+   :Parameters:
+
+       **z1** : ``float`` or ``numpy.ndarray`` or ``None``
+           Lens redshift(s).
+
+       **z2** : ``float`` or ``numpy.ndarray`` or ``None``
+           Source redshift(s).
+
+       **z_min** : ``float``
+           Minimum redshift. default: 0.001
+
+       **z_max** : ``float``
+           Maximum redshift. default: 10.0
+
+       **cosmo** : ``astropy.cosmology``
+           Cosmology object. default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7)
+
+       **directory** : ``str``
+           Directory for storing interpolator JSON files. default: './interpolator_json'
+
+       **create_new** : ``bool``
+           If True, create new interpolator. default: False
+
+       **resolution** : ``int``
+           Number of grid points for the interpolator. default: 500
+
+       **get_attribute** : ``bool``
+           If True, return the FunctionConditioning object. default: True
+
+   :Returns:
+
+       **angular_diameter_distance_z1z2** : ``FunctionConditioning`` or ``numpy.ndarray``
+           Angular diameter distance between z1 and z2 in Mpc.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+

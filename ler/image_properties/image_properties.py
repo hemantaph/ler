@@ -124,52 +124,6 @@ class ImageProperties:
     ... )
     >>> result = ip.image_properties(lens_parameters)
     >>> print(result.keys())
-
-
-    Instance Methods
-    ----------
-    ImageProperties has the following methods: \n
-    +-----------------------------------------------------+------------------------------------------------+
-    | Method                                              | Description                                    |
-    +=====================================================+================================================+
-    | :meth:`~image_properties_epl_shear`                 | Compute image properties for lensed events     |
-    +-----------------------------------------------------+------------------------------------------------+
-    | :meth:`~get_lensed_snrs`                            | Compute detection probability for lensed images|
-    +-----------------------------------------------------+------------------------------------------------+
-
-    Instance Attributes
-    ----------
-    ImageProperties has the following attributes: \n
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
-    | Attribute                                           | Type                      | Unit     | Description                                                      |
-    +=====================================================+===========================+==========+==================================================================+
-    | :attr:`~npool`                                      | ``int``                   |          | Number of multiprocessing workers                                |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
-    | :attr:`~multiprocessing_verbose`                    | ``bool``                  |          | If True, shows a progress bar for multiprocessing tasks          |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
-    | :attr:`~n_min_images`                               | ``int``                   |          | Minimum number of images required                                |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
-    | :attr:`~n_max_images`                               | ``int``                   |          | Maximum number of images per event                               |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
-    | :attr:`~time_window`                                | ``float``                 | s        | Time window for lensed events                                    |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
-    | :attr:`~include_effective_parameters`               | ``bool``                  |          | To include effective parameters in output                        |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
-    | :attr:`~include_redundant_parameters`               | ``bool``                  |          | If True, removes redundant parameters from output to save memory |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
-    | :attr:`~lens_model_list`                            | ``list``                  |          | List of lens models                                              |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
-    | :attr:`~cosmo`                                      | ``astropy.cosmology``     |          | Cosmology for calculations                                       |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
-    | :attr:`~spin_zero`                                  | ``bool``                  |          | Flag for zero spin assumption                                    |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
-    | :attr:`~spin_precession`                            | ``bool``                  |          | Flag for spin precession                                         |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
-    | :attr:`~pdet_finder`                                | ``callable``              |          | Probability of detection calculator                              |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
-    | :attr:`~pdet_finder_output_keys`                    | ``list``                  |          | Keys for probability of detection outputs                        |
-    +-----------------------------------------------------+---------------------------+----------+------------------------------------------------------------------+
-
     """
 
     def __init__(
@@ -776,25 +730,13 @@ class ImageProperties:
             - 'pdet_net': network detection probability (shape: size x n_max_images) \n
             - Individual detector probabilities if pdet_finder outputs them \n
         lensed_param : ``dict``
-            Updated dictionary with effective parameters shown below: \n
-            +----------------------------------+-----------+------------------------------------------------+
-            | Parameter                        | Units     | Description                                    |
-            +==================================+===========+================================================+
-            | effective_luminosity_distance    | Mpc       | magnification-corrected distance               |
-            |                                  |           | luminosity_distance / sqrt(|magnifications_i|) |
-            +----------------------------------+-----------+------------------------------------------------|
-            | effective_geocent_time           | s         | time-delay-corrected GPS time                  |
-            |                                  |           | geocent_time + time_delays_i                   |
-            +----------------------------------+-----------+------------------------------------------------|
-            | effective_phase                  | rad       | morse-phase-corrected phase                    |
-            |                                  |           | phi - morse_phase_i                            |
-            +----------------------------------+-----------+------------------------------------------------+
-            | effective_ra                     | rad       | RA of the image                                |
-            |                                  |           | ra + (x0_image_positions_i - x_source)/cos(dec)|
-            +----------------------------------+-----------+------------------------------------------------+
-            | effective_dec                    | rad       | Dec of the image                               |
-            |                                  |           | dec + (x1_image_positions_i - y_source)        |
-            +----------------------------------+-----------+------------------------------------------------+
+            Updated dictionary with effective per-image parameters:
+
+            - ``effective_luminosity_distance`` (Mpc)
+            - ``effective_geocent_time`` (s)
+            - ``effective_phase`` (rad)
+            - ``effective_ra`` (rad)
+            - ``effective_dec`` (rad)
         """
 
         include_effective_parameters = (
@@ -1014,25 +956,13 @@ class ImageProperties:
         Returns
         -------
         lensed_param : ``dict``
-            Updated dictionary with effective parameters shown below: \n
-            +----------------------------------+-----------+------------------------------------------------+
-            | Parameter                        | Units     | Description                                    |
-            +==================================+===========+================================================+
-            | effective_luminosity_distance    | Mpc       | magnification-corrected distance               |
-            |                                  |           | luminosity_distance / sqrt(|magnifications_i|) |
-            +----------------------------------+-----------+------------------------------------------------|
-            | effective_geocent_time           | s         | time-delay-corrected GPS time                  |
-            |                                  |           | geocent_time + time_delays_i                   |
-            +----------------------------------+-----------+------------------------------------------------|
-            | effective_phase                  | rad       | morse-phase-corrected phase                    |
-            |                                  |           | phi - morse_phase_i                            |
-            +----------------------------------+-----------+------------------------------------------------+
-            | effective_ra                     | rad       | RA of the image                                |
-            |                                  |           | ra + (x0_image_positions_i - x_source)/cos(dec)|
-            +----------------------------------+-----------+------------------------------------------------+
-            | effective_dec                    | rad       | Dec of the image                               |
-            |                                  |           | dec + (x1_image_positions_i - y_source)        |
-            +----------------------------------+-----------+------------------------------------------------+
+            Updated dictionary with effective per-image parameters:
+
+            - ``effective_luminosity_distance`` (Mpc)
+            - ``effective_geocent_time`` (s)
+            - ``effective_phase`` (rad)
+            - ``effective_ra`` (rad)
+            - ``effective_dec`` (rad)
         """
 
         # needed to calculate effective luminosity distance and effective time delay

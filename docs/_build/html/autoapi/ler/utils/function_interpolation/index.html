@@ -6,13 +6,13 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.utils.function_interpolation &mdash; ler 0.5.9 documentation</title>
+  <title>ler.utils.function_interpolation &mdash; ler 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=11132fbc" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=551ad726" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=88a06014" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
@@ -20,7 +20,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=9a3cda14"></script>
+      <script src="../../../../_static/documentation_options.js?v=8fa8b3e9"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -33,7 +33,7 @@
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="next" title="ler.utils.gwsnr_training_data_generator" href="../gwsnr_training_data_generator/index.html" />
-    <link rel="prev" title="ler.utils.cosmological_coversions" href="../cosmological_coversions/index.html" /> 
+    <link rel="prev" title="ler.utils.cosmological_conversions" href="../cosmological_conversions/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -71,7 +71,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../cosmological_coversions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.cosmological_coversions</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cosmological_conversions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.cosmological_conversions</span></code></a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.function_interpolation</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
 </ul>
@@ -120,6 +120,21 @@
              
   <section id="module-ler.utils.function_interpolation">
 <span id="ler-utils-function-interpolation"></span><h1><a class="reference internal" href="#module-ler.utils.function_interpolation" title="ler.utils.function_interpolation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils.function_interpolation</span></code></a><a class="headerlink" href="#module-ler.utils.function_interpolation" title="Link to this heading"></a></h1>
+<p>Module for function interpolation and conditioning using cubic splines and Gaussian KDE.</p>
+<p>This module provides the FunctionConditioning class, which implements flexible function</p>
+<p>interpolation for both 1D and 2D cases with support for inverse functions, probability</p>
+<p>density functions (PDFs), and random variable sampling. It supports both cubic spline</p>
+<p>interpolation and Gaussian Kernel Density Estimation (KDE).</p>
+<p>Key Features:</p>
+<ul class="simple">
+<li><p>1D and 2D cubic spline interpolation via JSON caching</p></li>
+<li><p>Automatic inverse function generation and normalization</p></li>
+<li><p>PDF computation with proper normalization constants</p></li>
+<li><p>Inverse transform sampling for random variable generation</p></li>
+<li><p>Gaussian KDE as an alternative to spline interpolation</p></li>
+<li><p>Numba JIT compilation for performance optimization</p></li>
+</ul>
+<p>Copyright (C) 2026 Hemanta Ph. Distributed under MIT License.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <section id="classes">
@@ -127,14 +142,137 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.utils.function_interpolation.FunctionConditioning" title="ler.utils.function_interpolation.FunctionConditioning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FunctionConditioning</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Cubic spline interpolation and conditioning for functions with optional PDF and sampling.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ler.utils.function_interpolation.FunctionConditioning">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.utils.function_interpolation.</span></span><span class="sig-name descname"><span class="pre">FunctionConditioning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_array</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditioned_y_array</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_array</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">non_zero_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gaussian_kde</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gaussian_kde_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identifier_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./interpolator_json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sub_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_new</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_function_inverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_pdf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_rvs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiprocessing_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/function_interpolation.html#FunctionConditioning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.function_interpolation.FunctionConditioning" title="Link to this definition"></a></dt>
-<dd><dl class="py attribute">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.utils.function_interpolation.</span></span><span class="sig-name descname"><span class="pre">FunctionConditioning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_array</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditioned_y_array</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_array</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">non_negative_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gaussian_kde</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gaussian_kde_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identifier_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./interpolator_json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sub_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_new</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_function_inverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_pdf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_rvs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiprocessing_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_spline_ppf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdf_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/function_interpolation.html#FunctionConditioning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.function_interpolation.FunctionConditioning" title="Link to this definition"></a></dt>
+<dd><p>Cubic spline interpolation and conditioning for functions with optional PDF and sampling.</p>
+<p>This class creates efficiently interpolated representations of scalar or multi-dimensional</p>
+<p>functions, supporting inverse functions, probability density functions, and random</p>
+<p>variable sampling. Interpolators are cached as JSON files to avoid recomputation.</p>
+<p>Both 1D and 2D conditioning scenarios are supported.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>function</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Function to interpolate or array of function values at x_array points.</p>
+<p>If callable, will be evaluated at x_array (and conditioned_y_array if provided).</p>
+<p>default: None</p>
+</dd>
+<dt><strong>x_array</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>X-axis values where the function is defined.</p>
+<p>For 2D case, can be 1D (replicated for each y) or 2D (shape: len(conditioned_y_array), len(x)).</p>
+<p>default: None</p>
+</dd>
+<dt><strong>conditioned_y_array</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Y-axis values for 2D conditioning. If None, 1D interpolation is used.</p>
+<p>default: None</p>
+</dd>
+<dt><strong>y_array</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Y values for 2D Gaussian KDE (used only when gaussian_kde=True).</p>
+<p>default: None</p>
+</dd>
+<dt><strong>non_negative_function</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, clamps negative function values to 0. Useful for PDF-like functions.</p>
+<p>default: False</p>
+</dd>
+<dt><strong>gaussian_kde</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, uses Gaussian KDE instead of cubic spline interpolation.</p>
+<p>default: False</p>
+</dd>
+<dt><strong>gaussian_kde_kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Keyword arguments passed to scipy.stats.gaussian_kde constructor.</p>
+<p>default: None</p>
+</dd>
+<dt><strong>identifier_dict</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary to uniquely identify the interpolator in the cache.</p>
+<p>Used in directory structure for saving/loading.</p>
+<p>default: None</p>
+</dd>
+<dt><strong>directory</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Root directory for storing interpolator JSON files.</p>
+<p>default: ‘./interpolator_json’</p>
+</dd>
+<dt><strong>sub_directory</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Subdirectory within directory for organizing interpolators.</p>
+<p>default: ‘default’</p>
+</dd>
+<dt><strong>name</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Name/identifier of this specific interpolator.</p>
+<p>default: ‘default’</p>
+</dd>
+<dt><strong>create_new</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, forces creation of new interpolator, ignoring cached versions.</p>
+<p>default: False</p>
+</dd>
+<dt><strong>create_function</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>If True, compiles interpolated function via Numba JIT.</p>
+<p>If callable, uses provided function directly.</p>
+<p>default: False</p>
+</dd>
+<dt><strong>create_function_inverse</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>If True, compiles inverse interpolated function via Numba JIT.</p>
+<p>If callable, uses provided function directly.</p>
+<p>default: False</p>
+</dd>
+<dt><strong>create_pdf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>If True, compiles PDF function (normalized) via Numba JIT.</p>
+<p>If callable, uses provided function directly.</p>
+<p>default: False</p>
+</dd>
+<dt><strong>create_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>If True, compiles random variable sampler via Numba JIT.</p>
+<p>If callable, uses provided function directly.</p>
+<p>default: False</p>
+</dd>
+<dt><strong>multiprocessing_function</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, assumes function accepts vectorized input for 2D evaluation.</p>
+<p>default: False</p>
+</dd>
+<dt><strong>callback</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Name of the method to call when instance is called (e.g., ‘function’, ‘pdf’, ‘rvs’).</p>
+<p>default: None</p>
+</dd>
+<dt><strong>use_spline_ppf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, uses spline-based inverse-CDF sampling when creating random-variable samplers.</p>
+<p>default: False</p>
+</dd>
+<dt><strong>cdf_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of points to use when computing CDF for inverse transform sampling.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Interpolators are cached as JSON for efficiency; use create_new=True to regenerate.</p></li>
+<li><p>For PDF-like functions, set non_negative_function=True to avoid negative values.</p></li>
+<li><p>Numba JIT compilation requires ~0.5-1 second on first call for startup.</p></li>
+<li><p>2D interpolation requires arrays sorted by conditioned_y_array values internally.</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<p>1D cubic spline interpolation:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.utils</span> <span class="kn">import</span> <span class="n">FunctionConditioning</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fc</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">function</span><span class="o">=</span><span class="n">f</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">x_array</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">identifier_dict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;param&#39;</span><span class="p">:</span> <span class="s1">&#39;sin_function&#39;</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">create_function</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">callback</span><span class="o">=</span><span class="s1">&#39;function&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="mf">5.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>2D conditioning with PDF:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span> <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fc2d</span> <span class="o">=</span> <span class="n">FunctionConditioning</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">function</span><span class="o">=</span><span class="n">f2d</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">x_array</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">conditioned_y_array</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">identifier_dict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;param&#39;</span><span class="p">:</span> <span class="s1">&#39;exp_function_2d&#39;</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">create_pdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">create_rvs</span><span class="o">=</span><span class="kc">True</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ler.utils.function_interpolation.FunctionConditioning.cdf_size">
+<span class="sig-name descname"><span class="pre">cdf_size</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'500'</span></em><a class="reference internal" href="../../../../_modules/ler/utils/function_interpolation.html#FunctionConditioning.cdf_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.function_interpolation.FunctionConditioning.cdf_size" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ler.utils.function_interpolation.FunctionConditioning.use_spline_ppf">
+<span class="sig-name descname"><span class="pre">use_spline_ppf</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'False'</span></em><a class="reference internal" href="../../../../_modules/ler/utils/function_interpolation.html#FunctionConditioning.use_spline_ppf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.function_interpolation.FunctionConditioning.use_spline_ppf" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="ler.utils.function_interpolation.FunctionConditioning.info">
 <span class="sig-name descname"><span class="pre">info</span></span><a class="reference internal" href="../../../../_modules/ler/utils/function_interpolation.html#FunctionConditioning.info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.function_interpolation.FunctionConditioning.info" title="Link to this definition"></a></dt>
 <dd></dd></dl>
@@ -147,42 +285,25 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.utils.function_interpolation.FunctionConditioning.__call__">
 <span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/function_interpolation.html#FunctionConditioning.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.function_interpolation.FunctionConditioning.__call__" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ler.utils.function_interpolation.FunctionConditioning.create_decision_function">
-<span class="sig-name descname"><span class="pre">create_decision_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">create_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_function_inverse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_pdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_rvs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/function_interpolation.html#FunctionConditioning.create_decision_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.function_interpolation.FunctionConditioning.create_decision_function" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ler.utils.function_interpolation.FunctionConditioning.create_gaussian_kde">
-<span class="sig-name descname"><span class="pre">create_gaussian_kde</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gaussian_kde_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/function_interpolation.html#FunctionConditioning.create_gaussian_kde"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.function_interpolation.FunctionConditioning.create_gaussian_kde" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ler.utils.function_interpolation.FunctionConditioning.create_interpolator">
-<span class="sig-name descname"><span class="pre">create_interpolator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditioned_y_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_function_inverse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_pdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiprocessing_function</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/function_interpolation.html#FunctionConditioning.create_interpolator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.function_interpolation.FunctionConditioning.create_interpolator" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ler.utils.function_interpolation.FunctionConditioning.create_z_array">
-<span class="sig-name descname"><span class="pre">create_z_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditioned_y_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_pdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiprocessing_function</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/function_interpolation.html#FunctionConditioning.create_z_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.function_interpolation.FunctionConditioning.create_z_array" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ler.utils.function_interpolation.FunctionConditioning.cdf_values_generator">
-<span class="sig-name descname"><span class="pre">cdf_values_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditioned_y_array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/function_interpolation.html#FunctionConditioning.cdf_values_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.function_interpolation.FunctionConditioning.cdf_values_generator" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ler.utils.function_interpolation.FunctionConditioning.pdf_norm_const_generator">
-<span class="sig-name descname"><span class="pre">pdf_norm_const_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function_spline</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditioned_y_array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/function_interpolation.html#FunctionConditioning.pdf_norm_const_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.function_interpolation.FunctionConditioning.pdf_norm_const_generator" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ler.utils.function_interpolation.FunctionConditioning.function_spline_generator">
-<span class="sig-name descname"><span class="pre">function_spline_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditioned_y_array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/utils/function_interpolation.html#FunctionConditioning.function_spline_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.utils.function_interpolation.FunctionConditioning.function_spline_generator" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Call the instance with arguments forwarded to the callback method.</p>
+<p>Converts float arguments to reshaped arrays for compatibility with</p>
+<p>interpolation functions and forwards to the method specified by callback.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>*args</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Arguments to pass to callback method. Float values are converted to</p>
+<p>reshaped (-1,) arrays for interpolation compatibility.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Output from the callback method.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -194,7 +315,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../cosmological_coversions/index.html" class="btn btn-neutral float-left" title="ler.utils.cosmological_coversions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../cosmological_conversions/index.html" class="btn btn-neutral float-left" title="ler.utils.cosmological_conversions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../gwsnr_training_data_generator/index.html" class="btn btn-neutral float-right" title="ler.utils.gwsnr_training_data_generator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

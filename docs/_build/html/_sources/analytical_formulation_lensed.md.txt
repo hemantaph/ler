@@ -391,27 +391,39 @@ $$
 \end{split}
 $$
 
+Direct rejection sampling from the intrinsic distribution, for example using $P(\sigma\mid z_L)$, is computationally inefficient because the lensing cross-section $\sigma^{\rm EPL}_{\rm SL}$ scales roughly as $\sigma^4$, heavily favoring high-mass lenses that are exponentially rare in the intrinsic population. Furthermore, the lack of a strict analytical maximum for the cross-section complicates the definition of a rejection envelope.
 
-
-Direct rejection sampling from the intrinsic distribution $P(\sigma\mid z_L)$ is computationally inefficient because the lensing cross-section $\sigma^{\rm EPL}_{\rm SL}$ scales roughly as $\sigma^4$, heavily favoring high-mass lenses that are exponentially rare in the intrinsic population. Furthermore, the lack of a strict analytical maximum for the cross-section complicates the definition of a rejection envelope.
-
-To address these challenges, `ler` employs [importance sampling](https://en.wikipedia.org/wiki/Importance_sampling). A proposal distribution $P_o(\sigma)$, typically chosen to be uniform over $[\sigma_{\min},\sigma_{\max}]$, is introduced to rewrite the target density. By defining the intrinsic distribution $P(\sigma \mid z_L)$ as the normalized velocity dispersion function $\phi(\sigma, z_L)/\int \phi(\sigma', z_L) d\sigma'$, the target distribution becomes
+To address these challenges, `ler` employs [importance sampling](https://en.wikipedia.org/wiki/Importance_sampling). Proposal distributions, $P_o(\sigma)$, $P_o(q)$, $P_o(\phi_{\rm rot})$, $P_o(\gamma)$, $P_o(\gamma_1)$, $P_o(\gamma_2)$, typically chosen to be uniform over their respective ranges, is introduced to rewrite the target density. By defining the intrinsic distribution $P(\sigma \mid z_L)=\phi(\sigma, z_L)/\int \phi(\sigma', z_L) d\sigma'$ as the normalized velocity dispersion function, and similarly for other parameters, the target distribution becomes
 
 $$
 \begin{split}
 &P(\sigma, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2 \mid z_L, z_s, {\rm SL})\\
-&\quad \propto \left[\frac{ \sigma^{\rm EPL}_{\rm SL}\, P(\sigma \mid z_L)}{4\pi\,P_o(\sigma)}\right] P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \, P_o(\sigma) \\
-&\quad = \frac{1}{{\cal W}(z_L)} \left[\frac{ \sigma^{\rm EPL}_{\rm SL}\, \phi(\sigma, z_L)}{P_o(\sigma)}\right] P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \, P_o(\sigma) \, .
+&\quad \propto \left[\frac{ \sigma^{\rm EPL}_{\rm SL}\, P(\sigma \mid z_L)\,P(q \mid \sigma)\,P(\phi_{\rm rot})\,P(\gamma)\,P(\gamma_1)\,P(\gamma_2)}{4\pi\,P_o(\sigma)\,P_o(q)\,P_o(\phi_{\rm rot})\,P_o(\gamma)\,P_o(\gamma_1)\,P_o(\gamma_2)}\right] \\
+&\quad\quad \times P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \, P_o(\sigma) \\
+&\quad = \frac{1}{{\cal W}(z_L)} \left[\frac{ \sigma^{\rm EPL}_{\rm SL} \, \phi(\sigma, z_L)\,P(q \mid \sigma)\,P(\phi_{\rm rot})\,P(\gamma)\,P(\gamma_1)\,P(\gamma_2)}{P_o(\sigma)\,P_o(q)\,P_o(\phi_{\rm rot})\,P_o(\gamma)\,P_o(\gamma_1)\,P_o(\gamma_2)}\right] \\
+&\quad\quad \times P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \, P_o(\sigma) \, .
 \end{split}
 $$
 
 In this formulation, constant factors including $4\pi$ and the normalization of the intrinsic velocity dispersion function are absorbed into the overall normalization constant ${\cal W}(z_L)$. The term in the square brackets represents the unnormalized importance weight required to convert samples from the proposal distribution into samples from the cross-section-weighted target distribution.
 
-Computationally, this is implemented by generating a candidate batch of size $N_{\rm prop}$ (defaulting to 200 in `ler`) for each $(z_L, z_s)$ pair. The velocity dispersion $\sigma_i$ is drawn from the proposal $P_o(\sigma)$, while the remaining shape parameters are sampled directly from their intrinsic priors. Each candidate in the batch is assigned a normalized importance weight
+Note that, I have used this concept,
+
+$$
+\begin{split}
+P(\sigma, z_L) \propto \frac{dV_c}{dz_L}\, \phi(\sigma, z_L)\, ,
+\end{split}
+$$
+
+and the factor $\frac{dV_c}{dz_L}$ is already accounted for in $P(z_L\mid {\rm SL})$.
+
+
+Computationally, this is implemented by generating a candidate batch of size \(N_{\rm prop}\) (defaulting to 400 in `ler`) for each \((z_L, z_s)\) pair. The parameters \((\sigma_i, q_i, \phi_{\rm rot,i}, \gamma_i, \gamma_{1,i}, \gamma_{2,i})\) are drawn from their respective proposal distributions. Each candidate in the batch is assigned a normalized importance weight
 
 $$ 
 \begin{split}
-w_i(\sigma_i, q_i, \phi_{{\rm rot},i}, \gamma_i, \gamma_{1,i}, \gamma_{2,i};z_L,z_s)=\frac{1}{{\cal W}(z_L)}\,\frac{\sigma^{\rm EPL}_{{\rm SL}, i}\,\phi(\sigma_i, z_L)}{P_o(\sigma_i)} \, ,
+&w_i(\sigma_i, q_i, \phi_{{\rm rot},i}, \gamma_i, \gamma_{1,i}, \gamma_{2,i};z_L,z_s)=\\
+&\quad\quad \frac{1}{{\cal W}(z_L)}\,\frac{\sigma^{\rm EPL}_{{\rm SL}, i}\,\phi(\sigma_i, z_L)\,P(q_i \mid \sigma_i)\,P(\phi_{\rm rot,i})\,P(\gamma_i)\,P(\gamma_{1,i})\,P(\gamma_{2,i})}{P_o(\sigma_i)\,P_o(q_i)\,P_o(\phi_{\rm rot,i})\,P_o(\gamma_i)\,P_o(\gamma_{1,i})\,P_o(\gamma_{2,i})} \, ,
 \end{split}
 $$
 
@@ -419,11 +431,13 @@ where the batch normalization constant is defined as the sum of the unnormalized
 
 $$ 
 \begin{split}
-{\cal W}(z_L)=\sum_{i=1}^{N_{\rm prop}}\frac{\sigma^{\rm EPL}_{{\rm SL}, i}\,\phi(\sigma_i, z_L)}{P_o(\sigma_i)} \, .
+{\cal W}(z_L)=\sum_{i=1}^{N_{\rm prop}}\frac{\sigma^{\rm EPL}_{{\rm SL}, i} \,\phi(\sigma_i, z_L)\,P(q_i \mid \sigma_i)\,P(\phi_{\rm rot,i})\,P(\gamma_i)\,P(\gamma_{1,i})\,P(\gamma_{2,i})}{P_o(\sigma_i)\,P_o(q_i)\,P_o(\phi_{\rm rot,i})\,P_o(\gamma_i)\,P_o(\gamma_{1,i})\,P_o(\gamma_{2,i})} \, .
 \end{split}
 $$
 
-A final lens configuration is selected from this batch by resampling with probabilities proportional to $w_i$, ensuring the final parameter set accurately reflects the properties of the strongly lensed population.
+A final lens configuration is selected from this batch by resampling with probabilities proportional to \(w_i\), ensuring the final parameter set accurately reflects the properties of the strongly lensed population. This process is repeated for each \((z_L, z_s)\) pair to generate a representative sample of lens parameters for the lensed events.
+
+>> Note: `ler` keeps the expensive rejection sampling, as an option, for checking the accuracy of the importance sampling scheme. 
 
 
 ## Source Position Distribution and Image Properties

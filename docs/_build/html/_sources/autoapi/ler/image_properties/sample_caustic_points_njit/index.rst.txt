@@ -1,0 +1,179 @@
+:py:mod:`ler.image_properties.sample_caustic_points_njit`
+=========================================================
+
+.. py:module:: ler.image_properties.sample_caustic_points_njit
+
+.. autoapi-nested-parse::
+
+   Symmetry-accelerated source-position sampling for EPL + shear caustics.
+
+   This version avoids constructing the full caustic boundary for sampling.
+   It asks cross_section_njit._helper_caustic_epl_shear for only the half-boundary
+   0 <= theta < pi, rotates only that half-boundary, builds a half-fan cumulative
+   area table, samples from that half, and then flips the sampled point to the
+   antipodal half with probability 1/2.
+
+   No parallel=True and no cache=True are used.
+
+   ..
+       !! processed by numpydoc !!
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   ler.image_properties.sample_caustic_points_njit.caustic_points_epl_shear_half
+   ler.image_properties.sample_caustic_points_njit.sample_source_from_double_caustic
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   ler.image_properties.sample_caustic_points_njit.PI
+
+
+.. py:data:: PI
+
+   
+
+.. py:function:: caustic_points_epl_shear_half(theta_E, q, phi, gamma, gamma1, gamma2, num_th=500, maginf=-100.0, quad=False)
+
+   
+   Return only the rotated half-boundary of the EPL+shear caustic.
+
+   The returned points correspond to the first half of the full angular grid,
+   0 <= theta < pi.  The other half is obtained exactly by central inversion,
+   p(theta + pi) = -p(theta).  This is intended for area/sampling routines
+   that can exploit central symmetry and therefore do not need the explicit
+   full boundary.
+
+   :Parameters:
+
+       **theta_E** : ``float``
+           Einstein radius.
+
+       **q** : ``float``
+           Axis ratio.
+
+       **phi** : ``float``
+           Position angle of the lens major axis in radians.
+
+       **gamma** : ``float``
+           EPL slope exponent.
+
+       **gamma1** : ``float``
+           First shear component.
+
+       **gamma2** : ``float``
+           Second shear component.
+
+       **num_th** : ``int``
+           Number of angular samples.
+
+           default: 500
+
+       **maginf** : ``float``
+           Magnification cut threshold.
+
+           default: -100.0
+
+       **quad** : ``bool``
+           If True, return the quad (inner) caustic. If False, return the double (outer) caustic.
+
+           default: False
+
+   :Returns:
+
+       **pos_half** : numpy.ndarray
+           Shape (2, num_th//2).  Rotated source-plane caustic half-boundary.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: sample_source_from_double_caustic(theta_E, q, phi, gamma, gamma1, gamma2, num_th=500, maginf=-100.0)
+
+   
+   Sample a single source position from the double caustic region.
+
+   Precomputes the caustic boundary once (the expensive part) and
+   draws one uniform sample via exact fan-triangulation from the origin.
+
+   :Parameters:
+
+       **theta_E** : ``float``
+           Einstein radius.
+
+       **q** : ``float``
+           Axis ratio.
+
+       **phi** : ``float``
+           Position angle of the lens major axis in radians.
+
+       **gamma** : ``float``
+           EPL slope exponent.
+
+       **gamma1** : ``float``
+           First shear component.
+
+       **gamma2** : ``float``
+           Second shear component.
+
+       **num_th** : ``int``
+           Number of angular samples for caustic boundary.
+
+           default: 500
+
+       **maginf** : ``float``
+           Magnification cut threshold.
+
+           default: -100.0
+
+   :Returns:
+
+       **xs** : ``float``
+           Sampled source x-coordinate (``NaN`` if caustic is invalid).
+
+       **ys** : ``float``
+           Sampled source y-coordinate (``NaN`` if caustic is invalid).
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   >>> xs, ys = sample_source_from_double_caustic(
+   ...     theta_E=1.0, q=0.8, phi=0.0, gamma=2.0, gamma1=0.03, gamma2=-0.01
+   ... )
+
+
+
+   ..
+       !! processed by numpydoc !!
+

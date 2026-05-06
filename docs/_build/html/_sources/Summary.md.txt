@@ -1,7 +1,7 @@
-# Summary 
+# Summary
 
 <p align="center">
-    <img src="_static/sl.png" alt="Your Logo" width="100%">
+    <img src="_static/sl.png" alt="Strong lensing illustration" width="100%">
 </p>
 
 <iframe src="_static/gwlensing.html"
@@ -13,57 +13,102 @@
 
 *Interactive animation showing the lensing of gravitational waves by a massive object.*
 
-LeR is a Python package designed for the statistical simulation and forecasting of gravitational wave (GW) events and their rates. It is tailored to support both GW population study groups and GW lensing research groups by providing a comprehensive suite of tools for GW event analysis. The package is organized into the following main components:
+`ler` is a statistics-based Python package for simulating compact-binary
+gravitational-wave populations and calculating detectable event rates. It
+supports both unlensed and strongly lensed events.
 
-## Sampling Gravitational Wave Source Properties:
-- The source's redshift ($z_s$) sampling distribution, $R_m^U(z_s)$, is derived from the merger rate density of compact binaries, which is based on the star formation rate. The code is designed for easy integration of future updates or user-specified distributions.
-- The sampling of both intrinsic and extrinsic parameters of GW sources, represented by $\theta_i$, utilizes the prior distributions ( $P\left(\theta_i \right)$ ) available within the `gwcosmo` and `bilby` Python packages. Users can manually alter any relevant parameters as needed.
+The package is designed for gravitational-wave population studies, lensing
+studies, and forecasting for current and future detector networks.
 
-## Lensing Related:
-- **Sampling of Lens Galaxies Attributes and Source Redshifts:**
-    - For lensed cases, the source redshift ($z_s$) is sampled under the strong lensing condition (SL) based on the precomputed probability of strong lensing with source at $z_s$ ( optical depth: $P\left(\text{SL}|z_s\right)$ ). This probability can be recalculated for specified configurations of lens galaxies, leveraging multiprocessing and njit functionalities for efficiency.
-    - The package uses the Elliptical Power Law with external shear (EPL+Shear) model for galaxy parameter ($\theta_L$) sampling, following [Wierda et. al 2021](https://arxiv.org/abs/2106.06303). Rejection sampling is applied to these samples based on whether the event is strongly lensed or not, $P\left(\text{SL}|z_s,\theta_L\right)$.
+## Main workflow
 
-- **Generation of Image Properties:**
-    - Source position ($\beta$) is sampled from the caustic in the source plane.
-    - Sampled lens properties and source position are fed into `Lenstronomy` to generate image properties. This is the slowest part of the simulation, which LeR tackles through parallelization with multiprocessing.
-    - Image properties like magnification ($\mu_i$) and time delay ($\Delta t_i$) modify the original source signal strength, affecting the signal-to-noise ratio (SNR) and our ability to detect.
+`ler` separates the calculation into two related workflows.
 
-## Calculation of Detectable Merger Rates Per Year:
-- The calculation of rates involves integration over simulated events that meet specific detection criteria, including computing SNRs ($\rho$) for each event or its lensed images and assessing them against a predetermined threshold ($\rho_{th}$).
-- SNR calculations are optimized using [gwsnr](https://github.com/hemantaph/gwsnr), leveraging interpolation, artificial neural networks, and multiprocessing for accuracy and speed.
-- Simulated events and rate results, along with input configurations, are systematically archived for easy access and future analysis. All interpolators used in the process are preserved for future applications.
+For unlensed events, `ler`:
 
-LeR is developed to meet the needs of both the LIGO-Virgo-KAGRA Scientific Collaboration and researchers in astrophysics. It is currently used in generating detectable lensing events and GW lensing rates for current and future detectors, contributing to the ongoing effort to detect lensed GWs, ([arXiv:2306.03827](https://arxiv.org/abs/2306.03827)). The package is designed with upgradability in mind to include additional statistics as required by related research.
+- samples compact-binary source properties
+- evaluates detector-frame signal-to-noise ratios and detection probabilities
+- estimates detectable event rates with Monte Carlo integration
 
-Key features of LeR include efficient sampling, optimized SNR calculations, and systematic archiving of results. It leverages array operations and linear algebra from the `numpy` library, interpolation methods from `scipy`, and parallel processing capabilities from Python's `multiprocessing` module, with performance further optimized using the `numba` library's Just-In-Time compilation.
+For strongly lensed events, `ler` also:
 
-For more information and usage examples, please refer to the other sections of the documentation.
-<!-- [LeR documentation](https://arxiv.org/abs/2306.03827). -->
+- samples source and lens redshifts under the strong-lensing condition
+- samples lens properties using the lensing cross-section
+- samples source positions inside the multi-image caustic
+- computes image positions, magnifications, time delays, and Morse phases
+- applies image-level detection criteria
+- estimates detectable lensed event rates
 
-**Detectable Gravitational Wave Event Rates:**
+## Scientific models
 
-\begin{equation*}
-R_U = \int dz_s R_m^U(z_s)\left\{\Theta[\rho(z_s,\theta)-\rho_{th}] P(\theta) d\theta \right\}
-\end{equation*}
+`ler` supports compact-binary populations such as BBH, BNS, and NSBH systems.
+The source-redshift distribution is based on merger-rate density and the
+comoving volume element, including the detector-frame time-dilation factor.
 
-* $z_s$: GW source redshift, $R_m^U(z_s)$: source frame merger rate density in the co-moving volume at $z_s$, $\theta$: GW source parameters, $P$: probability distribution, $\rho$: SNR, $\rho_{th}$: SNR threshold, $\Theta$: Heaviside function to select detectable events.
+For lensing calculations, the documentation describes the EPL+Shear model with
+lens parameters such as lens redshift, velocity dispersion, axis ratio, lens
+orientation, density slope, and external shear. The implementation uses optical
+depth and multi-image caustic cross-section calculations to sample the strongly
+lensed population.
 
-**Detectable Lensed Gravitational Wave Event Rates:**
+Detector selection effects are evaluated through the `gwsnr` backend. The
+default examples use an SNR threshold and waveform/detector settings described
+in the analytical formulation pages.
 
-\begin{equation*}
-\begin{split}
-R_L = \int & dz_s R_m^L(z_s) \,\mathcal{O}_{images}(z_s,\theta,\mu_i,\Delta t_i, \rho_{th}) \, \\ 
-& \, P(\theta) P(\theta_L|\text{SL},z_s) P(\beta|\text{SL}) d\theta d\beta d\theta_L dz_s 
-\end{split}
-\end{equation*}
+## Rate calculation
 
-* $R_m^L(z_s)$: strongly lensed source frame merger rate density in the co-moving volume at $z_s$, $\theta_L$: lens parameters, $\beta$: image properties, $\mu$: image magnification, $\Delta t$: image time delay, $\mathcal{O}$: logical OR operator applied across all $\Theta_i$ of the images, $\text{SL}$: strong lensing condition.
+The unlensed detectable rate is written as the intrinsic detector-frame rate
+multiplied by the population-averaged detection probability:
 
-## Distribution binary black hole (BBH) in terms of redshift.
+$$
+\frac{\Delta N^{\mathrm{obs}}_{\mathrm{U}}}{\Delta t} = \mathcal{N}_{\mathrm{U}} \bigg\langle P(\mathrm{obs} \mid \vec{\theta}) \bigg\rangle_{\vec{\theta} \sim P(\vec{\theta})}
+$$
 
-* The following plot generated using `LeR`. This considers O4 design sensitivity of the GW detectors.
+The strongly lensed detectable rate is computed by averaging the detection
+probability over source parameters, lens parameters, and source position,
+conditioned on strong lensing:
+
+$$
+\frac{\Delta N^{\mathrm{obs}}_{\mathrm{L}}}{\Delta t} = \mathcal{N}_{\mathrm{L}} \bigg\langle P(\mathrm{obs}\mid \vec{\theta}_{\mathrm{U}}, \vec{\theta}_{\mathrm{L}}, \vec{\beta}, \mathrm{SL}) \bigg\rangle_{\substack{ \vec{\theta}_{\mathrm{U}},\vec{\theta}_{\mathrm{L}} \sim P(\vec{\theta}_{\mathrm{U}},\vec{\theta}_{\mathrm{L}} \mid z_L, z_s, \mathrm{SL}) \\ \vec{\beta} \sim P(\vec{\beta} \mid z_s, \vec{\theta}_{\mathrm{L}}, \mathrm{SL}) }} \, ,
+$$
+
+Here, $\mathcal{N}_{\mathrm{U}}$ is the total intrinsic merger rate in the
+detector frame, $\mathcal{N}_{\mathrm{L}}$ is the total intrinsic merger rate
+in the detector frame for the lensed population, $\vec{\theta}_{\mathrm{U}}$
+and $\vec{\theta}_{\mathrm{L}}$ denote the source and lens parameters, and
+$\vec{\beta}$ is the source position in the source plane.
+
+## Example outputs
+
+The figures below show examples generated with `ler`.
 
 <p align="center">
-  <img src="_static/zs_all.png" alt="Your Logo" width="80%">
+  <img src="_static/Merger_rate_density_and_PDF_of_redshift.png" alt="Merger rate density and redshift distribution" width="80%">
 </p>
+
+The redshift distribution combines the merger-rate density, comoving volume
+element, and cosmological time dilation.
+
+<p align="center">
+  <img src="_static/Unlensed_Events.png" alt="Intrinsic and detectable unlensed events" width="80%">
+</p>
+
+Detectability selects a subset of the intrinsic population, typically favoring
+nearer and higher-SNR systems for a fixed detector network.
+
+<p align="center">
+  <img src="_static/Lensed_Events.png" alt="Intrinsic, strongly lensed, and detectable lensed events" width="80%">
+</p>
+
+Strong lensing and detector selection introduce additional selection effects in
+source redshift, lens redshift, velocity dispersion, axis ratio, and density
+slope.
+
+## Learn more
+
+For the full derivation and assumptions, see:
+
+- [Analytical formulation for unlensed event rates](analytical_formulation_unlensed.md)
+- [Analytical formulation for lensed event rates](analytical_formulation_lensed.md)
+- [Installation](Installation.rst)
+- [Code overview](code_overview.rst)

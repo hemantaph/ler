@@ -1,0 +1,240 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.utils &mdash; ler 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/scalefix.css?v=551ad726" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=88a06014" />
+      <link rel="stylesheet" type="text/css" href="../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8fa8b3e9"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../ler.html">ler</a></li>
+      <li class="breadcrumb-item active">ler.utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ler.utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Shared numerics, plotting, I/O, splines, and cosmology helpers.</span>
+
+<span class="sd">Public symbols are resolved lazily so importing one helper does not also import</span>
+<span class="sd">plotting, ``gwsnr``, or the full interpolation/cosmology stack.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">import_module</span>
+
+<span class="n">_SUBMODULES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;utils&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;plots&quot;</span><span class="p">:</span> <span class="s2">&quot;.plots&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gwsnr_training_data_generator&quot;</span><span class="p">:</span> <span class="s2">&quot;.gwsnr_training_data_generator&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;function_interpolation&quot;</span><span class="p">:</span> <span class="s2">&quot;.function_interpolation&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cosmological_conversions&quot;</span><span class="p">:</span> <span class="s2">&quot;.cosmological_conversions&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">_SYMBOL_TO_MODULE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;is_njitted&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;remove_file&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;load_pickle&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;save_pickle&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;load_hdf5&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;save_hdf5&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;NumpyEncoder&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;load_json&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;save_json&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;append_json&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_param_from_json&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;add_dictionaries_together&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;trim_dictionary&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;load_txt_from_module&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rejection_sample&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rejection_sample2d&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;create_func&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;create_func_inv&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;create_pdf&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;create_inv_cdf_array&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;create_conditioned_pdf&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;create_conditioned_inv_cdf_array&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;interpolator_from_json&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;interpolator_json_path&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;monte_carlo_integration&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cubic_spline_interpolator&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cubic_spline_interpolator_scalar&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pdf_cubic_spline_interpolator&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cubic_hermite_interpolation&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cubic_spline_interpolator2d&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pdf_cubic_spline_interpolator2d&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;inverse_transform_sampler2d&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;inverse_transform_sampler2d_spline&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;inverse_transform_sampler&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;inverse_transform_sampler_spline&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;trim_cdf&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;normal_pdf&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;normal_pdf_2d&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumulative_spline&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cumulative_trapezoid&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_pchip_spline_coeffs&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;batch_handler&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;create_batch_params&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;KStest&quot;</span><span class="p">:</span> <span class="s2">&quot;.utils&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;param_plot&quot;</span><span class="p">:</span> <span class="s2">&quot;.plots&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;relative_mu_dt_unlensed&quot;</span><span class="p">:</span> <span class="s2">&quot;.plots&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;relative_mu_dt_lensed&quot;</span><span class="p">:</span> <span class="s2">&quot;.plots&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mu_vs_dt_plot&quot;</span><span class="p">:</span> <span class="s2">&quot;.plots&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TrainingDataGenerator&quot;</span><span class="p">:</span> <span class="s2">&quot;.gwsnr_training_data_generator&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FunctionConditioning&quot;</span><span class="p">:</span> <span class="s2">&quot;.function_interpolation&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;generate_mixed_grid&quot;</span><span class="p">:</span> <span class="s2">&quot;.cosmological_conversions&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;luminosity_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;.cosmological_conversions&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;differential_comoving_volume&quot;</span><span class="p">:</span> <span class="s2">&quot;.cosmological_conversions&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;comoving_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;.cosmological_conversions&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;angular_diameter_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;.cosmological_conversions&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;angular_diameter_distance_z1z2&quot;</span><span class="p">:</span> <span class="s2">&quot;.cosmological_conversions&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<div class="viewcode-block" id="__all__">
+<a class="viewcode-back" href="../../autoapi/ler/utils/index.html#ler.utils.__all__">[docs]</a>
+<span class="n">__all__</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="o">*</span><span class="n">_SUBMODULES</span><span class="p">,</span> <span class="o">*</span><span class="n">_SYMBOL_TO_MODULE</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="__getattr__">
+<a class="viewcode-back" href="../../autoapi/ler/utils/index.html#ler.utils.__getattr__">[docs]</a>
+<span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">_SUBMODULES</span><span class="p">:</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="n">_SUBMODULES</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="vm">__name__</span><span class="p">)</span>
+        <span class="nb">globals</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">module</span>
+        <span class="k">return</span> <span class="n">module</span>
+
+    <span class="n">module_name</span> <span class="o">=</span> <span class="n">_SYMBOL_TO_MODULE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">module_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;module </span><span class="si">{</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2"> has no attribute </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">),</span> <span class="n">name</span><span class="p">)</span>
+    <span class="nb">globals</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="n">value</span></div>
+
+
+
+<div class="viewcode-block" id="__dir__">
+<a class="viewcode-back" href="../../autoapi/ler/utils/index.html#ler.utils.__dir__">[docs]</a>
+<span class="k">def</span> <span class="fm">__dir__</span><span class="p">():</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">([</span><span class="o">*</span><span class="nb">globals</span><span class="p">(),</span> <span class="o">*</span><span class="n">__all__</span><span class="p">])</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

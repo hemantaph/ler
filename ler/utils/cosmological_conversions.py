@@ -54,36 +54,18 @@ def generate_mixed_grid(
 
     Examples
     --------
-    from ler.utils import generate_mixed_grid
-
-    resolution=20
-    # linear+power-law with power-law in the upper segment and decreasing step sizes
-    x = generate_mixed_grid(
-        x_min=0.0, x_max=10.0, resolution=resolution,
-        power_law_part='upper',
-        spacing_trend='decreasing',  # Forces largest steps near z_trans
-        power=2.5,
-        value_transition_fraction=0.6,
-        num_transition_fraction=0.3,
-        auto_match_slope=True       # We accept the kink to control the exact power
-    )
-    # powerlaw+linear with power-law in the lower segment and increasing step sizes
-    x = generate_mixed_grid(
-        x_min=0.0, x_max=10.0, resolution=resolution,
-        power_law_part='lower',
-        spacing_trend='increasing',  # Forces largest steps near z_trans
-        power=2.5,
-        value_transition_fraction=0.3,
-        num_transition_fraction=0.6,
-        auto_match_slope=True       # We accept the kink to control the exact power
-    )
-    # linear+geomspace with geometric spacing in the upper segment
-    x = generate_mixed_grid(
-        x_min=0.1, x_max=10.0, resolution=resolution,
-        geomspace_part='lower',
-        value_transition_fraction=0.3,
-        num_transition_fraction=0.6,
-    )
+    >>> from ler.utils import generate_mixed_grid
+    >>> resolution = 20
+    >>> x = generate_mixed_grid(
+    ...     x_min=0.0,
+    ...     x_max=10.0,
+    ...     resolution=resolution,
+    ...     power_law_part='upper',
+    ...     spacing_trend='decreasing',
+    ...     power=2.5,
+    ...     value_transition_fraction=0.6,
+    ...     num_transition_fraction=0.3,
+    ... )
     """
     if x_max <= x_min:
         return np.linspace(x_min, x_max, resolution)

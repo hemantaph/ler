@@ -9,172 +9,46 @@
     href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Source+Serif+4:wght@400;600;700&display=swap"
     rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: "Source Serif 4", "Crimson Pro", "Georgia", "Times New Roman", serif;
-      background: #fff;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 6px;
-    }
-
-    .wrapper {
-      width: 520px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    canvas {
-      display: block;
-    }
-
-    /* --- Row 2: legend + sliders --- */
-    .row2 {
-      width: 520px;
-      display: flex;
-      gap: 10px;
-      margin-top: 4px;
-      align-items: flex-start;
-    }
-
-    .legend-panel {
-      flex: 0 0 250px;
       font-family: "Source Serif 4", "Crimson Pro", "Georgia", serif;
-      font-size: 12px;
-      line-height: 1.5;
-      border: none;
-      border-radius: 5px;
-      padding: 8px 10px;
-      background: #E9EBF2;
+      background: #fff; color: #333; display: flex; flex-direction: column;
+      align-items: center; padding: 6px;
     }
-
-    .legend-title {
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 4px;
-      color: #222;
+    .wrapper { width: 520px; display: flex; flex-direction: column; align-items: center; }
+    canvas { display: block; }
+    .row2 { width: 520px; display: flex; gap: 10px; margin-top: 4px; align-items: flex-start; }
+    .legend-panel {
+      flex: 0 0 250px; font-size: 12px; line-height: 1.5; border-radius: 5px;
+      padding: 8px 10px; background: #E9EBF2;
     }
-
-    .legend-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 5px;
-      margin-bottom: 2px;
-    }
-
-    .legend-img-detail {
-      font-size: 11.5px;
-      line-height: 1.45;
-    }
-
-    .legend-swatch {
-      display: inline-block;
-      width: 26px;
-      min-width: 26px;
-      height: 0;
-    }
-
-    .legend-star {
-      font-size: 15px;
-      min-width: 18px;
-      text-align: center;
-    }
-
-    .legend-sub {
-      font-size: 9px;
-      vertical-align: sub;
-    }
-
-    .sliders-panel {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      padding: 4px 0;
-    }
-
-    .slider-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      height: 26px;
-    }
-
-    .slider-row .lbl {
-      min-width: 24px;
-      text-align: right;
-      font-size: 14px;
-      font-weight: 500;
-      color: #333;
-      font-family: "Source Serif 4", "Georgia", serif;
-    }
-
-    .slider-row input[type="range"] {
-      flex: 1;
-      cursor: pointer;
-      height: 5px;
-    }
-
-    .slider-row .val {
-      min-width: 44px;
-      font-size: 13px;
-      font-family: monospace;
-      color: #333;
-    }
+    .legend-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: #222; }
+    .legend-item { display: flex; align-items: flex-start; gap: 5px; margin-bottom: 2px; }
+    .legend-img-detail { font-size: 11.5px; line-height: 1.45; }
+    .legend-swatch { display: inline-block; width: 26px; min-width: 26px; height: 0; }
+    .legend-star { font-size: 15px; min-width: 18px; text-align: center; }
+    .legend-sub { font-size: 9px; vertical-align: sub; }
+    .sliders-panel { flex: 1; display: flex; flex-direction: column; gap: 3px; padding: 4px 0; }
+    .slider-row { display: flex; align-items: center; gap: 6px; height: 26px; }
+    .slider-row .lbl { min-width: 24px; text-align: right; font-size: 14px; font-weight: 500; }
+    .slider-row input[type="range"] { flex: 1; cursor: pointer; height: 5px; }
+    .slider-row .val { min-width: 44px; font-size: 13px; font-family: monospace; }
   </style>
 </head>
 
 <body>
   <div class="wrapper">
-    <!-- Row 1: Plot -->
     <canvas id="canvas"></canvas>
-    <!-- Row 2: Legend (left) + Sliders (right) -->
     <div class="row2">
       <div class="legend-panel" id="legend"></div>
       <div class="sliders-panel">
-        <div class="slider-row">
-          <span class="lbl">q:</span>
-          <input type="range" id="s_q" min="0.1" max="0.99" step="0.01" value="0.60">
-          <span class="val" id="v_q">0.60</span>
-        </div>
-        <div class="slider-row">
-          <span class="lbl">φ:</span>
-          <input type="range" id="s_phi" min="0" max="3.14159" step="0.01" value="0.52">
-          <span class="val" id="v_phi">0.52</span>
-        </div>
-        <div class="slider-row">
-          <span class="lbl">γ:</span>
-          <input type="range" id="s_gamma" min="1.5" max="2.5" step="0.01" value="1.84">
-          <span class="val" id="v_gamma">1.84</span>
-        </div>
-        <div class="slider-row">
-          <span class="lbl">γ₁:</span>
-          <input type="range" id="s_g1" min="-0.2" max="0.2" step="0.01" value="-0.05">
-          <span class="val" id="v_g1">-0.05</span>
-        </div>
-        <div class="slider-row">
-          <span class="lbl">γ₂:</span>
-          <input type="range" id="s_g2" min="-0.2" max="0.2" step="0.01" value="-0.05">
-          <span class="val" id="v_g2">-0.05</span>
-        </div>
-        <div class="slider-row">
-          <span class="lbl">βₓ:</span>
-          <input type="range" id="s_bx" min="-1.5" max="1.5" step="0.05" value="-0.25">
-          <span class="val" id="v_bx">-0.25</span>
-        </div>
-        <div class="slider-row">
-          <span class="lbl">βᵧ:</span>
-          <input type="range" id="s_by" min="-1.5" max="1.5" step="0.01" value="0.04">
-          <span class="val" id="v_by">0.04</span>
-        </div>
+        <div class="slider-row"><span class="lbl">q:</span><input type="range" id="s_q" min="0.1" max="0.99" step="0.01" value="0.60"><span class="val" id="v_q">0.60</span></div>
+        <div class="slider-row"><span class="lbl">φ:</span><input type="range" id="s_phi" min="0" max="3.14159" step="0.01" value="0.52"><span class="val" id="v_phi">0.52</span></div>
+        <div class="slider-row"><span class="lbl">γ:</span><input type="range" id="s_gamma" min="1.5" max="2.5" step="0.01" value="1.84"><span class="val" id="v_gamma">1.84</span></div>
+        <div class="slider-row"><span class="lbl">γ₁:</span><input type="range" id="s_g1" min="-0.2" max="0.2" step="0.01" value="-0.05"><span class="val" id="v_g1">-0.05</span></div>
+        <div class="slider-row"><span class="lbl">γ₂:</span><input type="range" id="s_g2" min="-0.2" max="0.2" step="0.01" value="-0.05"><span class="val" id="v_g2">-0.05</span></div>
+        <div class="slider-row"><span class="lbl">βₓ:</span><input type="range" id="s_bx" min="-1.5" max="1.5" step="0.05" value="-0.25"><span class="val" id="v_bx">-0.25</span></div>
+        <div class="slider-row"><span class="lbl">βᵧ:</span><input type="range" id="s_by" min="-1.5" max="1.5" step="0.01" value="0.04"><span class="val" id="v_by">0.04</span></div>
       </div>
     </div>
   </div>
@@ -182,7 +56,7 @@
   <script>
     "use strict";
 
-    // ===== Complex helpers =====
+    // ===== Complex Math Helpers =====
     function cmul(a, b) { return [a[0] * b[0] - a[1] * b[1], a[0] * b[1] + a[1] * b[0]]; }
     function cadd(a, b) { return [a[0] + b[0], a[1] + b[1]]; }
     function cabs(z) { return Math.sqrt(z[0] * z[0] + z[1] * z[1]); }
@@ -190,82 +64,93 @@
     function cscale(s, z) { return [s * z[0], s * z[1]]; }
     function cdot(a, b) { return a[0] * b[0] + a[1] * b[1]; }
 
-    // ===== Coordinates =====
-    function phi_q2_ellipticity(p, q) { return [(1 - q) / (1 + q) * Math.cos(2 * p), (1 - q) / (1 + q) * Math.sin(2 * p)]; }
-    function ellipticity2phi_q(e1, e2) { const p = Math.atan2(e2, e1) / 2; let c = Math.min(Math.sqrt(e1 * e1 + e2 * e2), 0.9999); return [p, (1 - c) / (1 + c)]; }
+    // ===== Python cross_section_njit.py Equivalents =====
+    function phi_q2_ellipticity(p, q) { 
+        const e = (1 - q) / (1 + q);
+        return [e * Math.cos(2 * p), e * Math.sin(2 * p)]; 
+    }
+    function ellipticity2phi_q(e1, e2) { 
+        const p = Math.atan2(e2, e1) / 2; 
+        const c = Math.min(Math.sqrt(e1 * e1 + e2 * e2), 0.9999); 
+        return [p, (1 - c) / (1 + c)]; 
+    }
     function shear_c2p(g1, g2) { return [Math.atan2(g2, g1) / 2, Math.sqrt(g1 * g1 + g2 * g2)]; }
     function shear_p2c(p, g) { return [g * Math.cos(2 * p), g * Math.sin(2 * p)]; }
-    function pol2ell(r, th, q) { return [r * Math.sqrt(q * q * Math.cos(th) ** 2 + Math.sin(th) ** 2), Math.atan2(Math.sin(th), Math.cos(th) * q)]; }
+    
+    // Polar -> Elliptical
+    function pol2ell(r, th, q) { 
+        return [r * Math.sqrt(q * q * Math.cos(th) ** 2 + Math.sin(th) ** 2), Math.atan2(Math.sin(th), Math.cos(th) * q)]; 
+    }
     function pol2cart(r, th) { return [r * Math.cos(th), r * Math.sin(th)]; }
-    function cart2pol(x, y) { let t = Math.atan2(y, x); return [Math.sqrt(x * x + y * y), ((t % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)]; }
+    function cart2pol(x, y) { return [Math.sqrt(x * x + y * y), ((Math.atan2(y, x) % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)]; }
     function rotmat(th) { const c = Math.cos(th), s = Math.sin(th); return [[c, s], [-s, c]]; }
     function mv(M, v) { return [M[0][0] * v[0] + M[0][1] * v[1], M[1][0] * v[0] + M[1][1] * v[1]]; }
 
-    // ===== Cosmology (flat ΛCDM) =====
-    // Match Python: σ=160 km/s, z_l=0.8, z_s=3.0, H0=70, Ωm=0.3, ΩΛ=0.7
+    // Cosmology (flat ΛCDM) - For mapping tau to real days
     const COSMO = { H0: 70, Om: 0.3, OL: 0.7, sigma: 160.0, zl: 0.8, zs: 3.0 };
-    const C_KMS = 299792.458; // speed of light in km/s
-    const MPC_TO_KM = 3.0857e19; // 1 Mpc in km
+    const C_KMS = 299792.458; 
+    const MPC_TO_KM = 3.0857e19; 
 
     function comovingDist(z) {
-      // Numerical integration: χ(z) = c/H0 * ∫₀ᶻ dz'/E(z')
-      const N = 1000;
-      const dz = z / N;
-      let sum = 0;
+      const N = 1000, dz = z / N; let sum = 0;
       for (let i = 0; i < N; i++) {
         const z1 = i * dz, z2 = (i + 1) * dz;
         const E1 = Math.sqrt(COSMO.Om * (1 + z1) ** 3 + COSMO.OL);
         const E2 = Math.sqrt(COSMO.Om * (1 + z2) ** 3 + COSMO.OL);
         sum += 0.5 * (1 / E1 + 1 / E2) * dz;
       }
-      return (C_KMS / COSMO.H0) * sum; // in Mpc
+      return (C_KMS / COSMO.H0) * sum;
     }
 
-    // Pre-compute cosmological quantities
-    const chi_l = comovingDist(COSMO.zl);
-    const chi_s = comovingDist(COSMO.zs);
-    const D_l = chi_l / (1 + COSMO.zl); // Mpc
-    const D_s = chi_s / (1 + COSMO.zs); // Mpc
-    const D_ls = (chi_s - chi_l) / (1 + COSMO.zs); // Mpc (flat)
-    const theta_E_phys = 4 * Math.PI * (COSMO.sigma / C_KMS) ** 2 * D_ls / D_s; // radians
-    // Time-delay distance: D_Δt = (1+z_l)*D_l*D_s/D_ls [Mpc]
+    const chi_l = comovingDist(COSMO.zl), chi_s = comovingDist(COSMO.zs);
+    const D_l = chi_l / (1 + COSMO.zl), D_s = chi_s / (1 + COSMO.zs);
+    const D_ls = (chi_s - chi_l) / (1 + COSMO.zs); 
+    const theta_E_phys = 4 * Math.PI * (COSMO.sigma / C_KMS) ** 2 * D_ls / D_s;
     const D_dt = (1 + COSMO.zl) * D_l * D_s / D_ls;
-    // Conversion: Δt_days = D_dt[Mpc] * θ_E² * Δτ / (c[Mpc/day])
-    // c in Mpc/day = C_KMS * 86400 / MPC_TO_KM
     const c_Mpc_day = C_KMS * 86400 / MPC_TO_KM;
-    const TD_FACTOR = D_dt * theta_E_phys * theta_E_phys / c_Mpc_day; // days per unit Δτ
+    const TD_FACTOR = D_dt * theta_E_phys * theta_E_phys / c_Mpc_day;
 
-    // ===== Omega =====
+    // ===== Python epl_shear_njit.py Equivalents =====
     function omega(phi, t, q) {
+      // Mirrors Python's `omega_scalar` convergence kernel
       const f = (1 - q) / (1 + q);
+      if (f <= 1e-16) return [Math.cos(phi), Math.sin(phi)];
+
       const ni = Math.min(200, Math.floor(Math.log(1e-16) / Math.log(Math.abs(f) + 1e-30)) + 2);
       let Om = [Math.cos(phi), Math.sin(phi)];
       const fc = cscale(-f, cexp_i(2 * phi));
       let res = [0, 0];
-      for (let n = 1; n < ni; n++) { res = cadd(res, Om); Om = cscale((2 * n - (2 - t)) / (2 * n + (2 - t)), cmul(Om, fc)); }
+      for (let n = 1; n < ni; n++) { 
+        res = cadd(res, Om); 
+        Om = cscale((2 * n - (2 - t)) / (2 * n + (2 - t)), cmul(Om, fc)); 
+      }
       return cadd(res, Om);
     }
 
-    // ===== Alpha =====
     function alpha_epl(x, y, b, q, t, Om) {
-      const R = cabs([x * q, y]), pf = (2 * b) / (1 + q);
-      let fr = R > 1e-15 ? Math.pow(b / R, t) * R / b : 0; if (!isFinite(fr)) fr = 0;
+      // Mirrors Python: alph = (2* b**t)/(1 + q) * R**(1-t) * Omega
+      const R = cabs([x * q, y]);
+      const pf = (2 * Math.pow(b, t)) / (1 + q);
+      let fr = R > 1e-15 ? Math.pow(R, 1 - t) : 0; 
+      if (!isFinite(fr)) fr = 0;
       return cscale(pf * fr, Om);
     }
+
     function alpha_es(x, y, b, q, t, g1, g2, Om) {
+      // Mirrors Python: alph + (gamma1 * x + gamma2 * y) + 1j * (gamma2 * x - gamma1 * y)
       const a = alpha_epl(x, y, b, q, t, Om);
       return [a[0] + g1 * x + g2 * y, a[1] + g2 * x - g1 * y];
     }
 
-    // ===== Quadratic =====
     function sqeq(a, b, c) {
+      // Mirrors _solvequadeq
       const d = b * b - 4 * a * c; if (d < 0) return [NaN, NaN];
       const s = Math.sqrt(d), sg = b >= 0 ? 1 : -1, dn = -b - sg * s;
       if (b !== 0) { if (a !== 0) return [dn / (2 * a), 2 * c / dn]; return [-c / b, -c / b + 1e-8]; }
       const sq = Math.sqrt(-c / a); return [-sq, sq];
     }
 
-    // ===== Caustics =====
+    // ===== Caustics Generator =====
     function computeCaustics(qi, pi, gp, g1u, g2u) {
       const [e1, e2] = phi_q2_ellipticity(pi, qi);
       const [te, q] = ellipticity2phi_q(e1, e2);
@@ -275,23 +160,30 @@
       const M = rotmat(-te), t = gp - 1, mi = -100, N = 500;
       const x4 = [], y4 = [], xc = [], yc = [], xd = [], yd = [], xq = [], yq = [];
       const rC = [], tC = [], r4 = [], t4 = [];
+      
       for (let i = 0; i < N; i++) {
         const th = (2 * Math.PI * i) / N;
         const [R, ph] = pol2ell(1, th, q);
-        const Om = omega(ph, t, q), fr = 1 / R;
+        const Om = omega(ph, t, q), fr = 1 / R; 
         const et = cexp_i(th), e2t = cexp_i(2 * th);
-        let aa = 1, bb = -(2 - t);
+        
+        let aa = 1 - (g1 * g1 + g2 * g2); 
+        let bb = -(2 - t);
         let cc = (1 - t) * (2 - t) * cdot(et, Om) / fr * 2 / (1 + q);
         cc -= (1 - t) ** 2 * (2 / (1 + q)) ** 2 * (Om[0] * Om[0] + Om[1] * Om[1]) / fr ** 2;
+        
         const gre = -e2t[0] * (2 - t) / 2 + (1 - t) * et[0] * 2 / (1 + q) * Om[0] / fr - (1 - t) * et[1] * 2 / (1 + q) * Om[1] / fr;
         const gim = -e2t[1] * (2 - t) / 2 + (1 - t) * et[0] * 2 / (1 + q) * Om[1] / fr + (1 - t) * et[1] * 2 / (1 + q) * Om[0] / fr;
-        aa -= g1 * g1 + g2 * g2; bb -= 2 * (g1 * gre + g2 * gim);
+        bb -= 2 * (g1 * gre + g2 * gim);
+        
         const [, u2] = sqeq(cc, bb, aa);
         let xr4 = NaN, yr4 = NaN;
-        if (isFinite(u2) && u2 > 0) { const r = b * Math.pow(u2, -1 / t) * fr;[xr4, yr4] = pol2cart(r, th); }
+        if (isFinite(u2) && u2 > 0) { const r = b * Math.pow(u2, -1 / t) * fr; [xr4, yr4] = pol2cart(r, th); }
+        
         let xrc = NaN, yrc = NaN;
         if (t > 1) { const [, uc] = sqeq(cc, bb, aa - mi); if (isFinite(uc) && uc > 0) { const r = b * Math.pow(uc, -1 / t) * fr;[xrc, yrc] = pol2cart(r, th); } }
         else { const [uc] = sqeq(cc, bb, aa + mi); if (isFinite(uc) && uc > 0) { const r = b * Math.pow(uc, -1 / t) * fr;[xrc, yrc] = pol2cart(r, th); } }
+        
         let xa4 = NaN, ya4 = NaN, xac = NaN, yac = NaN;
         if (isFinite(xr4)) { const O = omega(Math.atan2(yr4, xr4 * q), t, q); const a = alpha_es(xr4, yr4, b, q, t, g1, g2, O); xa4 = xr4 - a[0]; ya4 = yr4 - a[1]; }
         if (isFinite(xrc)) { const O = omega(Math.atan2(yrc, xrc * q), t, q); const a = alpha_es(xrc, yrc, b, q, t, g1, g2, O); xac = xrc - a[0]; yac = yrc - a[1]; }
@@ -308,6 +200,7 @@
       }
       return { x4, y4, xc, yc, xd, yd, xq, yq };
     }
+
     function interp(x, xp, fp, P) {
       const n = xp.length, idx = Array.from({ length: n }, (_, i) => i).sort((a, b) => xp[a] - xp[b]);
       const sx = idx.map(i => xp[i]), sf = idx.map(i => fp[i]);
@@ -318,7 +211,7 @@
       return sf[lo] + tt * (sf[hi] - sf[lo]);
     }
 
-    // ===== Image finder =====
+    // ===== Image Position Finder & Magnification =====
     function findImages(bx, by, qi, pi, gp, g1u, g2u) {
       const [e1, e2] = phi_q2_ellipticity(pi, qi);
       const [te, q] = ellipticity2phi_q(e1, e2);
@@ -327,13 +220,15 @@
       const [g1, g2] = shear_p2c(tg, gm);
       const M = rotmat(-te), Mi = rotmat(te), t = gp - 1;
       const bl = mv(Mi, [bx, by]);
+      
       const gN = 150, rng = 2.5, cands = [];
-      for (let ix = 0; ix < gN; ix++)for (let iy = 0; iy < gN; iy++) {
+      for (let ix = 0; ix < gN; ix++) for (let iy = 0; iy < gN; iy++) {
         const x = -rng + (2 * rng * ix) / (gN - 1), y = -rng + (2 * rng * iy) / (gN - 1);
         const a = alpha_es(x, y, b, q, t, g1, g2, omega(Math.atan2(y, x * q), t, q));
         const dx = x - a[0] - bl[0], dy = y - a[1] - bl[1];
         if (Math.sqrt(dx * dx + dy * dy) < 2 * rng / gN * 2.5) cands.push([x, y]);
       }
+      
       const imgs = [], h = 1e-5;
       for (const [cx, cy] of cands) {
         let x = cx, y = cy;
@@ -362,54 +257,49 @@
         const a0 = alpha_es(ix, iy, b, q, t, g1, g2, O);
         const ax = alpha_es(ix + h, iy, b, q, t, g1, g2, omega(Math.atan2(iy, (ix + h) * q), t, q));
         const ay = alpha_es(ix, iy + h, b, q, t, g1, g2, omega(Math.atan2(iy + h, ix * q), t, q));
+        
         const a11 = 1 - (ax[0] - a0[0]) / h, a12 = -(ay[0] - a0[0]) / h;
         const a21 = -(ax[1] - a0[1]) / h, a22 = 1 - (ay[1] - a0[1]) / h;
         const det = a11 * a22 - a12 * a21, tr = a11 + a22, mu = 1 / Math.abs(det);
         let tp; if (det < 0) tp = 'II'; else if (tr > 0) tp = 'I'; else tp = 'III';
+        
         const pos = mv(M, [ix, iy]);
-        // --- Fermat potential: τ = ½|θ−β|² − ψ(θ) ---
-        // EPL potential via Euler's theorem: ψ_EPL = (x·αx + y·αy) / (3−γ)
         const a_epl = alpha_epl(ix, iy, b, q, t, O);
-        const psi_epl = (ix * a_epl[0] + iy * a_epl[1]) / (2 - t); // 2-t = 3-γ
-        // Shear potential: ψ_shear = ½(γ₁(x²−y²) + 2γ₂xy)
+        
+        // Match Python Euler-theorem Potential definition: (x * alpha_x + y * alpha_y) / (2 - t)
+        const psi_epl = (ix * a_epl[0] + iy * a_epl[1]) / (2 - t); 
         const psi_shear = 0.5 * (g1 * (ix * ix - iy * iy) + 2 * g2 * ix * iy);
-        const psi_total = psi_epl + psi_shear;
-        const geom = 0.5 * ((ix - bl[0]) ** 2 + (iy - bl[1]) ** 2);
-        const tau = geom - psi_total; // Fermat potential (dimensionless, θ_E units)
+        const tau = 0.5 * ((ix - bl[0]) ** 2 + (iy - bl[1]) ** 2) - (psi_epl + psi_shear); 
+        
         res.push({ x: pos[0], y: pos[1], mu, type: tp, tau });
       }
-      res.sort((a, b) => a.tau - b.tau); // sort by arrival time
+      res.sort((a, b) => a.tau - b.tau);
       return res;
     }
 
-    // ===== Drawing =====
+    // ===== Drawing Mechanics =====
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     const DPR = window.devicePixelRatio || 1;
 
-    // Seaborn darkgrid colors
     const LIGHT_BG = '#F5F6FA';
     const GRID_COL = '#FFFFFF';
-    const LEG_BG = '#E9EBF2';
     const SERIF = '"Source Serif 4","Crimson Pro","Georgia","Times New Roman",serif';
 
-    // Canvas layout (user set TW=520)
     const MARGIN = { top: 38, right: 14, bottom: 54, left: 58 };
-    const PLOT_W = 520 - MARGIN.left - MARGIN.right; // 448
-    const PLOT_H = PLOT_W; // square
+    const PLOT_W = 520 - MARGIN.left - MARGIN.right;
+    const PLOT_H = PLOT_W; 
     const TW = 520, TH = MARGIN.top + PLOT_H + MARGIN.bottom;
+    
     canvas.width = TW * DPR; canvas.height = TH * DPR;
     canvas.style.width = TW + 'px'; canvas.style.height = TH + 'px';
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 
     const iCols = ['#1E88E5', '#7E57C2', '#8D6E63', '#616161'];
-    const dim = 1.3; // matches Python: dim = theta_E * 1.3
-    // Physical scale: θ_E in units of 10⁻⁶ rad
-    const theta_E_1e6 = theta_E_phys * 1e6; // ≈ 2.0094
+    const dim = 1.3; 
+    const theta_E_1e6 = theta_E_phys * 1e6; 
 
-    function w2p(wx, wy) {
-      return [MARGIN.left + (wx / dim + 1) / 2 * PLOT_W, MARGIN.top + (1 - (wy / dim + 1) / 2) * PLOT_H];
-    }
+    function w2p(wx, wy) { return [MARGIN.left + (wx / dim + 1) / 2 * PLOT_W, MARGIN.top + (1 - (wy / dim + 1) / 2) * PLOT_H]; }
 
     function drawPlot() {
       const q = +document.getElementById('s_q').value;
@@ -419,6 +309,7 @@
       const g2 = +document.getElementById('s_g2').value;
       const bx = +document.getElementById('s_bx').value;
       const by = +document.getElementById('s_by').value;
+      
       document.getElementById('v_q').textContent = q.toFixed(2);
       document.getElementById('v_phi').textContent = phi.toFixed(2);
       document.getElementById('v_gamma').textContent = gamma.toFixed(2);
@@ -430,98 +321,78 @@
       const cau = computeCaustics(q, phi, gamma, g1, g2);
       const imgs = findImages(bx, by, q, phi, gamma, g1, g2);
 
-      // Clear entire canvas white
       ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, TW, TH);
 
-      // Title — serif, bold (matches axes.titlesize=18 scaled)
       ctx.fillStyle = '#222';
       ctx.font = `bold 14px ${SERIF}`;
       ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       ctx.fillText('Interactive Lens Configuration (θ\u0045 \u2248 ' + theta_E_phys.toExponential(1) + ' rad)', TW / 2, MARGIN.top - 6);
 
-      // Plot area background — seaborn darkgrid light gray-blue
       ctx.fillStyle = LIGHT_BG;
       ctx.fillRect(MARGIN.left, MARGIN.top, PLOT_W, PLOT_H);
 
-      // Grid + tick positions: integer multiples of 10⁻⁶ rad, converted to normalized coords
-      // Physical ticks in 10⁻⁶: [-2, -1, 0, 1, 2]
-      // Normalized: tick_phys_1e6 * 1e-6 / theta_E_phys = tick_phys_1e6 / theta_E_1e6
-      const tickPhys = [-2, -1, 0, 1, 2]; // in units of 10⁻⁶ rad
-      const tvs = tickPhys.map(t => t / theta_E_1e6); // normalized coords
+      const tickPhys = [-2, -1, 0, 1, 2];
+      const tvs = tickPhys.map(t => t / theta_E_1e6);
+      
       ctx.strokeStyle = GRID_COL;
       ctx.lineWidth = 2.0;
       ctx.setLineDash([]);
-      // Vertical grid
+      
       for (const v of tvs) {
         const [gx] = w2p(v, 0);
         ctx.beginPath(); ctx.moveTo(gx, MARGIN.top); ctx.lineTo(gx, MARGIN.top + PLOT_H); ctx.stroke();
       }
-      // Horizontal grid
       for (const v of tvs) {
         const [, gy] = w2p(0, v);
         ctx.beginPath(); ctx.moveTo(MARGIN.left, gy); ctx.lineTo(MARGIN.left + PLOT_W, gy); ctx.stroke();
       }
 
-      // NO spines/frame (seaborn darkgrid removes them)
-
-      // Clip for drawing data
       ctx.save(); ctx.beginPath(); ctx.rect(MARGIN.left, MARGIN.top, PLOT_W, PLOT_H); ctx.clip();
 
-      // Einstein ring — dotted (thick dots matching reference)
       ctx.strokeStyle = '#1E88E5'; ctx.lineWidth = 3.0; ctx.setLineDash([4, 5]);
       const [ex, ey] = w2p(0, 0);
       ctx.beginPath(); ctx.arc(ex, ey, (1 / dim) * (PLOT_W / 2), 0, 2 * Math.PI); ctx.stroke();
       ctx.setLineDash([]);
 
-      // Double caustic — dashed, thick
       ctx.strokeStyle = '#FB8C00'; ctx.lineWidth = 2.8; ctx.setLineDash([10, 6]);
       drawCurve(cau.xd, cau.yd, true); ctx.setLineDash([]);
 
-      // Quad caustic — solid, thick
       ctx.strokeStyle = '#43A047'; ctx.lineWidth = 2.8;
       drawCurve(cau.xq, cau.yq, true);
 
-      // Source — red X
       const [sx, sy] = w2p(bx, by);
       ctx.strokeStyle = '#E53935'; ctx.lineWidth = 3.0;
       const cs = 9;
       ctx.beginPath(); ctx.moveTo(sx - cs, sy - cs); ctx.lineTo(sx + cs, sy + cs); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(sx - cs, sy + cs); ctx.lineTo(sx + cs, sy - cs); ctx.stroke();
 
-      // Images — stars
       for (let i = 0; i < imgs.length; i++) {
         const [ix, iy] = w2p(imgs[i].x, imgs[i].y);
         drawStar(ix, iy, 11, iCols[i % iCols.length]);
       }
       ctx.restore();
 
-      // Tick labels — show physical values in 10⁻⁶ units
       ctx.fillStyle = '#333';
       ctx.font = `13px ${SERIF}`;
-      // X-axis labels
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       for (let ti = 0; ti < tvs.length; ti++) {
         const [tx] = w2p(tvs[ti], 0);
         ctx.fillText(tickPhys[ti].toString(), tx, MARGIN.top + PLOT_H + 5);
       }
-      // Y-axis labels
+      
       ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
       for (let ti = 0; ti < tvs.length; ti++) {
         const [, ty] = w2p(0, tvs[ti]);
         ctx.fillText(tickPhys[ti].toString(), MARGIN.left - 7, ty);
       }
 
-      // ×10⁻⁶ annotation (matching matplotlib ScalarFormatter)
       ctx.font = `12px ${SERIF}`;
       ctx.fillStyle = '#333';
-      // Top-left for y-axis
       ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
       ctx.fillText('×10\u207B\u2076', MARGIN.left - 5, MARGIN.top - 2);
-      // Bottom-right for x-axis
       ctx.textAlign = 'right'; ctx.textBaseline = 'top';
       ctx.fillText('×10\u207B\u2076', MARGIN.left + PLOT_W + 5, MARGIN.top + PLOT_H + 18);
 
-      // Axis labels — serif, matching reference
       ctx.fillStyle = '#222';
       ctx.font = `15px ${SERIF}`;
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
@@ -529,12 +400,12 @@
       ctx.save(); ctx.translate(14, MARGIN.top + PLOT_H / 2); ctx.rotate(-Math.PI / 2);
       ctx.textBaseline = 'top'; ctx.fillText('y [rad]', 0, 0); ctx.restore();
 
-      // Legend HTML — styled like reference with LEG_BG background
       let lg = '<div class="legend-title">Lens Configuration</div>';
       lg += '<div class="legend-item"><span class="legend-swatch" style="border-top:3px dashed #FB8C00"></span> Double Caustic</div>';
       lg += '<div class="legend-item"><span class="legend-swatch" style="border-top:3px solid #43A047"></span> Quad Caustic</div>';
       lg += '<div class="legend-item"><span class="legend-swatch" style="border-top:3px dotted #1E88E5"></span> Einstein Ring</div>';
       lg += '<div class="legend-item"><span style="color:#E53935;font-weight:bold;font-size:15px;min-width:26px;text-align:center;">✕</span> Source</div>';
+      
       for (let i = 0; i < imgs.length; i++) {
         const im = imgs[i];
         const dt_days = (im.tau - imgs[0].tau) * TD_FACTOR;
@@ -564,11 +435,9 @@
       ctx.closePath(); ctx.fill();
     }
 
-    // Events
     ['s_q', 's_phi', 's_gamma', 's_g1', 's_g2', 's_bx', 's_by'].forEach(id =>
       document.getElementById(id).addEventListener('input', drawPlot));
     drawPlot();
   </script>
 </body>
-
 </html>

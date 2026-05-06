@@ -48,7 +48,7 @@ Classes
 
 
 
-.. py:class:: LensGalaxyParameterDistribution(npool=4, z_min=0.0, z_max=10.0, cosmology=None, event_type='BBH', lens_type='epl_shear_galaxy', lens_functions=None, lens_functions_params=None, lens_param_samplers=None, lens_param_samplers_params=None, directory='./interpolator_json', create_new_interpolator=False, buffer_size=1000, **kwargs)
+.. py:class:: LensGalaxyParameterDistribution(npool=4, z_min=0.0, z_max=10.0, cosmology=None, event_type='BBH', lens_type='epl_shear_galaxy', lens_functions=None, lens_functions_params=None, lens_priors=None, lens_priors_params=None, directory='./interpolator_json', create_new_interpolator=False, buffer_size=1000, **kwargs)
 
 
    Bases: :py:obj:`ler.gw_source_population.CBCSourceParameterDistribution`, :py:obj:`ler.image_properties.ImageProperties`, :py:obj:`ler.lens_galaxy_population.optical_depth.OpticalDepth`
@@ -121,12 +121,12 @@ Classes
 
            default: None
 
-       **lens_param_samplers** : ``dict`` or ``None``
+       **lens_priors** : ``dict`` or ``None``
            Dictionary specifying lens parameter sampling functions.
 
            default: None (uses defaults from OpticalDepth)
 
-       **lens_param_samplers_params** : ``dict`` or ``None``
+       **lens_priors_params** : ``dict`` or ``None``
            Parameters for lens parameter samplers.
 
            default: None
@@ -174,52 +174,6 @@ Classes
    >>> lensed_params = lens.sample_lens_parameters(size=1000)
    >>> print(lensed_params.keys())
 
-   Instance Methods
-   ----------
-   LensGalaxyParameterDistribution has the following methods:
-
-   +-----------------------------------------------------+------------------------------------------------+
-   | Method                                              | Description                                    |
-   +=====================================================+================================================+
-   | :meth:`~sample_lens_parameters`                     | Sample lens and source parameters              |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~sample_all_routine_epl_shear_intrinsic`     | Sample EPL+shear lens parameters from          |
-   |                                                     | intrinsic distributions                        |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~sample_all_routine_epl_shear_sl`            | Sample EPL+shear lens parameters with strong   |
-   |                                                     | lensing condition                              |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~strongly_lensed_source_redshift`            | Sample source redshifts with lensing condition |
-   +-----------------------------------------------------+------------------------------------------------+
-
-   Instance Attributes
-   ----------
-   LensGalaxyParameterDistribution has the following attributes:
-
-   +------------------------------------------------+----------------------+-------+------------------------------------------------+
-   | Attribute                                      | Type                 | Unit  | Description                                    |
-   +================================================+======================+=======+================================================+
-   | :attr:`~npool`                                 | ``int``              |       | Number of processors for parallel computation  |
-   +------------------------------------------------+----------------------+-------+------------------------------------------------+
-   | :attr:`~z_min`                                 | ``float``            |       | Minimum redshift                               |
-   +------------------------------------------------+----------------------+-------+------------------------------------------------+
-   | :attr:`~z_max`                                 | ``float``            |       | Maximum redshift                               |
-   +------------------------------------------------+----------------------+-------+------------------------------------------------+
-   | :attr:`~cosmo`                                 | ``astropy.cosmology``|       | Cosmology object for calculations              |
-   +------------------------------------------------+----------------------+-------+------------------------------------------------+
-   | :attr:`~event_type`                            | ``str``              |       | Type of CBC event (BBH, BNS, NSBH)             |
-   +------------------------------------------------+----------------------+-------+------------------------------------------------+
-   | :attr:`~directory`                             | ``str``              |       | Path to interpolator storage directory         |
-   +------------------------------------------------+----------------------+-------+------------------------------------------------+
-   | :attr:`~lens_param_samplers`                   | ``dict``             |       | Dictionary of lens parameter sampler names     |
-   +------------------------------------------------+----------------------+-------+------------------------------------------------+
-   | :attr:`~lens_param_samplers_params`            | ``dict``             |       | Parameters for lens parameter samplers         |
-   +------------------------------------------------+----------------------+-------+------------------------------------------------+
-   | :attr:`~lens_functions`                        | ``dict``             |       | Dictionary of lens function names              |
-   +------------------------------------------------+----------------------+-------+------------------------------------------------+
-   | :attr:`~normalization_pdf_z_lensed`            | ``float``            |       | Normalization constant for lensed source z pdf |
-   +------------------------------------------------+----------------------+-------+------------------------------------------------+
-
 
 
    ..
@@ -233,8 +187,62 @@ Classes
 
       :Returns:
 
-          **zs_sl** : ``ler.functions.FunctionConditioning``
-              Function for sampling source redshifts conditioned on strong lensing.
+          **zs_sl** : ``FunctionConditioning``
+              Sampler object for strongly-lensed source redshift.
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:property:: cross_section_based_sampler
+
+      
+      Cross-section based lens parameter sampler function. This is an initialized function of sampler_functions.create_importance_sampler or sampler_functions.create_rejection_sampler based on the configuration.
+
+      This function samples lens parameters weighted by the strong lensing
+      cross-section.
+
+      :Parameters:
+
+          **size** : ``int``
+              Number of strongly-lensed parameter sets to sample.
+
+      :Returns:
+
+          **zs** : ``numpy.ndarray``
+              Array of source redshifts.
+
+          **zl** : ``numpy.ndarray``
+              Array of lens redshifts.
+
+          **sigma** : ``numpy.ndarray``
+              Array of velocity dispersions.
+
+          **q** : ``numpy.ndarray``
+              Array of axis ratios.
+
+          **phi** : ``numpy.ndarray``
+              Array of axis rotation angles.
+
+          **gamma** : ``numpy.ndarray``
+              Array of density profile slopes.
+
+          **gamma1** : ``numpy.ndarray``
+              Array of external shear components in the x-direction.
+
+          **gamma2** : ``numpy.ndarray``
+              Array of external shear components in the y-direction.
 
 
 
@@ -283,7 +291,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: lens_param_samplers
+   .. py:property:: lens_priors
 
       
       Dictionary of lens parameter sampler function names.
@@ -292,14 +300,14 @@ Classes
 
       :Returns:
 
-          **lens_param_samplers** : ``dict``
+          **lens_priors** : ``dict``
               Dictionary mapping parameter names to sampler function names.
 
               Keys include: 'zs_sl', 'lens_redshift',
 
               'velocity_dispersion', 'axis_ratio', 'axis_rotation_angle',
 
-              'external_shear', 'density_profile_slope'.
+              'external_shear1', 'external_shear2', 'density_profile_slope'.
 
 
 
@@ -316,7 +324,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:property:: lens_param_samplers_params
+   .. py:property:: lens_priors_params
 
       
       Dictionary of parameters for lens parameter samplers.
@@ -325,10 +333,10 @@ Classes
 
       :Returns:
 
-          **lens_param_samplers_params** : ``dict``
+          **lens_priors_params** : ``dict``
               Dictionary with sampler parameters.
 
-              Each key corresponds to a sampler in lens_param_samplers.
+              Each key corresponds to a sampler in lens_priors.
 
 
 
@@ -376,38 +384,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:attribute:: event_type
-      :value: "'BBH'"
-
-      
-      ``str``
-
-      Type of event to generate.
-
-      e.g. 'BBH', 'BNS', 'NSBH'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
    .. py:attribute:: sample_lens_parameters_routine
-
-      
-
-   .. py:attribute:: cross_section_based_sampler
 
       
 
@@ -507,11 +484,74 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: sample_all_routine_epl_shear_sl(size=1000)
+   .. py:method:: epl_shear_sl_parameters_rvs(size=1000)
 
       
       Sample EPL+shear galaxy lens parameters with strong lensing condition.
 
+
+      :Parameters:
+
+          **size** : ``int``
+              Number of lens parameters to sample.
+
+              default: 1000
+
+      :Returns:
+
+          **lens_parameters** : ``dict``
+              Dictionary of sampled lens parameters.
+
+              The included parameters and their units are as follows (for default settings):
+
+              +------------------------------+-----------+-------------------------------------------------------+
+              | Parameter                    | Units     | Description                                           |
+              +==============================+===========+=======================================================+
+              | zl                           |           | redshift of the lens                                  |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | zs                           |           | redshift of the source                                |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | sigma                        | km s^-1   | velocity dispersion                                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | q                            |           | axis ratio                                            |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | theta_E                      | radian    | Einstein radius                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
+              |                              |           | positive x-axis (RA-like axis) to the major axis of   |
+              |                              |           | the projected mass distribution.                      |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma                        |           | density profile slope of EPL galaxy                   |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma1                       |           | external shear component in the x-direction           |
+              |                              |           | (RA-like axis)                                        |
+              +------------------------------+-----------+-------------------------------------------------------+
+              | gamma2                       |           | external shear component in the y-direction           |
+              |                              |           | (Dec-like axis)                                       |
+              +------------------------------+-----------+-------------------------------------------------------+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: sample_all_routine_epl_shear_intrinsic(size=1000)
+
+      
+      Sample EPL+shear galaxy lens parameters from intrinsic distributions.
+
+      Samples lens parameters from their intrinsic distributions without
+      applying strong lensing cross-section weighting.
 
       :Parameters:
 
@@ -587,12 +627,12 @@ Classes
               default: False
 
           **\*\*kwargs** : ``dict``
-              Additional parameters
+              Additional parameters.
 
       :Returns:
 
-          **redshifts** : ``numpy.ndarray``
-              Array of source redshifts conditioned on strong lensing.
+          **redshifts** : ``numpy.ndarray`` or ``ler.utils.FunctionConditioning``
+              Array of source redshifts conditioned on strong lensing, or the sampler object.
 
 
 
@@ -601,6 +641,13 @@ Classes
 
 
 
+      .. rubric:: Notes
+
+      This sampler needs a merger-rate-weighted intrinsic source redshift model via
+      ``self.merger_rate_density_based_source_redshift``. That attribute is provided by
+      :class:`~ler.gw_source_population.CBCSourceParameterDistribution` and therefore is
+      available in :class:`~ler.lens_galaxy_population.LensGalaxyParameterDistribution`
+      (which inherits both).
 
 
       .. rubric:: Examples
@@ -609,69 +656,6 @@ Classes
       >>> lens = LensGalaxyParameterDistribution()
       >>> zs = lens.strongly_lensed_source_redshift(size=1000)
       >>> print(f"strongly lensed source redshift: {zs.mean():.2f}")
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: sample_all_routine_epl_shear_intrinsic(size=1000)
-
-      
-      Sample EPL+shear galaxy lens parameters from intrinsic distributions.
-
-      Samples lens parameters from their intrinsic distributions without
-      applying strong lensing cross-section weighting.
-
-      :Parameters:
-
-          **size** : ``int``
-              Number of lens parameters to sample.
-
-              default: 1000
-
-      :Returns:
-
-          **lens_parameters** : ``dict``
-              Dictionary of sampled lens parameters.
-
-              The included parameters and their units are as follows (for default settings):
-
-              +------------------------------+-----------+-------------------------------------------------------+
-              | Parameter                    | Units     | Description                                           |
-              +==============================+===========+=======================================================+
-              | zl                           |           | redshift of the lens                                  |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | zs                           |           | redshift of the source                                |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | sigma                        | km s^-1   | velocity dispersion                                   |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | q                            |           | axis ratio                                            |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | theta_E                      | radian    | Einstein radius                                       |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
-              |                              |           | positive x-axis (RA-like axis) to the major axis of   |
-              |                              |           | the projected mass distribution.                      |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | gamma                        |           | density profile slope of EPL galaxy                   |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | gamma1                       |           | external shear component in the x-direction           |
-              |                              |           | (RA-like axis)                                        |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | gamma2                       |           | external shear component in the y-direction           |
-              |                              |           | (Dec-like axis)                                       |
-              +------------------------------+-----------+-------------------------------------------------------+
-
-
-
-
-
-
-
-
-
-
 
 
 

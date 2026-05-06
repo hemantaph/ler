@@ -1,0 +1,432 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.image_properties.multiprocessing_routine_epl_shear &mdash; ler 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/scalefix.css?v=551ad726" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=88a06014" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=8fa8b3e9"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/ler/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../ler.html">ler</a></li>
+          <li class="breadcrumb-item"><a href="../image_properties.html">ler.image_properties</a></li>
+      <li class="breadcrumb-item active">ler.image_properties.multiprocessing_routine_epl_shear</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ler.image_properties.multiprocessing_routine_epl_shear</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module for solving lens equations using multiprocessing.</span>
+
+<span class="sd">This sub-module contains functions to solve the lens equation for a given set</span>
+<span class="sd">of lens parameters. The lens equation is solved using the analytical solver in</span>
+<span class="sd">lenstronomy. These functions are used in the multiprocessing routine within</span>
+<span class="sd">the ImageProperties class.</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">    Basic workflow example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from ler.image_properties.multiprocessing_routine_epl_shear import solve_lens_equation</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from multiprocessing import Pool</span>
+<span class="sd">    &gt;&gt;&gt; lens_params = np.array([2, 0.02, -0.01, 1.9, 0.1, 0.09, 0.25, 0.94, 1e-6, 0, &#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;], dtype=object)</span>
+<span class="sd">    &gt;&gt;&gt; result = solve_lens_equation(lens_params)</span>
+
+<span class="sd">Copyright (C) 2026 Phurailatpam Hemantakumar. Distributed under MIT License.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">set_num_threads</span>
+<span class="kn">from</span> <span class="nn">lenstronomy.LensModel.lens_model</span> <span class="kn">import</span> <span class="n">LensModel</span>
+<span class="kn">from</span> <span class="nn">lenstronomy.LensModel.Solver.lens_equation_solver</span> <span class="kn">import</span> <span class="n">LensEquationSolver</span>
+<span class="kn">from</span> <span class="nn">lenstronomy.LensModel.Solver.epl_shear_solver</span> <span class="kn">import</span> <span class="n">caustics_epl_shear</span>
+
+<span class="c1"># For sampling from caustic</span>
+<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Polygon</span>
+<span class="kn">import</span> <span class="nn">pointpats</span>
+
+<span class="c1"># Constants</span>
+<div class="viewcode-block" id="MAX_RETRIES">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/multiprocessing_routine_epl_shear/index.html#ler.image_properties.multiprocessing_routine_epl_shear.MAX_RETRIES">[docs]</a>
+<span class="n">MAX_RETRIES</span> <span class="o">=</span> <span class="mi">100</span></div>
+
+<div class="viewcode-block" id="MIN_MAGNIFICATION">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/multiprocessing_routine_epl_shear/index.html#ler.image_properties.multiprocessing_routine_epl_shear.MIN_MAGNIFICATION">[docs]</a>
+<span class="n">MIN_MAGNIFICATION</span> <span class="o">=</span> <span class="mf">0.01</span></div>
+
+
+<span class="c1"># Global variable to hold shared data in worker processes</span>
+<span class="c1"># This avoids pickling large data for each work item - only once per worker</span>
+<span class="n">_worker_shared_data</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<span class="k">def</span> <span class="nf">_init_worker_multiprocessing</span><span class="p">(</span>
+    <span class="n">n_min_images</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">lensModelList</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;EPL_NUMBA&quot;</span><span class="p">,</span> <span class="s2">&quot;SHEAR&quot;</span><span class="p">],</span>
+    <span class="n">cosmo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialize worker process with shared data.</span>
+
+<span class="sd">    This function is called once per worker process when the pool is created.</span>
+<span class="sd">    Shared data is stored in a global variable that workers can access.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_min_images : ``int``</span>
+<span class="sd">        Minimum number of images required for a valid lensing event.</span>
+<span class="sd">    lensModelList : ``list``</span>
+<span class="sd">        List of lens models to use. Default is [&#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;].</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_worker_shared_data</span>
+    <span class="n">_worker_shared_data</span><span class="p">[</span><span class="s2">&quot;n_min_images&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_min_images</span>
+    <span class="n">_worker_shared_data</span><span class="p">[</span><span class="s2">&quot;lensModelList&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lensModelList</span>
+    <span class="n">_worker_shared_data</span><span class="p">[</span><span class="s2">&quot;cosmo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cosmo</span>
+
+    <span class="c1"># Re-seed RNG from OS entropy so worker processes have independent streams</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">()</span>
+
+    <span class="c1"># Limit to 1 Numba thread per worker — parallelism comes from the process pool</span>
+    <span class="n">set_num_threads</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_create_nan_result</span><span class="p">(</span><span class="n">iteration</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a NaN-filled result tuple for invalid lens configurations.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    iteration : ``int``</span>
+<span class="sd">        The iteration number to include in the result.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result : ``tuple``</span>
+<span class="sd">        A tuple with NaN values for all output parameters:</span>
+<span class="sd">        x_source,</span>
+<span class="sd">        y_source,</span>
+<span class="sd">        x0_image_position,</span>
+<span class="sd">        x1_image_position,</span>
+<span class="sd">        magnifications,</span>
+<span class="sd">        time_delays,</span>
+<span class="sd">        nImages,</span>
+<span class="sd">        determinant,</span>
+<span class="sd">        trace,</span>
+<span class="sd">        iteration,</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nan_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="n">nan_array</span><span class="p">,</span>
+        <span class="n">nan_array</span><span class="p">,</span>
+        <span class="n">nan_array</span><span class="p">,</span>
+        <span class="n">nan_array</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">nan_array</span><span class="p">,</span>
+        <span class="n">nan_array</span><span class="p">,</span>
+        <span class="n">iteration</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="solve_lens_equation">
+<a class="viewcode-back" href="../../../autoapi/ler/image_properties/multiprocessing_routine_epl_shear/index.html#ler.image_properties.multiprocessing_routine_epl_shear.solve_lens_equation">[docs]</a>
+<span class="k">def</span> <span class="nf">solve_lens_equation</span><span class="p">(</span><span class="n">lens_parameters</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solve the lens equation to find image properties.</span>
+
+<span class="sd">    Uses the analytical solver from lenstronomy to find image positions,</span>
+<span class="sd">    magnifications, time delays, and hessian properties for strongly</span>
+<span class="sd">    lensed sources. Source positions are sampled from within the caustic</span>
+<span class="sd">    region to ensure multiple imaging.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lens_parameters : ``numpy.ndarray``</span>
+<span class="sd">        Array of lens configuration parameters with the following structure: \n</span>
+<span class="sd">        - [0]: e1 - ellipticity component 1 \n</span>
+<span class="sd">        - [1]: e2 - ellipticity component 2 \n</span>
+<span class="sd">        - [2]: gamma - power-law slope of mass density \n</span>
+<span class="sd">        - [3]: gamma1 - external shear component 1 \n</span>
+<span class="sd">        - [4]: gamma2 - external shear component 2 \n</span>
+<span class="sd">        - [5]: zl - lens redshift \n</span>
+<span class="sd">        - [6]: zs - source redshift \n</span>
+<span class="sd">        - [7]: einstein_radius - Einstein radius (units: radians) \n</span>
+<span class="sd">        - [8]: iteration - iteration index for tracking \n</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x_source : ``float``</span>
+<span class="sd">        Source x-position (units: radians).</span>
+<span class="sd">    y_source : ``float``</span>
+<span class="sd">        Source y-position (units: radians).</span>
+<span class="sd">    x0_image_position : ``numpy.ndarray``</span>
+<span class="sd">        Image x-positions (units: radians).</span>
+<span class="sd">    x1_image_position : ``numpy.ndarray``</span>
+<span class="sd">        Image y-positions (units: radians).</span>
+<span class="sd">    magnifications : ``numpy.ndarray``</span>
+<span class="sd">        Magnification factors for each image.</span>
+<span class="sd">    time_delays : ``numpy.ndarray``</span>
+<span class="sd">        Time delays for each image (units: seconds).</span>
+<span class="sd">    nImages : ``int``</span>
+<span class="sd">        Number of images formed.</span>
+<span class="sd">    determinant : ``numpy.ndarray``</span>
+<span class="sd">        Determinant of the lensing Jacobian for each image.</span>
+<span class="sd">    trace : ``numpy.ndarray``</span>
+<span class="sd">        Trace of the lensing Jacobian for each image.</span>
+<span class="sd">    iteration : ``int``</span>
+<span class="sd">        Iteration index passed through for tracking.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from ler.image_properties.multiprocessing_routine_epl_shear import solve_lens_equation, _init_worker_multiprocessing</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from multiprocessing import Pool</span>
+<span class="sd">    &gt;&gt;&gt; lens_parameters1 = np.array([0.024, -0.016, 1.89, 0.10, 0.09, 0.25, 0.94, 2.5e-06, 0])</span>
+<span class="sd">    &gt;&gt;&gt; lens_parameters2 = np.array([-0.040, -0.014, 2.00, 0.08, -0.01, 1.09, 2.55, 1.0e-06, 1])</span>
+<span class="sd">    &gt;&gt;&gt; input_arguments = np.vstack((lens_parameters1, lens_parameters2))</span>
+<span class="sd">    &gt;&gt;&gt; with Pool(</span>
+<span class="sd">    ...     processes=2, # Number of worker processes</span>
+<span class="sd">    ...     initializer=_init_worker_multiprocessing, # common</span>
+<span class="sd">    ...     initargs=(</span>
+<span class="sd">    ...         2, # n_min_images</span>
+<span class="sd">    ...         [&#39;EPL_NUMBA&#39;, &#39;SHEAR&#39;], # lensModelList</span>
+<span class="sd">    ...     ),</span>
+<span class="sd">    ... ) as pool:</span>
+<span class="sd">    ...     result = pool.map(solve_lens_equation, input_arguments)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_min_images</span> <span class="o">=</span> <span class="n">_worker_shared_data</span><span class="p">[</span><span class="s2">&quot;n_min_images&quot;</span><span class="p">]</span>
+    <span class="n">lensModelList</span> <span class="o">=</span> <span class="n">_worker_shared_data</span><span class="p">[</span><span class="s2">&quot;lensModelList&quot;</span><span class="p">]</span>
+    <span class="n">cosmo</span> <span class="o">=</span> <span class="n">_worker_shared_data</span><span class="p">[</span><span class="s2">&quot;cosmo&quot;</span><span class="p">]</span>
+
+    <span class="n">zl</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">zs</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+    <span class="n">einstein_radius</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+    <span class="n">iteration</span> <span class="o">=</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
+
+    <span class="c1"># Initialize lens model for image position, magnification, and time-delay calculations</span>
+    <span class="n">lensModel</span> <span class="o">=</span> <span class="n">LensModel</span><span class="p">(</span>
+        <span class="n">lens_model_list</span><span class="o">=</span><span class="n">lensModelList</span><span class="p">,</span> <span class="n">z_lens</span><span class="o">=</span><span class="n">zl</span><span class="p">,</span> <span class="n">z_source</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span> <span class="n">cosmo</span><span class="o">=</span><span class="n">cosmo</span>
+    <span class="p">)</span>
+    <span class="n">lens_eq_solver</span> <span class="o">=</span> <span class="n">LensEquationSolver</span><span class="p">(</span><span class="n">lensModel</span><span class="p">)</span>
+
+    <span class="c1"># Build lens model parameters</span>
+    <span class="n">factor</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">kwargs_lens</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;theta_E&quot;</span><span class="p">:</span> <span class="n">factor</span><span class="p">,</span>
+            <span class="s2">&quot;e1&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="s2">&quot;e2&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="s2">&quot;gamma&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+            <span class="s2">&quot;center_x&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;center_y&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;gamma1&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+            <span class="s2">&quot;gamma2&quot;</span><span class="p">:</span> <span class="n">lens_parameters</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span>
+            <span class="s2">&quot;ra_0&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;dec_0&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+
+    <span class="c1"># Get the caustic curve for double-imaging region</span>
+    <span class="n">caustic_double_points</span> <span class="o">=</span> <span class="n">caustics_epl_shear</span><span class="p">(</span>
+        <span class="n">kwargs_lens</span><span class="p">,</span> <span class="n">return_which</span><span class="o">=</span><span class="s2">&quot;double&quot;</span><span class="p">,</span> <span class="n">maginf</span><span class="o">=-</span><span class="mi">100</span>
+    <span class="p">)</span>
+    <span class="n">caustic_is_valid</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">caustic_double_points</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">caustic_is_valid</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_create_nan_result</span><span class="p">(</span><span class="n">iteration</span><span class="p">)</span>
+
+    <span class="c1"># Define region where 2+ images form</span>
+    <span class="n">caustic_double</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">caustic_double_points</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="c1"># Sample source positions until strong lensing condition is satisfied</span>
+    <span class="n">strongly_lensed</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">retry_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">strongly_lensed</span><span class="p">:</span>
+        <span class="n">x_source</span><span class="p">,</span> <span class="n">y_source</span> <span class="o">=</span> <span class="n">pointpats</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">caustic_double</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="p">(</span>
+                <span class="n">x0_image_position</span><span class="p">,</span>
+                <span class="n">x1_image_position</span><span class="p">,</span>
+            <span class="p">)</span> <span class="o">=</span> <span class="n">lens_eq_solver</span><span class="o">.</span><span class="n">image_position_from_source</span><span class="p">(</span>
+                <span class="n">sourcePos_x</span><span class="o">=</span><span class="n">x_source</span><span class="p">,</span>
+                <span class="n">sourcePos_y</span><span class="o">=</span><span class="n">y_source</span><span class="p">,</span>
+                <span class="n">kwargs_lens</span><span class="o">=</span><span class="n">kwargs_lens</span><span class="p">,</span>
+                <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;analytical&quot;</span><span class="p">,</span>
+                <span class="n">magnification_limit</span><span class="o">=</span><span class="n">MIN_MAGNIFICATION</span><span class="p">,</span>
+                <span class="n">arrival_time_sort</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_create_nan_result</span><span class="p">(</span><span class="n">iteration</span><span class="p">)</span>
+
+        <span class="n">nImages</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x0_image_position</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">nImages</span> <span class="o">&gt;=</span> <span class="n">n_min_images</span><span class="p">:</span>
+            <span class="n">strongly_lensed</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">retry_count</span> <span class="o">&gt;</span> <span class="n">MAX_RETRIES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_create_nan_result</span><span class="p">(</span><span class="n">iteration</span><span class="p">)</span>
+        <span class="n">retry_count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c1"># Compute magnifications and time delays</span>
+    <span class="n">theta_E_nImages</span> <span class="o">=</span> <span class="n">einstein_radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">nImages</span><span class="p">)</span>
+    <span class="n">radian_to_arcseconds</span> <span class="o">=</span> <span class="mf">180.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">3600.0</span>
+    <span class="n">days_to_seconds</span> <span class="o">=</span> <span class="mf">24.0</span> <span class="o">*</span> <span class="mf">3600.0</span>
+
+    <span class="n">magnifications</span> <span class="o">=</span> <span class="n">lensModel</span><span class="o">.</span><span class="n">magnification</span><span class="p">(</span>
+        <span class="n">x0_image_position</span><span class="p">,</span> <span class="n">x1_image_position</span><span class="p">,</span> <span class="n">kwargs_lens</span>
+    <span class="p">)</span>
+    <span class="n">time_delays</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">lensModel</span><span class="o">.</span><span class="n">arrival_time</span><span class="p">(</span><span class="n">x0_image_position</span><span class="p">,</span> <span class="n">x1_image_position</span><span class="p">,</span> <span class="n">kwargs_lens</span><span class="p">)</span>
+        <span class="o">*</span> <span class="p">(</span><span class="n">theta_E_nImages</span> <span class="o">*</span> <span class="n">radian_to_arcseconds</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="o">*</span> <span class="n">days_to_seconds</span>
+    <span class="p">)</span>
+
+    <span class="n">time_delays</span> <span class="o">=</span> <span class="n">time_delays</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">time_delays</span><span class="p">)</span>  <span class="c1"># Convert to positive time delays relative to first arrival</span>
+
+    <span class="c1"># Compute hessian properties for image type classification</span>
+    <span class="n">hessian</span> <span class="o">=</span> <span class="n">lensModel</span><span class="o">.</span><span class="n">hessian</span><span class="p">(</span><span class="n">x0_image_position</span><span class="p">,</span> <span class="n">x1_image_position</span><span class="p">,</span> <span class="n">kwargs_lens</span><span class="p">)</span>
+    <span class="n">determinant</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">hessian</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">hessian</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">-</span> <span class="n">hessian</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">hessian</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mi">2</span> <span class="o">-</span> <span class="n">hessian</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">hessian</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+
+    <span class="c1"># Scale positions to physical units</span>
+    <span class="n">x_source</span> <span class="o">=</span> <span class="n">x_source</span> <span class="o">*</span> <span class="n">einstein_radius</span>
+    <span class="n">y_source</span> <span class="o">=</span> <span class="n">y_source</span> <span class="o">*</span> <span class="n">einstein_radius</span>
+    <span class="n">x0_image_position</span> <span class="o">=</span> <span class="n">x0_image_position</span> <span class="o">*</span> <span class="n">einstein_radius</span>
+    <span class="n">x1_image_position</span> <span class="o">=</span> <span class="n">x1_image_position</span> <span class="o">*</span> <span class="n">einstein_radius</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">x_source</span><span class="p">,</span>
+        <span class="n">y_source</span><span class="p">,</span>
+        <span class="n">x0_image_position</span><span class="p">,</span>
+        <span class="n">x1_image_position</span><span class="p">,</span>
+        <span class="n">magnifications</span><span class="p">,</span>
+        <span class="n">time_delays</span><span class="p">,</span>
+        <span class="n">nImages</span><span class="p">,</span>
+        <span class="n">determinant</span><span class="p">,</span>
+        <span class="n">trace</span><span class="p">,</span>
+        <span class="n">iteration</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

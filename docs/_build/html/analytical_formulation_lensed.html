@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Analytical Formulation for Lensed Gravitational Wave Event Rates &mdash; ler 0.5.9 documentation</title>
+  <title>Analytical Formulation for Lensed Gravitational Wave Event Rates &mdash; ler 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -20,7 +20,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=9a3cda14"></script>
+      <script src="_static/documentation_options.js?v=8fa8b3e9"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -478,32 +478,48 @@ P({\rm SL}\mid z_L, z_s, \vec{\theta}^{*}_{\rm L})
 &amp;\quad \propto \frac{\sigma^{\rm EPL}_{\rm SL}}{4\pi} \, P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \, P(\sigma \mid z_L) \, .
 \end{split}
 \end{split}\]</div>
-<p>Direct rejection sampling from the intrinsic distribution <span class="math notranslate nohighlight">\(P(\sigma\mid z_L)\)</span> is computationally inefficient because the lensing cross-section <span class="math notranslate nohighlight">\(\sigma^{\rm EPL}_{\rm SL}\)</span> scales roughly as <span class="math notranslate nohighlight">\(\sigma^4\)</span>, heavily favoring high-mass lenses that are exponentially rare in the intrinsic population. Furthermore, the lack of a strict analytical maximum for the cross-section complicates the definition of a rejection envelope.</p>
-<p>To address these challenges, <code class="docutils literal notranslate"><span class="pre">ler</span></code> employs <a class="reference external" href="https://en.wikipedia.org/wiki/Importance_sampling">importance sampling</a>. A proposal distribution <span class="math notranslate nohighlight">\(P_o(\sigma)\)</span>, typically chosen to be uniform over <span class="math notranslate nohighlight">\([\sigma_{\min},\sigma_{\max}]\)</span>, is introduced to rewrite the target density. By defining the intrinsic distribution <span class="math notranslate nohighlight">\(P(\sigma \mid z_L)\)</span> as the normalized velocity dispersion function <span class="math notranslate nohighlight">\(\phi(\sigma, z_L)/\int \phi(\sigma', z_L) d\sigma'\)</span>, the target distribution becomes</p>
+<p>Direct rejection sampling from the intrinsic distribution, for example using <span class="math notranslate nohighlight">\(P(\sigma\mid z_L)\)</span>, is computationally inefficient because the lensing cross-section <span class="math notranslate nohighlight">\(\sigma^{\rm EPL}_{\rm SL}\)</span> scales roughly as <span class="math notranslate nohighlight">\(\sigma^4\)</span>, heavily favoring high-mass lenses that are exponentially rare in the intrinsic population. Furthermore, the lack of a strict analytical maximum for the cross-section complicates the definition of a rejection envelope.</p>
+<p>To address these challenges, <code class="docutils literal notranslate"><span class="pre">ler</span></code> employs <a class="reference external" href="https://en.wikipedia.org/wiki/Importance_sampling">importance sampling</a>. Proposal distributions, <span class="math notranslate nohighlight">\(P_o(\sigma)\)</span>, <span class="math notranslate nohighlight">\(P_o(q)\)</span>, <span class="math notranslate nohighlight">\(P_o(\phi_{\rm rot})\)</span>, <span class="math notranslate nohighlight">\(P_o(\gamma)\)</span>, <span class="math notranslate nohighlight">\(P_o(\gamma_1)\)</span>, <span class="math notranslate nohighlight">\(P_o(\gamma_2)\)</span>, typically chosen to be uniform over their respective ranges, is introduced to rewrite the target density. By defining the intrinsic distribution <span class="math notranslate nohighlight">\(P(\sigma \mid z_L)=\phi(\sigma, z_L)/\int \phi(\sigma', z_L) d\sigma'\)</span> as the normalized velocity dispersion function, and similarly for other parameters, the target distribution becomes</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{split}
 &amp;P(\sigma, q, \phi_{\rm rot}, \gamma, \gamma_1, \gamma_2 \mid z_L, z_s, {\rm SL})\\
-&amp;\quad \propto \left[\frac{ \sigma^{\rm EPL}_{\rm SL}\, P(\sigma \mid z_L)}{4\pi\,P_o(\sigma)}\right] P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \, P_o(\sigma) \\
-&amp;\quad = \frac{1}{{\cal W}(z_L)} \left[\frac{ \sigma^{\rm EPL}_{\rm SL}\, \phi(\sigma, z_L)}{P_o(\sigma)}\right] P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \, P_o(\sigma) \, .
+&amp;\quad \propto \left[\frac{ \sigma^{\rm EPL}_{\rm SL}\, P(\sigma \mid z_L)\,P(q \mid \sigma)\,P(\phi_{\rm rot})\,P(\gamma)\,P(\gamma_1)\,P(\gamma_2)}{4\pi\,P_o(\sigma)\,P_o(q)\,P_o(\phi_{\rm rot})\,P_o(\gamma)\,P_o(\gamma_1)\,P_o(\gamma_2)}\right] \\
+&amp;\quad\quad \times P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \, P_o(\sigma) \\
+&amp;\quad = \frac{1}{{\cal W}(z_L)} \left[\frac{ \sigma^{\rm EPL}_{\rm SL} \, \phi(\sigma, z_L)\,P(q \mid \sigma)\,P(\phi_{\rm rot})\,P(\gamma)\,P(\gamma_1)\,P(\gamma_2)}{P_o(\sigma)\,P_o(q)\,P_o(\phi_{\rm rot})\,P_o(\gamma)\,P_o(\gamma_1)\,P_o(\gamma_2)}\right] \\
+&amp;\quad\quad \times P(\gamma_1, \gamma_2) \, P(\gamma) \, P(\phi_{\rm rot}) \, P(q \mid \sigma) \, P_o(\sigma) \, .
 \end{split}
 \end{split}\]</div>
 <p>In this formulation, constant factors including <span class="math notranslate nohighlight">\(4\pi\)</span> and the normalization of the intrinsic velocity dispersion function are absorbed into the overall normalization constant <span class="math notranslate nohighlight">\({\cal W}(z_L)\)</span>. The term in the square brackets represents the unnormalized importance weight required to convert samples from the proposal distribution into samples from the cross-section-weighted target distribution.</p>
-<p>Computationally, this is implemented by generating a candidate batch of size <span class="math notranslate nohighlight">\(N_{\rm prop}\)</span> (defaulting to 200 in <code class="docutils literal notranslate"><span class="pre">ler</span></code>) for each <span class="math notranslate nohighlight">\((z_L, z_s)\)</span> pair. The velocity dispersion <span class="math notranslate nohighlight">\(\sigma_i\)</span> is drawn from the proposal <span class="math notranslate nohighlight">\(P_o(\sigma)\)</span>, while the remaining shape parameters are sampled directly from their intrinsic priors. Each candidate in the batch is assigned a normalized importance weight</p>
+<p>Note that, I have used this concept,</p>
 <div class="math notranslate nohighlight">
-\[ 
+\[
 \begin{split}
-w_i(\sigma_i, q_i, \phi_{{\rm rot},i}, \gamma_i, \gamma_{1,i}, \gamma_{2,i};z_L,z_s)=\frac{1}{{\cal W}(z_L)}\,\frac{\sigma^{\rm EPL}_{{\rm SL}, i}\,\phi(\sigma_i, z_L)}{P_o(\sigma_i)} \, ,
+P(\sigma, z_L) \propto \frac{dV_c}{dz_L}\, \phi(\sigma, z_L)\, ,
 \end{split}
 \]</div>
+<p>and the factor <span class="math notranslate nohighlight">\(\frac{dV_c}{dz_L}\)</span> is already accounted for in <span class="math notranslate nohighlight">\(P(z_L\mid {\rm SL})\)</span>.</p>
+<p>Computationally, this is implemented by generating a candidate batch of size (N_{\rm prop}) (defaulting to 400 in <code class="docutils literal notranslate"><span class="pre">ler</span></code>) for each ((z_L, z_s)) pair. The parameters ((\sigma_i, q_i, \phi_{\rm rot,i}, \gamma_i, \gamma_{1,i}, \gamma_{2,i})) are drawn from their respective proposal distributions. Each candidate in the batch is assigned a normalized importance weight</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} 
+\begin{split}
+&amp;w_i(\sigma_i, q_i, \phi_{{\rm rot},i}, \gamma_i, \gamma_{1,i}, \gamma_{2,i};z_L,z_s)=\\
+&amp;\quad\quad \frac{1}{{\cal W}(z_L)}\,\frac{\sigma^{\rm EPL}_{{\rm SL}, i}\,\phi(\sigma_i, z_L)\,P(q_i \mid \sigma_i)\,P(\phi_{\rm rot,i})\,P(\gamma_i)\,P(\gamma_{1,i})\,P(\gamma_{2,i})}{P_o(\sigma_i)\,P_o(q_i)\,P_o(\phi_{\rm rot,i})\,P_o(\gamma_i)\,P_o(\gamma_{1,i})\,P_o(\gamma_{2,i})} \, ,
+\end{split}
+\end{split}\]</div>
 <p>where the batch normalization constant is defined as the sum of the unnormalized weights</p>
 <div class="math notranslate nohighlight">
 \[ 
 \begin{split}
-{\cal W}(z_L)=\sum_{i=1}^{N_{\rm prop}}\frac{\sigma^{\rm EPL}_{{\rm SL}, i}\,\phi(\sigma_i, z_L)}{P_o(\sigma_i)} \, .
+{\cal W}(z_L)=\sum_{i=1}^{N_{\rm prop}}\frac{\sigma^{\rm EPL}_{{\rm SL}, i} \,\phi(\sigma_i, z_L)\,P(q_i \mid \sigma_i)\,P(\phi_{\rm rot,i})\,P(\gamma_i)\,P(\gamma_{1,i})\,P(\gamma_{2,i})}{P_o(\sigma_i)\,P_o(q_i)\,P_o(\phi_{\rm rot,i})\,P_o(\gamma_i)\,P_o(\gamma_{1,i})\,P_o(\gamma_{2,i})} \, .
 \end{split}
 \]</div>
-<p>A final lens configuration is selected from this batch by resampling with probabilities proportional to <span class="math notranslate nohighlight">\(w_i\)</span>, ensuring the final parameter set accurately reflects the properties of the strongly lensed population.</p>
+<p>A final lens configuration is selected from this batch by resampling with probabilities proportional to (w_i), ensuring the final parameter set accurately reflects the properties of the strongly lensed population. This process is repeated for each ((z_L, z_s)) pair to generate a representative sample of lens parameters for the lensed events.</p>
+<blockquote>
+<div><blockquote>
+<div><p>Note: <code class="docutils literal notranslate"><span class="pre">ler</span></code> keeps the expensive rejection sampling, as an option, for checking the accuracy of the importance sampling scheme.</p>
+</div></blockquote>
+</div></blockquote>
 </section>
 <section id="source-position-distribution-and-image-properties">
 <h2>Source Position Distribution and Image Properties<a class="headerlink" href="#source-position-distribution-and-image-properties" title="Link to this heading"></a></h2>

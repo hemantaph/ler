@@ -47,12 +47,21 @@ Functions
    ler.gw_source_population.prior_functions.sfr_madau_dickinson2014_with_bns_td
    ler.gw_source_population.prior_functions.sfr_madau_fragos2017
    ler.gw_source_population.prior_functions.sfr_madau_dickinson2014
+   ler.gw_source_population.prior_functions.ng2022_lognormal_joint_pdf
    ler.gw_source_population.prior_functions.binary_masses_BBH_popIII_lognormal_rvs
    ler.gw_source_population.prior_functions.binary_masses_BBH_primordial_lognormal_rvs
+   ler.gw_source_population.prior_functions.bimodal_pdf
+   ler.gw_source_population.prior_functions.bimodal_cdf
    ler.gw_source_population.prior_functions.binary_masses_BNS_bimodal_rvs
-   ler.gw_source_population.prior_functions.binary_masses_NSBH_broken_powerlaw_rvs
-   ler.gw_source_population.prior_functions.binary_masses_BBH_powerlaw_gaussian_rvs
-   ler.gw_source_population.prior_functions.available_prior_list
+   ler.gw_source_population.prior_functions.broken_powerlaw_pdf
+   ler.gw_source_population.prior_functions.gaussian_plus_isotropic_pdf
+   ler.gw_source_population.prior_functions.gaussian_plus_isotropic_joint_pdf
+   ler.gw_source_population.prior_functions.powerlaw_pdf
+   ler.gw_source_population.prior_functions.powerlaw_rvs
+   ler.gw_source_population.prior_functions.truncated_normal_pdf
+   ler.gw_source_population.prior_functions.truncated_normal_rvs
+   ler.gw_source_population.prior_functions.powerlaw_with_smoothing
+   ler.gw_source_population.prior_functions.create_gw_parameters_sampler
 
 
 
@@ -61,8 +70,11 @@ Functions
    
    Compute the merger rate density for PopI/II BBH.
 
-   Reference: Oguri et al. (2018). The output is in detector frame and is
-   unnormalized.
+   Reference: Oguri et al. (2018). The source-frame rate density is
+
+   .. math::
+
+       R(z) = R_0 \frac{(b_4 + 1) e^{b_2 z}}{b_4 + e^{b_3 z}}.
 
    :Parameters:
 
@@ -105,28 +117,33 @@ Functions
 
    .. rubric:: Examples
 
-   >>> from ler.gw_source_population import merger_rate_density_bbh_oguri2018
-   >>> rate_density = merger_rate_density_bbh_oguri2018(zs=np.array([0.1]))
+   >>> import numpy as np
+   >>> from ler.gw_source_population import merger_rate_density_bbh_oguri2018_function
+   >>> rate_density = merger_rate_density_bbh_oguri2018_function(zs=np.array([0.1]))
 
 
 
    ..
        !! processed by numpydoc !!
 
-.. py:function:: merger_rate_density_bbh_popIII_ken2022_function(zs, n0=19.2 * 1e-09, aIII=0.66, bIII=0.3, zIII=11.6)
+.. py:function:: merger_rate_density_bbh_popIII_ken2022_function(zs, R0=19.2 * 1e-09, aIII=0.66, bIII=0.3, zIII=11.6)
 
    
    Compute the unnormalized merger rate density for PopIII BBH.
 
-   Reference: Ng et al. (2022). The output is in detector frame and is
-   unnormalized.
+   Reference: Ng et al. (2022). The model is
+
+   .. math::
+
+       R(z) = R_0 \frac{e^{a_{\rm III}(z-z_{\rm III})}}
+       {b_{\rm III} + a_{\rm III} e^{(a_{\rm III}+b_{\rm III})(z-z_{\rm III})}}.
 
    :Parameters:
 
        **zs** : ``float`` or ``numpy.ndarray``
            Source redshifts.
 
-       **n0** : ``float``
+       **R0** : ``float``
            Normalization constant.
 
            default: 19.2e-9
@@ -162,8 +179,9 @@ Functions
 
    .. rubric:: Examples
 
-   >>> from ler.gw_source_population import merger_rate_density_bbh_popIII_ken2022
-   >>> rate_density = merger_rate_density_bbh_popIII_ken2022(zs=np.array([0.1]))
+   >>> import numpy as np
+   >>> from ler.gw_source_population import merger_rate_density_bbh_popIII_ken2022_function
+   >>> rate_density = merger_rate_density_bbh_popIII_ken2022_function(zs=np.array([0.1]))
 
 
 
@@ -175,9 +193,15 @@ Functions
    
    Compute the merger rate density for BBH using Madau & Dickinson (2014) model.
 
-   density(zs) ∝ (1 + zs) ** b / (1 + ((1 + zs) / c) ** d)
+   The shape follows
 
-   Reference: Eqn. 15 of https://arxiv.org/pdf/1403.0007
+   .. math::
+
+       \psi(z) = a \frac{(1+z)^b}{1 + \left((1+z)/c\right)^d},
+       \qquad
+       R(z) = R_0 \frac{\psi(z)}{\psi(0)}.
+
+   Reference: Eq. 15 of https://arxiv.org/pdf/1403.0007
 
    :Parameters:
 
@@ -225,8 +249,9 @@ Functions
 
    .. rubric:: Examples
 
-   >>> from ler.gw_source_population import merger_rate_density_madau_dickinson2014
-   >>> rate_density = merger_rate_density_madau_dickinson2014(zs=np.array([0.1]))
+   >>> import numpy as np
+   >>> from ler.gw_source_population import merger_rate_density_madau_dickinson2014_function
+   >>> rate_density = merger_rate_density_madau_dickinson2014_function(zs=np.array([0.1]))
 
 
 
@@ -242,7 +267,12 @@ Functions
    merger rate density of field BHs, accounting for time delays and
    metallicity effects. Coefficients from Madau & Dickinson (2014) are translated as: B-> alpha_F, D-> beta_F, C-> c_F.
 
-   density(zs) ∝ (1 + zs) ** alpha_F / (1 + ((1 + zs) / c_F) ** beta_F)
+   .. math::
+
+       \psi_F(z) = \frac{(1+z)^{\alpha_F}}
+       {1 + \left((1+z)/c_F\right)^{\beta_F}},
+       \qquad
+       R(z) = R_0 \frac{\psi_F(z)}{\psi_F(0)}.
 
    :Parameters:
 
@@ -285,21 +315,25 @@ Functions
 
    .. rubric:: Examples
 
-   >>> from ler.gw_source_population import merger_rate_density_madau_dickinson_belczynski_ng
-   >>> rate_density = merger_rate_density_madau_dickinson_belczynski_ng(zs=np.array([0.1]))
+   >>> import numpy as np
+   >>> from ler.gw_source_population import merger_rate_density_madau_dickinson_belczynski_ng_function
+   >>> rate_density = merger_rate_density_madau_dickinson_belczynski_ng_function(zs=np.array([0.1]))
 
 
 
    ..
        !! processed by numpydoc !!
 
-.. py:function:: merger_rate_density_bbh_primordial_ken2022_function(zs, cosmology=None, n0=0.044 * 1e-09, t0=13.786885302009708)
+.. py:function:: merger_rate_density_bbh_primordial_ken2022_function(zs, cosmology=None, R0=0.044 * 1e-09, t0=13.786885302009708)
 
    
    Compute the merger rate density for Primordial BBH.
 
-   Reference: Ng et al. (2022). The output is in detector frame and is
-   unnormalized.
+   Reference: Ng et al. (2022). The rate is parameterized by cosmic age:
+
+   .. math::
+
+       R(z) = R_0 \left(\frac{t(z)}{t_0}\right)^{-34/37}.
 
    :Parameters:
 
@@ -311,7 +345,7 @@ Functions
 
            default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)
 
-       **n0** : ``float``
+       **R0** : ``float``
            Normalization constant.
 
            default: 0.044e-9
@@ -337,8 +371,9 @@ Functions
 
    .. rubric:: Examples
 
-   >>> from ler.gw_source_population import merger_rate_density_bbh_primordial_ken2022
-   >>> rate_density = merger_rate_density_bbh_primordial_ken2022(zs=np.array([0.1]))
+   >>> import numpy as np
+   >>> from ler.gw_source_population import merger_rate_density_bbh_primordial_ken2022_function
+   >>> rate_density = merger_rate_density_bbh_primordial_ken2022_function(zs=np.array([0.1]))
 
 
 
@@ -348,7 +383,7 @@ Functions
 .. py:function:: sfr_madau_fragos2017_with_bbh_td(zs, R0=19 * 1e-09)
 
    
-   Compute the merger rate density for BBH. This is computed from star formation rate, Madau & Fragos (2017), with an additional time delay. This function is relies on pre-generated data points.
+   Compute the merger rate density for BBH. This is computed from star formation rate, Madau & Fragos (2017), with an additional time delay. This function relies on pre-generated data points.
 
 
    :Parameters:
@@ -384,7 +419,7 @@ Functions
 .. py:function:: sfr_madau_dickinson2014_with_bbh_td(zs, R0=19 * 1e-09)
 
    
-   Compute the merger rate density for BBH. This is computed from star formation rate, Madau & Dickinson (2014), with an additional time delay. This function is relies on pre-generated data points.
+   Compute the merger rate density for BBH. This is computed from star formation rate, Madau & Dickinson (2014), with an additional time delay. This function relies on pre-generated data points.
 
 
    :Parameters:
@@ -420,7 +455,7 @@ Functions
 .. py:function:: sfr_madau_fragos2017_with_bns_td(zs, R0=89 * 1e-09)
 
    
-   Compute the merger rate density for BNS. This is computed from star formation rate, Madau & Fragos (2017), with an additional time delay. This function is relies on pre-generated data points.
+   Compute the merger rate density for BNS. This is computed from star formation rate, Madau & Fragos (2017), with an additional time delay. This function relies on pre-generated data points.
 
 
    :Parameters:
@@ -456,7 +491,7 @@ Functions
 .. py:function:: sfr_madau_dickinson2014_with_bns_td(zs, R0=89 * 1e-09)
 
    
-   Compute the merger rate density for BNS. This is computed from star formation rate, Madau & Dickinson (2014), with an additional time delay. This function is relies on pre-generated data points.
+   Compute the merger rate density for BNS. This is computed from star formation rate, Madau & Dickinson (2014), with an additional time delay. This function relies on pre-generated data points.
 
 
    :Parameters:
@@ -546,7 +581,7 @@ Functions
    
    Compute star formation rate using Madau & Dickinson (2014) model.
 
-   Reference: Eqn. 15 of https://arxiv.org/pdf/1403.0007
+   Reference: Eq. 15 of https://arxiv.org/pdf/1403.0007
 
    :Parameters:
 
@@ -597,51 +632,86 @@ Functions
    ..
        !! processed by numpydoc !!
 
+.. py:function:: ng2022_lognormal_joint_pdf(m1, m2, Mc, sigma)
+
+   
+   Compute joint probability density for lognormal 2D mass distribution.
+
+
+   :Parameters:
+
+       **m1** : ``numpy.ndarray``
+           Primary masses (solar masses).
+
+       **m2** : ``numpy.ndarray``
+           Secondary masses (solar masses).
+
+       **Mc** : ``float``
+           Characteristic mass scale (solar masses).
+
+       **sigma** : ``float``
+           Width parameter of the lognormal distribution.
+
+   :Returns:
+
+       **pdf** : ``numpy.ndarray``
+           Joint probability density values.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:function:: binary_masses_BBH_popIII_lognormal_rvs(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000)
 
    
-   Sample from a lognormal distribution in 2D mass space.
+   Generate random samples of binary masses for PopIII BBH (lognormal model).
 
-   Reference: Ng et al. (2022). This is a helper function for PopIII BBH
-   and primordial BBH merger rate density distribution functions.
+   Draws samples from a 2D lognormal distribution in mass space using rejection
+   sampling. Reference: Ng et al. (2022).
 
    :Parameters:
 
        **size** : ``int``
-           Number of samples to draw.
+           Number of binary systems to sample.
 
        **m_min** : ``float``
-           Minimum mass (Msun).
-
+           Minimum mass (solar masses).
            default: 1.0
 
        **m_max** : ``float``
-           Maximum mass (Msun).
-
+           Maximum mass (solar masses).
            default: 100.0
 
        **Mc** : ``float``
-           Characteristic mass scale (Msun).
-
+           Characteristic mass scale (solar masses).
            default: 20.0
 
        **sigma** : ``float``
-           Width of the distribution.
-
+           Width parameter of the lognormal distribution.
            default: 0.3
 
        **chunk_size** : ``int``
            Number of samples per rejection sampling chunk.
-
            default: 10000
 
    :Returns:
 
-       **m1_sample** : ``numpy.ndarray``
-           Primary mass samples (Msun).
+       **m1** : ``numpy.ndarray``
+           Primary mass samples (solar masses).
 
-       **m2_sample** : ``numpy.ndarray``
-           Secondary mass samples (Msun).
+       **m2** : ``numpy.ndarray``
+           Secondary mass samples (solar masses).
 
 
 
@@ -654,8 +724,10 @@ Functions
 
    .. rubric:: Examples
 
-   >>> from ler.gw_source_population import binary_masses_BBH_popIII_lognormal
-   >>> m1, m2 = binary_masses_BBH_popIII_lognormal(size=1000)
+   >>> from ler.gw_source_population.prior_functions import binary_masses_BBH_popIII_lognormal_rvs
+   >>> m1, m2 = binary_masses_BBH_popIII_lognormal_rvs(size=1000)
+   >>> print(m1.shape, m2.shape)
+   (1000,) (1000,)
 
 
 
@@ -665,47 +737,43 @@ Functions
 .. py:function:: binary_masses_BBH_primordial_lognormal_rvs(size, m_min=1.0, m_max=100.0, Mc=20.0, sigma=0.3, chunk_size=10000)
 
    
-   Sample from a lognormal distribution in 2D mass space.
+   Generate random samples of binary masses for Primordial BBH (lognormal model).
 
-   Based on Eqn. 1 and 4 of Ng et al. 2022 for primordial black holes.
+   Draws samples from a 2D lognormal distribution in mass space using rejection
+   sampling. Reference: Ng et al. (2022).
 
    :Parameters:
 
        **size** : ``int``
-           Number of samples to draw.
+           Number of binary systems to sample.
 
        **m_min** : ``float``
-           Minimum mass (Msun).
-
+           Minimum mass (solar masses).
            default: 1.0
 
        **m_max** : ``float``
-           Maximum mass (Msun).
-
+           Maximum mass (solar masses).
            default: 100.0
 
        **Mc** : ``float``
-           Characteristic mass scale (Msun).
-
+           Characteristic mass scale (solar masses).
            default: 20.0
 
        **sigma** : ``float``
-           Width of the distribution.
-
+           Width parameter of the lognormal distribution.
            default: 0.3
 
        **chunk_size** : ``int``
            Number of samples per rejection sampling chunk.
-
            default: 10000
 
    :Returns:
 
-       **m1_sample** : ``numpy.ndarray``
-           Primary mass samples (Msun).
+       **m1** : ``numpy.ndarray``
+           Primary mass samples (solar masses).
 
-       **m2_sample** : ``numpy.ndarray``
-           Secondary mass samples (Msun).
+       **m2** : ``numpy.ndarray``
+           Secondary mass samples (solar masses).
 
 
 
@@ -718,8 +786,140 @@ Functions
 
    .. rubric:: Examples
 
-   >>> from ler.gw_source_population import binary_masses_BBH_primordial_lognormal
-   >>> m1, m2 = binary_masses_BBH_primordial_lognormal(size=1000)
+   >>> from ler.gw_source_population.prior_functions import binary_masses_BBH_primordial_lognormal_rvs
+   >>> m1, m2 = binary_masses_BBH_primordial_lognormal_rvs(size=1000)
+   >>> print(m1.shape, m2.shape)
+   (1000,) (1000,)
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: bimodal_pdf(m, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3)
+
+   
+   Evaluate fully normalized bimodal Gaussian PDF for BNS mass distribution.
+
+   Computes the normalized probability density function combining two truncated
+   Gaussian peaks. Reference: Will M. Farr et al. 2020.
+
+   :Parameters:
+
+       **m** : ``numpy.ndarray``
+           Mass values (solar masses).
+
+       **w** : ``float``
+           Weight of the left (low-mass) peak.
+           default: 0.643
+
+       **muL** : ``float``
+           Mean of the left peak (solar masses).
+           default: 1.352
+
+       **sigmaL** : ``float``
+           Standard deviation of the left peak (solar masses).
+           default: 0.08
+
+       **muR** : ``float``
+           Mean of the right peak (solar masses).
+           default: 1.88
+
+       **sigmaR** : ``float``
+           Standard deviation of the right peak (solar masses).
+           default: 0.3
+
+       **mmin** : ``float``
+           Minimum mass (solar masses).
+           default: 1.0
+
+       **mmax** : ``float``
+           Maximum mass (solar masses).
+           default: 2.3
+
+   :Returns:
+
+       **pdf** : ``numpy.ndarray``
+           Normalized probability density values.
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   >>> from ler.gw_source_population.prior_functions import bimodal_pdf
+   >>> import numpy as np
+   >>> m = np.array([1.2, 1.4, 1.8])
+   >>> pdf_values = bimodal_pdf(m)
+   >>> print(pdf_values)  # doctest: +SKIP
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: bimodal_cdf(size, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3)
+
+   
+   Compute cumulative distribution function for BNS bimodal mass distribution.
+
+
+   :Parameters:
+
+       **size** : ``int``
+           Resolution of the mass grid.
+
+       **w** : ``float``
+           Weight of the left (low-mass) peak.
+           default: 0.643
+
+       **muL** : ``float``
+           Mean of the left peak (solar masses).
+           default: 1.352
+
+       **sigmaL** : ``float``
+           Standard deviation of the left peak (solar masses).
+           default: 0.08
+
+       **muR** : ``float``
+           Mean of the right peak (solar masses).
+           default: 1.88
+
+       **sigmaR** : ``float``
+           Standard deviation of the right peak (solar masses).
+           default: 0.3
+
+       **mmin** : ``float``
+           Minimum mass (solar masses).
+           default: 1.0
+
+       **mmax** : ``float``
+           Maximum mass (solar masses).
+           default: 2.3
+
+   :Returns:
+
+       **cdf_values** : ``numpy.ndarray``
+           Cumulative distribution function values.
+
+       **mass_grid** : ``numpy.ndarray``
+           Mass grid corresponding to CDF values.
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -729,63 +929,52 @@ Functions
 .. py:function:: binary_masses_BNS_bimodal_rvs(size, w=0.643, muL=1.352, sigmaL=0.08, muR=1.88, sigmaR=0.3, mmin=1.0, mmax=2.3, resolution=500)
 
    
-   Sample BNS masses from bimodal Gaussian distribution.
+   Generate random samples of binary masses for BNS (bimodal Gaussian model).
 
-   Based on Will M. Farr et al. 2020 Eqn. 6 for neutron star mass
-   distribution combining two Gaussian peaks.
+   Uses inverse transform sampling to draw samples from a bimodal Gaussian
+   distribution of neutron star masses.
 
    :Parameters:
 
        **size** : ``int``
-           Number of samples to draw.
+           Number of binary systems to sample.
 
        **w** : ``float``
            Weight of the left (low-mass) peak.
-
            default: 0.643
 
        **muL** : ``float``
-           Mean of the left peak (Msun).
-
+           Mean of the left peak (solar masses).
            default: 1.352
 
        **sigmaL** : ``float``
-           Standard deviation of the left peak (Msun).
-
+           Standard deviation of the left peak (solar masses).
            default: 0.08
 
        **muR** : ``float``
-           Mean of the right peak (Msun).
-
+           Mean of the right peak (solar masses).
            default: 1.88
 
        **sigmaR** : ``float``
-           Standard deviation of the right peak (Msun).
-
+           Standard deviation of the right peak (solar masses).
            default: 0.3
 
        **mmin** : ``float``
-           Minimum mass (Msun).
-
+           Minimum mass (solar masses).
            default: 1.0
 
        **mmax** : ``float``
-           Maximum mass (Msun).
-
+           Maximum mass (solar masses).
            default: 2.3
 
        **resolution** : ``int``
-           Number of points to use for the CDF.
-
+           Resolution of the mass grid for CDF computation.
            default: 500
 
    :Returns:
 
-       **m1** : ``numpy.ndarray``
-           Primary mass samples (Msun).
-
-       **m2** : ``numpy.ndarray``
-           Secondary mass samples (Msun).
+       **mass_samples** : ``numpy.ndarray``
+           Array of mass samples (solar masses).
 
 
 
@@ -802,76 +991,39 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: binary_masses_NSBH_broken_powerlaw_rvs(size=1000, mminbh=26.0, mmaxbh=125.0, alpha_1=6.75, alpha_2=0.0, b=0.5, delta_m=5.0, mminns=1.0, mmaxns=3.0, alphans=0.0, normalization_size=1000)
+.. py:function:: broken_powerlaw_pdf(m, mminbh=26.0, mmaxbh=125.0, alpha_1=6.75, alpha_2=0.0, b=0.5, delta_m=5.0)
 
    
-   Generate NSBH mass samples from broken power-law (BH) and power-law (NS).
+   Compute normalized PDF for broken power-law distribution.
 
 
    :Parameters:
 
-       **size** : ``int``
-           Number of samples to draw.
-
-           default: 1000
+       **m** : ``numpy.ndarray``
+           Mass values.
 
        **mminbh** : ``float``
-           Minimum BH mass (Msun).
-
-           default: 26.0
+           Minimum BH mass.
 
        **mmaxbh** : ``float``
-           Maximum BH mass (Msun).
-
-           default: 125.0
+           Maximum BH mass.
 
        **alpha_1** : ``float``
-           BH power-law index below break.
-
-           default: 6.75
+           Power-law index below break.
 
        **alpha_2** : ``float``
-           BH power-law index above break.
-
-           default: 0.0
+           Power-law index above break.
 
        **b** : ``float``
-           Break location parameter (0-1).
-
-           default: 0.5
+           Break location parameter.
 
        **delta_m** : ``float``
-           Smoothing width (Msun).
-
-           default: 5.0
-
-       **mminns** : ``float``
-           Minimum NS mass (Msun).
-
-           default: 1.0
-
-       **mmaxns** : ``float``
-           Maximum NS mass (Msun).
-
-           default: 3.0
-
-       **alphans** : ``float``
-           NS power-law index.
-
-           default: 0.0
-
-       **normalization_size** : ``int``
-           Grid size for CDF computation.
-
-           default: 1000
+           Smoothing width.
 
    :Returns:
 
-       **m1_samples** : ``numpy.ndarray``
-           BH mass samples (Msun).
-
-       **m2_samples** : ``numpy.ndarray``
-           NS mass samples (Msun).
+       **pdf** : ``numpy.ndarray``
+           Normalized PDF values.
 
 
 
@@ -888,53 +1040,123 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: binary_masses_BBH_powerlaw_gaussian_rvs(size, mminbh, mmaxbh, alpha, mu_g, sigma_g, lambda_peak, delta_m, beta, normalization_size=1000)
+.. py:function:: gaussian_plus_isotropic_pdf(x, mu_t=0.426, sigma_t=1.222, zeta=0.652)
 
    
-   Generate BBH mass samples from power-law + Gaussian model with mass ratio.
+   1D marginal PDF for a single cosine tilt x = cos(theta).
 
+   p(x) = zeta * TruncNorm[-1,1](x | mu_t, sigma_t) + (1-zeta)/2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: gaussian_plus_isotropic_joint_pdf(x1, x2, mu_t=0.426, sigma_t=1.222, zeta=0.652)
+
+   
+   2D joint PDF for (x1, x2) = (cos(theta1), cos(theta2)).
+
+   p(x1, x2) =
+       zeta * TN(x1) * TN(x2)
+       + (1-zeta) / 4
+   on [-1,1]^2.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: powerlaw_pdf(x, alpha=-7.7, x_min=1.0, x_max=2.5)
+
+   
+   Compute normalized power-law distribution.
+
+   p(x) is proportional to ``x**(-alpha)`` for ``x`` in ``[x_min, x_max]``.
+
+   :Parameters:
+
+       **x** : ``numpy.ndarray``
+           Input values.
+
+       **alpha** : ``float``
+           Power-law spectral index.
+
+       **x_min** : ``float``
+           Minimum value.
+
+       **x_max** : ``float``
+           Maximum value.
+
+   :Returns:
+
+       **pdf** : ``numpy.ndarray``
+           Normalized power-law PDF.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: powerlaw_rvs(size, alpha, x_min, x_max)
+
+   
+   Inverse transform sampling for a power-law distribution.
+
+   p(x) ∝ x^{-alpha}, x in [x_min, x_max]
 
    :Parameters:
 
        **size** : ``int``
-           Number of samples to draw.
-
-       **mminbh** : ``float``
-           Minimum BH mass (Msun).
-
-       **mmaxbh** : ``float``
-           Maximum BH mass (Msun).
+           Number of samples to generate.
 
        **alpha** : ``float``
-           Power-law spectral index for m1.
+           Power-law index (alpha).
 
-       **mu_g** : ``float``
-           Mean of the Gaussian peak (Msun).
+       **x_min** : ``float``
+           Minimum value (lower bound).
 
-       **sigma_g** : ``float``
-           Standard deviation of the Gaussian peak (Msun).
-
-       **lambda_peak** : ``float``
-           Fraction in Gaussian component (0-1).
-
-       **delta_m** : ``float``
-           Low-mass smoothing width (Msun).
-
-       **beta** : ``float``
-           Power-law index for mass ratio distribution.
-
-       **normalization_size** : ``int``
-           Grid size for CDF computation.
-
-           default: 1000
+       **x_max** : ``float``
+           Maximum value (upper bound).
 
    :Returns:
 
-       **m1** : ``numpy.ndarray``
-           Primary mass samples (Msun).
-
-       **m2** : ``numpy.ndarray``
-           Secondary mass samples (Msun).
+       **x** : ``numpy.ndarray``
+           Array of sampled values.
 
 
 
@@ -951,10 +1173,56 @@ Functions
    ..
        !! processed by numpydoc !!
 
-.. py:function:: available_prior_list()
+.. py:function:: truncated_normal_pdf(x, mu, sigma, x_min, x_max=np.inf)
 
    
-   Returns a list of available priors.
+   Compute left-truncated or left-and-right-truncated normal probability density function.
+
+   Evaluates the truncated normal distribution $N_{[x_min, x_max]}(x | μ, σ)$,
+   which is a Gaussian distribution with support only between a minimum and maximum value.
+   If x_max is not provided (or set to np.inf), it defaults to left-only truncation.
+
+   :Parameters:
+
+       **x** : ``numpy.ndarray``
+           Input values.
+
+       **mu** : ``float``
+           Mean of the Gaussian distribution.
+
+       **sigma** : ``float``
+           Standard deviation of the Gaussian distribution.
+
+       **x_min** : ``float``
+           Minimum value (left truncation point).
+
+       **x_max** : ``float``, optional
+           Maximum value (right truncation point). Default is np.inf (no right truncation).
+
+   :Returns:
+
+       **pdf** : ``numpy.ndarray``
+           Probability density values, 0 for $x < x_min$ or $x > x_max$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: truncated_normal_rvs(size, mu, sigma, x_min, x_max=np.inf)
+
+   
+   Draw samples from a truncated normal distribution using analytical inverse CDF.
 
 
 
@@ -973,4 +1241,30 @@ Functions
 
    ..
        !! processed by numpydoc !!
+
+.. py:function:: powerlaw_with_smoothing(q, m, mmin, beta, delta_m)
+
+   
+   Compute power-law distribution with low-mass smoothing.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: create_gw_parameters_sampler(zs_rvs, m1_rvs, q_rvs, m2_rvs, tc_rvs, ra_rvs, dec_rvs, phase_rvs, psi_rvs, theta_jn_rvs, a_1_rvs, a_2_rvs, tilt_1_rvs, tilt_2_rvs, phi_12_rvs, phi_jl_rvs, use_njit_sampler=True, spin_zero=False, spin_precession=False)
+
 

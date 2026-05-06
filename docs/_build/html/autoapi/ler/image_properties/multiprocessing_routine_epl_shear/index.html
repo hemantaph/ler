@@ -1,0 +1,280 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.image_properties.multiprocessing_routine_epl_shear &mdash; ler 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=551ad726" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=88a06014" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=8fa8b3e9"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="ler.image_properties.sample_caustic_points_njit" href="../sample_caustic_points_njit/index.html" />
+    <link rel="prev" title="ler.image_properties.image_properties" href="../image_properties/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../cross_section_njit/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.cross_section_njit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../epl_shear_njit/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.epl_shear_njit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.image_properties</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.multiprocessing_routine_epl_shear</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../sample_caustic_points_njit/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.sample_caustic_points_njit</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.multiprocessing_routine_epl_shear</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/autoapi/ler/image_properties/multiprocessing_routine_epl_shear/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ler.image_properties.multiprocessing_routine_epl_shear">
+<span id="ler-image-properties-multiprocessing-routine-epl-shear"></span><h1><a class="reference internal" href="#module-ler.image_properties.multiprocessing_routine_epl_shear" title="ler.image_properties.multiprocessing_routine_epl_shear"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.multiprocessing_routine_epl_shear</span></code></a><a class="headerlink" href="#module-ler.image_properties.multiprocessing_routine_epl_shear" title="Link to this heading"></a></h1>
+<p>Module for solving lens equations using multiprocessing.</p>
+<p>This sub-module contains functions to solve the lens equation for a given set
+of lens parameters. The lens equation is solved using the analytical solver in
+lenstronomy. These functions are used in the multiprocessing routine within
+the ImageProperties class.</p>
+<dl>
+<dt>Usage:</dt><dd><p>Basic workflow example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.image_properties.multiprocessing_routine_epl_shear</span> <span class="kn">import</span> <span class="n">solve_lens_equation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_params</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.09</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.94</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">solve_lens_equation</span><span class="p">(</span><span class="n">lens_params</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Copyright (C) 2026 Phurailatpam Hemantakumar. Distributed under MIT License.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.multiprocessing_routine_epl_shear.solve_lens_equation" title="ler.image_properties.multiprocessing_routine_epl_shear.solve_lens_equation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_lens_equation</span></code></a>(lens_parameters)</p></td>
+<td><p>Solve the lens equation to find image properties.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.multiprocessing_routine_epl_shear.MAX_RETRIES" title="ler.image_properties.multiprocessing_routine_epl_shear.MAX_RETRIES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAX_RETRIES</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.multiprocessing_routine_epl_shear.MIN_MAGNIFICATION" title="ler.image_properties.multiprocessing_routine_epl_shear.MIN_MAGNIFICATION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MIN_MAGNIFICATION</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="ler.image_properties.multiprocessing_routine_epl_shear.MAX_RETRIES">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.multiprocessing_routine_epl_shear.</span></span><span class="sig-name descname"><span class="pre">MAX_RETRIES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'100'</span></em><a class="reference internal" href="../../../../_modules/ler/image_properties/multiprocessing_routine_epl_shear.html#MAX_RETRIES"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.multiprocessing_routine_epl_shear.MAX_RETRIES" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="ler.image_properties.multiprocessing_routine_epl_shear.MIN_MAGNIFICATION">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.multiprocessing_routine_epl_shear.</span></span><span class="sig-name descname"><span class="pre">MIN_MAGNIFICATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0.01'</span></em><a class="reference internal" href="../../../../_modules/ler/image_properties/multiprocessing_routine_epl_shear.html#MIN_MAGNIFICATION"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.multiprocessing_routine_epl_shear.MIN_MAGNIFICATION" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.multiprocessing_routine_epl_shear.solve_lens_equation">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.multiprocessing_routine_epl_shear.</span></span><span class="sig-name descname"><span class="pre">solve_lens_equation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lens_parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/multiprocessing_routine_epl_shear.html#solve_lens_equation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.multiprocessing_routine_epl_shear.solve_lens_equation" title="Link to this definition"></a></dt>
+<dd><p>Solve the lens equation to find image properties.</p>
+<p>Uses the analytical solver from lenstronomy to find image positions,
+magnifications, time delays, and hessian properties for strongly
+lensed sources. Source positions are sampled from within the caustic
+region to ensure multiple imaging.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>lens_parameters</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of lens configuration parameters with the following structure:</p>
+<ul class="simple">
+<li><p>[0]: e1 - ellipticity component 1</p></li>
+<li><p>[1]: e2 - ellipticity component 2</p></li>
+<li><p>[2]: gamma - power-law slope of mass density</p></li>
+<li><p>[3]: gamma1 - external shear component 1</p></li>
+<li><p>[4]: gamma2 - external shear component 2</p></li>
+<li><p>[5]: zl - lens redshift</p></li>
+<li><p>[6]: zs - source redshift</p></li>
+<li><p>[7]: einstein_radius - Einstein radius (units: radians)</p></li>
+<li><p>[8]: iteration - iteration index for tracking</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>x_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Source x-position (units: radians).</p>
+</dd>
+<dt><strong>y_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Source y-position (units: radians).</p>
+</dd>
+<dt><strong>x0_image_position</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Image x-positions (units: radians).</p>
+</dd>
+<dt><strong>x1_image_position</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Image y-positions (units: radians).</p>
+</dd>
+<dt><strong>magnifications</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Magnification factors for each image.</p>
+</dd>
+<dt><strong>time_delays</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Time delays for each image (units: seconds).</p>
+</dd>
+<dt><strong>nImages</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of images formed.</p>
+</dd>
+<dt><strong>determinant</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Determinant of the lensing Jacobian for each image.</p>
+</dd>
+<dt><strong>trace</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Trace of the lensing Jacobian for each image.</p>
+</dd>
+<dt><strong>iteration</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Iteration index passed through for tracking.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.image_properties.multiprocessing_routine_epl_shear</span> <span class="kn">import</span> <span class="n">solve_lens_equation</span><span class="p">,</span> <span class="n">_init_worker_multiprocessing</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.024</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.016</span><span class="p">,</span> <span class="mf">1.89</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.09</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.94</span><span class="p">,</span> <span class="mf">2.5e-06</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lens_parameters2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.040</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.014</span><span class="p">,</span> <span class="mf">2.00</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.09</span><span class="p">,</span> <span class="mf">2.55</span><span class="p">,</span> <span class="mf">1.0e-06</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input_arguments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">lens_parameters1</span><span class="p">,</span> <span class="n">lens_parameters2</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Pool</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">processes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="c1"># Number of worker processes</span>
+<span class="gp">... </span>    <span class="n">initializer</span><span class="o">=</span><span class="n">_init_worker_multiprocessing</span><span class="p">,</span> <span class="c1"># common</span>
+<span class="gp">... </span>    <span class="n">initargs</span><span class="o">=</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="mi">2</span><span class="p">,</span> <span class="c1"># n_min_images</span>
+<span class="gp">... </span>        <span class="p">[</span><span class="s1">&#39;EPL_NUMBA&#39;</span><span class="p">,</span> <span class="s1">&#39;SHEAR&#39;</span><span class="p">],</span> <span class="c1"># lensModelList</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">solve_lens_equation</span><span class="p">,</span> <span class="n">input_arguments</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../image_properties/index.html" class="btn btn-neutral float-left" title="ler.image_properties.image_properties" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../sample_caustic_points_njit/index.html" class="btn btn-neutral float-right" title="ler.image_properties.sample_caustic_points_njit" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,638 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ler.image_properties.cross_section_njit &mdash; ler 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=551ad726" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=88a06014" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=8fa8b3e9"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
+      <script src="../../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="ler.image_properties.epl_shear_njit" href="../epl_shear_njit/index.html" />
+    <link rel="prev" title="ler.image_properties" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980b9" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            ler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../code_overview.html">Code overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analytical_formulation_unlensed.html">Analytical Formulation for Gravitational Wave Event Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analytical_formulation_lensed.html">Analytical Formulation for Lensed Gravitational Wave Event Rates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gw_source_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lens_galaxy_population/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.lens_galaxy_population</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.cross_section_njit</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../epl_shear_njit/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.epl_shear_njit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../image_properties/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.image_properties</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../multiprocessing_routine_epl_shear/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.multiprocessing_routine_epl_shear</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sample_caustic_points_njit/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.sample_caustic_points_njit</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.utils</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_short_examples.html">LeR Short Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/GWRATES_complete_examples.html">GWRATES complete example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_custom_functions.html">LeR with Custom Functions and Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/LeR_advanced_sampling.html">LeR Advanced Sampling — Generating Detectable Events</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980b9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.cross_section_njit</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/autoapi/ler/image_properties/cross_section_njit/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ler.image_properties.cross_section_njit">
+<span id="ler-image-properties-cross-section-njit"></span><h1><a class="reference internal" href="#module-ler.image_properties.cross_section_njit" title="ler.image_properties.cross_section_njit"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.image_properties.cross_section_njit</span></code></a><a class="headerlink" href="#module-ler.image_properties.cross_section_njit" title="Link to this heading"></a></h1>
+<p>Module for analytical caustic computation and cross-section evaluation.</p>
+<p>Provides numba-accelerated routines for computing critical curves, caustic
+boundaries, polygon areas, and lensing cross sections for EPL (Elliptical
+Power-Law) + external shear lens models. All core functions are decorated
+with <code class="docutils literal notranslate"><span class="pre">&#64;njit</span></code> for high performance.</p>
+<dl>
+<dt>Usage:</dt><dd><p>Basic workflow example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.image_properties.cross_section_njit</span> <span class="kn">import</span> <span class="n">caustic_points_epl_shear</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pts</span> <span class="o">=</span> <span class="n">caustic_points_epl_shear</span><span class="p">(</span><span class="n">theta_E</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">gamma1</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">gamma2</span><span class="o">=-</span><span class="mf">0.01</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Copyright (C) 2026 Phurailatpam Hemantakumar. Distributed under MIT License.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.cross_section_njit.phi_q2_ellipticity" title="ler.image_properties.cross_section_njit.phi_q2_ellipticity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_q2_ellipticity</span></code></a>(phi, q)</p></td>
+<td><p>Convert lens orientation and axis ratio to ellipticity components.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.cross_section_njit.ellipticity2phi_q" title="ler.image_properties.cross_section_njit.ellipticity2phi_q"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ellipticity2phi_q</span></code></a>(e1, e2)</p></td>
+<td><p>Convert complex ellipticity moduli to orientation angle and axis ratio.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.cross_section_njit.omega" title="ler.image_properties.cross_section_njit.omega"><code class="xref py py-obj docutils literal notranslate"><span class="pre">omega</span></code></a>(phi, t, q[, niter_max, tol])</p></td>
+<td><p>Evaluate the complex angular function Omega for the EPL profile.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.cross_section_njit.cdot" title="ler.image_properties.cross_section_njit.cdot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cdot</span></code></a>(a, b)</p></td>
+<td><p>Compute the real-valued dot product of two complex numbers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.cross_section_njit.pol_to_cart" title="ler.image_properties.cross_section_njit.pol_to_cart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pol_to_cart</span></code></a>(r, th)</p></td>
+<td><p>Convert polar coordinates to Cartesian coordinates.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.cross_section_njit.cart_to_pol" title="ler.image_properties.cross_section_njit.cart_to_pol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cart_to_pol</span></code></a>(x, y)</p></td>
+<td><p>Convert Cartesian coordinates to polar coordinates.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.cross_section_njit.caustic_points_epl_shear" title="ler.image_properties.cross_section_njit.caustic_points_epl_shear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">caustic_points_epl_shear</span></code></a>(theta_E, q, phi, gamma, ...)</p></td>
+<td><p>Calculates the 2D coordinates of the caustic for a SINGLE lens.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.cross_section_njit.caustic_area_epl_shear" title="ler.image_properties.cross_section_njit.caustic_area_epl_shear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">caustic_area_epl_shear</span></code></a>(q, phi, gamma, gamma1, gamma2, ...)</p></td>
+<td><p>Calculates the area of the double caustic for a SINGLE lens.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.cross_section_njit.half_symmetric_polygon_area" title="ler.image_properties.cross_section_njit.half_symmetric_polygon_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">half_symmetric_polygon_area</span></code></a>(xh, yh)</p></td>
+<td><p>Area of a centrally symmetric closed polygon from half-boundary samples.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.cross_section_njit.polygon_area" title="ler.image_properties.cross_section_njit.polygon_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">polygon_area</span></code></a>(xv, yv)</p></td>
+<td><p>Compute the area of a simple polygon using the Shoelace formula.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.cross_section_njit.make_cross_section_area_reinit" title="ler.image_properties.cross_section_njit.make_cross_section_area_reinit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_cross_section_area_reinit</span></code></a>(Da_instance[, num_th, ...])</p></td>
+<td><p>Make a jitted function to compute double-caustic cross sections.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.cross_section_njit.cross_section_epl_shear_unit" title="ler.image_properties.cross_section_njit.cross_section_epl_shear_unit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_section_epl_shear_unit</span></code></a>(e1, e2, gamma, gamma1, gamma2)</p></td>
+<td><p>Compute double-caustic cross sections for batched lens parameters.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.cross_section_njit.C_LIGHT" title="ler.image_properties.cross_section_njit.C_LIGHT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">C_LIGHT</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.cross_section_njit.PI" title="ler.image_properties.cross_section_njit.PI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PI</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.image_properties.cross_section_njit.TWO_PI" title="ler.image_properties.cross_section_njit.TWO_PI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TWO_PI</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.image_properties.cross_section_njit.EPS" title="ler.image_properties.cross_section_njit.EPS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EPS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="ler.image_properties.cross_section_njit.C_LIGHT">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.cross_section_njit.</span></span><span class="sig-name descname"><span class="pre">C_LIGHT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'299792458.0'</span></em><a class="reference internal" href="../../../../_modules/ler/image_properties/cross_section_njit.html#C_LIGHT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.cross_section_njit.C_LIGHT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="ler.image_properties.cross_section_njit.PI">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.cross_section_njit.</span></span><span class="sig-name descname"><span class="pre">PI</span></span><a class="reference internal" href="../../../../_modules/ler/image_properties/cross_section_njit.html#PI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.cross_section_njit.PI" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="ler.image_properties.cross_section_njit.TWO_PI">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.cross_section_njit.</span></span><span class="sig-name descname"><span class="pre">TWO_PI</span></span><a class="reference internal" href="../../../../_modules/ler/image_properties/cross_section_njit.html#TWO_PI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.cross_section_njit.TWO_PI" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="ler.image_properties.cross_section_njit.EPS">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.cross_section_njit.</span></span><span class="sig-name descname"><span class="pre">EPS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'1e-16'</span></em><a class="reference internal" href="../../../../_modules/ler/image_properties/cross_section_njit.html#EPS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.cross_section_njit.EPS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.cross_section_njit.phi_q2_ellipticity">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.cross_section_njit.</span></span><span class="sig-name descname"><span class="pre">phi_q2_ellipticity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/cross_section_njit.html#phi_q2_ellipticity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.cross_section_njit.phi_q2_ellipticity" title="Link to this definition"></a></dt>
+<dd><p>Convert lens orientation and axis ratio to ellipticity components.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>phi</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Position angle of the lens major axis in radians.</p>
+</dd>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Axis ratio (minor/major), where <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">&lt;</span> <span class="pre">q</span> <span class="pre">&lt;=</span> <span class="pre">1</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>e1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>First ellipticity component.</p>
+</dd>
+<dt><strong>e2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Second ellipticity component.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">e1</span><span class="p">,</span> <span class="n">e2</span> <span class="o">=</span> <span class="n">phi_q2_ellipticity</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.cross_section_njit.ellipticity2phi_q">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.cross_section_njit.</span></span><span class="sig-name descname"><span class="pre">ellipticity2phi_q</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/cross_section_njit.html#ellipticity2phi_q"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.cross_section_njit.ellipticity2phi_q" title="Link to this definition"></a></dt>
+<dd><p>Convert complex ellipticity moduli to orientation angle and axis ratio.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>e1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>First ellipticity component.</p>
+</dd>
+<dt><strong>e2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Second ellipticity component.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>phi</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Orientation angle in radians.</p>
+</dd>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Axis ratio (minor/major).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">phi</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">ellipticity2phi_q</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.cross_section_njit.omega">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.cross_section_njit.</span></span><span class="sig-name descname"><span class="pre">omega</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">niter_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-16</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/cross_section_njit.html#omega"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.cross_section_njit.omega" title="Link to this definition"></a></dt>
+<dd><p>Evaluate the complex angular function Omega for the EPL profile.</p>
+<p>This series expansion converges geometrically with ratio
+<code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">(1</span> <span class="pre">-</span> <span class="pre">q)/(1</span> <span class="pre">+</span> <span class="pre">q)</span></code>. The <code class="docutils literal notranslate"><span class="pre">fastmath</span></code> flag provides ~4x speedup
+due to the reduction nature of the summation.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>phi</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Azimuthal angles in radians.</p>
+</dd>
+<dt><strong>t</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>EPL slope exponent (<code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">gamma</span> <span class="pre">-</span> <span class="pre">1</span></code>).</p>
+</dd>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Axis ratio.</p>
+</dd>
+<dt><strong>niter_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Maximum number of series terms.</p>
+<p>default: 200</p>
+</dd>
+<dt><strong>tol</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Convergence tolerance.</p>
+<p>default: 1e-16</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>omegas</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Complex Omega values at each angle.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">omegas</span> <span class="o">=</span> <span class="n">omega</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.cross_section_njit.cdot">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.cross_section_njit.</span></span><span class="sig-name descname"><span class="pre">cdot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/cross_section_njit.html#cdot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.cross_section_njit.cdot" title="Link to this definition"></a></dt>
+<dd><p>Compute the real-valued dot product of two complex numbers.</p>
+<p>Equivalent to <code class="docutils literal notranslate"><span class="pre">Re(a)</span> <span class="pre">*</span> <span class="pre">Re(b)</span> <span class="pre">+</span> <span class="pre">Im(a)</span> <span class="pre">*</span> <span class="pre">Im(b)</span></code>.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>a</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">complex</span></code></span></dt><dd><p>First complex number.</p>
+</dd>
+<dt><strong>b</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">complex</span></code></span></dt><dd><p>Second complex number.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>result</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Real-valued dot product.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cdot</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="mi">3</span><span class="o">+</span><span class="mi">4</span><span class="n">j</span><span class="p">)</span>
+<span class="go">11.0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.cross_section_njit.pol_to_cart">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.cross_section_njit.</span></span><span class="sig-name descname"><span class="pre">pol_to_cart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">th</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/cross_section_njit.html#pol_to_cart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.cross_section_njit.pol_to_cart" title="Link to this definition"></a></dt>
+<dd><p>Convert polar coordinates to Cartesian coordinates.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>r</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Radial coordinate.</p>
+</dd>
+<dt><strong>th</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Polar angle in radians.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>x</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Cartesian x-coordinate.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Cartesian y-coordinate.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">pol_to_cart</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.cross_section_njit.cart_to_pol">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.cross_section_njit.</span></span><span class="sig-name descname"><span class="pre">cart_to_pol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/cross_section_njit.html#cart_to_pol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.cross_section_njit.cart_to_pol" title="Link to this definition"></a></dt>
+<dd><p>Convert Cartesian coordinates to polar coordinates.</p>
+<p>The returned angle is wrapped to <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">2π)</span></code>.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>x</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Cartesian x-coordinate.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Cartesian y-coordinate.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>r</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Radial coordinate.</p>
+</dd>
+<dt><strong>theta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Polar angle in radians, wrapped to <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">2π)</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">cart_to_pol</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.cross_section_njit.caustic_points_epl_shear">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.cross_section_njit.</span></span><span class="sig-name descname"><span class="pre">caustic_points_epl_shear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta_E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_th</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maginf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/cross_section_njit.html#caustic_points_epl_shear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.cross_section_njit.caustic_points_epl_shear" title="Link to this definition"></a></dt>
+<dd><p>Calculates the 2D coordinates of the caustic for a SINGLE lens.
+Accepts scalar float values.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>theta_E</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Einstein radius.</p>
+</dd>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Axis ratio.</p>
+</dd>
+<dt><strong>phi</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Position angle of the lens major axis in radians.</p>
+</dd>
+<dt><strong>gamma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>EPL slope exponent.</p>
+</dd>
+<dt><strong>gamma1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>First shear component.</p>
+</dd>
+<dt><strong>gamma2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Second shear component.</p>
+</dd>
+<dt><strong>num_th</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of angular samples.</p>
+<p>default: 500</p>
+</dd>
+<dt><strong>maginf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Magnification cut threshold.</p>
+<p>default: -100.0</p>
+</dd>
+<dt><strong>quad</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, return the quad (inner) caustic. If False, return the double (outer) caustic.</p>
+<p>default: False</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>rotated</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Shape <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">num_th)</span></code> Cartesian coordinates of the caustic.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pts</span> <span class="o">=</span> <span class="n">caustic_points_epl_shear</span><span class="p">(</span><span class="n">theta_E</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">gamma1</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">gamma2</span><span class="o">=-</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pts_quad</span> <span class="o">=</span> <span class="n">caustic_points_epl_shear</span><span class="p">(</span><span class="n">theta_E</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">gamma1</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">gamma2</span><span class="o">=-</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">quad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.cross_section_njit.caustic_area_epl_shear">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.cross_section_njit.</span></span><span class="sig-name descname"><span class="pre">caustic_area_epl_shear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta_E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cos_th</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sin_th</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cos_2th</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sin_2th</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maginf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-100.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/cross_section_njit.html#caustic_area_epl_shear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.cross_section_njit.caustic_area_epl_shear" title="Link to this definition"></a></dt>
+<dd><p>Calculates the area of the double caustic for a SINGLE lens.
+Accepts scalar float values.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Axis ratio.</p>
+</dd>
+<dt><strong>phi</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Position angle of the lens major axis in radians.</p>
+</dd>
+<dt><strong>gamma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>EPL slope exponent.</p>
+</dd>
+<dt><strong>gamma1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>First shear component.</p>
+</dd>
+<dt><strong>gamma2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Second shear component.</p>
+</dd>
+<dt><strong>theta_E</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Einstein radius.</p>
+</dd>
+<dt><strong>theta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of angles.</p>
+</dd>
+<dt><strong>cos_th</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of cosine of angles.</p>
+</dd>
+<dt><strong>sin_th</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of sine of angles.</p>
+</dd>
+<dt><strong>cos_2th</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of cosine of 2*angles.</p>
+</dd>
+<dt><strong>sin_2th</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of sine of 2*angles.</p>
+</dd>
+<dt><strong>maginf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Magnification cut threshold.</p>
+<p>default: -100.0</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>area</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Area of the caustic.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">num_th</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">num_th</span><span class="o">//</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">num_th</span><span class="p">,</span> <span class="n">num_th</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">area</span> <span class="o">=</span> <span class="n">caustic_area_epl_shear</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">theta</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.cross_section_njit.half_symmetric_polygon_area">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.cross_section_njit.</span></span><span class="sig-name descname"><span class="pre">half_symmetric_polygon_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/cross_section_njit.html#half_symmetric_polygon_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.cross_section_njit.half_symmetric_polygon_area" title="Link to this definition"></a></dt>
+<dd><p>Area of a centrally symmetric closed polygon from half-boundary samples.</p>
+<p>The full boundary is [v_0, …, v_{h-1}, -v_0, …, -v_{h-1}],
+so the total area is twice the area of the half polygon closed by -v_0.
+This avoids allocating temporary arrays of length h+1.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.cross_section_njit.polygon_area">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.cross_section_njit.</span></span><span class="sig-name descname"><span class="pre">polygon_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/cross_section_njit.html#polygon_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.cross_section_njit.polygon_area" title="Link to this definition"></a></dt>
+<dd><p>Compute the area of a simple polygon using the Shoelace formula.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>xv</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>x-coordinates of the polygon vertices.</p>
+</dd>
+<dt><strong>yv</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>y-coordinates of the polygon vertices.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>area</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Area of the polygon.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">area</span> <span class="o">=</span> <span class="n">polygon_area</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.cross_section_njit.make_cross_section_area_reinit">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.cross_section_njit.</span></span><span class="sig-name descname"><span class="pre">make_cross_section_area_reinit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Da_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_th</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maginf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-100.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/cross_section_njit.html#make_cross_section_area_reinit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.cross_section_njit.make_cross_section_area_reinit" title="Link to this definition"></a></dt>
+<dd><p>Make a jitted function to compute double-caustic cross sections.</p>
+<p>Drop-in replacement with trig arrays closed over (faster),
+safe memory layout, and optional chunking for huge batches.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>Da_instance</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Angular diameter distance function.</p>
+</dd>
+<dt><strong>num_th</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of points to sample.</p>
+<p>default: 500</p>
+</dd>
+<dt><strong>maginf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Magnification cut threshold.</p>
+<p>default: -100.0</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>cross_section_area</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Jitted function to compute cross section areas.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cross_section_fn</span> <span class="o">=</span> <span class="n">make_cross_section_area_reinit</span><span class="p">(</span><span class="n">Da_instance</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.image_properties.cross_section_njit.cross_section_epl_shear_unit">
+<span class="sig-prename descclassname"><span class="pre">ler.image_properties.cross_section_njit.</span></span><span class="sig-name descname"><span class="pre">cross_section_epl_shear_unit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_th</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maginf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-100.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/image_properties/cross_section_njit.html#cross_section_epl_shear_unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.image_properties.cross_section_njit.cross_section_epl_shear_unit" title="Link to this definition"></a></dt>
+<dd><p>Compute double-caustic cross sections for batched lens parameters.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>e1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>First ellipticity component array.</p>
+</dd>
+<dt><strong>e2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Second ellipticity component array.</p>
+</dd>
+<dt><strong>gamma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>EPL slope exponent array.</p>
+</dd>
+<dt><strong>gamma1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>First shear component array.</p>
+</dd>
+<dt><strong>gamma2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Second shear component array.</p>
+</dd>
+<dt><strong>num_th</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of points to sample.</p>
+<p>default: 500</p>
+</dd>
+<dt><strong>maginf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Magnification cut threshold.</p>
+<p>default: -100.0</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>cross_section_area</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Jitted function to compute cross section areas.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">calculate_area</span> <span class="o">=</span> <span class="n">cross_section_epl_shear_unit</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.05</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.0</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.03</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.01</span><span class="p">]))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="ler.image_properties" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../epl_shear_njit/index.html" class="btn btn-neutral float-right" title="ler.image_properties.epl_shear_njit" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Phurailatpam Hemantakumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

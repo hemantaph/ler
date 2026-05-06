@@ -6,13 +6,13 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.lens_galaxy_population.mp &mdash; ler 0.5.9 documentation</title>
+  <title>ler.lens_galaxy_population.mp &mdash; ler 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=11132fbc" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=551ad726" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=88a06014" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
@@ -20,7 +20,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=9a3cda14"></script>
+      <script src="../../../../_static/documentation_options.js?v=8fa8b3e9"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -132,7 +132,7 @@ Monte Carlo integration over lens parameters.</p>
 <li><p>Multiprocessing-compatible wrapper functions for optical depth</p></li>
 <li><p>Cross-section calculation using EPL+Shear lens models</p></li>
 </ul>
-<p>Copyright (C) 2026 Phurailatpam Hemantakumar. Distributed under MIT License.</p>
+<p>Copyright (C) 2024 Hemantakumar Phurailatpam. Distributed under MIT License.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <section id="functions">
@@ -140,10 +140,10 @@ Monte Carlo integration over lens parameters.</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_njit" title="ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_njit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lens_redshift_strongly_lensed_njit</span></code></a>(zs_array, ...)</p></td>
-<td><p>JIT-compiled parallel computation of lens redshift optical depth.</p></td>
+<td><p>JIT-compiled parallel computation of differential optical depth.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_mp" title="ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_mp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lens_redshift_strongly_lensed_mp</span></code></a>(params)</p></td>
-<td><p>Multiprocessing worker for lens redshift optical depth calculation.</p></td>
+<td><p>Multiprocessing worker for computation of differential optical depth.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.mp.cross_section_unit_mp" title="ler.lens_galaxy_population.mp.cross_section_unit_mp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_section_unit_mp</span></code></a>(params)</p></td>
 <td><p>Multiprocessing worker for unit Einstein radius cross-section.</p></td>
@@ -153,33 +153,10 @@ Monte Carlo integration over lens parameters.</p>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h3>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.mp.CS_UNIT_SLOPE" title="ler.lens_galaxy_population.mp.CS_UNIT_SLOPE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CS_UNIT_SLOPE</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.mp.CS_UNIT_INTERCEPT" title="ler.lens_galaxy_population.mp.CS_UNIT_INTERCEPT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CS_UNIT_INTERCEPT</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py data">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.mp.CS_UNIT_SLOPE">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.mp.</span></span><span class="sig-name descname"><span class="pre">CS_UNIT_SLOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0.31830988618379075'</span></em><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/mp.html#CS_UNIT_SLOPE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.mp.CS_UNIT_SLOPE" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.mp.CS_UNIT_INTERCEPT">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.mp.</span></span><span class="sig-name descname"><span class="pre">CS_UNIT_INTERCEPT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'-3.2311742677852644e-27'</span></em><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/mp.html#CS_UNIT_INTERCEPT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.mp.CS_UNIT_INTERCEPT" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_njit">
-<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.mp.</span></span><span class="sig-name descname"><span class="pre">lens_redshift_strongly_lensed_njit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl_scaled</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dVcdz_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integration_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/mp.html#lens_redshift_strongly_lensed_njit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_njit" title="Link to this definition"></a></dt>
-<dd><p>JIT-compiled parallel computation of lens redshift optical depth.</p>
+<span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.mp.</span></span><span class="sig-name descname"><span class="pre">lens_redshift_strongly_lensed_njit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zl_scaled</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear1_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear2_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dVcdz_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integration_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/mp.html#lens_redshift_strongly_lensed_njit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_njit" title="Link to this definition"></a></dt>
+<dd><p>JIT-compiled parallel computation of differential optical depth.</p>
 <p>Computes the differential optical depth for strong lensing as a function
 of source and lens redshifts using Monte Carlo integration with parallel
 execution over source redshifts.</p>
@@ -200,7 +177,9 @@ execution over source redshifts.</p>
 </dd>
 <dt><strong>gamma_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample density profile slopes.</p>
 </dd>
-<dt><strong>shear_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample external shear components (gamma1, gamma2).</p>
+<dt><strong>shear1_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample external shear component 1 (gamma1).</p>
+</dd>
+<dt><strong>shear2_rvs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to sample external shear component 2 (gamma2).</p>
 </dd>
 <dt><strong>number_density</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">callable</span></code></span></dt><dd><p>Function to compute velocity dispersion number density.</p>
 </dd>
@@ -224,7 +203,7 @@ execution over source redshifts.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_mp">
 <span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.mp.</span></span><span class="sig-name descname"><span class="pre">lens_redshift_strongly_lensed_mp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/mp.html#lens_redshift_strongly_lensed_mp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.mp.lens_redshift_strongly_lensed_mp" title="Link to this definition"></a></dt>
-<dd><p>Multiprocessing worker for lens redshift optical depth calculation.</p>
+<dd><p>Multiprocessing worker for computation of differential optical depth.</p>
 <p>Computes the differential optical depth for a single source redshift
 across multiple lens redshifts. Designed to be called via multiprocessing
 Pool.map() for parallel computation.</p>

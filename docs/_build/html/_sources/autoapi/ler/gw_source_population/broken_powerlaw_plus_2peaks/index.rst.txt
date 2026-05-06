@@ -1,0 +1,586 @@
+:py:mod:`ler.gw_source_population.broken_powerlaw_plus_2peaks`
+==============================================================
+
+.. py:module:: ler.gw_source_population.broken_powerlaw_plus_2peaks
+
+.. autoapi-nested-parse::
+
+   Broken Power-Law with Two Gaussian Peaks Mass Distribution Model.
+
+   This module implements a primary mass distribution model combining a broken
+   power-law component with two Gaussian peaks, as detailed in the accompanying
+   paper. The model is parameterized with 12 parameters for the primary mass and
+   3 parameters for the mass ratio distribution.
+
+   Key Features:
+   - Broken power-law distribution with configurable break mass and power-law indices
+   - Two Gaussian peaks for modeling specific mass populations
+   - Smoothing taper function for physical support enforcement
+   - Efficient numerical integration using log-space methods
+   - Full support for both PDF evaluation and random sample generation
+   - Mass ratio distribution with power-law form
+
+   Usage:
+       Basic workflow for sampling binary masses:
+
+       >>> from ler.gw_source_population.broken_powerlaw_plus_2peaks import broken_powerlaw_plus_2peaks_rvs
+       >>> m1, m2 = broken_powerlaw_plus_2peaks_rvs(size=1000)
+
+   Copyright (C) 2026 Author Name. Distributed under MIT License.
+
+   ..
+       !! processed by numpydoc !!
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_pdf
+   ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_function
+   ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_cdf
+   ler.gw_source_population.broken_powerlaw_plus_2peaks.broken_powerlaw_plus_2peaks_rvs
+   ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_scalar
+   ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_pdf
+   ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_cdf
+   ler.gw_source_population.broken_powerlaw_plus_2peaks.mass_ratio_powerlaw_with_smoothing_rvs
+
+
+
+.. py:function:: broken_powerlaw_plus_2peaks_pdf(m1, lam_0=0.361, lam_1=0.586, mpp_1=9.764, sigpp_1=0.649, mpp_2=32.763, sigpp_2=3.918, mlow_1=5.059, delta_m_1=4.321, break_mass=35.622, alpha_1=1.728, alpha_2=4.512, mmax=300.0, normalization_size=500)
+
+   
+   Evaluate fully normalized primary-mass probability density (equation B20).
+
+   Computes the normalized probability density $π(m_1 | Λ)$ by integrating
+   the unnormalized mixture in log-space for numerical stability and consistency.
+
+   :Parameters:
+
+       **m1** : ``numpy.ndarray``
+           Primary masses (solar masses).
+
+       **lam_0, lam_1, mpp_1, sigpp_1, mpp_2, sigpp_2, mlow_1, delta_m_1, break_mass, alpha_1, alpha_2, mmax** : ``float``
+           Distribution parameters.
+           +------------+---------+-----------------------------------------------------------+
+           | param      | default | description                                               |
+           +============+=========+===========================================================+
+           | lam_0      | 0.361   | Fraction of broken power-law component (0 <= lam_0 <= 1)  |
+           +------------+---------+-----------------------------------------------------------+
+           | lam_1      | 0.586   | Fraction of first Gaussian peak (0 <= lam_1 <= 1)         |
+           +------------+---------+-----------------------------------------------------------+
+           | mpp_1      | 9.764   | Mean of first Gaussian peak (solar masses)                |
+           +------------+---------+-----------------------------------------------------------+
+           | sigpp_1    | 0.649   | Standard deviation of first Gaussian peak (solar masses)  |
+           +------------+---------+-----------------------------------------------------------+
+           | mpp_2      | 32.763  | Mean of second Gaussian peak (solar masses)               |
+           +------------+---------+-----------------------------------------------------------+
+           | sigpp_2    | 3.918   | Standard deviation of second Gaussian peak (solar masses) |
+           +------------+---------+-----------------------------------------------------------+
+           | mlow_1     | 5.059   | Minimum primary mass (solar masses)                       |
+           +------------+---------+-----------------------------------------------------------+
+           | delta_m_1  | 4.321   | Taper width (solar masses)                                |
+           +------------+---------+-----------------------------------------------------------+
+           | break_mass | 35.622  | Power-law break mass (solar masses)                       |
+           +------------+---------+-----------------------------------------------------------+
+           | alpha_1    | 1.728   | Power-law index below break mass                          |
+           +------------+---------+-----------------------------------------------------------+
+           | alpha_2    | 4.512   | Power-law index above break mass                          |
+           +------------+---------+-----------------------------------------------------------+
+           | mmax       | 300.0   | Maximum primary mass (solar masses)                       |
+           +------------+---------+-----------------------------------------------------------+
+
+       **normalization_size** : ``int``
+           Number of grid points for numerical integration.
+           default: 500
+
+   :Returns:
+
+       **pdf** : ``numpy.ndarray``
+           Normalized probability density at each mass value.
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   >>> from ler.gw_source_population.broken_powerlaw_plus_2peaks import broken_powerlaw_plus_2peaks_pdf
+   >>> import numpy as np
+   >>> m1 = np.array([10.0, 20.0, 50.0])
+   >>> pdf_values = broken_powerlaw_plus_2peaks_pdf(m1)
+   >>> print(pdf_values)  # doctest: +SKIP
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: broken_powerlaw_plus_2peaks_function(m1, lam_0=0.361, lam_1=0.586, mpp_1=9.764, sigpp_1=0.649, mpp_2=32.763, sigpp_2=3.918, mlow_1=5.059, delta_m_1=4.321, break_mass=35.622, alpha_1=1.728, alpha_2=4.512, mmax=300.0, normalization_size=500, R0=16.158, kappa=3.166, z_eval=0.2)
+
+   
+   Compute event rate as function of primary mass (equation B20).
+
+   Combines the normalized primary-mass PDF with a redshift-dependent rate,
+   modeling the merger rate evolution $R(z) = R_0 (1+z)^κ$.
+
+   :Parameters:
+
+       **m1** : ``numpy.ndarray``
+           Primary masses (solar masses).
+
+       **lam_0, lam_1, mpp_1, sigpp_1, mpp_2, sigpp_2, mlow_1, delta_m_1, break_mass, alpha_1, alpha_2, mmax** : ``float``
+           Distribution parameters.
+           +------------+---------+-----------------------------------------------------------+
+           | param      | default | description                                               |
+           +============+=========+===========================================================+
+           | lam_0      | 0.361   | Fraction of broken power-law component (0 <= lam_0 <= 1)  |
+           +------------+---------+-----------------------------------------------------------+
+           | lam_1      | 0.586   | Fraction of first Gaussian peak (0 <= lam_1 <= 1)         |
+           +------------+---------+-----------------------------------------------------------+
+           | mpp_1      | 9.764   | Mean of first Gaussian peak (solar masses)                |
+           +------------+---------+-----------------------------------------------------------+
+           | sigpp_1    | 0.649   | Standard deviation of first Gaussian peak (solar masses)  |
+           +------------+---------+-----------------------------------------------------------+
+           | mpp_2      | 32.763  | Mean of second Gaussian peak (solar masses)               |
+           +------------+---------+-----------------------------------------------------------+
+           | sigpp_2    | 3.918   | Standard deviation of second Gaussian peak (solar masses) |
+           +------------+---------+-----------------------------------------------------------+
+           | mlow_1     | 5.059   | Minimum primary mass (solar masses)                       |
+           +------------+---------+-----------------------------------------------------------+
+           | delta_m_1  | 4.321   | Taper width (solar masses)                                |
+           +------------+---------+-----------------------------------------------------------+
+           | break_mass | 35.622  | Power-law break mass (solar masses)                       |
+           +------------+---------+-----------------------------------------------------------+
+           | alpha_1    | 1.728   | Power-law index below break mass                          |
+           +------------+---------+-----------------------------------------------------------+
+           | alpha_2    | 4.512   | Power-law index above break mass                          |
+           +------------+---------+-----------------------------------------------------------+
+           | mmax       | 300.0   | Maximum primary mass (solar masses)                       |
+           +------------+---------+-----------------------------------------------------------+
+
+       **normalization_size** : ``int``
+           Number of grid points for numerical integration.
+           default: 500
+
+       **R0** : ``float``
+           Local merger rate (Gpc$^{-3}$ yr$^{-1}$).
+           default: 16.158
+
+       **kappa** : ``float``
+           Power-law index for redshift evolution.
+           default: 3.166
+
+       **z_eval** : ``float``
+           Redshift at which to evaluate the rate.
+           default: 0.2
+
+   :Returns:
+
+       **rate** : ``numpy.ndarray``
+           Differential merger rate $dR/dm_1$ at each mass value.
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   >>> from ler.gw_source_population.broken_powerlaw_plus_2peaks import broken_powerlaw_plus_2peaks_function
+   >>> import numpy as np
+   >>> m1 = np.array([10.0, 20.0, 50.0])
+   >>> rate_values = broken_powerlaw_plus_2peaks_function(m1)
+   >>> print(rate_values)  # doctest: +SKIP
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: broken_powerlaw_plus_2peaks_cdf(size, lam_0=0.361, lam_1=0.586, mpp_1=9.764, sigpp_1=0.649, mpp_2=32.763, sigpp_2=3.918, mlow_1=5.059, delta_m_1=4.321, break_mass=35.622, alpha_1=1.728, alpha_2=4.512, mmax=300.0)
+
+   
+   Compute cumulative distribution function (CDF) for primary masses.
+
+   Evaluates the CDF using log-space numerical integration for consistency
+   with the PDF normalization, enabling inverse transform sampling.
+
+   :Parameters:
+
+       **size** : ``int``
+           Number of grid points for CDF computation.
+
+       **lam_0, lam_1, mpp_1, sigpp_1, mpp_2, sigpp_2, mlow_1, delta_m_1, break_mass, alpha_1, alpha_2, mmax** : ``float``
+           Distribution parameters.
+           +------------+---------+-----------------------------------------------------------+
+           | param      | default | description                                               |
+           +============+=========+===========================================================+
+           | lam_0      | 0.361   | Fraction of broken power-law component (0 <= lam_0 <= 1)  |
+           +------------+---------+-----------------------------------------------------------+
+           | lam_1      | 0.586   | Fraction of first Gaussian peak (0 <= lam_1 <= 1)         |
+           +------------+---------+-----------------------------------------------------------+
+           | mpp_1      | 9.764   | Mean of first Gaussian peak (solar masses)                |
+           +------------+---------+-----------------------------------------------------------+
+           | sigpp_1    | 0.649   | Standard deviation of first Gaussian peak (solar masses)  |
+           +------------+---------+-----------------------------------------------------------+
+           | mpp_2      | 32.763  | Mean of second Gaussian peak (solar masses)               |
+           +------------+---------+-----------------------------------------------------------+
+           | sigpp_2    | 3.918   | Standard deviation of second Gaussian peak (solar masses) |
+           +------------+---------+-----------------------------------------------------------+
+           | mlow_1     | 5.059   | Minimum primary mass (solar masses)                       |
+           +------------+---------+-----------------------------------------------------------+
+           | delta_m_1  | 4.321   | Taper width (solar masses)                                |
+           +------------+---------+-----------------------------------------------------------+
+           | break_mass | 35.622  | Power-law break mass (solar masses)                       |
+           +------------+---------+-----------------------------------------------------------+
+           | alpha_1    | 1.728   | Power-law index below break mass                          |
+           +------------+---------+-----------------------------------------------------------+
+           | alpha_2    | 4.512   | Power-law index above break mass                          |
+           +------------+---------+-----------------------------------------------------------+
+           | mmax       | 300.0   | Maximum primary mass (solar masses)                       |
+           +------------+---------+-----------------------------------------------------------+
+
+   :Returns:
+
+       **cdf_values** : ``numpy.ndarray``
+           Normalized CDF values at each grid point.
+
+       **m_grid** : ``numpy.ndarray``
+           Mass grid points (solar masses).
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   >>> from ler.gw_source_population.broken_powerlaw_plus_2peaks import broken_powerlaw_plus_2peaks_cdf
+   >>> cdf_values, m_grid = broken_powerlaw_plus_2peaks_cdf(size=100)
+   >>> print(cdf_values[-1])  # CDF should approach 1
+   1.0
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: broken_powerlaw_plus_2peaks_rvs(size, lam_0=0.361, lam_1=0.586, mpp_1=9.764, sigpp_1=0.649, mpp_2=32.763, sigpp_2=3.918, mlow_1=5.059, delta_m_1=4.321, break_mass=35.622, alpha_1=1.728, alpha_2=4.512, mmax=300.0, normalization_size=500)
+
+   
+   Generate random samples from the primary-mass distribution.
+
+   Draws random samples using inverse transform sampling applied to the CDF,
+   which is computed using numerically stable log-space integration.
+
+   :Parameters:
+
+       **size** : ``int``
+           Number of samples to generate.
+
+       **lam_0, lam_1, mpp_1, sigpp_1, mpp_2, sigpp_2, mlow_1, delta_m_1, break_mass, alpha_1, alpha_2, mmax** : ``float``
+           Distribution parameters.
+           +------------+---------+-----------------------------------------------------------+
+           | param      | default | description                                               |
+           +============+=========+===========================================================+
+           | lam_0      | 0.361   | Fraction of broken power-law component (0 <= lam_0 <= 1)  |
+           +------------+---------+-----------------------------------------------------------+
+           | lam_1      | 0.586   | Fraction of first Gaussian peak (0 <= lam_1 <= 1)         |
+           +------------+---------+-----------------------------------------------------------+
+           | mpp_1      | 9.764   | Mean of first Gaussian peak (solar masses)                |
+           +------------+---------+-----------------------------------------------------------+
+           | sigpp_1    | 0.649   | Standard deviation of first Gaussian peak (solar masses)  |
+           +------------+---------+-----------------------------------------------------------+
+           | mpp_2      | 32.763  | Mean of second Gaussian peak (solar masses)               |
+           +------------+---------+-----------------------------------------------------------+
+           | sigpp_2    | 3.918   | Standard deviation of second Gaussian peak (solar masses) |
+           +------------+---------+-----------------------------------------------------------+
+           | mlow_1     | 5.059   | Minimum primary mass (solar masses)                       |
+           +------------+---------+-----------------------------------------------------------+
+           | delta_m_1  | 4.321   | Taper width (solar masses)                                |
+           +------------+---------+-----------------------------------------------------------+
+           | break_mass | 35.622  | Power-law break mass (solar masses)                       |
+           +------------+---------+-----------------------------------------------------------+
+           | alpha_1    | 1.728   | Power-law index below break mass                          |
+           +------------+---------+-----------------------------------------------------------+
+           | alpha_2    | 4.512   | Power-law index above break mass                          |
+           +------------+---------+-----------------------------------------------------------+
+           | mmax       | 300.0   | Maximum primary mass (solar masses)                       |
+           +------------+---------+-----------------------------------------------------------+
+
+       **normalization_size** : ``int``
+           Number of grid points for CDF computation.
+           default: 500
+
+   :Returns:
+
+       **samples** : ``numpy.ndarray``
+           Primary masses (solar masses) randomly sampled from the distribution.
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   >>> from ler.gw_source_population.broken_powerlaw_plus_2peaks import broken_powerlaw_plus_2peaks_rvs
+   >>> m1_samples = broken_powerlaw_plus_2peaks_rvs(size=1000)
+   >>> print(m1_samples.shape)
+   (1000,)
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: mass_ratio_powerlaw_with_smoothing_scalar(q, m1, beta=1.171, mlow_2=3.551, delta_m_2=4.91, normalization_size=500)
+
+   
+   Compute normalized conditional mass ratio density for a scalar secondary mass.
+
+   Evaluates the normalized PDF $p(q | m_1, Λ)$ for a single primary mass value,
+   integrating the unnormalized density to determine the normalization constant.
+
+   :Parameters:
+
+       **q** : ``float``
+           Mass ratio ($m_2 / m_1$), bounded 0 < q ≤ 1.
+
+       **m1** : ``float``
+           Primary mass (solar masses).
+
+       **beta** : ``float``
+           Power-law index for mass ratio distribution.
+           default: 1.171
+
+       **mlow_2** : ``float``
+           Minimum secondary mass (solar masses).
+           default: 3.551
+
+       **delta_m_2** : ``float``
+           Taper width for secondary mass (solar masses).
+           default: 4.910
+
+       **normalization_size** : ``int``
+           Number of grid points for numerical integration.
+           default: 500
+
+   :Returns:
+
+       **pdf_value** : ``float``
+           Normalized probability density at the given (q, m1) pair.
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: mass_ratio_powerlaw_with_smoothing_pdf(q, m1, beta=1.171, mlow_2=3.551, delta_m_2=4.91, normalization_size=500)
+
+   
+   Evaluate fully normalized conditional mass ratio density (equation B22).
+
+   Computes the normalized conditional PDF $p(q | m_1, Λ)$ for mass ratio distributions.
+   Supports both scalar and array inputs through element-wise evaluation.
+
+   :Parameters:
+
+       **q** : ``numpy.ndarray``
+           Mass ratios ($m_2 / m_1$), bounded 0 < q ≤ 1. Can be scalar or array.
+
+       **m1** : ``numpy.ndarray``
+           Primary masses (solar masses). Must have same shape as q.
+
+       **beta** : ``float``
+           Power-law index for mass ratio distribution.
+           default: 1.171
+
+       **mlow_2** : ``float``
+           Minimum secondary mass (solar masses).
+           default: 3.551
+
+       **delta_m_2** : ``float``
+           Taper width for secondary mass (solar masses).
+           default: 4.910
+
+       **normalization_size** : ``int``
+           Number of grid points for numerical integration.
+           default: 500
+
+   :Returns:
+
+       **pdf** : ``numpy.ndarray`` or ``float``
+           Normalized probability density at each (q, m1) pair. Returns scalar if input is scalar.
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   >>> from ler.gw_source_population.broken_powerlaw_plus_2peaks import mass_ratio_powerlaw_with_smoothing_pdf
+   >>> import numpy as np
+   >>> q = np.array([0.5, 0.7, 0.9])
+   >>> m1 = np.array([20.0, 30.0, 40.0])
+   >>> pdf_values = mass_ratio_powerlaw_with_smoothing_pdf(q, m1)
+   >>> print(pdf_values)  # doctest: +SKIP
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: mass_ratio_powerlaw_with_smoothing_cdf(size, m1, beta=1.171, mlow_2=3.551, delta_m_2=4.91)
+
+   
+   Compute cumulative distribution function for mass ratio distribution.
+
+   Evaluates the CDF $P(q ≤ q_0 | m_1, Λ)$ using spline-based numerical integration,
+   enabling efficient inverse transform sampling for a single primary mass value.
+
+   :Parameters:
+
+       **size** : ``int``
+           Number of grid points for CDF computation.
+
+       **m1** : ``float``
+           Primary mass (solar masses).
+
+       **beta** : ``float``
+           Power-law index for mass ratio distribution.
+           default: 1.171
+
+       **mlow_2** : ``float``
+           Minimum secondary mass (solar masses).
+           default: 3.551
+
+       **delta_m_2** : ``float``
+           Taper width for secondary mass (solar masses).
+           default: 4.910
+
+   :Returns:
+
+       **cdf_values** : ``numpy.ndarray``
+           Normalized CDF values at each grid point.
+
+       **q_grid** : ``numpy.ndarray``
+           Mass ratio grid points (0 < q ≤ 1).
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   >>> from ler.gw_source_population.broken_powerlaw_plus_2peaks import mass_ratio_powerlaw_with_smoothing_cdf
+   >>> cdf_values, q_grid = mass_ratio_powerlaw_with_smoothing_cdf(size=100, m1=30.0, beta=1.171, mlow_2=3.551, delta_m_2=4.910)
+   >>> print(cdf_values[-1])  # CDF should approach 1
+   1.0
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: mass_ratio_powerlaw_with_smoothing_rvs(m1, beta=1.171, mlow_2=3.551, delta_m_2=4.91, normalization_size=500)
+
+   
+   Generate random samples from the mass ratio distribution.
+
+   Draws random mass ratios using inverse transform sampling applied to the CDF
+   for each primary mass value independently. This function uses parallel processing
+   to accelerate sampling for large arrays.
+
+   :Parameters:
+
+       **m1** : ``numpy.ndarray``
+           Primary masses (solar masses).
+
+       **beta** : ``float``
+           Power-law index for mass ratio distribution.
+           default: 1.171
+
+       **mlow_2** : ``float``
+           Minimum secondary mass (solar masses).
+           default: 3.551
+
+       **delta_m_2** : ``float``
+           Taper width for secondary mass (solar masses).
+           default: 4.910
+
+       **normalization_size** : ``int``
+           Number of grid points for CDF computation.
+           default: 500
+
+   :Returns:
+
+       **q_samples** : ``numpy.ndarray``
+           Mass ratio samples ($m_2 / m_1$), bounded 0 < q ≤ 1.
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Examples
+
+   >>> from ler.gw_source_population.broken_powerlaw_plus_2peaks import mass_ratio_powerlaw_with_smoothing_rvs
+   >>> import numpy as np
+   >>> m1 = np.array([20.0, 30.0, 40.0])
+   >>> q_samples = mass_ratio_powerlaw_with_smoothing_rvs(m1)
+   >>> print(q_samples.shape)
+   (3,)
+
+
+
+   ..
+       !! processed by numpydoc !!
+

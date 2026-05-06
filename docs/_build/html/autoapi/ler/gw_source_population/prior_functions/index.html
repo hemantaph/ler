@@ -6,13 +6,13 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.gw_source_population.prior_functions &mdash; ler 0.5.9 documentation</title>
+  <title>ler.gw_source_population.prior_functions &mdash; ler 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=11132fbc" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=551ad726" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=88a06014" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
@@ -20,20 +20,22 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=9a3cda14"></script>
+      <script src="../../../../_static/documentation_options.js?v=8fa8b3e9"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../../../_static/copybutton.js?v=f281be69"></script>
       <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "processEnvironments": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore", "processHtmlClass": "tex2jax_process"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       <script src="../../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
       <script src="../../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="next" title="ler.gw_source_population.sfr_with_time_delay" href="../sfr_with_time_delay/index.html" />
-    <link rel="prev" title="ler.gw_source_population.cbc_source_redshift_distribution" href="../cbc_source_redshift_distribution/index.html" /> 
+    <link rel="prev" title="ler.gw_source_population.powerlaw_plus_peak" href="../powerlaw_plus_peak/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -68,8 +70,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../broken_powerlaw_plus_2peaks/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.broken_powerlaw_plus_2peaks</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cbc_source_parameter_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_parameter_distribution</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cbc_source_redshift_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_redshift_distribution</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../powerlaw_plus_peak/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.powerlaw_plus_peak</span></code></a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.prior_functions</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
 </ul>
@@ -152,16 +156,16 @@ computation of merger rate densities, star formation rates, and mass distributio
 <td><p>Compute the merger rate density for Primordial BBH.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.sfr_madau_fragos2017_with_bbh_td" title="ler.gw_source_population.prior_functions.sfr_madau_fragos2017_with_bbh_td"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sfr_madau_fragos2017_with_bbh_td</span></code></a>(zs[, R0])</p></td>
-<td><p>Compute the merger rate density for BBH. This is computed from star formation rate, Madau &amp; Fragos (2017), with an additional time delay. This function is relies on pre-generated data points.</p></td>
+<td><p>Compute the merger rate density for BBH. This is computed from star formation rate, Madau &amp; Fragos (2017), with an additional time delay. This function relies on pre-generated data points.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.sfr_madau_dickinson2014_with_bbh_td" title="ler.gw_source_population.prior_functions.sfr_madau_dickinson2014_with_bbh_td"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sfr_madau_dickinson2014_with_bbh_td</span></code></a>(zs[, R0])</p></td>
-<td><p>Compute the merger rate density for BBH. This is computed from star formation rate, Madau &amp; Dickinson (2014), with an additional time delay. This function is relies on pre-generated data points.</p></td>
+<td><p>Compute the merger rate density for BBH. This is computed from star formation rate, Madau &amp; Dickinson (2014), with an additional time delay. This function relies on pre-generated data points.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.sfr_madau_fragos2017_with_bns_td" title="ler.gw_source_population.prior_functions.sfr_madau_fragos2017_with_bns_td"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sfr_madau_fragos2017_with_bns_td</span></code></a>(zs[, R0])</p></td>
-<td><p>Compute the merger rate density for BNS. This is computed from star formation rate, Madau &amp; Fragos (2017), with an additional time delay. This function is relies on pre-generated data points.</p></td>
+<td><p>Compute the merger rate density for BNS. This is computed from star formation rate, Madau &amp; Fragos (2017), with an additional time delay. This function relies on pre-generated data points.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.sfr_madau_dickinson2014_with_bns_td" title="ler.gw_source_population.prior_functions.sfr_madau_dickinson2014_with_bns_td"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sfr_madau_dickinson2014_with_bns_td</span></code></a>(zs[, R0])</p></td>
-<td><p>Compute the merger rate density for BNS. This is computed from star formation rate, Madau &amp; Dickinson (2014), with an additional time delay. This function is relies on pre-generated data points.</p></td>
+<td><p>Compute the merger rate density for BNS. This is computed from star formation rate, Madau &amp; Dickinson (2014), with an additional time delay. This function relies on pre-generated data points.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.sfr_madau_fragos2017" title="ler.gw_source_population.prior_functions.sfr_madau_fragos2017"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sfr_madau_fragos2017</span></code></a>(zs[, a, b, c, d])</p></td>
 <td><p>Compute star formation rate using Madau &amp; Fragos (2017) model.</p></td>
@@ -169,23 +173,50 @@ computation of merger rate densities, star formation rates, and mass distributio
 <tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.sfr_madau_dickinson2014" title="ler.gw_source_population.prior_functions.sfr_madau_dickinson2014"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sfr_madau_dickinson2014</span></code></a>(zs[, a, b, c, d])</p></td>
 <td><p>Compute star formation rate using Madau &amp; Dickinson (2014) model.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.binary_masses_BBH_popIII_lognormal_rvs" title="ler.gw_source_population.prior_functions.binary_masses_BBH_popIII_lognormal_rvs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">binary_masses_BBH_popIII_lognormal_rvs</span></code></a>(size[, m_min, ...])</p></td>
-<td><p>Sample from a lognormal distribution in 2D mass space.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.ng2022_lognormal_joint_pdf" title="ler.gw_source_population.prior_functions.ng2022_lognormal_joint_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ng2022_lognormal_joint_pdf</span></code></a>(m1, m2, Mc, sigma)</p></td>
+<td><p>Compute joint probability density for lognormal 2D mass distribution.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.binary_masses_BBH_primordial_lognormal_rvs" title="ler.gw_source_population.prior_functions.binary_masses_BBH_primordial_lognormal_rvs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">binary_masses_BBH_primordial_lognormal_rvs</span></code></a>(size[, ...])</p></td>
-<td><p>Sample from a lognormal distribution in 2D mass space.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.binary_masses_BBH_popIII_lognormal_rvs" title="ler.gw_source_population.prior_functions.binary_masses_BBH_popIII_lognormal_rvs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">binary_masses_BBH_popIII_lognormal_rvs</span></code></a>(size[, m_min, ...])</p></td>
+<td><p>Generate random samples of binary masses for PopIII BBH (lognormal model).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.binary_masses_BNS_bimodal_rvs" title="ler.gw_source_population.prior_functions.binary_masses_BNS_bimodal_rvs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">binary_masses_BNS_bimodal_rvs</span></code></a>(size[, w, muL, sigmaL, ...])</p></td>
-<td><p>Sample BNS masses from bimodal Gaussian distribution.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.binary_masses_BBH_primordial_lognormal_rvs" title="ler.gw_source_population.prior_functions.binary_masses_BBH_primordial_lognormal_rvs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">binary_masses_BBH_primordial_lognormal_rvs</span></code></a>(size[, ...])</p></td>
+<td><p>Generate random samples of binary masses for Primordial BBH (lognormal model).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.binary_masses_NSBH_broken_powerlaw_rvs" title="ler.gw_source_population.prior_functions.binary_masses_NSBH_broken_powerlaw_rvs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">binary_masses_NSBH_broken_powerlaw_rvs</span></code></a>([size, mminbh, ...])</p></td>
-<td><p>Generate NSBH mass samples from broken power-law (BH) and power-law (NS).</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.bimodal_pdf" title="ler.gw_source_population.prior_functions.bimodal_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bimodal_pdf</span></code></a>(m[, w, muL, sigmaL, muR, sigmaR, mmin, mmax])</p></td>
+<td><p>Evaluate fully normalized bimodal Gaussian PDF for BNS mass distribution.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.binary_masses_BBH_powerlaw_gaussian_rvs" title="ler.gw_source_population.prior_functions.binary_masses_BBH_powerlaw_gaussian_rvs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">binary_masses_BBH_powerlaw_gaussian_rvs</span></code></a>(size, mminbh, ...)</p></td>
-<td><p>Generate BBH mass samples from power-law + Gaussian model with mass ratio.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.bimodal_cdf" title="ler.gw_source_population.prior_functions.bimodal_cdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bimodal_cdf</span></code></a>(size[, w, muL, sigmaL, muR, sigmaR, mmin, ...])</p></td>
+<td><p>Compute cumulative distribution function for BNS bimodal mass distribution.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.available_prior_list" title="ler.gw_source_population.prior_functions.available_prior_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">available_prior_list</span></code></a>()</p></td>
-<td><p>Returns a list of available priors.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.binary_masses_BNS_bimodal_rvs" title="ler.gw_source_population.prior_functions.binary_masses_BNS_bimodal_rvs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">binary_masses_BNS_bimodal_rvs</span></code></a>(size[, w, muL, sigmaL, ...])</p></td>
+<td><p>Generate random samples of binary masses for BNS (bimodal Gaussian model).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.broken_powerlaw_pdf" title="ler.gw_source_population.prior_functions.broken_powerlaw_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">broken_powerlaw_pdf</span></code></a>(m[, mminbh, mmaxbh, alpha_1, ...])</p></td>
+<td><p>Compute normalized PDF for broken power-law distribution.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.gaussian_plus_isotropic_pdf" title="ler.gw_source_population.prior_functions.gaussian_plus_isotropic_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gaussian_plus_isotropic_pdf</span></code></a>(x[, mu_t, sigma_t, zeta])</p></td>
+<td><p>1D marginal PDF for a single cosine tilt x = cos(theta).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.gaussian_plus_isotropic_joint_pdf" title="ler.gw_source_population.prior_functions.gaussian_plus_isotropic_joint_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gaussian_plus_isotropic_joint_pdf</span></code></a>(x1, x2[, mu_t, ...])</p></td>
+<td><p>2D joint PDF for (x1, x2) = (cos(theta1), cos(theta2)).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.powerlaw_pdf" title="ler.gw_source_population.prior_functions.powerlaw_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">powerlaw_pdf</span></code></a>(x[, alpha, x_min, x_max])</p></td>
+<td><p>Compute normalized power-law distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.powerlaw_rvs" title="ler.gw_source_population.prior_functions.powerlaw_rvs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">powerlaw_rvs</span></code></a>(size, alpha, x_min, x_max)</p></td>
+<td><p>Inverse transform sampling for a power-law distribution.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.truncated_normal_pdf" title="ler.gw_source_population.prior_functions.truncated_normal_pdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">truncated_normal_pdf</span></code></a>(x, mu, sigma, x_min[, x_max])</p></td>
+<td><p>Compute left-truncated or left-and-right-truncated normal probability density function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.truncated_normal_rvs" title="ler.gw_source_population.prior_functions.truncated_normal_rvs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">truncated_normal_rvs</span></code></a>(size, mu, sigma, x_min[, x_max])</p></td>
+<td><p>Draw samples from a truncated normal distribution using analytical inverse CDF.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.powerlaw_with_smoothing" title="ler.gw_source_population.prior_functions.powerlaw_with_smoothing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">powerlaw_with_smoothing</span></code></a>(q, m, mmin, beta, delta_m)</p></td>
+<td><p>Compute power-law distribution with low-mass smoothing.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.prior_functions.create_gw_parameters_sampler" title="ler.gw_source_population.prior_functions.create_gw_parameters_sampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_gw_parameters_sampler</span></code></a>(zs_rvs, m1_rvs, q_rvs, ...)</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -193,8 +224,9 @@ computation of merger rate densities, star formation rates, and mass distributio
 <dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.merger_rate_density_bbh_oguri2018_function">
 <span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">merger_rate_density_bbh_oguri2018_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">19</span> <span class="pre">*</span> <span class="pre">1e-09</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b3</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b4</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#merger_rate_density_bbh_oguri2018_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.merger_rate_density_bbh_oguri2018_function" title="Link to this definition"></a></dt>
 <dd><p>Compute the merger rate density for PopI/II BBH.</p>
-<p>Reference: Oguri et al. (2018). The output is in detector frame and is
-unnormalized.</p>
+<p>Reference: Oguri et al. (2018). The source-frame rate density is</p>
+<div class="math notranslate nohighlight">
+\[R(z) = R_0 \frac{(b_4 + 1) e^{b_2 z}}{b_4 + e^{b_3 z}}.\]</div>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -222,24 +254,27 @@ unnormalized.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">merger_rate_density_bbh_oguri2018</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_density</span> <span class="o">=</span> <span class="n">merger_rate_density_bbh_oguri2018</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">]))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">merger_rate_density_bbh_oguri2018_function</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_density</span> <span class="o">=</span> <span class="n">merger_rate_density_bbh_oguri2018_function</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">]))</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.merger_rate_density_bbh_popIII_ken2022_function">
-<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">merger_rate_density_bbh_popIII_ken2022_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">19.2</span> <span class="pre">*</span> <span class="pre">1e-09</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aIII</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.66</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bIII</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zIII</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">11.6</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#merger_rate_density_bbh_popIII_ken2022_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.merger_rate_density_bbh_popIII_ken2022_function" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">merger_rate_density_bbh_popIII_ken2022_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">19.2</span> <span class="pre">*</span> <span class="pre">1e-09</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aIII</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.66</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bIII</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zIII</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">11.6</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#merger_rate_density_bbh_popIII_ken2022_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.merger_rate_density_bbh_popIII_ken2022_function" title="Link to this definition"></a></dt>
 <dd><p>Compute the unnormalized merger rate density for PopIII BBH.</p>
-<p>Reference: Ng et al. (2022). The output is in detector frame and is
-unnormalized.</p>
+<p>Reference: Ng et al. (2022). The model is</p>
+<div class="math notranslate nohighlight">
+\[R(z) = R_0 \frac{e^{a_{\rm III}(z-z_{\rm III})}}
+{b_{\rm III} + a_{\rm III} e^{(a_{\rm III}+b_{\rm III})(z-z_{\rm III})}}.\]</div>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>zs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Source redshifts.</p>
 </dd>
-<dt><strong>n0</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Normalization constant.</p>
+<dt><strong>R0</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Normalization constant.</p>
 <p>default: 19.2e-9</p>
 </dd>
 <dt><strong>aIII</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Fitting parameter.</p>
@@ -261,8 +296,9 @@ unnormalized.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">merger_rate_density_bbh_popIII_ken2022</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_density</span> <span class="o">=</span> <span class="n">merger_rate_density_bbh_popIII_ken2022</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">]))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">merger_rate_density_bbh_popIII_ken2022_function</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_density</span> <span class="o">=</span> <span class="n">merger_rate_density_bbh_popIII_ken2022_function</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">]))</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -271,8 +307,12 @@ unnormalized.</p>
 <dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.merger_rate_density_madau_dickinson2014_function">
 <span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">merger_rate_density_madau_dickinson2014_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">19</span> <span class="pre">*</span> <span class="pre">1e-09</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.015</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.6</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#merger_rate_density_madau_dickinson2014_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.merger_rate_density_madau_dickinson2014_function" title="Link to this definition"></a></dt>
 <dd><p>Compute the merger rate density for BBH using Madau &amp; Dickinson (2014) model.</p>
-<p>density(zs) ∝ (1 + zs) ** b / (1 + ((1 + zs) / c) ** d)</p>
-<p>Reference: Eqn. 15 of <a class="reference external" href="https://arxiv.org/pdf/1403.0007">https://arxiv.org/pdf/1403.0007</a></p>
+<p>The shape follows</p>
+<div class="math notranslate nohighlight">
+\[\psi(z) = a \frac{(1+z)^b}{1 + \left((1+z)/c\right)^d},
+\qquad
+R(z) = R_0 \frac{\psi(z)}{\psi(0)}.\]</div>
+<p>Reference: Eq. 15 of <a class="reference external" href="https://arxiv.org/pdf/1403.0007">https://arxiv.org/pdf/1403.0007</a></p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -303,8 +343,9 @@ unnormalized.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">merger_rate_density_madau_dickinson2014</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_density</span> <span class="o">=</span> <span class="n">merger_rate_density_madau_dickinson2014</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">]))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">merger_rate_density_madau_dickinson2014_function</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_density</span> <span class="o">=</span> <span class="n">merger_rate_density_madau_dickinson2014_function</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">]))</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -316,7 +357,11 @@ unnormalized.</p>
 <p>This model uses a Madau-Dickinson-like functional form to fit the
 merger rate density of field BHs, accounting for time delays and
 metallicity effects. Coefficients from Madau &amp; Dickinson (2014) are translated as: B-&gt; alpha_F, D-&gt; beta_F, C-&gt; c_F.</p>
-<p>density(zs) ∝ (1 + zs) ** alpha_F / (1 + ((1 + zs) / c_F) ** beta_F)</p>
+<div class="math notranslate nohighlight">
+\[\psi_F(z) = \frac{(1+z)^{\alpha_F}}
+{1 + \left((1+z)/c_F\right)^{\beta_F}},
+\qquad
+R(z) = R_0 \frac{\psi_F(z)}{\psi_F(0)}.\]</div>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -344,18 +389,20 @@ metallicity effects. Coefficients from Madau &amp; Dickinson (2014) are translat
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">merger_rate_density_madau_dickinson_belczynski_ng</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_density</span> <span class="o">=</span> <span class="n">merger_rate_density_madau_dickinson_belczynski_ng</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">]))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">merger_rate_density_madau_dickinson_belczynski_ng_function</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_density</span> <span class="o">=</span> <span class="n">merger_rate_density_madau_dickinson_belczynski_ng_function</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">]))</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.merger_rate_density_bbh_primordial_ken2022_function">
-<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">merger_rate_density_bbh_primordial_ken2022_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.044</span> <span class="pre">*</span> <span class="pre">1e-09</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">13.786885302009708</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#merger_rate_density_bbh_primordial_ken2022_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.merger_rate_density_bbh_primordial_ken2022_function" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">merger_rate_density_bbh_primordial_ken2022_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.044</span> <span class="pre">*</span> <span class="pre">1e-09</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">13.786885302009708</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#merger_rate_density_bbh_primordial_ken2022_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.merger_rate_density_bbh_primordial_ken2022_function" title="Link to this definition"></a></dt>
 <dd><p>Compute the merger rate density for Primordial BBH.</p>
-<p>Reference: Ng et al. (2022). The output is in detector frame and is
-unnormalized.</p>
+<p>Reference: Ng et al. (2022). The rate is parameterized by cosmic age:</p>
+<div class="math notranslate nohighlight">
+\[R(z) = R_0 \left(\frac{t(z)}{t_0}\right)^{-34/37}.\]</div>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -364,7 +411,7 @@ unnormalized.</p>
 <dt><strong>cosmology</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">astropy.cosmology</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Cosmology object for age calculations.</p>
 <p>default: LambdaCDM(H0=70, Om0=0.3, Ode0=0.7, Tcmb0=0.0, Neff=3.04, m_nu=None, Ob0=0.0)</p>
 </dd>
-<dt><strong>n0</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Normalization constant.</p>
+<dt><strong>R0</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Normalization constant.</p>
 <p>default: 0.044e-9</p>
 </dd>
 <dt><strong>t0</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Present age of the Universe (Gyr).</p>
@@ -380,8 +427,9 @@ unnormalized.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">merger_rate_density_bbh_primordial_ken2022</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_density</span> <span class="o">=</span> <span class="n">merger_rate_density_bbh_primordial_ken2022</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">]))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">merger_rate_density_bbh_primordial_ken2022_function</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rate_density</span> <span class="o">=</span> <span class="n">merger_rate_density_bbh_primordial_ken2022_function</span><span class="p">(</span><span class="n">zs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">]))</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -389,7 +437,7 @@ unnormalized.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.sfr_madau_fragos2017_with_bbh_td">
 <span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">sfr_madau_fragos2017_with_bbh_td</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">19</span> <span class="pre">*</span> <span class="pre">1e-09</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#sfr_madau_fragos2017_with_bbh_td"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.sfr_madau_fragos2017_with_bbh_td" title="Link to this definition"></a></dt>
-<dd><p>Compute the merger rate density for BBH. This is computed from star formation rate, Madau &amp; Fragos (2017), with an additional time delay. This function is relies on pre-generated data points.</p>
+<dd><p>Compute the merger rate density for BBH. This is computed from star formation rate, Madau &amp; Fragos (2017), with an additional time delay. This function relies on pre-generated data points.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -412,7 +460,7 @@ unnormalized.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.sfr_madau_dickinson2014_with_bbh_td">
 <span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">sfr_madau_dickinson2014_with_bbh_td</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">19</span> <span class="pre">*</span> <span class="pre">1e-09</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#sfr_madau_dickinson2014_with_bbh_td"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.sfr_madau_dickinson2014_with_bbh_td" title="Link to this definition"></a></dt>
-<dd><p>Compute the merger rate density for BBH. This is computed from star formation rate, Madau &amp; Dickinson (2014), with an additional time delay. This function is relies on pre-generated data points.</p>
+<dd><p>Compute the merger rate density for BBH. This is computed from star formation rate, Madau &amp; Dickinson (2014), with an additional time delay. This function relies on pre-generated data points.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -435,7 +483,7 @@ unnormalized.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.sfr_madau_fragos2017_with_bns_td">
 <span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">sfr_madau_fragos2017_with_bns_td</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">89</span> <span class="pre">*</span> <span class="pre">1e-09</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#sfr_madau_fragos2017_with_bns_td"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.sfr_madau_fragos2017_with_bns_td" title="Link to this definition"></a></dt>
-<dd><p>Compute the merger rate density for BNS. This is computed from star formation rate, Madau &amp; Fragos (2017), with an additional time delay. This function is relies on pre-generated data points.</p>
+<dd><p>Compute the merger rate density for BNS. This is computed from star formation rate, Madau &amp; Fragos (2017), with an additional time delay. This function relies on pre-generated data points.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -458,7 +506,7 @@ unnormalized.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.sfr_madau_dickinson2014_with_bns_td">
 <span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">sfr_madau_dickinson2014_with_bns_td</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">89</span> <span class="pre">*</span> <span class="pre">1e-09</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#sfr_madau_dickinson2014_with_bns_td"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.sfr_madau_dickinson2014_with_bns_td" title="Link to this definition"></a></dt>
-<dd><p>Compute the merger rate density for BNS. This is computed from star formation rate, Madau &amp; Dickinson (2014), with an additional time delay. This function is relies on pre-generated data points.</p>
+<dd><p>Compute the merger rate density for BNS. This is computed from star formation rate, Madau &amp; Dickinson (2014), with an additional time delay. This function relies on pre-generated data points.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -515,7 +563,7 @@ unnormalized.</p>
 <dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.sfr_madau_dickinson2014">
 <span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">sfr_madau_dickinson2014</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.015</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.6</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#sfr_madau_dickinson2014"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.sfr_madau_dickinson2014" title="Link to this definition"></a></dt>
 <dd><p>Compute star formation rate using Madau &amp; Dickinson (2014) model.</p>
-<p>Reference: Eqn. 15 of <a class="reference external" href="https://arxiv.org/pdf/1403.0007">https://arxiv.org/pdf/1403.0007</a></p>
+<p>Reference: Eq. 15 of <a class="reference external" href="https://arxiv.org/pdf/1403.0007">https://arxiv.org/pdf/1403.0007</a></p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -550,45 +598,73 @@ unnormalized.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.binary_masses_BBH_popIII_lognormal_rvs">
-<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">binary_masses_BBH_popIII_lognormal_rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#binary_masses_BBH_popIII_lognormal_rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.binary_masses_BBH_popIII_lognormal_rvs" title="Link to this definition"></a></dt>
-<dd><p>Sample from a lognormal distribution in 2D mass space.</p>
-<p>Reference: Ng et al. (2022). This is a helper function for PopIII BBH
-and primordial BBH merger rate density distribution functions.</p>
+<dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.ng2022_lognormal_joint_pdf">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">ng2022_lognormal_joint_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#ng2022_lognormal_joint_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.ng2022_lognormal_joint_pdf" title="Link to this definition"></a></dt>
+<dd><p>Compute joint probability density for lognormal 2D mass distribution.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
+<dt><strong>m1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Primary masses (solar masses).</p>
 </dd>
-<dt><strong>m_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum mass (Msun).</p>
-<p>default: 1.0</p>
+<dt><strong>m2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Secondary masses (solar masses).</p>
 </dd>
-<dt><strong>m_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum mass (Msun).</p>
-<p>default: 100.0</p>
+<dt><strong>Mc</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Characteristic mass scale (solar masses).</p>
 </dd>
-<dt><strong>Mc</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Characteristic mass scale (Msun).</p>
-<p>default: 20.0</p>
-</dd>
-<dt><strong>sigma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Width of the distribution.</p>
-<p>default: 0.3</p>
-</dd>
-<dt><strong>chunk_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples per rejection sampling chunk.</p>
-<p>default: 10000</p>
+<dt><strong>sigma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Width parameter of the lognormal distribution.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>m1_sample</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Primary mass samples (Msun).</p>
+<dt><strong>pdf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Joint probability density values.</p>
 </dd>
-<dt><strong>m2_sample</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Secondary mass samples (Msun).</p>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.binary_masses_BBH_popIII_lognormal_rvs">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">binary_masses_BBH_popIII_lognormal_rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#binary_masses_BBH_popIII_lognormal_rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.binary_masses_BBH_popIII_lognormal_rvs" title="Link to this definition"></a></dt>
+<dd><p>Generate random samples of binary masses for PopIII BBH (lognormal model).</p>
+<p>Draws samples from a 2D lognormal distribution in mass space using rejection
+sampling. Reference: Ng et al. (2022).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of binary systems to sample.</p>
+</dd>
+<dt><strong>m_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum mass (solar masses).
+default: 1.0</p>
+</dd>
+<dt><strong>m_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum mass (solar masses).
+default: 100.0</p>
+</dd>
+<dt><strong>Mc</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Characteristic mass scale (solar masses).
+default: 20.0</p>
+</dd>
+<dt><strong>sigma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Width parameter of the lognormal distribution.
+default: 0.3</p>
+</dd>
+<dt><strong>chunk_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples per rejection sampling chunk.
+default: 10000</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>m1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Primary mass samples (solar masses).</p>
+</dd>
+<dt><strong>m2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Secondary mass samples (solar masses).</p>
 </dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">binary_masses_BBH_popIII_lognormal</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span> <span class="o">=</span> <span class="n">binary_masses_BBH_popIII_lognormal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population.prior_functions</span> <span class="kn">import</span> <span class="n">binary_masses_BBH_popIII_lognormal_rvs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span> <span class="o">=</span> <span class="n">binary_masses_BBH_popIII_lognormal_rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">m1</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">m2</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">(1000,) (1000,)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -596,88 +672,183 @@ and primordial BBH merger rate density distribution functions.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.binary_masses_BBH_primordial_lognormal_rvs">
 <span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">binary_masses_BBH_primordial_lognormal_rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#binary_masses_BBH_primordial_lognormal_rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.binary_masses_BBH_primordial_lognormal_rvs" title="Link to this definition"></a></dt>
-<dd><p>Sample from a lognormal distribution in 2D mass space.</p>
-<p>Based on Eqn. 1 and 4 of Ng et al. 2022 for primordial black holes.</p>
+<dd><p>Generate random samples of binary masses for Primordial BBH (lognormal model).</p>
+<p>Draws samples from a 2D lognormal distribution in mass space using rejection
+sampling. Reference: Ng et al. (2022).</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of binary systems to sample.</p>
 </dd>
-<dt><strong>m_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum mass (Msun).</p>
-<p>default: 1.0</p>
+<dt><strong>m_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum mass (solar masses).
+default: 1.0</p>
 </dd>
-<dt><strong>m_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum mass (Msun).</p>
-<p>default: 100.0</p>
+<dt><strong>m_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum mass (solar masses).
+default: 100.0</p>
 </dd>
-<dt><strong>Mc</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Characteristic mass scale (Msun).</p>
-<p>default: 20.0</p>
+<dt><strong>Mc</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Characteristic mass scale (solar masses).
+default: 20.0</p>
 </dd>
-<dt><strong>sigma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Width of the distribution.</p>
-<p>default: 0.3</p>
+<dt><strong>sigma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Width parameter of the lognormal distribution.
+default: 0.3</p>
 </dd>
-<dt><strong>chunk_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples per rejection sampling chunk.</p>
-<p>default: 10000</p>
+<dt><strong>chunk_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples per rejection sampling chunk.
+default: 10000</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>m1_sample</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Primary mass samples (Msun).</p>
+<dt><strong>m1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Primary mass samples (solar masses).</p>
 </dd>
-<dt><strong>m2_sample</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Secondary mass samples (Msun).</p>
+<dt><strong>m2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Secondary mass samples (solar masses).</p>
 </dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">binary_masses_BBH_primordial_lognormal</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span> <span class="o">=</span> <span class="n">binary_masses_BBH_primordial_lognormal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population.prior_functions</span> <span class="kn">import</span> <span class="n">binary_masses_BBH_primordial_lognormal_rvs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span> <span class="o">=</span> <span class="n">binary_masses_BBH_primordial_lognormal_rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">m1</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">m2</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">(1000,) (1000,)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.bimodal_pdf">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">bimodal_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.643</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">muL</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.352</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaL</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">muR</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.88</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaR</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#bimodal_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.bimodal_pdf" title="Link to this definition"></a></dt>
+<dd><p>Evaluate fully normalized bimodal Gaussian PDF for BNS mass distribution.</p>
+<p>Computes the normalized probability density function combining two truncated
+Gaussian peaks. Reference: Will M. Farr et al. 2020.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>m</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Mass values (solar masses).</p>
+</dd>
+<dt><strong>w</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Weight of the left (low-mass) peak.
+default: 0.643</p>
+</dd>
+<dt><strong>muL</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Mean of the left peak (solar masses).
+default: 1.352</p>
+</dd>
+<dt><strong>sigmaL</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Standard deviation of the left peak (solar masses).
+default: 0.08</p>
+</dd>
+<dt><strong>muR</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Mean of the right peak (solar masses).
+default: 1.88</p>
+</dd>
+<dt><strong>sigmaR</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Standard deviation of the right peak (solar masses).
+default: 0.3</p>
+</dd>
+<dt><strong>mmin</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum mass (solar masses).
+default: 1.0</p>
+</dd>
+<dt><strong>mmax</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum mass (solar masses).
+default: 2.3</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>pdf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Normalized probability density values.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population.prior_functions</span> <span class="kn">import</span> <span class="n">bimodal_pdf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pdf_values</span> <span class="o">=</span> <span class="n">bimodal_pdf</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pdf_values</span><span class="p">)</span>  
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.bimodal_cdf">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">bimodal_cdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.643</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">muL</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.352</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaL</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">muR</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.88</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaR</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#bimodal_cdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.bimodal_cdf" title="Link to this definition"></a></dt>
+<dd><p>Compute cumulative distribution function for BNS bimodal mass distribution.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Resolution of the mass grid.</p>
+</dd>
+<dt><strong>w</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Weight of the left (low-mass) peak.
+default: 0.643</p>
+</dd>
+<dt><strong>muL</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Mean of the left peak (solar masses).
+default: 1.352</p>
+</dd>
+<dt><strong>sigmaL</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Standard deviation of the left peak (solar masses).
+default: 0.08</p>
+</dd>
+<dt><strong>muR</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Mean of the right peak (solar masses).
+default: 1.88</p>
+</dd>
+<dt><strong>sigmaR</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Standard deviation of the right peak (solar masses).
+default: 0.3</p>
+</dd>
+<dt><strong>mmin</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum mass (solar masses).
+default: 1.0</p>
+</dd>
+<dt><strong>mmax</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum mass (solar masses).
+default: 2.3</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>cdf_values</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Cumulative distribution function values.</p>
+</dd>
+<dt><strong>mass_grid</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Mass grid corresponding to CDF values.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.binary_masses_BNS_bimodal_rvs">
 <span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">binary_masses_BNS_bimodal_rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.643</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">muL</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.352</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaL</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">muR</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.88</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaR</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#binary_masses_BNS_bimodal_rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.binary_masses_BNS_bimodal_rvs" title="Link to this definition"></a></dt>
-<dd><p>Sample BNS masses from bimodal Gaussian distribution.</p>
-<p>Based on Will M. Farr et al. 2020 Eqn. 6 for neutron star mass
-distribution combining two Gaussian peaks.</p>
+<dd><p>Generate random samples of binary masses for BNS (bimodal Gaussian model).</p>
+<p>Uses inverse transform sampling to draw samples from a bimodal Gaussian
+distribution of neutron star masses.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of binary systems to sample.</p>
 </dd>
-<dt><strong>w</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Weight of the left (low-mass) peak.</p>
-<p>default: 0.643</p>
+<dt><strong>w</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Weight of the left (low-mass) peak.
+default: 0.643</p>
 </dd>
-<dt><strong>muL</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Mean of the left peak (Msun).</p>
-<p>default: 1.352</p>
+<dt><strong>muL</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Mean of the left peak (solar masses).
+default: 1.352</p>
 </dd>
-<dt><strong>sigmaL</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Standard deviation of the left peak (Msun).</p>
-<p>default: 0.08</p>
+<dt><strong>sigmaL</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Standard deviation of the left peak (solar masses).
+default: 0.08</p>
 </dd>
-<dt><strong>muR</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Mean of the right peak (Msun).</p>
-<p>default: 1.88</p>
+<dt><strong>muR</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Mean of the right peak (solar masses).
+default: 1.88</p>
 </dd>
-<dt><strong>sigmaR</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Standard deviation of the right peak (Msun).</p>
-<p>default: 0.3</p>
+<dt><strong>sigmaR</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Standard deviation of the right peak (solar masses).
+default: 0.3</p>
 </dd>
-<dt><strong>mmin</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum mass (Msun).</p>
-<p>default: 1.0</p>
+<dt><strong>mmin</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum mass (solar masses).
+default: 1.0</p>
 </dd>
-<dt><strong>mmax</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum mass (Msun).</p>
-<p>default: 2.3</p>
+<dt><strong>mmax</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum mass (solar masses).
+default: 2.3</p>
 </dd>
-<dt><strong>resolution</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of points to use for the CDF.</p>
-<p>default: 500</p>
+<dt><strong>resolution</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Resolution of the mass grid for CDF computation.
+default: 500</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>m1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Primary mass samples (Msun).</p>
-</dd>
-<dt><strong>m2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Secondary mass samples (Msun).</p>
+<dt><strong>mass_samples</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of mass samples (solar masses).</p>
 </dd>
 </dl>
 </dd>
@@ -685,52 +856,31 @@ distribution combining two Gaussian peaks.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.binary_masses_NSBH_broken_powerlaw_rvs">
-<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">binary_masses_NSBH_broken_powerlaw_rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mminbh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">26.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmaxbh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">125.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6.75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mminns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmaxns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalization_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#binary_masses_NSBH_broken_powerlaw_rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.binary_masses_NSBH_broken_powerlaw_rvs" title="Link to this definition"></a></dt>
-<dd><p>Generate NSBH mass samples from broken power-law (BH) and power-law (NS).</p>
+<dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.broken_powerlaw_pdf">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">broken_powerlaw_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mminbh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">26.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmaxbh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">125.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6.75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#broken_powerlaw_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.broken_powerlaw_pdf" title="Link to this definition"></a></dt>
+<dd><p>Compute normalized PDF for broken power-law distribution.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
-<p>default: 1000</p>
+<dt><strong>m</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Mass values.</p>
 </dd>
-<dt><strong>mminbh</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum BH mass (Msun).</p>
-<p>default: 26.0</p>
+<dt><strong>mminbh</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum BH mass.</p>
 </dd>
-<dt><strong>mmaxbh</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum BH mass (Msun).</p>
-<p>default: 125.0</p>
+<dt><strong>mmaxbh</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum BH mass.</p>
 </dd>
-<dt><strong>alpha_1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>BH power-law index below break.</p>
-<p>default: 6.75</p>
+<dt><strong>alpha_1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Power-law index below break.</p>
 </dd>
-<dt><strong>alpha_2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>BH power-law index above break.</p>
-<p>default: 0.0</p>
+<dt><strong>alpha_2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Power-law index above break.</p>
 </dd>
-<dt><strong>b</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Break location parameter (0-1).</p>
-<p>default: 0.5</p>
+<dt><strong>b</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Break location parameter.</p>
 </dd>
-<dt><strong>delta_m</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Smoothing width (Msun).</p>
-<p>default: 5.0</p>
-</dd>
-<dt><strong>mminns</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum NS mass (Msun).</p>
-<p>default: 1.0</p>
-</dd>
-<dt><strong>mmaxns</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum NS mass (Msun).</p>
-<p>default: 3.0</p>
-</dd>
-<dt><strong>alphans</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>NS power-law index.</p>
-<p>default: 0.0</p>
-</dd>
-<dt><strong>normalization_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Grid size for CDF computation.</p>
-<p>default: 1000</p>
+<dt><strong>delta_m</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Smoothing width.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>m1_samples</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>BH mass samples (Msun).</p>
-</dd>
-<dt><strong>m2_samples</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>NS mass samples (Msun).</p>
+<dt><strong>pdf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Normalized PDF values.</p>
 </dd>
 </dl>
 </dd>
@@ -738,40 +888,45 @@ distribution combining two Gaussian peaks.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.binary_masses_BBH_powerlaw_gaussian_rvs">
-<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">binary_masses_BBH_powerlaw_gaussian_rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mminbh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmaxbh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_peak</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalization_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#binary_masses_BBH_powerlaw_gaussian_rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.binary_masses_BBH_powerlaw_gaussian_rvs" title="Link to this definition"></a></dt>
-<dd><p>Generate BBH mass samples from power-law + Gaussian model with mass ratio.</p>
+<dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.gaussian_plus_isotropic_pdf">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">gaussian_plus_isotropic_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.426</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.222</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.652</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#gaussian_plus_isotropic_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.gaussian_plus_isotropic_pdf" title="Link to this definition"></a></dt>
+<dd><p>1D marginal PDF for a single cosine tilt x = cos(theta).</p>
+<p>p(x) = zeta * TruncNorm[-1,1](x | mu_t, sigma_t) + (1-zeta)/2</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.gaussian_plus_isotropic_joint_pdf">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">gaussian_plus_isotropic_joint_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.426</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.222</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.652</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#gaussian_plus_isotropic_joint_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.gaussian_plus_isotropic_joint_pdf" title="Link to this definition"></a></dt>
+<dd><p>2D joint PDF for (x1, x2) = (cos(theta1), cos(theta2)).</p>
+<dl class="simple">
+<dt>p(x1, x2) =</dt><dd><p>zeta * TN(x1) * TN(x2)
++ (1-zeta) / 4</p>
+</dd>
+</dl>
+<p>on [-1,1]^2.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.powerlaw_pdf">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">powerlaw_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-7.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#powerlaw_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.powerlaw_pdf" title="Link to this definition"></a></dt>
+<dd><p>Compute normalized power-law distribution.</p>
+<p>p(x) is proportional to <code class="docutils literal notranslate"><span class="pre">x**(-alpha)</span></code> for <code class="docutils literal notranslate"><span class="pre">x</span></code> in <code class="docutils literal notranslate"><span class="pre">[x_min,</span> <span class="pre">x_max]</span></code>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
+<dt><strong>x</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Input values.</p>
 </dd>
-<dt><strong>mminbh</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum BH mass (Msun).</p>
+<dt><strong>alpha</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Power-law spectral index.</p>
 </dd>
-<dt><strong>mmaxbh</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum BH mass (Msun).</p>
+<dt><strong>x_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum value.</p>
 </dd>
-<dt><strong>alpha</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Power-law spectral index for m1.</p>
-</dd>
-<dt><strong>mu_g</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Mean of the Gaussian peak (Msun).</p>
-</dd>
-<dt><strong>sigma_g</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Standard deviation of the Gaussian peak (Msun).</p>
-</dd>
-<dt><strong>lambda_peak</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Fraction in Gaussian component (0-1).</p>
-</dd>
-<dt><strong>delta_m</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Low-mass smoothing width (Msun).</p>
-</dd>
-<dt><strong>beta</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Power-law index for mass ratio distribution.</p>
-</dd>
-<dt><strong>normalization_size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Grid size for CDF computation.</p>
-<p>default: 1000</p>
+<dt><strong>x_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum value.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>m1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Primary mass samples (Msun).</p>
-</dd>
-<dt><strong>m2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Secondary mass samples (Msun).</p>
+<dt><strong>pdf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Normalized power-law PDF.</p>
 </dd>
 </dl>
 </dd>
@@ -779,10 +934,79 @@ distribution combining two Gaussian peaks.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.available_prior_list">
-<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">available_prior_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#available_prior_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.available_prior_list" title="Link to this definition"></a></dt>
-<dd><p>Returns a list of available priors.</p>
+<dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.powerlaw_rvs">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">powerlaw_rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#powerlaw_rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.powerlaw_rvs" title="Link to this definition"></a></dt>
+<dd><p>Inverse transform sampling for a power-law distribution.</p>
+<p>p(x) ∝ x^{-alpha}, x in [x_min, x_max]</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to generate.</p>
+</dd>
+<dt><strong>alpha</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Power-law index (alpha).</p>
+</dd>
+<dt><strong>x_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum value (lower bound).</p>
+</dd>
+<dt><strong>x_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Maximum value (upper bound).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>x</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of sampled values.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.truncated_normal_pdf">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">truncated_normal_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">np.inf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#truncated_normal_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.truncated_normal_pdf" title="Link to this definition"></a></dt>
+<dd><p>Compute left-truncated or left-and-right-truncated normal probability density function.</p>
+<p>Evaluates the truncated normal distribution $N_{[x_min, x_max]}(x | μ, σ)$,
+which is a Gaussian distribution with support only between a minimum and maximum value.
+If x_max is not provided (or set to np.inf), it defaults to left-only truncation.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>x</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Input values.</p>
+</dd>
+<dt><strong>mu</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Mean of the Gaussian distribution.</p>
+</dd>
+<dt><strong>sigma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Standard deviation of the Gaussian distribution.</p>
+</dd>
+<dt><strong>x_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum value (left truncation point).</p>
+</dd>
+<dt><strong>x_max</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code>, optional</span></dt><dd><p>Maximum value (right truncation point). Default is np.inf (no right truncation).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>pdf</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Probability density values, 0 for $x &lt; x_min$ or $x &gt; x_max$.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.truncated_normal_rvs">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">truncated_normal_rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">np.inf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#truncated_normal_rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.truncated_normal_rvs" title="Link to this definition"></a></dt>
+<dd><p>Draw samples from a truncated normal distribution using analytical inverse CDF.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.powerlaw_with_smoothing">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">powerlaw_with_smoothing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_m</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#powerlaw_with_smoothing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.powerlaw_with_smoothing" title="Link to this definition"></a></dt>
+<dd><p>Compute power-law distribution with low-mass smoothing.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ler.gw_source_population.prior_functions.create_gw_parameters_sampler">
+<span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.prior_functions.</span></span><span class="sig-name descname"><span class="pre">create_gw_parameters_sampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zs_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m1_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m2_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tc_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ra_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta_jn_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_1_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_2_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tilt_1_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tilt_2_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_12_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_jl_rvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_njit_sampler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_precession</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/prior_functions.html#create_gw_parameters_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.prior_functions.create_gw_parameters_sampler" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 </section>
 </section>
@@ -792,7 +1016,7 @@ distribution combining two Gaussian peaks.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../cbc_source_redshift_distribution/index.html" class="btn btn-neutral float-left" title="ler.gw_source_population.cbc_source_redshift_distribution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../powerlaw_plus_peak/index.html" class="btn btn-neutral float-left" title="ler.gw_source_population.powerlaw_plus_peak" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../sfr_with_time_delay/index.html" class="btn btn-neutral float-right" title="ler.gw_source_population.sfr_with_time_delay" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

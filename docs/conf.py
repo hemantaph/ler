@@ -78,6 +78,7 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.ipynb_checkpoints','.ipynb', "venv", ".*", '**.ipynb_checkpoints', '**/*.ipynb_checkpoints', '**/**/*.ipynb_checkpoints', '**/**/**/*.ipynb_checkpoints']
 autodoc_member_order = 'bysource'
 numpydoc_show_class_members = False
+autosectionlabel_prefix_document = True
 
 # -- Napoleon options
 napoleon_include_special_with_doc = True
@@ -169,7 +170,7 @@ autoapi_options = [
 ]
 autoapi_add_toctree_entry = True
 # autoapi_python_use_implicit_namespaces = True
-autoapi_keep_files = True
+autoapi_keep_files = False
 # autoapi_generate_api_docs = False
 
 # -- Napoleon options

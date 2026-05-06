@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.rates.ler &mdash; ler 0.5.9 documentation</title>
+  <title>ler.rates.ler &mdash; ler 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -19,7 +19,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=9a3cda14"></script>
+      <script src="../../../_static/documentation_options.js?v=8fa8b3e9"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -91,6 +91,8 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../ler.html">ler</a></li>
+          <li class="breadcrumb-item"><a href="../rates.html">ler.rates</a></li>
       <li class="breadcrumb-item active">ler.rates.ler</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -159,7 +161,7 @@
 
 
 <div class="viewcode-block" id="LeR">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR">[docs]</a>
 <span class="k">class</span> <span class="nc">LeR</span><span class="p">(</span><span class="n">LensGalaxyParameterDistribution</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class to sample lensed and unlensed GW events and calculate their detection rates.</span>
@@ -189,14 +191,14 @@
 <span class="sd">        Maximum redshift of the source population. \n</span>
 <span class="sd">        default: 10.0</span>
 <span class="sd">    event_type : ``str``</span>
-<span class="sd">        Type of event to generate. source_priors and source_priors_params will be set accordingly. \n</span>
+<span class="sd">        Type of event to generate. gw_priors and gw_priors_params will be set accordingly. \n</span>
 <span class="sd">        Options: \n</span>
 <span class="sd">        - &#39;BBH&#39;: Binary Black Hole \n</span>
 <span class="sd">        - &#39;BNS&#39;: Binary Neutron Star \n</span>
 <span class="sd">        - &#39;NSBH&#39;: Neutron Star-Black Hole \n</span>
 <span class="sd">        default: &#39;BBH&#39;</span>
 <span class="sd">    lens_type : ``str``</span>
-<span class="sd">        Type of lens model to use. lens_functions, lens_functions_params, lens_param_samplers and lens_param_samplers_params will be set accordingly. \n</span>
+<span class="sd">        Type of lens model to use. lens_functions, lens_functions_params, lens_priors and lens_priors_params will be set accordingly. \n</span>
 <span class="sd">        Options: \n</span>
 <span class="sd">        - &#39;epl_shear_galaxy&#39;: Exponential Power Law Shear Galaxy \n</span>
 <span class="sd">        - &#39;sie_galaxy&#39;: Singular Isothermal Ellipsoid Galaxy \n</span>
@@ -255,75 +257,6 @@
 <span class="sd">    &gt;&gt;&gt; lensed_params = ler.lensed_cbc_statistics()</span>
 <span class="sd">    &gt;&gt;&gt; ler.lensed_rate()</span>
 <span class="sd">    &gt;&gt;&gt; ler.rate_ratio()</span>
-
-
-<span class="sd">    Instance Methods</span>
-<span class="sd">    ----------</span>
-<span class="sd">    LeR class has the following methods: \n</span>
-<span class="sd">    +-----------------------------------------------------+------------------------------------------------+</span>
-<span class="sd">    | Method                                              | Description                                    |</span>
-<span class="sd">    +=====================================================+================================================+</span>
-<span class="sd">    | :meth:`~unlensed_cbc_statistics`                    | Generate unlensed GW source parameters         |</span>
-<span class="sd">    +-----------------------------------------------------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~unlensed_sampling_routine`                  | Generate unlensed parameters with batching     |</span>
-<span class="sd">    +-----------------------------------------------------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~unlensed_rate`                              | Calculate the unlensed detection rate          |</span>
-<span class="sd">    +-----------------------------------------------------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~lensed_cbc_statistics`                      | Generate lensed GW source parameters           |</span>
-<span class="sd">    +-----------------------------------------------------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~lensed_sampling_routine`                    | Generate lensed parameters with batching       |</span>
-<span class="sd">    +-----------------------------------------------------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~lensed_rate`                                | Calculate the lensed detection rate            |</span>
-<span class="sd">    +-----------------------------------------------------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~rate_function`                              | General helper for rate calculation            |</span>
-<span class="sd">    +-----------------------------------------------------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~rate_ratio`                                 | Calculate lensed/unlensed rate ratio           |</span>
-<span class="sd">    +-----------------------------------------------------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~rate_comparison_with_rate_calculation`      | Calculate and compare lensed/unlensed rates    |</span>
-<span class="sd">    +-----------------------------------------------------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~selecting_n_unlensed_detectable_events`     | Select n unlensed detectable events            |</span>
-<span class="sd">    +-----------------------------------------------------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~selecting_n_lensed_detectable_events`       | Select n lensed detectable events              |</span>
-<span class="sd">    +-----------------------------------------------------+------------------------------------------------+</span>
-
-
-<span class="sd">    Instance Attributes</span>
-<span class="sd">    ----------</span>
-<span class="sd">    LeR class has the following attributes: \n</span>
-<span class="sd">    +------------------------------------------------+------------------+-------+------------------------------------------------+</span>
-<span class="sd">    | Attribute                                      | Type             | Unit  | Description                                    |</span>
-<span class="sd">    +================================================+==================+=======+================================================+</span>
-<span class="sd">    | :meth:`~npool`                                 | ``int``          |       | Number of parallel processing cores            |</span>
-<span class="sd">    +------------------------------------------------+------------------+-------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~z_min`                                 | ``float``        |       | Minimum source redshift                        |</span>
-<span class="sd">    +------------------------------------------------+------------------+-------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~z_max`                                 | ``float``        |       | Maximum source redshift                        |</span>
-<span class="sd">    +------------------------------------------------+------------------+-------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~event_type`                            | ``str``          |       | Type of CBC event (BBH, BNS, NSBH)             |</span>
-<span class="sd">    +------------------------------------------------+------------------+-------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~lens_type`                             | ``str``          |       | Type of lens galaxy model                      |</span>
-<span class="sd">    +------------------------------------------------+------------------+-------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~cosmo`                                 | ``Cosmology``    |       | Astropy cosmology object                       |</span>
-<span class="sd">    +------------------------------------------------+------------------+-------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~json_file_names`                       | ``dict``         |       | JSON file names for parameter storage          |</span>
-<span class="sd">    +------------------------------------------------+------------------+-------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~interpolator_directory`                | ``str``          |       | Directory for interpolator files               |</span>
-<span class="sd">    +------------------------------------------------+------------------+-------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~ler_directory`                         | ``str``          |       | Directory for output parameter files           |</span>
-<span class="sd">    +------------------------------------------------+------------------+-------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~pdet_finder`                           | ``callable``     |       | Detection probability finder function          |</span>
-<span class="sd">    +------------------------------------------------+------------------+-------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~ler_args`                              | ``dict``         |       | All LeR initialization arguments               |</span>
-<span class="sd">    +------------------------------------------------+------------------+-------+------------------------------------------------+</span>
-<span class="sd">    | :meth:`~create_new_interpolator`               | ``dict``         |       | Interpolator creation settings                 |</span>
-<span class="sd">    +------------------------------------------------+------------------+-------+------------------------------------------------+</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    - ``LeR`` class inherits from :class:`~ler.lens_galaxy_population.LensGalaxyParameterDistribution`. \n</span>
-<span class="sd">      Refer to that class for additional inherited attributes and methods. \n</span>
-<span class="sd">    - Parameters are stored in JSON files for memory efficiency and reproducibility. \n</span>
-<span class="sd">    - For stable rate estimates, use size &gt;= 1e6 samples. \n</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -347,29 +280,40 @@
         <span class="c1"># first check if the interpolator directory &#39;./interpolator_json&#39; exists</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">interpolator_directory</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="c1"># Get the path to the zip resource using importlib_resources</span>
-            <span class="n">zip_resource</span> <span class="o">=</span> <span class="n">resources_files</span><span class="p">(</span><span class="s1">&#39;ler.rates&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;ler_data&#39;</span><span class="p">,</span> <span class="s1">&#39;interpolator_json.zip&#39;</span><span class="p">)</span>
-            <span class="k">with</span> <span class="n">zip_resource</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_file</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Extracting interpolator data from package to the current working directory.&quot;</span><span class="p">)</span>
+            <span class="n">zip_resource</span> <span class="o">=</span> <span class="n">resources_files</span><span class="p">(</span><span class="s2">&quot;ler.rates&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span>
+                <span class="s2">&quot;ler_data&quot;</span><span class="p">,</span> <span class="s2">&quot;interpolator_json.zip&quot;</span>
+            <span class="p">)</span>
+            <span class="k">with</span> <span class="n">zip_resource</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_file</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">&quot;Extracting interpolator data from package to the current working directory.&quot;</span>
+                <span class="p">)</span>
 
                 <span class="c1"># Define destination path (current working directory)</span>
                 <span class="n">dest_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
 
                 <span class="c1"># Extract the zip file, skipping __MACOSX metadata</span>
-                <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">zip_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_ref</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">zip_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_ref</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">zip_ref</span><span class="o">.</span><span class="n">namelist</span><span class="p">():</span>
                         <span class="c1"># Skip __MACOSX directory and its contents</span>
-                        <span class="k">if</span> <span class="n">member</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__MACOSX&#39;</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">member</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__MACOSX&quot;</span><span class="p">):</span>
                             <span class="k">continue</span>
                         <span class="n">zip_ref</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">member</span><span class="p">,</span> <span class="n">dest_path</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Initializing LeR class...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Initializing LeR class...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="c1"># init ler attributes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">npool</span> <span class="o">=</span> <span class="n">npool</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">z_min</span> <span class="o">=</span> <span class="n">z_min</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span> <span class="o">=</span> <span class="n">z_max</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_type</span> <span class="o">=</span> <span class="n">event_type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lens_type</span> <span class="o">=</span> <span class="n">lens_type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span> <span class="o">=</span> <span class="n">cosmology</span> <span class="k">if</span> <span class="n">cosmology</span> <span class="k">else</span> <span class="n">LambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cosmo</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">cosmology</span>
+            <span class="k">if</span> <span class="n">cosmology</span>
+            <span class="k">else</span> <span class="n">LambdaCDM</span><span class="p">(</span>
+                <span class="n">H0</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">Ode0</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">Tcmb0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">Neff</span><span class="o">=</span><span class="mf">3.04</span><span class="p">,</span> <span class="n">m_nu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ob0</span><span class="o">=</span><span class="mf">0.0</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
         <span class="c1"># init json file names where datas will be stored</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -453,22 +397,27 @@
             <span class="n">lens_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lens_type</span><span class="p">,</span>
             <span class="n">lens_functions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">lens_functions_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">lens_param_samplers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">lens_param_samplers_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">lens_priors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">lens_priors_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolator_directory</span><span class="p">,</span>
             <span class="n">create_new_interpolator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">buffer_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
             <span class="c1"># ImageProperties class params</span>
             <span class="n">n_min_images</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="n">n_max_images</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-            <span class="n">time_window</span><span class="o">=</span><span class="mi">365</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">3600</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">time_window</span><span class="o">=</span><span class="mf">365.</span> <span class="o">*</span> <span class="mf">24.</span> <span class="o">*</span> <span class="mf">3600.</span> <span class="o">*</span> <span class="mf">1.</span><span class="p">,</span>
             <span class="n">lens_model_list</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;EPL_NUMBA&quot;</span><span class="p">,</span> <span class="s2">&quot;SHEAR&quot;</span><span class="p">],</span>
+            <span class="n">image_properties_function</span><span class="o">=</span><span class="s2">&quot;image_properties_epl_shear_njit&quot;</span><span class="p">,</span>
+            <span class="n">image_properties_function_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">include_effective_parameters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">multiprocessing_verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">include_redundant_parameters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="c1"># CBCSourceParameterDistribution class params</span>
             <span class="n">event_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">event_type</span><span class="p">,</span>
-            <span class="n">source_priors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">source_priors_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">gw_priors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">gw_priors_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">gw_functions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">gw_functions_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">spin_zero</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">spin_precession</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">)</span>
@@ -490,32 +439,39 @@
             <span class="n">lens_type</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_type&quot;</span><span class="p">],</span>
             <span class="n">lens_functions</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_functions&quot;</span><span class="p">],</span>
             <span class="n">lens_functions_params</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_functions_params&quot;</span><span class="p">],</span>
-            <span class="n">lens_param_samplers</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_param_samplers&quot;</span><span class="p">],</span>
-            <span class="n">lens_param_samplers_params</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_param_samplers_params&quot;</span><span class="p">],</span>
+            <span class="n">lens_priors</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_priors&quot;</span><span class="p">],</span>
+            <span class="n">lens_priors_params</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_priors_params&quot;</span><span class="p">],</span>
             <span class="n">directory</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;directory&quot;</span><span class="p">],</span>
             <span class="n">create_new_interpolator</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;create_new_interpolator&quot;</span><span class="p">],</span>
+            <span class="n">buffer_size</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;buffer_size&quot;</span><span class="p">],</span>
             <span class="c1"># ImageProperties class params</span>
             <span class="n">n_min_images</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;n_min_images&quot;</span><span class="p">],</span>
             <span class="n">n_max_images</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;n_max_images&quot;</span><span class="p">],</span>
             <span class="n">time_window</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;time_window&quot;</span><span class="p">],</span>
             <span class="n">include_effective_parameters</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;include_effective_parameters&quot;</span><span class="p">],</span>
             <span class="n">lens_model_list</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_model_list&quot;</span><span class="p">],</span>
+            <span class="n">image_properties_function</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;image_properties_function&quot;</span><span class="p">],</span>
+            <span class="n">image_properties_function_params</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;image_properties_function_params&quot;</span><span class="p">],</span>
             <span class="n">multiprocessing_verbose</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;multiprocessing_verbose&quot;</span><span class="p">],</span>
             <span class="n">include_redundant_parameters</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;include_redundant_parameters&quot;</span><span class="p">],</span>
             <span class="c1"># CBCSourceParameterDistribution class params</span>
             <span class="n">event_type</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;event_type&quot;</span><span class="p">],</span>
-            <span class="n">source_priors</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;source_priors&quot;</span><span class="p">],</span>
-            <span class="n">source_priors_params</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;source_priors_params&quot;</span><span class="p">],</span>
+            <span class="n">gw_priors</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;gw_priors&quot;</span><span class="p">],</span>
+            <span class="n">gw_priors_params</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;gw_priors_params&quot;</span><span class="p">],</span>
+            <span class="n">gw_functions</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;gw_functions&quot;</span><span class="p">],</span>
+            <span class="n">gw_functions_params</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;gw_functions_params&quot;</span><span class="p">],</span>
             <span class="n">spin_zero</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;spin_zero&quot;</span><span class="p">],</span>
             <span class="n">spin_precession</span><span class="o">=</span><span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;spin_precession&quot;</span><span class="p">],</span>
         <span class="p">)</span>
 
         <span class="c1"># some of the None values will have default values after initialization</span>
-        <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;source_priors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;source_priors_params&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_param_samplers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_param_samplers_params&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">lens_param_samplers_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;gw_priors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;gw_priors_params&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;gw_functions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_functions</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;gw_functions_params&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_functions_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_priors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_priors</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_priors_params&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lens_priors_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="p">)</span>
         <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_functions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_functions</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">input_params</span><span class="p">[</span><span class="s2">&quot;lens_functions_params&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lens_functions_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -535,16 +491,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">gwsnr</span> <span class="kn">import</span> <span class="n">GWSNR</span>
 
-        <span class="c1"># initialization of GWSNR class</span>
-        <span class="k">if</span> <span class="s2">&quot;mminbh&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">]:</span>
-            <span class="n">min_bh_mass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span><span class="s2">&quot;mminbh&quot;</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">min_bh_mass</span> <span class="o">=</span> <span class="mf">2.0</span>
-
-        <span class="k">if</span> <span class="s2">&quot;mmaxbh&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">]:</span>
-            <span class="n">max_bh_mass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_param_samplers_params</span><span class="p">[</span><span class="s2">&quot;source_frame_masses&quot;</span><span class="p">][</span><span class="s2">&quot;mmaxbh&quot;</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">max_bh_mass</span> <span class="o">=</span> <span class="mf">200.0</span>
         <span class="n">input_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="c1"># General settings</span>
             <span class="n">npool</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">npool</span><span class="p">,</span>
@@ -561,12 +507,8 @@
                 <span class="n">include_observed_snr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="c1"># Settings for interpolation grid</span>
-            <span class="n">mtot_min</span><span class="o">=</span><span class="n">min_bh_mass</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="n">mtot_max</span><span class="o">=</span><span class="p">(</span>
-                <span class="n">max_bh_mass</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">max_bh_mass</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_max</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">500.0</span>
-                <span class="k">else</span> <span class="mf">500.0</span>
-            <span class="p">),</span>
+            <span class="n">mtot_min</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+            <span class="n">mtot_max</span><span class="o">=</span><span class="mf">500.0</span><span class="p">,</span>
             <span class="n">ratio_min</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
             <span class="n">ratio_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
             <span class="n">spin_max</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span>
@@ -710,16 +652,32 @@
         <span class="nb">print</span><span class="p">(</span>
             <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    # LeR also takes other CBCSourceParameterDistribution class input arguments as kwargs, as follows:&quot;</span>
         <span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    source_priors = dict(&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;source_priors&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    gw_functions = dict(&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;gw_functions&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="p">(</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
                 <span class="k">else</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    ),&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    source_priors_params = dict(&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;source_priors_params&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    gw_functions_params = dict(&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;gw_functions_params&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="p">(</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                <span class="k">else</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    ),&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    gw_priors = dict(&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;gw_priors&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="p">(</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                <span class="k">else</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    ),&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    gw_priors_params = dict(&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;gw_priors_params&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="p">(</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
@@ -748,16 +706,16 @@
                 <span class="k">else</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    ),&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    lens_param_samplers = dict(&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;lens_param_samplers&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    lens_priors = dict(&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;lens_priors&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="p">(</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
                 <span class="k">else</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    ),&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    lens_param_samplers_params = dict(&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;lens_param_samplers_params&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    lens_priors_params = dict(&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s2">&quot;lens_priors_params&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="p">(</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;,&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
@@ -771,10 +729,19 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    n_min_images = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;n_min_images&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    n_max_images = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;n_max_images&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    time_window = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;time_window&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    include_effective_parameters = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;include_effective_parameters&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;    include_effective_parameters = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;include_effective_parameters&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span>
+        <span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    lens_model_list = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;lens_model_list&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    multiprocessing_verbose = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;multiprocessing_verbose&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    include_redundant_parameters = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;include_redundant_parameters&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;    image_properties_function = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;image_properties_function&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;    multiprocessing_verbose = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;multiprocessing_verbose&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;    include_redundant_parameters = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">[</span><span class="s1">&#39;include_redundant_parameters&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&quot;</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="s2">&quot;pdet_args&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_args</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
@@ -819,14 +786,14 @@
         <span class="p">)</span>
 
 <div class="viewcode-block" id="LeR.unlensed_cbc_statistics">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.unlensed_cbc_statistics">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.unlensed_cbc_statistics">[docs]</a>
     <span class="k">def</span> <span class="nf">unlensed_cbc_statistics</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span>
         <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">save_batch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate unlensed GW source parameters with detection probabilities.</span>
@@ -857,51 +824,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        unlensed_param : ``dict``</span>
-<span class="sd">            Dictionary of unlensed GW source parameters. The included parameters and their units are as follows (for default settings):\n</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | Parameter          | Units        | Description                          |</span>
-<span class="sd">            +====================+==============+======================================+</span>
-<span class="sd">            | zs                 |              | redshift of the source               |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | geocent_time       | s            | GPS time of coalescence              |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | ra                 | rad          | right ascension                      |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | dec                | rad          | declination                          |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | phase              | rad          | phase of GW at reference frequency   |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | psi                | rad          | polarization angle                   |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | theta_jn           | rad          | inclination angle                    |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | a_1                |              | spin of the primary compact binary   |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | a_2                |              | spin of the secondary compact binary |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | luminosity_distance| Mpc          | luminosity distance                  |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | mass_1_source      | Msun         | mass_1 of the compact binary         |</span>
-<span class="sd">            |                    |              | (source frame)                       |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | mass_2_source      | Msun         | mass_2 of the compact binary         |</span>
-<span class="sd">            |                    |              | (source frame)                       |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | mass_1             | Msun         | mass_1 of the compact binary         |</span>
-<span class="sd">            |                    |              | (detector frame)                     |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | mass_2             | Msun         | mass_2 of the compact binary         |</span>
-<span class="sd">            |                    |              | (detector frame)                     |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | pdet_L1            |              | pdet of L1                           |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | pdet_H1            |              | pdet of H1                           |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | pdet_V1            |              | pdet of V1                           |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | pdet_net           |              | pdet of the network                  |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-
+<span class="sd">            Sampled unlensed GW source parameters.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -911,10 +834,19 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Note: size must be provided as argument, no default fallback</span>
-        <span class="n">output_jsonfile</span> <span class="o">=</span> <span class="n">output_jsonfile</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;unlensed_param&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;unlensed_param&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_jsonfile</span>
-        <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unlensed params will be stored in </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">output_jsonfile</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">output_jsonfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;unlensed_param&quot;</span><span class="p">]</span>
+            <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unlensed params will be stored in </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;unlensed_param&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_jsonfile</span>
+            <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unlensed params will be stored in </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">output_path</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">save_batch</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">resume</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unlensed params will not be saved to file (output_jsonfile=None/False)&quot;</span><span class="p">)</span>
 
         <span class="n">unlensed_param</span> <span class="o">=</span> <span class="n">batch_handler</span><span class="p">(</span>
             <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
@@ -930,7 +862,7 @@
 
 
 <div class="viewcode-block" id="LeR.unlensed_sampling_routine">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.unlensed_sampling_routine">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.unlensed_sampling_routine">[docs]</a>
     <span class="k">def</span> <span class="nf">unlensed_sampling_routine</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_batch</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">):</span>
@@ -961,9 +893,11 @@
 
         <span class="c1"># get gw params</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sampling gw source params...&quot;</span><span class="p">)</span>
-        <span class="n">unlensed_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_gw_parameters</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">unlensed_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gw_parameters_rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
 
         <span class="c1"># Get pdet</span>
+        <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">set_num_threads</span>
+        <span class="n">set_num_threads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npool</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;calculating pdet...&quot;</span><span class="p">)</span>
         <span class="n">pdet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdet_finder</span><span class="p">(</span><span class="n">gw_param_dict</span><span class="o">=</span><span class="n">unlensed_param</span><span class="p">)</span>
         <span class="n">unlensed_param</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pdet</span><span class="p">)</span>
@@ -972,13 +906,13 @@
 
 
 <div class="viewcode-block" id="LeR.unlensed_rate">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.unlensed_rate">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.unlensed_rate">[docs]</a>
     <span class="k">def</span> <span class="nf">unlensed_rate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">unlensed_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">pdet_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
         <span class="n">pdet_type</span><span class="o">=</span><span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
-        <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to calculate the unlensed rate.</span>
@@ -1009,50 +943,7 @@
 <span class="sd">        total_rate : ``float``</span>
 <span class="sd">            Total unlensed rate (yr^-1).</span>
 <span class="sd">        unlensed_param : ``dict``</span>
-<span class="sd">            dictionary of GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):\n</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | Parameter          | Units        | Description                          |</span>
-<span class="sd">            +====================+==============+======================================+</span>
-<span class="sd">            | zs                 |              | redshift of the source               |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | geocent_time       | s            | GPS time of coalescence              |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | ra                 | rad          | right ascension                      |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | dec                | rad          | declination                          |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | phase              | rad          | phase of GW at reference frequency   |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | psi                | rad          | polarization angle                   |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | theta_jn           | rad          | inclination angle                    |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | a_1                |              | spin of the primary compact binary   |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | a_2                |              | spin of the secondary compact binary |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | luminosity_distance| Mpc          | luminosity distance                  |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | mass_1_source      | Msun         | mass_1 of the compact binary         |</span>
-<span class="sd">            |                    |              | (source frame)                       |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | mass_2_source      | Msun         | mass_2 of the compact binary         |</span>
-<span class="sd">            |                    |              | (source frame)                       |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | mass_1             | Msun         | mass_1 of the compact binary         |</span>
-<span class="sd">            |                    |              | (detector frame)                     |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | mass_2             | Msun         | mass_2 of the compact binary         |</span>
-<span class="sd">            |                    |              | (detector frame)                     |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | pdet_L1            |              | pdet of L1                           |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | pdet_H1            |              | pdet of H1                           |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | pdet_V1            |              | pdet of V1                           |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | pdet_net           |              | pdet of the network                  |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            Detectable unlensed GW source parameters.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -1067,7 +958,7 @@
 
         <span class="c1"># find index of detectable events</span>
         <span class="n">pdet</span> <span class="o">=</span> <span class="n">unlensed_param</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">]</span>
-        <span class="n">idx_detectable</span> <span class="o">=</span> <span class="n">pdet</span> <span class="o">&gt;</span> <span class="n">pdet_threshold</span>
+        <span class="n">idx_detectable</span> <span class="o">=</span> <span class="n">pdet</span> <span class="o">&gt;=</span> <span class="n">pdet_threshold</span>
 
         <span class="k">if</span> <span class="n">pdet_type</span> <span class="o">==</span> <span class="s2">&quot;boolean&quot;</span><span class="p">:</span>
             <span class="n">detectable_events</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">idx_detectable</span><span class="p">)</span>
@@ -1075,7 +966,7 @@
             <span class="n">detectable_events</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pdet</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;pdet_type not recognized&quot;</span><span class="p">)</span>
-        <span class="c1"># montecarlo integration``</span>
+        <span class="c1"># montecarlo integration</span>
         <span class="c1"># The total rate R = norm &lt;Theta(rho-rhoc)&gt;</span>
         <span class="n">total_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_function</span><span class="p">(</span>
             <span class="n">detectable_events</span><span class="p">,</span> <span class="n">total_events</span><span class="p">,</span> <span class="n">param_type</span><span class="o">=</span><span class="s2">&quot;unlensed&quot;</span>
@@ -1128,7 +1019,7 @@
             <span class="k">return</span> <span class="n">param</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <div class="viewcode-block" id="LeR.rate_function">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.rate_function">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.rate_function">[docs]</a>
     <span class="k">def</span> <span class="nf">rate_function</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">detectable_size</span><span class="p">,</span> <span class="n">total_size</span><span class="p">,</span> <span class="n">param_type</span><span class="o">=</span><span class="s2">&quot;unlensed&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">):</span>
@@ -1228,14 +1119,18 @@
                 <span class="n">param</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">idx_detectable</span><span class="p">]</span>
 
         <span class="c1"># store all detectable params in json file</span>
-        <span class="k">if</span> <span class="n">output_jsonfile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">output_jsonfile</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">output_jsonfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="n">key_file_name</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="n">key_file_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_jsonfile</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># None/False: skip saving</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
         <span class="n">output_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">output_jsonfile</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;storing detectable params in </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
         <span class="n">append_json</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="n">replace_jsonfile</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_append_ler_param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total_rate</span><span class="p">,</span> <span class="n">pdet_type</span><span class="o">=</span><span class="s2">&quot;boolean&quot;</span><span class="p">,</span> <span class="n">param_type</span><span class="o">=</span><span class="s2">&quot;unlensed&quot;</span><span class="p">):</span>
@@ -1265,14 +1160,14 @@
         <span class="p">)</span>
 
 <div class="viewcode-block" id="LeR.lensed_cbc_statistics">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.lensed_cbc_statistics">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.lensed_cbc_statistics">[docs]</a>
     <span class="k">def</span> <span class="nf">lensed_cbc_statistics</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span>
         <span class="n">save_batch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate lensed GW source parameters.</span>
@@ -1303,100 +1198,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        lensed_param : ``dict``</span>
-<span class="sd">            Dictionary of lensed GW source parameters. The included parameters and their units are as follows (for default settings):\n</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | Parameter                    | Units     | Description                                           |</span>
-<span class="sd">            +==============================+===========+=======================================================+</span>
-<span class="sd">            | zl                           |           | redshift of the lens                                  |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | zs                           |           | redshift of the source                                |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | sigma                        | km s^-1   | velocity dispersion                                   |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | q                            |           | axis ratio                                            |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | theta_E                      | radian    | Einstein radius                                       |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | phi                          | rad       | axis rotation angle. counter-clockwise from the       |</span>
-<span class="sd">            |                              |           | positive x-axis (RA-like axis) to the major axis of   |</span>
-<span class="sd">            |                              |           | the projected mass distribution.                      |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | gamma                        |           | density profile slope of EPL galaxy                   |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | gamma1                       |           | external shear component in the x-direction           |</span>
-<span class="sd">            |                              |           | (RA-like axis)                                        |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | gamma2                       |           | external shear component in the y-direction           |</span>
-<span class="sd">            |                              |           | (Dec-like axis)                                       |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | geocent_time                 | s         | geocent time                                          |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | ra                           | rad       | right ascension                                       |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | dec                          | rad       | declination                                           |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | phase                        | rad       | phase of GW at reference freq                         |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | psi                          | rad       | polarization angle                                    |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | theta_jn                     | rad       | inclination angle                                     |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | a_1                          |           | spin of the primary compact binary                    |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | a_2                          |           | spin of the secondary compact binary                  |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | luminosity_distance          | Mpc       | luminosity distance of the source                      |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | mass_1_source                | Msun      | mass of the primary compact binary (source frame)     |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | mass_2_source                | Msun      | mass of the secondary compact binary (source frame)   |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | mass_1                       | Msun      | mass of the primary compact binary (detector frame)   |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | mass_2                       | Msun      | mass of the secondary compact binary (detector frame) |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | x0_image_positions           | radian    | x-coordinate (RA-like axis) of the images             |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | x1_image_positions           | radian    | y-coordinate (Dec-like axis) of the images            |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | magnifications               |           | magnifications                                        |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | time_delays                  |           | time delays                                           |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | image_type                   |           | image type                                            |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | n_images                     |           | number of images                                      |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | x_source                     | radian    | x-coordinate (RA-like axis) of the source             |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | y_source                     | radian    | y-coordinate (Dec-like axis) of the source            |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | effective_luminosity_distance| Mpc       | effective luminosity distance of the images           |</span>
-<span class="sd">            |                              |           | luminosity_distance / sqrt(|magnifications_i|)        |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | effective_geocent_time       | s         | effective GPS time of coalescence of the images       |</span>
-<span class="sd">            |                              |           | geocent_time + time_delays_i                          |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | effective_phase              | rad       | morse-phase-corrected phase                           |</span>
-<span class="sd">            |                              |           | phi - morse_phase_i                                   |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | effective_ra                 | rad       | RA of the image                                       |</span>
-<span class="sd">            |                              |           | ra + (x0_image_positions_i - x_source)/cos(dec)       |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | effective_dec                | rad       | Dec of the image                                      |</span>
-<span class="sd">            |                              |           | dec + (x1_image_positions_i - y_source)               |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | effective_geocent_time       | s         | effective GPS time of coalescence of the images       |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | pdet_L1                      |           | detection probability of L1                           |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | pdet_H1                      |           | detection probability of H1                           |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | pdet_V1                      |           | detection probability of V1                           |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | pdet_net                     |           | detection probability of the network                  |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-
+<span class="sd">            Sampled lensed GW source parameters.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -1406,10 +1208,19 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Note: size must be provided as argument, no default fallback</span>
-        <span class="n">output_jsonfile</span> <span class="o">=</span> <span class="n">output_jsonfile</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;lensed_param&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;lensed_param&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_jsonfile</span>
-        <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;lensed params will be stored in </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">output_jsonfile</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">output_jsonfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;lensed_param&quot;</span><span class="p">]</span>
+            <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;lensed params will be stored in </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_jsonfile</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">json_file_names</span><span class="p">[</span><span class="s2">&quot;lensed_param&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_jsonfile</span>
+            <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_directory</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;lensed params will be stored in </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">output_path</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">save_batch</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">resume</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;lensed params will not be saved to file (output_jsonfile=None/False)&quot;</span><span class="p">)</span>
 
         <span class="n">lensed_param</span> <span class="o">=</span> <span class="n">batch_handler</span><span class="p">(</span>
             <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
@@ -1425,7 +1236,7 @@
 
 
 <div class="viewcode-block" id="LeR.lensed_sampling_routine">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.lensed_sampling_routine">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.lensed_sampling_routine">[docs]</a>
     <span class="k">def</span> <span class="nf">lensed_sampling_routine</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">output_jsonfile</span><span class="p">,</span> <span class="n">save_batch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">):</span>
@@ -1464,7 +1275,7 @@
             <span class="c1"># get lensed params</span>
             <span class="n">lensed_param_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_lens_parameters</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
             <span class="c1"># now get (strongly lensed) image paramters along with lens parameters</span>
-            <span class="n">lensed_param_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_properties</span><span class="p">(</span><span class="n">lensed_param_</span><span class="p">)</span>
+            <span class="n">lensed_param_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_properties_function</span><span class="p">(</span><span class="n">lensed_param_</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lensed_param</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># if empty</span>
                 <span class="n">lensed_param</span> <span class="o">=</span> <span class="n">lensed_param_</span>
@@ -1488,6 +1299,9 @@
                 <span class="p">)</span>
                 <span class="n">size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
 
+        <span class="c1"># Set Numba threads to npool before entering prange</span>
+        <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">set_num_threads</span>
+        <span class="n">set_num_threads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npool</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;calculating pdet...&quot;</span><span class="p">)</span>
         <span class="n">pdet</span><span class="p">,</span> <span class="n">lensed_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lensed_snrs</span><span class="p">(</span>
             <span class="n">lensed_param</span><span class="o">=</span><span class="n">lensed_param</span><span class="p">,</span>
@@ -1499,13 +1313,13 @@
 
 
 <div class="viewcode-block" id="LeR.lensed_rate">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.lensed_rate">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.lensed_rate">[docs]</a>
     <span class="k">def</span> <span class="nf">lensed_rate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">lensed_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">pdet_threshold</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
         <span class="n">num_img</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-        <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_jsonfile</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">nan_to_num</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">pdet_type</span><span class="o">=</span><span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
     <span class="p">):</span>
@@ -1546,98 +1360,7 @@
 <span class="sd">        total_rate : ``float``</span>
 <span class="sd">            Total lensed rate (yr^-1).</span>
 <span class="sd">        lensed_param : ``dict``</span>
-<span class="sd">            Dictionary of lensed GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):\n</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | Parameter                    | Units     | Description                                           |</span>
-<span class="sd">            +==============================+===========+=======================================================+</span>
-<span class="sd">            | zl                           |           | redshift of the lens                                  |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | zs                           |           | redshift of the source                                |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | sigma                        | km s^-1   | velocity dispersion                                   |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | q                            |           | axis ratio                                            |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | theta_E                      | radian    | Einstein radius                                       |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | phi                          | rad       | axis rotation angle. counter-clockwise from the       |</span>
-<span class="sd">            |                              |           | positive x-axis (RA-like axis) to the major axis of   |</span>
-<span class="sd">            |                              |           | the projected mass distribution.                      |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | gamma                        |           | density profile slope of EPL galaxy                   |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | gamma1                       |           | external shear component in the x-direction           |</span>
-<span class="sd">            |                              |           | (RA-like axis)                                        |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | gamma2                       |           | external shear component in the y-direction           |</span>
-<span class="sd">            |                              |           | (Dec-like axis)                                       |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | geocent_time                 | s         | geocent time                                          |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | ra                           | rad       | right ascension                                       |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | dec                          | rad       | declination                                           |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | phase                        | rad       | phase of GW at reference freq                         |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | psi                          | rad       | polarization angle                                    |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | theta_jn                     | rad       | inclination angle                                     |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | a_1                          |           | spin of the primary compact binary                    |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | a_2                          |           | spin of the secondary compact binary                  |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | luminosity_distance          | Mpc       | luminosity distance of the source                      |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | mass_1_source                | Msun      | mass of the primary compact binary (source frame)     |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | mass_2_source                | Msun      | mass of the secondary compact binary (source frame)   |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | mass_1                       | Msun      | mass of the primary compact binary (detector frame)   |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | mass_2                       | Msun      | mass of the secondary compact binary (detector frame) |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | x0_image_positions           | radian    | x-coordinate (RA-like axis) of the images             |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | x1_image_positions           | radian    | y-coordinate (Dec-like axis) of the images            |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | magnifications               |           | magnifications                                        |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | time_delays                  |           | time delays                                           |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | image_type                   |           | image type                                            |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | n_images                     |           | number of images                                      |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | x_source                     | radian    | x-coordinate (RA-like axis) of the source             |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | y_source                     | radian    | y-coordinate (Dec-like axis) of the source            |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | effective_luminosity_distance| Mpc       | effective luminosity distance of the images           |</span>
-<span class="sd">            |                              |           | luminosity_distance / sqrt(|magnifications_i|)        |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | effective_geocent_time       | s         | effective GPS time of coalescence of the images       |</span>
-<span class="sd">            |                              |           | geocent_time + time_delays_i                          |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | effective_phase              | rad       | morse-phase-corrected phase                           |</span>
-<span class="sd">            |                              |           | phi - morse_phase_i                                   |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | effective_ra                 | rad       | RA of the image                                       |</span>
-<span class="sd">            |                              |           | ra + (x0_image_positions_i - x_source)/cos(dec)       |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | effective_dec                | rad       | Dec of the image                                      |</span>
-<span class="sd">            |                              |           | dec + (x1_image_positions_i - y_source)               |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | pdet_L1                      |           | detection probability of L1                           |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | pdet_H1                      |           | detection probability of H1                           |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | pdet_V1                      |           | detection probability of V1                           |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-<span class="sd">            | pdet_net                     |           | detection probability of the network                  |</span>
-<span class="sd">            +------------------------------+-----------+-------------------------------------------------------+</span>
-
+<span class="sd">            Detectable lensed GW source parameters.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -1767,7 +1490,7 @@
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pdet_th</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pdet_threshold</span><span class="p">):</span>
                 <span class="n">idx_max</span> <span class="o">=</span> <span class="n">idx_max</span> <span class="o">+</span> <span class="n">num_img</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                 <span class="n">pdet_hit</span> <span class="o">=</span> <span class="n">pdet_hit</span> <span class="o">&amp;</span> <span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">pdet_param</span><span class="p">[:,</span> <span class="n">j</span><span class="p">:</span><span class="n">idx_max</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">pdet_th</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">num_img</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">pdet_param</span><span class="p">[:,</span> <span class="n">j</span><span class="p">:</span><span class="n">idx_max</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">pdet_th</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">num_img</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                 <span class="p">)</span>
                 <span class="c1"># select according to time delays</span>
                 <span class="n">j</span> <span class="o">=</span> <span class="n">idx_max</span>
@@ -1786,11 +1509,10 @@
 
             <span class="n">pdet_hit</span> <span class="o">=</span> <span class="n">pdet_prod</span> <span class="o">&gt;=</span> <span class="n">pdet_threshold</span>
 
-
         <span class="k">return</span> <span class="n">pdet_hit</span><span class="p">,</span> <span class="n">pdet_prod</span>
 
 <div class="viewcode-block" id="LeR.rate_comparison_with_rate_calculation">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.rate_comparison_with_rate_calculation">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.rate_comparison_with_rate_calculation">[docs]</a>
     <span class="k">def</span> <span class="nf">rate_comparison_with_rate_calculation</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">unlensed_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1891,7 +1613,7 @@
 
 
 <div class="viewcode-block" id="LeR.rate_ratio">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.rate_ratio">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.rate_ratio">[docs]</a>
     <span class="k">def</span> <span class="nf">rate_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate and display the unlensed to lensed merger rate ratio.</span>
@@ -1945,7 +1667,7 @@
 
 
 <div class="viewcode-block" id="LeR.selecting_n_unlensed_detectable_events">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.selecting_n_unlensed_detectable_events">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.selecting_n_unlensed_detectable_events">[docs]</a>
     <span class="k">def</span> <span class="nf">selecting_n_unlensed_detectable_events</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
@@ -2008,50 +1730,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        param_final : ``dict``</span>
-<span class="sd">            dictionary of GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):\n</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | Parameter          | Units        | Description                          |</span>
-<span class="sd">            +====================+==============+======================================+</span>
-<span class="sd">            | zs                 |              | redshift of the source               |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | geocent_time       | s            | GPS time of coalescence              |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | ra                 | rad          | right ascension                      |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | dec                | rad          | declination                          |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | phase              | rad          | phase of GW at reference frequency   |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | psi                | rad          | polarization angle                   |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | theta_jn           | rad          | inclination angle                    |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | a_1                |              | spin of the primary compact binary   |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | a_2                |              | spin of the secondary compact binary |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | luminosity_distance| Mpc          | luminosity distance                  |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | mass_1_source      | Msun         | mass of the primary compact binary   |</span>
-<span class="sd">            |                    |              | (source frame)                       |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | mass_2_source      | Msun         | mass of the secondary compact binary |</span>
-<span class="sd">            |                    |              | (source frame)                       |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | mass_1             | Msun         | mass_1 of the compact binary         |</span>
-<span class="sd">            |                    |              | (detector frame)                     |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | mass_2             | Msun         | mass_2 of the compact binary         |</span>
-<span class="sd">            |                    |              | (detector frame)                     |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | pdet_L1            |              | pdet of L1                           |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | pdet_H1            |              | pdet of H1                           |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | pdet_V1            |              | pdet of V1                           |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
-<span class="sd">            | pdet_net           |              | pdet of the network                  |</span>
-<span class="sd">            +--------------------+--------------+--------------------------------------+</span>
+<span class="sd">            Detectable unlensed GW source parameters.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -2101,7 +1780,7 @@
 
             <span class="c1"># find index of detectable events</span>
             <span class="n">pdet</span> <span class="o">=</span> <span class="n">unlensed_param</span><span class="p">[</span><span class="s2">&quot;pdet_net&quot;</span><span class="p">]</span>
-            <span class="n">idx_detectable</span> <span class="o">=</span> <span class="n">pdet</span> <span class="o">&gt;</span> <span class="n">pdet_threshold</span>
+            <span class="n">idx_detectable</span> <span class="o">=</span> <span class="n">pdet</span> <span class="o">&gt;=</span> <span class="n">pdet_threshold</span>
 
             <span class="c1"># store all params in json file</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_save_detectable_params</span><span class="p">(</span>
@@ -2115,17 +1794,24 @@
             <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">pdet_type</span> <span class="o">==</span> <span class="s2">&quot;boolean&quot;</span><span class="p">:</span>
-                <span class="n">n</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">idx_detectable</span><span class="p">)</span>
+                <span class="n">n_batch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">idx_detectable</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">n</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pdet</span><span class="p">)</span>
+                <span class="n">n_batch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pdet</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">+=</span> <span class="n">n_batch</span>
             <span class="n">events_total</span> <span class="o">+=</span> <span class="n">total_events_in_this_iteration</span>
             <span class="n">total_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_function</span><span class="p">(</span>
                 <span class="n">n</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">param_type</span><span class="o">=</span><span class="s2">&quot;unlensed&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
             <span class="p">)</span>
+            <span class="n">batch_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_function</span><span class="p">(</span>
+                <span class="n">n_batch</span><span class="p">,</span>
+                <span class="n">total_events_in_this_iteration</span><span class="p">,</span>
+                <span class="n">param_type</span><span class="o">=</span><span class="s2">&quot;unlensed&quot;</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
 
             <span class="c1"># bookmark</span>
             <span class="n">buffer_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append_meta_data</span><span class="p">(</span>
-                <span class="n">meta_data_path</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">total_rate</span>
+                <span class="n">meta_data_path</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">total_rate</span><span class="p">,</span> <span class="n">batch_rate</span>
             <span class="p">)</span>
 
             <span class="n">continue_condition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_continue_condition_check</span><span class="p">(</span>
@@ -2164,11 +1850,11 @@
             <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">total_rate</span><span class="p">,</span><span class="n">param_final</span></div>
+        <span class="k">return</span> <span class="n">total_rate</span><span class="p">,</span> <span class="n">param_final</span></div>
 
 
 <div class="viewcode-block" id="LeR.selecting_n_lensed_detectable_events">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.selecting_n_lensed_detectable_events">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.selecting_n_lensed_detectable_events">[docs]</a>
     <span class="k">def</span> <span class="nf">selecting_n_lensed_detectable_events</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
@@ -2293,9 +1979,7 @@
                 <span class="n">lensed_param</span><span class="p">,</span> <span class="n">pdet_threshold</span><span class="p">,</span> <span class="n">num_img</span><span class="p">,</span> <span class="n">pdet_type</span>
             <span class="p">)</span>
 
-            <span class="n">pdet_processed</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">pdet_hit</span> <span class="k">if</span> <span class="n">pdet_type</span> <span class="o">==</span> <span class="s2">&quot;boolean&quot;</span> <span class="k">else</span> <span class="n">pdet_prod</span>
-            <span class="p">)</span>
+            <span class="n">pdet_processed</span> <span class="o">=</span> <span class="n">pdet_hit</span> <span class="k">if</span> <span class="n">pdet_type</span> <span class="o">==</span> <span class="s2">&quot;boolean&quot;</span> <span class="k">else</span> <span class="n">pdet_prod</span>
 
             <span class="c1"># store all params in json file</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_save_detectable_params</span><span class="p">(</span>
@@ -2308,15 +1992,22 @@
                 <span class="n">replace_jsonfile</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
 
-            <span class="n">n_cumulative</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pdet_processed</span><span class="p">)</span>
+            <span class="n">n_batch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pdet_processed</span><span class="p">)</span>
+            <span class="n">n_cumulative</span> <span class="o">+=</span> <span class="n">n_batch</span>
             <span class="n">events_total</span> <span class="o">+=</span> <span class="n">total_events_in_this_iteration</span>
             <span class="n">total_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_function</span><span class="p">(</span>
                 <span class="n">n_cumulative</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">param_type</span><span class="o">=</span><span class="s2">&quot;lensed&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
             <span class="p">)</span>
+            <span class="n">batch_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_function</span><span class="p">(</span>
+                <span class="n">n_batch</span><span class="p">,</span>
+                <span class="n">total_events_in_this_iteration</span><span class="p">,</span>
+                <span class="n">param_type</span><span class="o">=</span><span class="s2">&quot;lensed&quot;</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
 
             <span class="c1"># save meta data</span>
             <span class="n">buffer_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append_meta_data</span><span class="p">(</span>
-                <span class="n">meta_data_path</span><span class="p">,</span> <span class="n">n_cumulative</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">total_rate</span>
+                <span class="n">meta_data_path</span><span class="p">,</span> <span class="n">n_cumulative</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">total_rate</span><span class="p">,</span> <span class="n">batch_rate</span>
             <span class="p">)</span>
 
             <span class="n">continue_condition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_continue_condition_check</span><span class="p">(</span>
@@ -2590,7 +2281,9 @@
 
         <span class="k">return</span> <span class="n">param_final</span><span class="p">,</span> <span class="n">new_total_rate</span>
 
-    <span class="k">def</span> <span class="nf">_append_meta_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_data_path</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">total_rate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_append_meta_data</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">meta_data_path</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">events_total</span><span class="p">,</span> <span class="n">total_rate</span><span class="p">,</span> <span class="n">batch_rate</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper function for appending meta data json file.</span>
 
@@ -2604,6 +2297,8 @@
 <span class="sd">            total number of events.</span>
 <span class="sd">        total_rate : ``float``</span>
 <span class="sd">            total rate (yr^-1).</span>
+<span class="sd">        batch_rate : ``float``</span>
+<span class="sd">            rate from the latest batch only (yr^-1).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># save meta data</span>
@@ -2611,31 +2306,53 @@
             <span class="n">events_total</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">events_total</span><span class="p">]),</span>
             <span class="n">detectable_events</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">n</span><span class="p">]),</span>
             <span class="n">total_rate</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">total_rate</span><span class="p">]),</span>
+            <span class="n">batch_rate</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">batch_rate</span><span class="p">]),</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">dict_</span> <span class="o">=</span> <span class="n">append_json</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">,</span> <span class="n">meta_data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">old_meta_data</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">old_meta_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                        <span class="n">old_meta_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;batch_rate&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">old_meta_data</span><span class="p">:</span>
+                    <span class="n">old_meta_data</span><span class="p">[</span><span class="s2">&quot;batch_rate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span>
+                        <span class="nb">len</span><span class="p">(</span><span class="n">old_meta_data</span><span class="p">[</span><span class="s2">&quot;total_rate&quot;</span><span class="p">]),</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="n">dict_</span> <span class="o">=</span> <span class="n">append_json</span><span class="p">(</span>
+                    <span class="n">meta_data_path</span><span class="p">,</span>
+                    <span class="n">meta_data</span><span class="p">,</span>
+                    <span class="n">old_dictionary</span><span class="o">=</span><span class="n">old_meta_data</span><span class="p">,</span>
+                    <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error in appending meta data. Replacing the existing meta data file.&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">&quot;Error in appending meta data. Replacing the existing meta data file.&quot;</span>
+                <span class="p">)</span>
                 <span class="c1"># remove and recreate the meta data file</span>
                 <span class="n">remove_file</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">)</span>
                 <span class="n">dict_</span> <span class="o">=</span> <span class="n">append_json</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">,</span> <span class="n">meta_data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">dict_</span> <span class="o">=</span> <span class="n">append_json</span><span class="p">(</span><span class="n">meta_data_path</span><span class="p">,</span> <span class="n">meta_data</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="n">batch_n</span> <span class="o">=</span> <span class="p">(</span><span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;detectable_events&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;detectable_events&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;detectable_events&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">n</span>
+        <span class="n">batch_n</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;detectable_events&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;detectable_events&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dict_</span><span class="p">[</span><span class="s2">&quot;detectable_events&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span>
+            <span class="k">else</span> <span class="n">n</span>
+        <span class="p">)</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;collected number of detectable events (batch) = &quot;</span><span class="p">,</span> <span class="n">batch_n</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;collected number of detectable events (cumulative) = &quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;total number of events = &quot;</span><span class="p">,</span> <span class="n">events_total</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;batch rate (yr^-1): </span><span class="si">{</span><span class="n">batch_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;total rate (yr^-1): </span><span class="si">{</span><span class="n">total_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">dict_</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="LeR.create_new_interpolator">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.create_new_interpolator">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.create_new_interpolator">[docs]</a>
     <span class="k">def</span> <span class="nf">create_new_interpolator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Configuration dictionary for interpolator creation settings.</span>
@@ -2648,37 +2365,7 @@
 <span class="sd">            - &#39;create_new&#39;: bool - Whether to create new interpolator \n</span>
 <span class="sd">            - &#39;resolution&#39;: int or list - Grid resolution for interpolation \n</span>
 <span class="sd">            Special key &#39;gwsnr&#39; is a bool for GWSNR interpolator creation.</span>
-<span class="sd">            Default: dict(</span>
-<span class="sd">                merger_rate_density = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                redshift_distribution = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                luminosity_distance = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                differential_comoving_volume = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                source_frame_masses = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                geocent_time = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                ra = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                dec = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                phase = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                psi = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                theta_jn = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                a_1 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                a_2 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                tilt_1 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                tilt_2 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                phi_12 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                phi_jl = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                velocity_dispersion = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500, &#39;zl_resolution&#39;: 48},</span>
-<span class="sd">                axis_ratio = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500, &#39;sigma_resolution&#39;: 48},</span>
-<span class="sd">                lens_redshift = {&#39;create_new&#39;: False, &#39;resolution&#39;: 48, &#39;zl_resolution&#39;: 48},</span>
-<span class="sd">                lens_redshift_intrinsic = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                optical_depth = {&#39;create_new&#39;: False, &#39;resolution&#39;: 48},</span>
-<span class="sd">                comoving_distance = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                angular_diameter_distance = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                angular_diameter_distance_z1z2 = {&#39;create_new&#39;: False, &#39;resolution&#39;: 500},</span>
-<span class="sd">                density_profile_slope = {&#39;create_new&#39;: False, &#39;resolution&#39;: 100},</span>
-<span class="sd">                lens_parameters_kde_sl = {&#39;create_new&#39;: False, &#39;resolution&#39;: 5000},</span>
-<span class="sd">                cross_section = {&#39;create_new&#39;: False, &#39;resolution&#39;: [25, 25, 45, 15, 15]},</span>
-<span class="sd">                gwsnr = False,</span>
-<span class="sd">            )</span>
+<span class="sd">            Default: ``False``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_new_interpolator</span></div>
 
@@ -2689,7 +2376,7 @@
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="LeR.npool">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.npool">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.npool">[docs]</a>
     <span class="k">def</span> <span class="nf">npool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Number of parallel processing cores.</span>
@@ -2700,16 +2387,19 @@
 <span class="sd">            Number of logical cores to use for multiprocessing. \n</span>
 <span class="sd">            default: 4</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_npool</span></div>
 
 
     <span class="nd">@npool</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">npool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_npool</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">set_num_threads</span>
+        <span class="n">set_num_threads</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="LeR.z_min">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.z_min">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.z_min">[docs]</a>
     <span class="k">def</span> <span class="nf">z_min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Minimum redshift of the source population.</span>
@@ -2729,7 +2419,7 @@
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="LeR.z_max">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.z_max">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.z_max">[docs]</a>
     <span class="k">def</span> <span class="nf">z_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Maximum redshift of the source population.</span>
@@ -2749,7 +2439,7 @@
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="LeR.event_type">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.event_type">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.event_type">[docs]</a>
     <span class="k">def</span> <span class="nf">event_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Type of compact binary coalescence event.</span>
@@ -2773,7 +2463,7 @@
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="LeR.lens_type">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.lens_type">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.lens_type">[docs]</a>
     <span class="k">def</span> <span class="nf">lens_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Type of lens galaxy model.</span>
@@ -2797,7 +2487,7 @@
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="LeR.cosmo">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.cosmo">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.cosmo">[docs]</a>
     <span class="k">def</span> <span class="nf">cosmo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Astropy cosmology object for distance calculations.</span>
@@ -2817,7 +2507,7 @@
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="LeR.json_file_names">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.json_file_names">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.json_file_names">[docs]</a>
     <span class="k">def</span> <span class="nf">json_file_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Dictionary of JSON file names for parameter storage.</span>
@@ -2841,7 +2531,7 @@
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="LeR.interpolator_directory">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.interpolator_directory">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.interpolator_directory">[docs]</a>
     <span class="k">def</span> <span class="nf">interpolator_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Directory path for interpolator JSON files.</span>
@@ -2861,7 +2551,7 @@
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="LeR.ler_directory">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.ler_directory">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.ler_directory">[docs]</a>
     <span class="k">def</span> <span class="nf">ler_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Directory path for LeR output files.</span>
@@ -2881,7 +2571,7 @@
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="LeR.pdet_finder">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.pdet_finder">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.pdet_finder">[docs]</a>
     <span class="k">def</span> <span class="nf">pdet_finder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Detection probability finder function.</span>
@@ -2902,7 +2592,7 @@
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="LeR.ler_args">
-<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.LeR.ler_args">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/ler/rates/ler/index.html#ler.rates.ler.LeR.ler_args">[docs]</a>
     <span class="k">def</span> <span class="nf">ler_args</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Dictionary of all LeR initialization arguments.</span>

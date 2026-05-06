@@ -23,9 +23,11 @@ Installation
          pip install ler
 
 
-This will also install the dependencies needed by the lastest ``ler`` version.  
+This will also install the dependencies needed by the latest ``ler`` version.
+
 
 .. _development:
+
 ler for development
 ======================
 
@@ -52,8 +54,10 @@ To install ``ler`` for development purposes use `github.ler <https://github.com/
          cd ler
          conda env update --file ler.yml
          pip install -e .
+
     
 .. _dependencies:
+
 Installation of numba with conda
 ================================
 

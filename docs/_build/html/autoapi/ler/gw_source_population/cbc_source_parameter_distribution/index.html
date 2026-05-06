@@ -6,13 +6,13 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.gw_source_population.cbc_source_parameter_distribution &mdash; ler 0.5.9 documentation</title>
+  <title>ler.gw_source_population.cbc_source_parameter_distribution &mdash; ler 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=11132fbc" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=551ad726" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=88a06014" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
@@ -20,20 +20,22 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=9a3cda14"></script>
+      <script src="../../../../_static/documentation_options.js?v=8fa8b3e9"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../../../_static/copybutton.js?v=f281be69"></script>
       <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "displayMath": [["$$", "$$"], ["\\[", "\\]"]], "processEnvironments": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore", "processHtmlClass": "tex2jax_process"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       <script src="../../../../_static/dark_mode_js/default_light.js?v=c2e647ce"></script>
       <script src="../../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="next" title="ler.gw_source_population.cbc_source_redshift_distribution" href="../cbc_source_redshift_distribution/index.html" />
-    <link rel="prev" title="ler.gw_source_population" href="../index.html" /> 
+    <link rel="prev" title="ler.gw_source_population.broken_powerlaw_plus_2peaks" href="../broken_powerlaw_plus_2peaks/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -68,11 +70,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../rates/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.rates</span></code></a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population</span></code></a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../broken_powerlaw_plus_2peaks/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.broken_powerlaw_plus_2peaks</span></code></a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_parameter_distribution</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../cbc_source_redshift_distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_redshift_distribution</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../powerlaw_plus_peak/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.powerlaw_plus_peak</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../prior_functions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.prior_functions</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sfr_with_time_delay/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ler.gw_source_population.sfr_with_time_delay</span></code></a></li>
 </ul>
@@ -126,13 +130,13 @@ compact binary sources (BBH, BNS, NSBH). It includes mass distributions,
 spin parameters, sky positions, and other parameters needed for GW analysis.</p>
 <p>Inheritance hierarchy:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="../index.html#id11" title="ler.gw_source_population.CBCSourceRedshiftDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceRedshiftDistribution</span></code></a></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceRedshiftDistribution</span></code></p></li>
 </ul>
 <dl>
 <dt>Usage:</dt><dd><p>Basic workflow example:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceParameterDistribution</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceParameterDistribution</span><span class="p">(</span><span class="n">event_type</span><span class="o">=</span><span class="s1">&#39;BBH&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">params</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">sample_gw_parameters</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">params</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">gw_parameters_rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
 </pre></div>
 </div>
@@ -166,7 +170,7 @@ spin parameters, sky positions, and other parameters needed for GW analysis.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.cbc_source_parameter_distribution.</span></span><span class="sig-name descname"><span class="pre">CBCSourceParameterDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BBH'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_priors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_priors_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_precession</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./interpolator_json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_new_interpolator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.gw_source_population.cbc_source_parameter_distribution.</span></span><span class="sig-name descname"><span class="pre">CBCSourceParameterDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BBH'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gw_functions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gw_functions_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gw_priors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gw_priors_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_precession</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./interpolator_json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_new_interpolator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../cbc_source_redshift_distribution/index.html#ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution" title="ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ler.gw_source_population.cbc_source_redshift_distribution.CBCSourceRedshiftDistribution</span></code></a></p>
 <p>Class for sampling compact binary coalescence source parameters.</p>
 <p>This class generates complete sets of intrinsic and extrinsic gravitational
@@ -183,6 +187,9 @@ black hole populations with configurable prior distributions.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
+<dt><strong>npool</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of processors to use for multiprocessing and numba threads.</p>
+<p>default: 4</p>
+</dd>
 <dt><strong>z_min</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">float</span></code></span></dt><dd><p>Minimum redshift of the source population.</p>
 <p>default: 0.0</p>
 </dd>
@@ -200,11 +207,11 @@ black hole populations with configurable prior distributions.</p>
 </ul>
 <p>default: ‘BBH’</p>
 </dd>
-<dt><strong>source_priors</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Dictionary of prior sampler functions for each parameter.</p>
+<dt><strong>gw_priors</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Dictionary of prior sampler functions for each parameter.</p>
 <p>If None, uses default priors based on event_type.</p>
 <p>default: None</p>
 </dd>
-<dt><strong>source_priors_params</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Dictionary of parameters for each prior sampler function.</p>
+<dt><strong>gw_priors_params</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Dictionary of parameters for each prior sampler function.</p>
 <p>If None, uses default parameters based on event_type.</p>
 <p>default: None</p>
 </dd>
@@ -231,185 +238,10 @@ black hole populations with configurable prior distributions.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceParameterDistribution</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceParameterDistribution</span><span class="p">(</span><span class="n">event_type</span><span class="o">=</span><span class="s1">&#39;BBH&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">params</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">sample_gw_parameters</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">params</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">gw_parameters_rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
 </pre></div>
 </div>
-<section id="instance-methods">
-<h4>Instance Methods<a class="headerlink" href="#instance-methods" title="Link to this heading"></a></h4>
-<p>CBCSourceParameterDistribution has the following methods:</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Method</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sample_gw_parameters" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sample_gw_parameters"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_gw_parameters()</span></code></a></p></td>
-<td><p>Sample all GW parameters for compact binaries</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BBH_powerlaw_gaussian" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BBH_powerlaw_gaussian"><code class="xref py py-meth docutils literal notranslate"><span class="pre">binary_masses_BBH_powerlaw_gaussian()</span></code></a>.</p></td>
-<td><p>Sample BBH masses with PowerLaw+PEAK model</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BBH_popIII_lognormal" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BBH_popIII_lognormal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">binary_masses_BBH_popIII_lognormal()</span></code></a></p></td>
-<td><p>Sample pop III BBH masses from lognormal</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BBH_primordial_lognormal" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BBH_primordial_lognormal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">binary_masses_BBH_primordial_lognormal()</span></code></a></p></td>
-<td><p>Sample primordial BBH masses from lognormal</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_NSBH_broken_powerlaw" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_NSBH_broken_powerlaw"><code class="xref py py-meth docutils literal notranslate"><span class="pre">binary_masses_NSBH_broken_powerlaw()</span></code></a></p></td>
-<td><p>Sample NSBH masses from broken powerlaw</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_uniform" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_uniform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">binary_masses_uniform()</span></code></a></p></td>
-<td><p>Sample masses from uniform distribution</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BNS_bimodal" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BNS_bimodal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">binary_masses_BNS_bimodal()</span></code></a></p></td>
-<td><p>Sample BNS masses from bimodal distribution</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.constant_values_n_size" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.constant_values_n_size"><code class="xref py py-meth docutils literal notranslate"><span class="pre">constant_values_n_size()</span></code></a></p></td>
-<td><p>Return array of constant values</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sampler_uniform" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sampler_uniform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sampler_uniform()</span></code></a></p></td>
-<td><p>Sample from uniform distribution</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sampler_cosine" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sampler_cosine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sampler_cosine()</span></code></a></p></td>
-<td><p>Sample from cosine distribution</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sampler_sine" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sampler_sine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sampler_sine()</span></code></a></p></td>
-<td><p>Sample from sine distribution</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="instance-attributes">
-<h4>Instance Attributes<a class="headerlink" href="#instance-attributes" title="Link to this heading"></a></h4>
-<p>CBCSourceParameterDistribution has the following attributes:</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Attribute</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Unit</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.z_min" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.z_min"><code class="xref py py-attr docutils literal notranslate"><span class="pre">z_min</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
-<td></td>
-<td><p>Minimum redshift of source population</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.z_max" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.z_max"><code class="xref py py-attr docutils literal notranslate"><span class="pre">z_max</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
-<td></td>
-<td><p>Maximum redshift of source population</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.cosmo" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.cosmo"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cosmo</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">astropy.cosmology</span></code></p></td>
-<td></td>
-<td><p>Cosmology for distance calculations</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.spin_zero" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.spin_zero"><code class="xref py py-attr docutils literal notranslate"><span class="pre">spin_zero</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
-<td></td>
-<td><p>Whether to ignore spin parameters</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.spin_precession" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.spin_precession"><code class="xref py py-attr docutils literal notranslate"><span class="pre">spin_precession</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
-<td></td>
-<td><p>Whether to use precessing spins</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.directory" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.directory"><code class="xref py py-attr docutils literal notranslate"><span class="pre">directory</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
-<td></td>
-<td><p>Directory for interpolator files</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">gw_param_samplers</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
-<td></td>
-<td><p>Dictionary of parameter sampler functions</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">gw_param_samplers_params</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
-<td></td>
-<td><p>Dictionary of sampler function parameters</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.available_gw_prior" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.available_gw_prior"><code class="xref py py-attr docutils literal notranslate"><span class="pre">available_gw_prior</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
-<td></td>
-<td><p>Available prior distributions</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.source_frame_masses" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.source_frame_masses"><code class="xref py py-attr docutils literal notranslate"><span class="pre">source_frame_masses</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
-<td></td>
-<td><p>Sampler for source frame masses</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.zs" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.zs"><code class="xref py py-attr docutils literal notranslate"><span class="pre">zs</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
-<td></td>
-<td><p>Sampler for source redshift</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.geocent_time" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.geocent_time"><code class="xref py py-attr docutils literal notranslate"><span class="pre">geocent_time</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
-<td></td>
-<td><p>Sampler for geocentric time</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.ra" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.ra"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ra</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
-<td></td>
-<td><p>Sampler for right ascension</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.dec" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.dec"><code class="xref py py-attr docutils literal notranslate"><span class="pre">dec</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
-<td></td>
-<td><p>Sampler for declination</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.phase" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.phase"><code class="xref py py-attr docutils literal notranslate"><span class="pre">phase</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
-<td></td>
-<td><p>Sampler for coalescence phase</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.psi" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.psi"><code class="xref py py-attr docutils literal notranslate"><span class="pre">psi</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
-<td></td>
-<td><p>Sampler for polarization angle</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.theta_jn" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.theta_jn"><code class="xref py py-attr docutils literal notranslate"><span class="pre">theta_jn</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
-<td></td>
-<td><p>Sampler for inclination angle</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.a_1" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.a_1"><code class="xref py py-attr docutils literal notranslate"><span class="pre">a_1</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
-<td></td>
-<td><p>Sampler for spin1 magnitude</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.a_2" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.a_2"><code class="xref py py-attr docutils literal notranslate"><span class="pre">a_2</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
-<td></td>
-<td><p>Sampler for spin2 magnitude</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.tilt_1" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.tilt_1"><code class="xref py py-attr docutils literal notranslate"><span class="pre">tilt_1</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
-<td></td>
-<td><p>Sampler for tilt1 angle</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.tilt_2" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.tilt_2"><code class="xref py py-attr docutils literal notranslate"><span class="pre">tilt_2</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
-<td></td>
-<td><p>Sampler for tilt2 angle</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.phi_12" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.phi_12"><code class="xref py py-attr docutils literal notranslate"><span class="pre">phi_12</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
-<td></td>
-<td><p>Sampler for phi_12 angle</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.phi_jl" title="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.phi_jl"><code class="xref py py-attr docutils literal notranslate"><span class="pre">phi_jl</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p></td>
-<td></td>
-<td><p>Sampler for phi_jl angle</p></td>
-</tr>
-</tbody>
-</table>
 <dl class="py property">
 <dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.zs">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zs</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.zs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.zs" title="Link to this definition"></a></dt>
@@ -431,19 +263,19 @@ black hole populations with configurable prior distributions.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.source_frame_masses">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source_frame_masses</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.source_frame_masses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.source_frame_masses" title="Link to this definition"></a></dt>
-<dd><p>Class object (of FunctionConditioning) for source frame masses, with rvs/sampler as callback. Can also be a user defined callable sampler.</p>
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.mass_1_source">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mass_1_source</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.mass_1_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.mass_1_source" title="Link to this definition"></a></dt>
+<dd><p>Class object (of FunctionConditioning) for source frame primary mass, with rvs/sampler as callback. Can also be a user defined callable sampler.</p>
 <p>The class object contains the following attribute methods:</p>
 <ul class="simple">
-<li><p><cite>rvs</cite>: returns random samples from the density profile slope distribution</p></li>
+<li><p><cite>function(m1)</cite>: returns the primary mass distribution function in terms of the merger rate at fixed redshift.</p></li>
+<li><p><cite>pdf(m1)</cite>: returns the probability density function of the primary mass distribution.</p></li>
+<li><p><cite>rvs(size)</cite>: returns random samples from the primary mass distribution.</p></li>
 </ul>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>mass_1_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of mass_1_source values in solar masses.</p>
-</dd>
-<dt><strong>mass_2_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of mass_2_source values in solar masses.</p>
 </dd>
 </dl>
 </dd>
@@ -451,7 +283,7 @@ black hole populations with configurable prior distributions.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceParameterDistribution</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cbc_source_param_dist</span> <span class="o">=</span> <span class="n">CBCSourceParameterDistribution</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cbc_source_param_dist</span><span class="o">.</span><span class="n">source_frame_masses</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cbc_source_param_dist</span><span class="o">.</span><span class="n">mass_1_source</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -549,7 +381,7 @@ black hole populations with configurable prior distributions.</p>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>geocent_time</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of polarization angle values.</p>
+<dt><strong>psi</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of polarization angle values.</p>
 </dd>
 </dl>
 </dd>
@@ -585,6 +417,7 @@ black hole populations with configurable prior distributions.</p>
 <li><p><cite>rvs</cite>: returns random samples from the spin1 magnitude distribution</p></li>
 <li><p><cite>pdf</cite>: returns the probability density function of the spin1 magnitude distribution</p></li>
 <li><p><cite>function</cite>: returns the spin1 magnitude distribution function.</p></li>
+<li><p><cite>None</cite> : if spin_zero=True.</p></li>
 </ul>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -605,6 +438,7 @@ black hole populations with configurable prior distributions.</p>
 <li><p><cite>rvs</cite>: returns random samples from the spin2 magnitude distribution</p></li>
 <li><p><cite>pdf</cite>: returns the probability density function of the spin2 magnitude distribution</p></li>
 <li><p><cite>function</cite>: returns the spin2 magnitude distribution function.</p></li>
+<li><p><cite>None</cite> : if spin_zero=True.</p></li>
 </ul>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -625,6 +459,7 @@ black hole populations with configurable prior distributions.</p>
 <li><p><cite>rvs</cite>: returns random samples from the tilt1 angle distribution</p></li>
 <li><p><cite>pdf</cite>: returns the probability density function of the tilt1 angle distribution</p></li>
 <li><p><cite>function</cite>: returns the tilt1 angle distribution function.</p></li>
+<li><p><cite>None</cite> : if spin_zero=True or spin_precession=False.</p></li>
 </ul>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -645,6 +480,7 @@ black hole populations with configurable prior distributions.</p>
 <li><p><cite>rvs</cite>: returns random samples from the tilt2 angle distribution</p></li>
 <li><p><cite>pdf</cite>: returns the probability density function of the tilt2 angle distribution</p></li>
 <li><p><cite>function</cite>: returns the tilt2 angle distribution function.</p></li>
+<li><p><cite>None</cite> : if spin_zero=True or spin_precession=False.</p></li>
 </ul>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -665,6 +501,7 @@ black hole populations with configurable prior distributions.</p>
 <li><p><cite>rvs</cite>: returns random samples from the phi_12 angle distribution</p></li>
 <li><p><cite>pdf</cite>: returns the probability density function of the phi_12 angle distribution</p></li>
 <li><p><cite>function</cite>: returns the phi_12 angle distribution function.</p></li>
+<li><p><cite>None</cite> : if spin_zero=True or spin_precession=False.</p></li>
 </ul>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -685,6 +522,7 @@ black hole populations with configurable prior distributions.</p>
 <li><p><cite>rvs</cite>: returns random samples from the phi_jl angle distribution</p></li>
 <li><p><cite>pdf</cite>: returns the probability density function of the phi_jl angle distribution</p></li>
 <li><p><cite>function</cite>: returns the phi_jl angle distribution function.</p></li>
+<li><p><cite>None</cite> : if spin_zero=True or spin_precession=False.</p></li>
 </ul>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -697,6 +535,51 @@ black hole populations with configurable prior distributions.</p>
 </dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.mass_ratio">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mass_ratio</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.mass_ratio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.mass_ratio" title="Link to this definition"></a></dt>
+<dd><p>Class object (of FunctionConditioning) for mass ratio, with rvs/sampler as callback. Can also be a user defined callable sampler.</p>
+<p>The class object contains the following attribute methods:</p>
+<ul class="simple">
+<li><p><cite>rvs(size)</cite> or <cite>rvs(size, m1)</cite>: returns random samples from the mass ratio distribution</p></li>
+<li><p><cite>pdf(q)</cite> or <cite>pdf(q, m1)</cite>: returns the probability density function of the mass ratio distribution</p></li>
+</ul>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>mass_ratio</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of mass ratio values.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.mass_2_source">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mass_2_source</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.mass_2_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.mass_2_source" title="Link to this definition"></a></dt>
+<dd><p>Class object (of FunctionConditioning) for source frame secondary mass, with rvs/sampler as callback. Can also be a user defined callable sampler.</p>
+<p>The class object contains the following attribute methods:</p>
+<ul class="simple">
+<li><p><cite>function(m1)</cite>: returns the secondary mass distribution function in terms of the merger rate at fixed redshift.</p></li>
+<li><p><cite>pdf(m1)</cite>: returns the probability density function of the secondary mass distribution.</p></li>
+<li><p><cite>rvs(size)</cite>: returns random samples from the secondary mass distribution.</p></li>
+</ul>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>mass_2_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of mass_2_source values in solar masses.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceParameterDistribution</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cbc_source_param_dist</span> <span class="o">=</span> <span class="n">CBCSourceParameterDistribution</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cbc_source_param_dist</span><span class="o">.</span><span class="n">mass_2_source</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.available_gw_prior">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_gw_prior</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.available_gw_prior"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.available_gw_prior" title="Link to this definition"></a></dt>
 <dd><p>Dictionary of all available prior distributions and their parameters.</p>
@@ -705,8 +588,22 @@ for each GW parameter type and their default parameter values.</p>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>available_gw_prior</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Nested dictionary organized by parameter type (e.g., ‘source_frame_masses’,</p>
+<dt><strong>available_gw_prior</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Nested dictionary organized by parameter type (e.g., ‘mass_1_source’,</p>
 <p>‘geocent_time’, etc.) with sampler names and default parameters.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.available_gw_functions">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_gw_functions</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.available_gw_functions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.available_gw_functions" title="Link to this definition"></a></dt>
+<dd><p>Dictionary of available gravitational wave related functions and their default parameters.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>available_gw_functions</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary with function names and default parameters.</p>
 </dd>
 </dl>
 </dd>
@@ -736,15 +633,15 @@ for each GW parameter type and their default parameter values.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.source_priors">
-<span class="sig-name descname"><span class="pre">source_priors</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'None'</span></em><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.source_priors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.source_priors" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.gw_priors">
+<span class="sig-name descname"><span class="pre">gw_priors</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'None'</span></em><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.gw_priors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.gw_priors" title="Link to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>Dictionary of prior sampler functions.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.source_priors_params">
-<span class="sig-name descname"><span class="pre">source_priors_params</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'None'</span></em><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.source_priors_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.source_priors_params" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.gw_priors_params">
+<span class="sig-name descname"><span class="pre">gw_priors_params</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'None'</span></em><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.gw_priors_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.gw_priors_params" title="Link to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>Dictionary of prior sampler functions’ input parameters.</p>
 </dd></dl>
@@ -783,18 +680,28 @@ for each GW parameter type and their default parameter values.</p>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.gw_parameters_rvs_routine">
+<span class="sig-name descname"><span class="pre">gw_parameters_rvs_routine</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.gw_parameters_rvs_routine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.gw_parameters_rvs_routine" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sample_gw_parameters_routine">
+<span class="sig-name descname"><span class="pre">sample_gw_parameters_routine</span></span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.sample_gw_parameters_routine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sample_gw_parameters_routine" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sample_gw_parameters">
 <span class="sig-name descname"><span class="pre">sample_gw_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.sample_gw_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sample_gw_parameters" title="Link to this definition"></a></dt>
 <dd><p>Sample all gravitational wave parameters for compact binaries.</p>
-<p>Generates a complete set of intrinsic and extrinsic parameters including
-masses, redshift, luminosity distance, sky position, orientation, and
-optionally spin parameters.</p>
+<p>This method samples GW parameters using the specified routine and
+returns a dictionary with redshift, masses, luminosity distance, and
+orientation parameters.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
-<p>default: 1000</p>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.
+default: 1000</p>
 </dd>
 <dt><strong>param</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Dictionary of fixed parameter values.</p>
 <p>Parameters in this dict will not be sampled.</p>
@@ -879,21 +786,261 @@ optionally spin parameters.</p>
 </dl>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.gw_parameters_rvs">
+<span class="sig-name descname"><span class="pre">gw_parameters_rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.gw_parameters_rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.gw_parameters_rvs" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Sample all gravitational wave parameters for compact binaries.</p>
+<p>This method samples GW parameters using the specified routine and returns a dictionary with redshift, masses, luminosity distance, and
+orientation parameters.</p>
+</div></blockquote>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.
+default: 1000</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of fixed parameter values.</p>
+<p>Parameters in this dict will not be sampled.</p>
+<p>e.g. mass_1_source, mass_2_source, mass_ratio, zs, geocent_time, ra, dec, phase, psi, theta_jn, a_1, a_2, tilt_1, tilt_2, phi_12, phi_jl</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>gw_parameters</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of sampled GW parameters. The included parameters and their units are as follows (for default settings):</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Units</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>zs</p></td>
+<td></td>
+<td><p>redshift of the source</p></td>
+</tr>
+<tr class="row-odd"><td><p>geocent_time</p></td>
+<td><p>s</p></td>
+<td><p>GPS time of coalescence</p></td>
+</tr>
+<tr class="row-even"><td><p>ra</p></td>
+<td><p>rad</p></td>
+<td><p>right ascension</p></td>
+</tr>
+<tr class="row-odd"><td><p>dec</p></td>
+<td><p>rad</p></td>
+<td><p>declination</p></td>
+</tr>
+<tr class="row-even"><td><p>phase</p></td>
+<td><p>rad</p></td>
+<td><p>phase of GW at reference frequency</p></td>
+</tr>
+<tr class="row-odd"><td><p>psi</p></td>
+<td><p>rad</p></td>
+<td><p>polarization angle</p></td>
+</tr>
+<tr class="row-even"><td><p>theta_jn</p></td>
+<td><p>rad</p></td>
+<td><p>inclination angle</p></td>
+</tr>
+<tr class="row-odd"><td><p>a_1</p></td>
+<td></td>
+<td><p>spin_1 of the compact binary</p></td>
+</tr>
+<tr class="row-even"><td><p>a_2</p></td>
+<td></td>
+<td><p>spin of the secondary compact binary</p></td>
+</tr>
+<tr class="row-odd"><td><p>luminosity_distance</p></td>
+<td><p>Mpc</p></td>
+<td><p>luminosity distance</p></td>
+</tr>
+<tr class="row-even"><td><p>mass_1_source</p></td>
+<td><p>Msun</p></td>
+<td><p>mass_1 of the compact binary
+(source frame)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mass_2_source</p></td>
+<td><p>Msun</p></td>
+<td><p>mass_2 of the compact binary
+(source frame)</p></td>
+</tr>
+<tr class="row-even"><td><p>mass_1</p></td>
+<td><p>Msun</p></td>
+<td><p>mass_1 of the compact binary
+(detector frame)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mass_2</p></td>
+<td><p>Msun</p></td>
+<td><p>mass_2 of the compact binary
+(detector frame)</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.gw_parameters_rvs_njit">
+<span class="sig-name descname"><span class="pre">gw_parameters_rvs_njit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.gw_parameters_rvs_njit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.gw_parameters_rvs_njit" title="Link to this definition"></a></dt>
+<dd><p>Sample all gravitational wave parameters for compact binaries.</p>
+<p>This method samples GW parameters using the specified routine and
+returns a dictionary with redshift, masses, luminosity distance, and
+orientation parameters.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.
+default: 1000</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>gw_parameters</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of sampled GW parameters. The included parameters and their units are as follows (for default settings):</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Units</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>zs</p></td>
+<td></td>
+<td><p>redshift of the source</p></td>
+</tr>
+<tr class="row-odd"><td><p>geocent_time</p></td>
+<td><p>s</p></td>
+<td><p>GPS time of coalescence</p></td>
+</tr>
+<tr class="row-even"><td><p>ra</p></td>
+<td><p>rad</p></td>
+<td><p>right ascension</p></td>
+</tr>
+<tr class="row-odd"><td><p>dec</p></td>
+<td><p>rad</p></td>
+<td><p>declination</p></td>
+</tr>
+<tr class="row-even"><td><p>phase</p></td>
+<td><p>rad</p></td>
+<td><p>phase of GW at reference frequency</p></td>
+</tr>
+<tr class="row-odd"><td><p>psi</p></td>
+<td><p>rad</p></td>
+<td><p>polarization angle</p></td>
+</tr>
+<tr class="row-even"><td><p>theta_jn</p></td>
+<td><p>rad</p></td>
+<td><p>inclination angle</p></td>
+</tr>
+<tr class="row-odd"><td><p>a_1</p></td>
+<td></td>
+<td><p>spin_1 of the compact binary</p></td>
+</tr>
+<tr class="row-even"><td><p>a_2</p></td>
+<td></td>
+<td><p>spin of the secondary compact binary</p></td>
+</tr>
+<tr class="row-odd"><td><p>luminosity_distance</p></td>
+<td><p>Mpc</p></td>
+<td><p>luminosity distance</p></td>
+</tr>
+<tr class="row-even"><td><p>mass_1_source</p></td>
+<td><p>Msun</p></td>
+<td><p>mass_1 of the compact binary
+(source frame)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mass_2_source</p></td>
+<td><p>Msun</p></td>
+<td><p>mass_2 of the compact binary
+(source frame)</p></td>
+</tr>
+<tr class="row-even"><td><p>mass_1</p></td>
+<td><p>Msun</p></td>
+<td><p>mass_1 of the compact binary
+(detector frame)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mass_2</p></td>
+<td><p>Msun</p></td>
+<td><p>mass_2 of the compact binary
+(detector frame)</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.broken_powerlaw_plus_2peaks">
+<span class="sig-name descname"><span class="pre">broken_powerlaw_plus_2peaks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.broken_powerlaw_plus_2peaks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.broken_powerlaw_plus_2peaks" title="Link to this definition"></a></dt>
+<dd><p>Sample primary source mass with broken power-law + two peaks model for BBH.</p>
+<p>Implements the mass distribution model combining a broken power-law
+with two Gaussian peaks for modeling specific mass populations.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
+</dd>
+<dt><strong>get_attribute</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, return the sampler object instead of samples.</p>
+<p>default: False</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Model parameters:</p>
+<ul class="simple">
+<li><p>lam_0: Fraction of broken power-law component, default: 0.361</p></li>
+<li><p>lam_1: Fraction of first Gaussian peak, default: 0.586</p></li>
+<li><p>mpp_1: Mean of first Gaussian peak (Msun), default: 9.764</p></li>
+<li><p>sigpp_1: Std dev of first Gaussian peak (Msun), default: 0.649</p></li>
+<li><p>mpp_2: Mean of second Gaussian peak (Msun), default: 32.763</p></li>
+<li><p>sigpp_2: Std dev of second Gaussian peak (Msun), default: 3.918</p></li>
+<li><p>mlow_1: Minimum primary mass (Msun), default: 5.059</p></li>
+<li><p>delta_m_1: Low-mass tapering range (Msun), default: 4.321</p></li>
+<li><p>break_mass: Power-law break mass (Msun), default: 35.622</p></li>
+<li><p>alpha_1: Power-law index below break, default: 1.728</p></li>
+<li><p>alpha_2: Power-law index above break, default: 4.512</p></li>
+<li><p>mmax: Maximum primary mass (Msun), default: 300.0</p></li>
+<li><p>beta: Mass ratio power-law index, default: 1.171</p></li>
+<li><p>mlow_2: Minimum secondary mass (Msun), default: 3.551</p></li>
+<li><p>delta_m_2: Secondary mass tapering range (Msun), default: 4.910</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>mass_1_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of primary masses in source frame (Msun).</p>
+</dd>
+<dt><strong>mass_2_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of secondary masses in source frame (Msun).</p>
+</dd>
+</dl>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceParameterDistribution</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceParameterDistribution</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">params</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">sample_gw_parameters</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m1_src</span><span class="p">,</span> <span class="n">m2_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">broken_powerlaw_plus_2peaks</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BBH_powerlaw_gaussian">
-<span class="sig-name descname"><span class="pre">binary_masses_BBH_powerlaw_gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.binary_masses_BBH_powerlaw_gaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BBH_powerlaw_gaussian" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.powerlaw_plus_peak">
+<span class="sig-name descname"><span class="pre">powerlaw_plus_peak</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.powerlaw_plus_peak"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.powerlaw_plus_peak" title="Link to this definition"></a></dt>
 <dd><p>Sample source masses with PowerLaw+PEAK model for Population I/II BBH.</p>
+<p>GWTC-3 parameters: mminbh=4.98, mmaxbh=112.5, alpha=3.78, mu_g=32.27, sigma_g=3.88, lambda_peak=0.03, delta_m=4.8, beta=0.81</p>
 <p>Implements the mass distribution model from LIGO-Virgo population analyses
-combining a power-law with a Gaussian peak component.</p>
+combining a power-law with a Gaussian peak component. Uses separate
+m1 and q interpolators with joint composite sampling.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -928,16 +1075,17 @@ combining a power-law with a Gaussian peak component.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceParameterDistribution</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceParameterDistribution</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m1_src</span><span class="p">,</span> <span class="n">m2_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">binary_masses_BBH_powerlaw_gaussian</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m1_src</span><span class="p">,</span> <span class="n">m2_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">powerlaw_plus_peak</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BBH_popIII_lognormal">
-<span class="sig-name descname"><span class="pre">binary_masses_BBH_popIII_lognormal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.binary_masses_BBH_popIII_lognormal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BBH_popIII_lognormal" title="Link to this definition"></a></dt>
-<dd><p>Sample source masses for Population III BBH from lognormal distribution.</p>
-<p>Based on Eqn. 1 and 4 of Ng et al. 2022 for Population III black holes.</p>
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.powerlaw_with_smoothing">
+<span class="sig-name descname"><span class="pre">powerlaw_with_smoothing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.powerlaw_with_smoothing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.powerlaw_with_smoothing" title="Link to this definition"></a></dt>
+<dd><p>Sample mass ratio with power-law distribution with smoothing near q=1.</p>
+<p>Implements a power-law distribution for the mass ratio with an additional
+smoothing function to account for the observed excess of equal-mass binaries.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -948,136 +1096,18 @@ combining a power-law with a Gaussian peak component.</p>
 </dd>
 <dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Model parameters:</p>
 <ul class="simple">
-<li><p>m_min: Minimum BH mass (Msun), default: 5.0</p></li>
-<li><p>m_max: Maximum BH mass (Msun), default: 150.0</p></li>
-<li><p>Mc: Central mass scale (Msun), default: 30.0</p></li>
-<li><p>sigma: Distribution width, default: 0.3</p></li>
+<li><p>q_min: Minimum mass ratio, default: 0.01</p></li>
+<li><p>q_max: Maximum mass ratio, default: 1.0</p></li>
+<li><p>beta: Power-law index, default: 1.171</p></li>
+<li><p>mlow_2: Minimum secondary mass (Msun), default: 3.551</p></li>
+<li><p>delta_m_2: Tapering range for secondary mass (Msun), default: 4.910</p></li>
 </ul>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>mass_1_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of primary masses in source frame (Msun).</p>
-</dd>
-<dt><strong>mass_2_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of secondary masses in source frame (Msun).</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceParameterDistribution</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceParameterDistribution</span><span class="p">(</span><span class="n">event_type</span><span class="o">=</span><span class="s1">&#39;BBH_popIII&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m1_src</span><span class="p">,</span> <span class="n">m2_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">binary_masses_BBH_popIII_lognormal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BBH_primordial_lognormal">
-<span class="sig-name descname"><span class="pre">binary_masses_BBH_primordial_lognormal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.binary_masses_BBH_primordial_lognormal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BBH_primordial_lognormal" title="Link to this definition"></a></dt>
-<dd><p>Sample source masses for primordial BBH from lognormal distribution.</p>
-<p>Based on Eqn. 1 and 4 of Ng et al. 2022 for primordial black holes.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
-</dd>
-<dt><strong>get_attribute</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, return the sampler object instead of samples.</p>
-<p>default: False</p>
-</dd>
-<dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Model parameters:</p>
-<ul class="simple">
-<li><p>m_min: Minimum BH mass (Msun), default: 1.0</p></li>
-<li><p>m_max: Maximum BH mass (Msun), default: 100.0</p></li>
-<li><p>Mc: Central mass scale (Msun), default: 20.0</p></li>
-<li><p>sigma: Distribution width, default: 0.3</p></li>
-</ul>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl>
-<dt><strong>mass_1_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of primary masses in source frame (Msun).</p>
-</dd>
-<dt><strong>mass_2_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of secondary masses in source frame (Msun).</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_NSBH_broken_powerlaw">
-<span class="sig-name descname"><span class="pre">binary_masses_NSBH_broken_powerlaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.binary_masses_NSBH_broken_powerlaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_NSBH_broken_powerlaw" title="Link to this definition"></a></dt>
-<dd><p>Sample source masses for NSBH from broken power-law distribution.</p>
-<p>Uses gwcosmo-style broken power-law for black hole mass and power-law
-for neutron star mass.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
-</dd>
-<dt><strong>get_attribute</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, return the sampler object instead of samples.</p>
-<p>default: False</p>
-</dd>
-<dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Model parameters:</p>
-<ul class="simple">
-<li><p>mminbh: Minimum BH mass (Msun), default: 26</p></li>
-<li><p>mmaxbh: Maximum BH mass (Msun), default: 125</p></li>
-<li><p>alpha_1: Primary power-law index, default: 6.75</p></li>
-<li><p>alpha_2: Secondary power-law index, default: 6.75</p></li>
-<li><p>b: Break point, default: 0.5</p></li>
-<li><p>delta_m: Tapering range (Msun), default: 5</p></li>
-<li><p>mminns: Minimum NS mass (Msun), default: 1.0</p></li>
-<li><p>mmaxns: Maximum NS mass (Msun), default: 3.0</p></li>
-<li><p>alphans: NS mass power-law index, default: 0.0</p></li>
-</ul>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl>
-<dt><strong>mass_1_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of BH masses in source frame (Msun).</p>
-</dd>
-<dt><strong>mass_2_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of NS masses in source frame (Msun).</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceParameterDistribution</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceParameterDistribution</span><span class="p">(</span><span class="n">event_type</span><span class="o">=</span><span class="s1">&#39;NSBH&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m1_src</span><span class="p">,</span> <span class="n">m2_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">binary_masses_NSBH_broken_powerlaw</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_uniform">
-<span class="sig-name descname"><span class="pre">binary_masses_uniform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.binary_masses_uniform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_uniform" title="Link to this definition"></a></dt>
-<dd><p>Sample source masses from uniform distribution.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
-</dd>
-<dt><strong>get_attribute</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, return the sampler object instead of samples.</p>
-<p>default: False</p>
-</dd>
-<dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Model parameters:</p>
-<ul class="simple">
-<li><p>m_min: Minimum mass (Msun), default: 1.0</p></li>
-<li><p>m_max: Maximum mass (Msun), default: 3.0</p></li>
-</ul>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl>
-<dt><strong>mass_1_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of primary masses in source frame (Msun).</p>
-</dd>
-<dt><strong>mass_2_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of secondary masses in source frame (Msun).</p>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of mass ratios (m2/m1) for the binary systems.</p>
 </dd>
 </dl>
 </dd>
@@ -1085,17 +1115,70 @@ for neutron star mass.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceParameterDistribution</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceParameterDistribution</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m1_src</span><span class="p">,</span> <span class="n">m2_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">binary_masses_uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m1</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">broken_powerlaw_plus_2peaks</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q_samples</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">powerlaw_with_smoothing</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">m1</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BNS_bimodal">
-<span class="sig-name descname"><span class="pre">binary_masses_BNS_bimodal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.binary_masses_BNS_bimodal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.binary_masses_BNS_bimodal" title="Link to this definition"></a></dt>
-<dd><p>Sample BNS masses from bimodal Gaussian distribution.</p>
-<p>Based on Will M. Farr et al. 2020 Eqn. 6 for neutron star mass
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.gaussian_plus_isotropic">
+<span class="sig-name descname"><span class="pre">gaussian_plus_isotropic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.gaussian_plus_isotropic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.gaussian_plus_isotropic" title="Link to this definition"></a></dt>
+<dd><p>Sample from tilt_1 distribution for spin tilt angle of primary mass.</p>
+<p>Samples values in range [-1, 1] and converts to tilt angles in radians. Combines a truncated Gaussian component with an isotropic distribution.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
+</dd>
+<dt><strong>get_attribute</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, return the sampler object instead of samples.</p>
+<p>default: False</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>values</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of tilt_1 angles.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.gaussian_plus_isotropic_joint">
+<span class="sig-name descname"><span class="pre">gaussian_plus_isotropic_joint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.gaussian_plus_isotropic_joint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.gaussian_plus_isotropic_joint" title="Link to this definition"></a></dt>
+<dd><p>Sample from tilt_2 distribution for spin tilt angle of secondary mass, given the tilt_1 distribution for primary mass.</p>
+<p>Samples values in range [-1, 1] and converts to tilt angles in radians. Combines a truncated Gaussian component with an isotropic distribution.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
+</dd>
+<dt><strong>get_attribute</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, return the sampler object instead of samples.</p>
+<p>default: False</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>values</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of tilt_2 angles.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.bimodal">
+<span class="sig-name descname"><span class="pre">bimodal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.bimodal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.bimodal" title="Link to this definition"></a></dt>
+<dd><p>Sample BNS primary mass from bimodal Gaussian distribution.</p>
+<p>Based on Will M. Farr et al. 2020 Eq. 6 for neutron star mass
 distribution combining two Gaussian peaks.</p>
+<div class="math notranslate nohighlight">
+\[p(m) = w\,\mathcal{N}(m \mid \mu_L, \sigma_L)
++ (1-w)\,\mathcal{N}(m \mid \mu_R, \sigma_R),\]</div>
+<p>truncated to <code class="docutils literal notranslate"><span class="pre">[mmin,</span> <span class="pre">mmax]</span></code>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -1121,17 +1204,112 @@ distribution combining two Gaussian peaks.</p>
 <dd class="field-even"><dl>
 <dt><strong>mass_1_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of primary masses in source frame (Msun).</p>
 </dd>
-<dt><strong>mass_2_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of secondary masses in source frame (Msun).</p>
-</dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.gw_source_population</span> <span class="kn">import</span> <span class="n">CBCSourceParameterDistribution</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cbc</span> <span class="o">=</span> <span class="n">CBCSourceParameterDistribution</span><span class="p">(</span><span class="n">event_type</span><span class="o">=</span><span class="s1">&#39;BNS&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m1_src</span><span class="p">,</span> <span class="n">m2_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">binary_masses_BNS_bimodal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m1_src</span> <span class="o">=</span> <span class="n">cbc</span><span class="o">.</span><span class="n">bimodal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.broken_powerlaw">
+<span class="sig-name descname"><span class="pre">broken_powerlaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.broken_powerlaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.broken_powerlaw" title="Link to this definition"></a></dt>
+<dd><p>Sample source masses for NSBH from broken power-law distribution.</p>
+<p>Uses gwcosmo-style broken power-law for black hole mass and power-law
+for neutron star mass.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
+</dd>
+<dt><strong>get_attribute</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, return the sampler object instead of samples.</p>
+<p>default: False</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Model parameters:</p>
+<ul class="simple">
+<li><p>mminbh: Minimum BH mass (Msun), default: 26</p></li>
+<li><p>mmaxbh: Maximum BH mass (Msun), default: 125</p></li>
+<li><p>alpha_1: Primary power-law index, default: 6.75</p></li>
+<li><p>alpha_2: Secondary power-law index, default: 6.75</p></li>
+<li><p>b: Break point, default: 0.5</p></li>
+<li><p>delta_m: Tapering range (Msun), default: 5</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>mass_1_source</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of BH masses in source frame (Msun).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.truncated_normal">
+<span class="sig-name descname"><span class="pre">truncated_normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.truncated_normal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.truncated_normal" title="Link to this definition"></a></dt>
+<dd><p>Sample with a truncated normal distribution.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
+</dd>
+<dt><strong>get_attribute</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, return the sampler object instead of samples.</p>
+<p>default: False</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Model parameters:</p>
+<ul class="simple">
+<li><p>x_min: Minimum value, default: 1.0</p></li>
+<li><p>x_max: Maximum value, default: 2.5</p></li>
+<li><p>mu: Mean of the truncated normal distribution, default: 1.4</p></li>
+<li><p>sigma: Standard deviation of the truncated normal distribution, default: 0.68</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>x</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of values drawn from the truncated normal distribution.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.powerlaw">
+<span class="sig-name descname"><span class="pre">powerlaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.powerlaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.powerlaw" title="Link to this definition"></a></dt>
+<dd><p>Sample values from a normalized power-law distribution.
+p(x) ∝ x^{-alpha}, x in [x_min, x_max]</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of samples to draw.</p>
+</dd>
+<dt><strong>get_attribute</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, return the sampler object instead of samples.</p>
+<p>default: False</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Model parameters:</p>
+<ul class="simple">
+<li><p>x_min: Minimum value, default: 0.0</p></li>
+<li><p>x_max: Maximum value, default: 1.0</p></li>
+<li><p>alpha: Power-law index, default: 2.35</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>values</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of values drawn from the normalized power-law distribution.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1164,8 +1342,8 @@ distribution combining two Gaussian peaks.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sampler_uniform">
-<span class="sig-name descname"><span class="pre">sampler_uniform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.sampler_uniform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.sampler_uniform" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.uniform">
+<span class="sig-name descname"><span class="pre">uniform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/gw_source_population/cbc_source_parameter_distribution.html#CBCSourceParameterDistribution.uniform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.gw_source_population.cbc_source_parameter_distribution.CBCSourceParameterDistribution.uniform" title="Link to this definition"></a></dt>
 <dd><p>Sample values from uniform distribution.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1177,15 +1355,15 @@ distribution combining two Gaussian peaks.</p>
 </dd>
 <dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Model parameters:</p>
 <ul class="simple">
-<li><p>xmin: Minimum value, default: 0.0</p></li>
-<li><p>xmax: Maximum value, default: 1.0</p></li>
+<li><p>x_min: Minimum value, default: 0.0</p></li>
+<li><p>x_max: Maximum value, default: 1.0</p></li>
 </ul>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>values</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of uniformly distributed values in range [xmin, xmax].</p>
+<dt><strong>values</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of uniformly distributed values in range [x_min, x_max].</p>
 </dd>
 </dl>
 </dd>
@@ -1242,7 +1420,6 @@ appropriate for isotropic orientation angles.</p>
 </dl>
 </dd></dl>
 
-</section>
 </dd></dl>
 
 </section>
@@ -1253,7 +1430,7 @@ appropriate for isotropic orientation angles.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../index.html" class="btn btn-neutral float-left" title="ler.gw_source_population" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../broken_powerlaw_plus_2peaks/index.html" class="btn btn-neutral float-left" title="ler.gw_source_population.broken_powerlaw_plus_2peaks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../cbc_source_redshift_distribution/index.html" class="btn btn-neutral float-right" title="ler.gw_source_population.cbc_source_redshift_distribution" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

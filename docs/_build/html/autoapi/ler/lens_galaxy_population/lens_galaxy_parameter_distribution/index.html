@@ -6,13 +6,13 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ler.lens_galaxy_population.lens_galaxy_parameter_distribution &mdash; ler 0.5.9 documentation</title>
+  <title>ler.lens_galaxy_population.lens_galaxy_parameter_distribution &mdash; ler 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=11132fbc" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/scalefix.css?v=551ad726" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=88a06014" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
@@ -20,7 +20,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=9a3cda14"></script>
+      <script src="../../../../_static/documentation_options.js?v=8fa8b3e9"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,9 +128,9 @@ strongly lensed. It handles the distribution of lens parameters such as velocity
 dispersion, axis ratio, rotation angle, shear, and density profile slope.</p>
 <p>Inheritance hierarchy:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="../../gw_source_population/index.html#ler.gw_source_population.CBCSourceParameterDistribution" title="ler.gw_source_population.CBCSourceParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code></a></p></li>
-<li><p><a class="reference internal" href="../../image_properties/index.html#ler.image_properties.ImageProperties" title="ler.image_properties.ImageProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageProperties</span></code></a></p></li>
-<li><p><a class="reference internal" href="../index.html#id18" title="ler.lens_galaxy_population.OpticalDepth"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageProperties</span></code></p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">OpticalDepth</span></code></p></li>
 </ul>
 <dl>
 <dt>Usage:</dt><dd><p>Basic workflow example:</p>
@@ -156,8 +156,8 @@ dispersion, axis ratio, rotation angle, shear, and density profile slope.</p>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.lens_galaxy_parameter_distribution.</span></span><span class="sig-name descname"><span class="pre">LensGalaxyParameterDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BBH'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'epl_shear_galaxy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens_functions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens_functions_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens_param_samplers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens_param_samplers_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./interpolator_json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_new_interpolator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../gw_source_population/index.html#ler.gw_source_population.CBCSourceParameterDistribution" title="ler.gw_source_population.CBCSourceParameterDistribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ler.gw_source_population.CBCSourceParameterDistribution</span></code></a>, <a class="reference internal" href="../../image_properties/index.html#ler.image_properties.ImageProperties" title="ler.image_properties.ImageProperties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ler.image_properties.ImageProperties</span></code></a>, <a class="reference internal" href="../optical_depth/index.html#ler.lens_galaxy_population.optical_depth.OpticalDepth" title="ler.lens_galaxy_population.optical_depth.OpticalDepth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.optical_depth.OpticalDepth</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ler.lens_galaxy_population.lens_galaxy_parameter_distribution.</span></span><span class="sig-name descname"><span class="pre">LensGalaxyParameterDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cosmology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BBH'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'epl_shear_galaxy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens_functions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens_functions_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens_priors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens_priors_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./interpolator_json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_new_interpolator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">ler.gw_source_population.CBCSourceParameterDistribution</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">ler.image_properties.ImageProperties</span></code>, <a class="reference internal" href="../optical_depth/index.html#ler.lens_galaxy_population.optical_depth.OpticalDepth" title="ler.lens_galaxy_population.optical_depth.OpticalDepth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ler.lens_galaxy_population.optical_depth.OpticalDepth</span></code></a></p>
 <p>Sample lens galaxy parameters conditioned on strong lensing.</p>
 <p>This class handles the distribution of lens galaxy parameters such as velocity
 dispersion, axis ratio, axis rotation angle, shear, and density profile slope.
@@ -203,10 +203,10 @@ using cross-section based rejection or importance sampling.</p>
 <dt><strong>lens_functions_params</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Parameters for lens functions.</p>
 <p>default: None</p>
 </dd>
-<dt><strong>lens_param_samplers</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Dictionary specifying lens parameter sampling functions.</p>
+<dt><strong>lens_priors</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Dictionary specifying lens parameter sampling functions.</p>
 <p>default: None (uses defaults from OpticalDepth)</p>
 </dd>
-<dt><strong>lens_param_samplers_params</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Parameters for lens parameter samplers.</p>
+<dt><strong>lens_priors_params</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>Parameters for lens parameter samplers.</p>
 <p>default: None</p>
 </dd>
 <dt><strong>directory</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>Directory for storing interpolator files.</p>
@@ -219,9 +219,9 @@ using cross-section based rejection or importance sampling.</p>
 <p>default: 1000</p>
 </dd>
 <dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Additional keyword arguments passed to parent classes:</p>
-<p><a class="reference internal" href="../../gw_source_population/index.html#ler.gw_source_population.CBCSourceParameterDistribution" title="ler.gw_source_population.CBCSourceParameterDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code></a>,</p>
-<p><a class="reference internal" href="../../image_properties/index.html#ler.image_properties.ImageProperties" title="ler.image_properties.ImageProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageProperties</span></code></a>,</p>
-<p><a class="reference internal" href="../index.html#id18" title="ler.lens_galaxy_population.OpticalDepth"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpticalDepth</span></code></a>.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code>,</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageProperties</span></code>,</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">OpticalDepth</span></code>.</p>
 </dd>
 </dl>
 </dd>
@@ -234,97 +234,6 @@ using cross-section based rejection or importance sampling.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">lensed_params</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 </pre></div>
 </div>
-<section id="instance-methods">
-<h4>Instance Methods<a class="headerlink" href="#instance-methods" title="Link to this heading"></a></h4>
-<p>LensGalaxyParameterDistribution has the following methods:</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Method</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_lens_parameters" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_lens_parameters"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_lens_parameters()</span></code></a></p></td>
-<td><p>Sample lens and source parameters</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_all_routine_epl_shear_intrinsic" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_all_routine_epl_shear_intrinsic"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_all_routine_epl_shear_intrinsic()</span></code></a></p></td>
-<td><p>Sample EPL+shear lens parameters from
-intrinsic distributions</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_all_routine_epl_shear_sl" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_all_routine_epl_shear_sl"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_all_routine_epl_shear_sl()</span></code></a></p></td>
-<td><p>Sample EPL+shear lens parameters with strong
-lensing condition</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.strongly_lensed_source_redshift" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.strongly_lensed_source_redshift"><code class="xref py py-meth docutils literal notranslate"><span class="pre">strongly_lensed_source_redshift()</span></code></a></p></td>
-<td><p>Sample source redshifts with lensing condition</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="instance-attributes">
-<h4>Instance Attributes<a class="headerlink" href="#instance-attributes" title="Link to this heading"></a></h4>
-<p>LensGalaxyParameterDistribution has the following attributes:</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Attribute</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Unit</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">npool</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
-<td></td>
-<td><p>Number of processors for parallel computation</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">z_min</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
-<td></td>
-<td><p>Minimum redshift</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">z_max</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
-<td></td>
-<td><p>Maximum redshift</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">cosmo</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">astropy.cosmology</span></code></p></td>
-<td></td>
-<td><p>Cosmology object for calculations</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.event_type" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.event_type"><code class="xref py py-attr docutils literal notranslate"><span class="pre">event_type</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
-<td></td>
-<td><p>Type of CBC event (BBH, BNS, NSBH)</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">directory</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
-<td></td>
-<td><p>Path to interpolator storage directory</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.lens_param_samplers" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.lens_param_samplers"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lens_param_samplers</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
-<td></td>
-<td><p>Dictionary of lens parameter sampler names</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.lens_param_samplers_params" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.lens_param_samplers_params"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lens_param_samplers_params</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
-<td></td>
-<td><p>Parameters for lens parameter samplers</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.lens_functions" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.lens_functions"><code class="xref py py-attr docutils literal notranslate"><span class="pre">lens_functions</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
-<td></td>
-<td><p>Dictionary of lens function names</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.normalization_pdf_z_lensed" title="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.normalization_pdf_z_lensed"><code class="xref py py-attr docutils literal notranslate"><span class="pre">normalization_pdf_z_lensed</span></code></a></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
-<td></td>
-<td><p>Normalization constant for lensed source z pdf</p></td>
-</tr>
-</tbody>
-</table>
 <dl class="py property">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.zs_sl">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zs_sl</span></span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.zs_sl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.zs_sl" title="Link to this definition"></a></dt>
@@ -332,7 +241,43 @@ lensing condition</p></td>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>zs_sl</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">ler.functions.FunctionConditioning</span></code></span></dt><dd><p>Function for sampling source redshifts conditioned on strong lensing.</p>
+<dt><strong>zs_sl</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">FunctionConditioning</span></code></span></dt><dd><p>Sampler object for strongly-lensed source redshift.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.cross_section_based_sampler">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cross_section_based_sampler</span></span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.cross_section_based_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.cross_section_based_sampler" title="Link to this definition"></a></dt>
+<dd><p>Cross-section based lens parameter sampler function. This is an initialized function of sampler_functions.create_importance_sampler or sampler_functions.create_rejection_sampler based on the configuration.</p>
+<p>This function samples lens parameters weighted by the strong lensing
+cross-section.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of strongly-lensed parameter sets to sample.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>zs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of source redshifts.</p>
+</dd>
+<dt><strong>zl</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of lens redshifts.</p>
+</dd>
+<dt><strong>sigma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of velocity dispersions.</p>
+</dd>
+<dt><strong>q</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of axis ratios.</p>
+</dd>
+<dt><strong>phi</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of axis rotation angles.</p>
+</dd>
+<dt><strong>gamma</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of density profile slopes.</p>
+</dd>
+<dt><strong>gamma1</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of external shear components in the x-direction.</p>
+</dd>
+<dt><strong>gamma2</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of external shear components in the y-direction.</p>
 </dd>
 </dl>
 </dd>
@@ -357,16 +302,16 @@ lensing condition</p></td>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.lens_param_samplers">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lens_param_samplers</span></span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.lens_param_samplers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.lens_param_samplers" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.lens_priors">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lens_priors</span></span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.lens_priors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.lens_priors" title="Link to this definition"></a></dt>
 <dd><p>Dictionary of lens parameter sampler function names.</p>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>lens_param_samplers</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary mapping parameter names to sampler function names.</p>
+<dt><strong>lens_priors</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary mapping parameter names to sampler function names.</p>
 <p>Keys include: ‘zs_sl’, ‘lens_redshift’,</p>
 <p>‘velocity_dispersion’, ‘axis_ratio’, ‘axis_rotation_angle’,</p>
-<p>‘external_shear’, ‘density_profile_slope’.</p>
+<p>‘external_shear1’, ‘external_shear2’, ‘density_profile_slope’.</p>
 </dd>
 </dl>
 </dd>
@@ -374,14 +319,14 @@ lensing condition</p></td>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.lens_param_samplers_params">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lens_param_samplers_params</span></span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.lens_param_samplers_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.lens_param_samplers_params" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.lens_priors_params">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lens_priors_params</span></span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.lens_priors_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.lens_priors_params" title="Link to this definition"></a></dt>
 <dd><p>Dictionary of parameters for lens parameter samplers.</p>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>lens_param_samplers_params</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary with sampler parameters.</p>
-<p>Each key corresponds to a sampler in lens_param_samplers.</p>
+<dt><strong>lens_priors_params</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary with sampler parameters.</p>
+<p>Each key corresponds to a sampler in lens_priors.</p>
 </dd>
 </dl>
 </dd>
@@ -405,21 +350,8 @@ lensing condition</p></td>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.event_type">
-<span class="sig-name descname"><span class="pre">event_type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;'BBH'&quot;</span></em><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.event_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.event_type" title="Link to this definition"></a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
-<p>Type of event to generate.</p>
-<p>e.g. ‘BBH’, ‘BNS’, ‘NSBH’</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_lens_parameters_routine">
 <span class="sig-name descname"><span class="pre">sample_lens_parameters_routine</span></span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.sample_lens_parameters_routine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_lens_parameters_routine" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.cross_section_based_sampler">
-<span class="sig-name descname"><span class="pre">cross_section_based_sampler</span></span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.cross_section_based_sampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.cross_section_based_sampler" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -557,9 +489,83 @@ the projected mass distribution.</p></td>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_all_routine_epl_shear_sl">
-<span class="sig-name descname"><span class="pre">sample_all_routine_epl_shear_sl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.sample_all_routine_epl_shear_sl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_all_routine_epl_shear_sl" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.epl_shear_sl_parameters_rvs">
+<span class="sig-name descname"><span class="pre">epl_shear_sl_parameters_rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.epl_shear_sl_parameters_rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.epl_shear_sl_parameters_rvs" title="Link to this definition"></a></dt>
 <dd><p>Sample EPL+shear galaxy lens parameters with strong lensing condition.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of lens parameters to sample.</p>
+<p>default: 1000</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>lens_parameters</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of sampled lens parameters.</p>
+<p>The included parameters and their units are as follows (for default settings):</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Units</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>zl</p></td>
+<td></td>
+<td><p>redshift of the lens</p></td>
+</tr>
+<tr class="row-odd"><td><p>zs</p></td>
+<td></td>
+<td><p>redshift of the source</p></td>
+</tr>
+<tr class="row-even"><td><p>sigma</p></td>
+<td><p>km s^-1</p></td>
+<td><p>velocity dispersion</p></td>
+</tr>
+<tr class="row-odd"><td><p>q</p></td>
+<td></td>
+<td><p>axis ratio</p></td>
+</tr>
+<tr class="row-even"><td><p>theta_E</p></td>
+<td><p>radian</p></td>
+<td><p>Einstein radius</p></td>
+</tr>
+<tr class="row-odd"><td><p>phi</p></td>
+<td><p>rad</p></td>
+<td><p>axis rotation angle. counter-clockwise from the
+positive x-axis (RA-like axis) to the major axis of
+the projected mass distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p>gamma</p></td>
+<td></td>
+<td><p>density profile slope of EPL galaxy</p></td>
+</tr>
+<tr class="row-odd"><td><p>gamma1</p></td>
+<td></td>
+<td><p>external shear component in the x-direction
+(RA-like axis)</p></td>
+</tr>
+<tr class="row-even"><td><p>gamma2</p></td>
+<td></td>
+<td><p>external shear component in the y-direction
+(Dec-like axis)</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_all_routine_epl_shear_intrinsic">
+<span class="sig-name descname"><span class="pre">sample_all_routine_epl_shear_intrinsic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.sample_all_routine_epl_shear_intrinsic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_all_routine_epl_shear_intrinsic" title="Link to this definition"></a></dt>
+<dd><p>Sample EPL+shear galaxy lens parameters from intrinsic distributions.</p>
+<p>Samples lens parameters from their intrinsic distributions without
+applying strong lensing cross-section weighting.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -641,17 +647,23 @@ the projected mass distribution.</p></td>
 <dt><strong>get_attribute</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>If True, returns the sampler object instead of samples.</p>
 <p>default: False</p>
 </dd>
-<dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Additional parameters</p>
+<dt><strong>**kwargs</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Additional parameters.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>redshifts</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt><dd><p>Array of source redshifts conditioned on strong lensing.</p>
+<dt><strong>redshifts</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> or <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code></span></dt><dd><p>Array of source redshifts conditioned on strong lensing, or the sampler object.</p>
 </dd>
 </dl>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>This sampler needs a merger-rate-weighted intrinsic source redshift model via
+<code class="docutils literal notranslate"><span class="pre">self.merger_rate_density_based_source_redshift</span></code>. That attribute is provided by
+<code class="xref py py-class docutils literal notranslate"><span class="pre">CBCSourceParameterDistribution</span></code> and therefore is
+available in <code class="xref py py-class docutils literal notranslate"><span class="pre">LensGalaxyParameterDistribution</span></code>
+(which inherits both).</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ler.lens_galaxy_population</span> <span class="kn">import</span> <span class="n">LensGalaxyParameterDistribution</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lens</span> <span class="o">=</span> <span class="n">LensGalaxyParameterDistribution</span><span class="p">()</span>
@@ -661,81 +673,6 @@ the projected mass distribution.</p></td>
 </div>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_all_routine_epl_shear_intrinsic">
-<span class="sig-name descname"><span class="pre">sample_all_routine_epl_shear_intrinsic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ler/lens_galaxy_population/lens_galaxy_parameter_distribution.html#LensGalaxyParameterDistribution.sample_all_routine_epl_shear_intrinsic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ler.lens_galaxy_population.lens_galaxy_parameter_distribution.LensGalaxyParameterDistribution.sample_all_routine_epl_shear_intrinsic" title="Link to this definition"></a></dt>
-<dd><p>Sample EPL+shear galaxy lens parameters from intrinsic distributions.</p>
-<p>Samples lens parameters from their intrinsic distributions without
-applying strong lensing cross-section weighting.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>size</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">int</span></code></span></dt><dd><p>Number of lens parameters to sample.</p>
-<p>default: 1000</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl>
-<dt><strong>lens_parameters</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">dict</span></code></span></dt><dd><p>Dictionary of sampled lens parameters.</p>
-<p>The included parameters and their units are as follows (for default settings):</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Units</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>zl</p></td>
-<td></td>
-<td><p>redshift of the lens</p></td>
-</tr>
-<tr class="row-odd"><td><p>zs</p></td>
-<td></td>
-<td><p>redshift of the source</p></td>
-</tr>
-<tr class="row-even"><td><p>sigma</p></td>
-<td><p>km s^-1</p></td>
-<td><p>velocity dispersion</p></td>
-</tr>
-<tr class="row-odd"><td><p>q</p></td>
-<td></td>
-<td><p>axis ratio</p></td>
-</tr>
-<tr class="row-even"><td><p>theta_E</p></td>
-<td><p>radian</p></td>
-<td><p>Einstein radius</p></td>
-</tr>
-<tr class="row-odd"><td><p>phi</p></td>
-<td><p>rad</p></td>
-<td><p>axis rotation angle. counter-clockwise from the
-positive x-axis (RA-like axis) to the major axis of
-the projected mass distribution.</p></td>
-</tr>
-<tr class="row-even"><td><p>gamma</p></td>
-<td></td>
-<td><p>density profile slope of EPL galaxy</p></td>
-</tr>
-<tr class="row-odd"><td><p>gamma1</p></td>
-<td></td>
-<td><p>external shear component in the x-direction
-(RA-like axis)</p></td>
-</tr>
-<tr class="row-even"><td><p>gamma2</p></td>
-<td></td>
-<td><p>external shear component in the y-direction
-(Dec-like axis)</p></td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
 </dd></dl>
 
 </section>

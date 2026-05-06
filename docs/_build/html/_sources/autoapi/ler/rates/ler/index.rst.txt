@@ -100,7 +100,7 @@ Classes
            default: 10.0
 
        **event_type** : ``str``
-           Type of event to generate. source_priors and source_priors_params will be set accordingly.
+           Type of event to generate. gw_priors and gw_priors_params will be set accordingly.
 
            Options:
 
@@ -113,7 +113,7 @@ Classes
            default: 'BBH'
 
        **lens_type** : ``str``
-           Type of lens model to use. lens_functions, lens_functions_params, lens_param_samplers and lens_param_samplers_params will be set accordingly.
+           Type of lens model to use. lens_functions, lens_functions_params, lens_priors and lens_priors_params will be set accordingly.
 
            Options:
 
@@ -201,15 +201,6 @@ Classes
 
 
 
-   .. rubric:: Notes
-
-   - ``LeR`` class inherits from :class:`~ler.lens_galaxy_population.LensGalaxyParameterDistribution`.
-
-     Refer to that class for additional inherited attributes and methods.
-
-   - Parameters are stored in JSON files for memory efficiency and reproducibility.
-
-   - For stable rate estimates, use size >= 1e6 samples.
 
 
    .. rubric:: Examples
@@ -223,68 +214,6 @@ Classes
    >>> lensed_params = ler.lensed_cbc_statistics()
    >>> ler.lensed_rate()
    >>> ler.rate_ratio()
-
-   Instance Methods
-   ----------
-   LeR class has the following methods:
-
-   +-----------------------------------------------------+------------------------------------------------+
-   | Method                                              | Description                                    |
-   +=====================================================+================================================+
-   | :meth:`~unlensed_cbc_statistics`                    | Generate unlensed GW source parameters         |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~unlensed_sampling_routine`                  | Generate unlensed parameters with batching     |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~unlensed_rate`                              | Calculate the unlensed detection rate          |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~lensed_cbc_statistics`                      | Generate lensed GW source parameters           |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~lensed_sampling_routine`                    | Generate lensed parameters with batching       |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~lensed_rate`                                | Calculate the lensed detection rate            |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~rate_function`                              | General helper for rate calculation            |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~rate_ratio`                                 | Calculate lensed/unlensed rate ratio           |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~rate_comparison_with_rate_calculation`      | Calculate and compare lensed/unlensed rates    |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~selecting_n_unlensed_detectable_events`     | Select n unlensed detectable events            |
-   +-----------------------------------------------------+------------------------------------------------+
-   | :meth:`~selecting_n_lensed_detectable_events`       | Select n lensed detectable events              |
-   +-----------------------------------------------------+------------------------------------------------+
-
-   Instance Attributes
-   ----------
-   LeR class has the following attributes:
-
-   +------------------------------------------------+------------------+-------+------------------------------------------------+
-   | Attribute                                      | Type             | Unit  | Description                                    |
-   +================================================+==================+=======+================================================+
-   | :meth:`~npool`                                 | ``int``          |       | Number of parallel processing cores            |
-   +------------------------------------------------+------------------+-------+------------------------------------------------+
-   | :meth:`~z_min`                                 | ``float``        |       | Minimum source redshift                        |
-   +------------------------------------------------+------------------+-------+------------------------------------------------+
-   | :meth:`~z_max`                                 | ``float``        |       | Maximum source redshift                        |
-   +------------------------------------------------+------------------+-------+------------------------------------------------+
-   | :meth:`~event_type`                            | ``str``          |       | Type of CBC event (BBH, BNS, NSBH)             |
-   +------------------------------------------------+------------------+-------+------------------------------------------------+
-   | :meth:`~lens_type`                             | ``str``          |       | Type of lens galaxy model                      |
-   +------------------------------------------------+------------------+-------+------------------------------------------------+
-   | :meth:`~cosmo`                                 | ``Cosmology``    |       | Astropy cosmology object                       |
-   +------------------------------------------------+------------------+-------+------------------------------------------------+
-   | :meth:`~json_file_names`                       | ``dict``         |       | JSON file names for parameter storage          |
-   +------------------------------------------------+------------------+-------+------------------------------------------------+
-   | :meth:`~interpolator_directory`                | ``str``          |       | Directory for interpolator files               |
-   +------------------------------------------------+------------------+-------+------------------------------------------------+
-   | :meth:`~ler_directory`                         | ``str``          |       | Directory for output parameter files           |
-   +------------------------------------------------+------------------+-------+------------------------------------------------+
-   | :meth:`~pdet_finder`                           | ``callable``     |       | Detection probability finder function          |
-   +------------------------------------------------+------------------+-------+------------------------------------------------+
-   | :meth:`~ler_args`                              | ``dict``         |       | All LeR initialization arguments               |
-   +------------------------------------------------+------------------+-------+------------------------------------------------+
-   | :meth:`~create_new_interpolator`               | ``dict``         |       | Interpolator creation settings                 |
-   +------------------------------------------------+------------------+-------+------------------------------------------------+
 
 
 
@@ -594,37 +523,7 @@ Classes
               - 'resolution': int or list - Grid resolution for interpolation
 
               Special key 'gwsnr' is a bool for GWSNR interpolator creation.
-              Default: dict(
-                  merger_rate_density = {'create_new': False, 'resolution': 500},
-                  redshift_distribution = {'create_new': False, 'resolution': 500},
-                  luminosity_distance = {'create_new': False, 'resolution': 500},
-                  differential_comoving_volume = {'create_new': False, 'resolution': 500},
-                  source_frame_masses = {'create_new': False, 'resolution': 500},
-                  geocent_time = {'create_new': False, 'resolution': 500},
-                  ra = {'create_new': False, 'resolution': 500},
-                  dec = {'create_new': False, 'resolution': 500},
-                  phase = {'create_new': False, 'resolution': 500},
-                  psi = {'create_new': False, 'resolution': 500},
-                  theta_jn = {'create_new': False, 'resolution': 500},
-                  a_1 = {'create_new': False, 'resolution': 500},
-                  a_2 = {'create_new': False, 'resolution': 500},
-                  tilt_1 = {'create_new': False, 'resolution': 500},
-                  tilt_2 = {'create_new': False, 'resolution': 500},
-                  phi_12 = {'create_new': False, 'resolution': 500},
-                  phi_jl = {'create_new': False, 'resolution': 500},
-                  velocity_dispersion = {'create_new': False, 'resolution': 500, 'zl_resolution': 48},
-                  axis_ratio = {'create_new': False, 'resolution': 500, 'sigma_resolution': 48},
-                  lens_redshift = {'create_new': False, 'resolution': 48, 'zl_resolution': 48},
-                  lens_redshift_intrinsic = {'create_new': False, 'resolution': 500},
-                  optical_depth = {'create_new': False, 'resolution': 48},
-                  comoving_distance = {'create_new': False, 'resolution': 500},
-                  angular_diameter_distance = {'create_new': False, 'resolution': 500},
-                  angular_diameter_distance_z1z2 = {'create_new': False, 'resolution': 500},
-                  density_profile_slope = {'create_new': False, 'resolution': 100},
-                  lens_parameters_kde_sl = {'create_new': False, 'resolution': 5000},
-                  cross_section = {'create_new': False, 'resolution': [25, 25, 45, 15, 15]},
-                  gwsnr = False,
-              )
+              Default: ``False``.
 
 
 
@@ -701,7 +600,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: unlensed_cbc_statistics(size=100000, batch_size=50000, resume=True, save_batch=False, output_jsonfile=None)
+   .. py:method:: unlensed_cbc_statistics(size=100000, batch_size=50000, resume=True, save_batch=False, output_jsonfile=True)
 
       
       Generate unlensed GW source parameters with detection probabilities.
@@ -742,51 +641,7 @@ Classes
       :Returns:
 
           **unlensed_param** : ``dict``
-              Dictionary of unlensed GW source parameters. The included parameters and their units are as follows (for default settings):
-
-              +--------------------+--------------+--------------------------------------+
-              | Parameter          | Units        | Description                          |
-              +====================+==============+======================================+
-              | zs                 |              | redshift of the source               |
-              +--------------------+--------------+--------------------------------------+
-              | geocent_time       | s            | GPS time of coalescence              |
-              +--------------------+--------------+--------------------------------------+
-              | ra                 | rad          | right ascension                      |
-              +--------------------+--------------+--------------------------------------+
-              | dec                | rad          | declination                          |
-              +--------------------+--------------+--------------------------------------+
-              | phase              | rad          | phase of GW at reference frequency   |
-              +--------------------+--------------+--------------------------------------+
-              | psi                | rad          | polarization angle                   |
-              +--------------------+--------------+--------------------------------------+
-              | theta_jn           | rad          | inclination angle                    |
-              +--------------------+--------------+--------------------------------------+
-              | a_1                |              | spin of the primary compact binary   |
-              +--------------------+--------------+--------------------------------------+
-              | a_2                |              | spin of the secondary compact binary |
-              +--------------------+--------------+--------------------------------------+
-              | luminosity_distance| Mpc          | luminosity distance                  |
-              +--------------------+--------------+--------------------------------------+
-              | mass_1_source      | Msun         | mass_1 of the compact binary         |
-              |                    |              | (source frame)                       |
-              +--------------------+--------------+--------------------------------------+
-              | mass_2_source      | Msun         | mass_2 of the compact binary         |
-              |                    |              | (source frame)                       |
-              +--------------------+--------------+--------------------------------------+
-              | mass_1             | Msun         | mass_1 of the compact binary         |
-              |                    |              | (detector frame)                     |
-              +--------------------+--------------+--------------------------------------+
-              | mass_2             | Msun         | mass_2 of the compact binary         |
-              |                    |              | (detector frame)                     |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_L1            |              | pdet of L1                           |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_H1            |              | pdet of H1                           |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_V1            |              | pdet of V1                           |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_net           |              | pdet of the network                  |
-              +--------------------+--------------+--------------------------------------+
+              Sampled unlensed GW source parameters.
 
 
 
@@ -854,7 +709,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: unlensed_rate(unlensed_param=None, pdet_threshold=0.5, pdet_type='boolean', output_jsonfile=None)
+   .. py:method:: unlensed_rate(unlensed_param=None, pdet_threshold=0.5, pdet_type='boolean', output_jsonfile=True)
 
       
       Function to calculate the unlensed rate.
@@ -896,51 +751,7 @@ Classes
               Total unlensed rate (yr^-1).
 
           **unlensed_param** : ``dict``
-              dictionary of GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):
-
-              +--------------------+--------------+--------------------------------------+
-              | Parameter          | Units        | Description                          |
-              +====================+==============+======================================+
-              | zs                 |              | redshift of the source               |
-              +--------------------+--------------+--------------------------------------+
-              | geocent_time       | s            | GPS time of coalescence              |
-              +--------------------+--------------+--------------------------------------+
-              | ra                 | rad          | right ascension                      |
-              +--------------------+--------------+--------------------------------------+
-              | dec                | rad          | declination                          |
-              +--------------------+--------------+--------------------------------------+
-              | phase              | rad          | phase of GW at reference frequency   |
-              +--------------------+--------------+--------------------------------------+
-              | psi                | rad          | polarization angle                   |
-              +--------------------+--------------+--------------------------------------+
-              | theta_jn           | rad          | inclination angle                    |
-              +--------------------+--------------+--------------------------------------+
-              | a_1                |              | spin of the primary compact binary   |
-              +--------------------+--------------+--------------------------------------+
-              | a_2                |              | spin of the secondary compact binary |
-              +--------------------+--------------+--------------------------------------+
-              | luminosity_distance| Mpc          | luminosity distance                  |
-              +--------------------+--------------+--------------------------------------+
-              | mass_1_source      | Msun         | mass_1 of the compact binary         |
-              |                    |              | (source frame)                       |
-              +--------------------+--------------+--------------------------------------+
-              | mass_2_source      | Msun         | mass_2 of the compact binary         |
-              |                    |              | (source frame)                       |
-              +--------------------+--------------+--------------------------------------+
-              | mass_1             | Msun         | mass_1 of the compact binary         |
-              |                    |              | (detector frame)                     |
-              +--------------------+--------------+--------------------------------------+
-              | mass_2             | Msun         | mass_2 of the compact binary         |
-              |                    |              | (detector frame)                     |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_L1            |              | pdet of L1                           |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_H1            |              | pdet of H1                           |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_V1            |              | pdet of V1                           |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_net           |              | pdet of the network                  |
-              +--------------------+--------------+--------------------------------------+
+              Detectable unlensed GW source parameters.
 
 
 
@@ -1020,7 +831,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lensed_cbc_statistics(size=100000, batch_size=50000, save_batch=False, resume=True, output_jsonfile=None)
+   .. py:method:: lensed_cbc_statistics(size=100000, batch_size=50000, save_batch=False, resume=True, output_jsonfile=True)
 
       
       Generate lensed GW source parameters.
@@ -1061,100 +872,7 @@ Classes
       :Returns:
 
           **lensed_param** : ``dict``
-              Dictionary of lensed GW source parameters. The included parameters and their units are as follows (for default settings):
-
-              +------------------------------+-----------+-------------------------------------------------------+
-              | Parameter                    | Units     | Description                                           |
-              +==============================+===========+=======================================================+
-              | zl                           |           | redshift of the lens                                  |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | zs                           |           | redshift of the source                                |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | sigma                        | km s^-1   | velocity dispersion                                   |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | q                            |           | axis ratio                                            |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | theta_E                      | radian    | Einstein radius                                       |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
-              |                              |           | positive x-axis (RA-like axis) to the major axis of   |
-              |                              |           | the projected mass distribution.                      |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | gamma                        |           | density profile slope of EPL galaxy                   |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | gamma1                       |           | external shear component in the x-direction           |
-              |                              |           | (RA-like axis)                                        |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | gamma2                       |           | external shear component in the y-direction           |
-              |                              |           | (Dec-like axis)                                       |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | geocent_time                 | s         | geocent time                                          |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | ra                           | rad       | right ascension                                       |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | dec                          | rad       | declination                                           |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | phase                        | rad       | phase of GW at reference freq                         |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | psi                          | rad       | polarization angle                                    |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | theta_jn                     | rad       | inclination angle                                     |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | a_1                          |           | spin of the primary compact binary                    |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | a_2                          |           | spin of the secondary compact binary                  |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | luminosity_distance          | Mpc       | luminosity distance of the source                      |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | mass_1_source                | Msun      | mass of the primary compact binary (source frame)     |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | mass_2_source                | Msun      | mass of the secondary compact binary (source frame)   |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | mass_1                       | Msun      | mass of the primary compact binary (detector frame)   |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | mass_2                       | Msun      | mass of the secondary compact binary (detector frame) |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | x0_image_positions           | radian    | x-coordinate (RA-like axis) of the images             |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | x1_image_positions           | radian    | y-coordinate (Dec-like axis) of the images            |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | magnifications               |           | magnifications                                        |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | time_delays                  |           | time delays                                           |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | image_type                   |           | image type                                            |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | n_images                     |           | number of images                                      |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | x_source                     | radian    | x-coordinate (RA-like axis) of the source             |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | y_source                     | radian    | y-coordinate (Dec-like axis) of the source            |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | effective_luminosity_distance| Mpc       | effective luminosity distance of the images           |
-              |                              |           | luminosity_distance / sqrt(|magnifications_i|)        |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | effective_geocent_time       | s         | effective GPS time of coalescence of the images       |
-              |                              |           | geocent_time + time_delays_i                          |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | effective_phase              | rad       | morse-phase-corrected phase                           |
-              |                              |           | phi - morse_phase_i                                   |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | effective_ra                 | rad       | RA of the image                                       |
-              |                              |           | ra + (x0_image_positions_i - x_source)/cos(dec)       |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | effective_dec                | rad       | Dec of the image                                      |
-              |                              |           | dec + (x1_image_positions_i - y_source)               |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | effective_geocent_time       | s         | effective GPS time of coalescence of the images       |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | pdet_L1                      |           | detection probability of L1                           |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | pdet_H1                      |           | detection probability of H1                           |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | pdet_V1                      |           | detection probability of V1                           |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | pdet_net                     |           | detection probability of the network                  |
-              +------------------------------+-----------+-------------------------------------------------------+
+              Sampled lensed GW source parameters.
 
 
 
@@ -1223,7 +941,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: lensed_rate(lensed_param=None, pdet_threshold=[0.5, 0.5], num_img=[1, 1], output_jsonfile=None, nan_to_num=True, pdet_type='boolean')
+   .. py:method:: lensed_rate(lensed_param=None, pdet_threshold=[0.5, 0.5], num_img=[1, 1], output_jsonfile=True, nan_to_num=True, pdet_type='boolean')
 
       
       Function to calculate the lensed rate.
@@ -1279,98 +997,7 @@ Classes
               Total lensed rate (yr^-1).
 
           **lensed_param** : ``dict``
-              Dictionary of lensed GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):
-
-              +------------------------------+-----------+-------------------------------------------------------+
-              | Parameter                    | Units     | Description                                           |
-              +==============================+===========+=======================================================+
-              | zl                           |           | redshift of the lens                                  |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | zs                           |           | redshift of the source                                |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | sigma                        | km s^-1   | velocity dispersion                                   |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | q                            |           | axis ratio                                            |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | theta_E                      | radian    | Einstein radius                                       |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | phi                          | rad       | axis rotation angle. counter-clockwise from the       |
-              |                              |           | positive x-axis (RA-like axis) to the major axis of   |
-              |                              |           | the projected mass distribution.                      |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | gamma                        |           | density profile slope of EPL galaxy                   |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | gamma1                       |           | external shear component in the x-direction           |
-              |                              |           | (RA-like axis)                                        |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | gamma2                       |           | external shear component in the y-direction           |
-              |                              |           | (Dec-like axis)                                       |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | geocent_time                 | s         | geocent time                                          |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | ra                           | rad       | right ascension                                       |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | dec                          | rad       | declination                                           |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | phase                        | rad       | phase of GW at reference freq                         |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | psi                          | rad       | polarization angle                                    |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | theta_jn                     | rad       | inclination angle                                     |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | a_1                          |           | spin of the primary compact binary                    |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | a_2                          |           | spin of the secondary compact binary                  |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | luminosity_distance          | Mpc       | luminosity distance of the source                      |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | mass_1_source                | Msun      | mass of the primary compact binary (source frame)     |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | mass_2_source                | Msun      | mass of the secondary compact binary (source frame)   |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | mass_1                       | Msun      | mass of the primary compact binary (detector frame)   |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | mass_2                       | Msun      | mass of the secondary compact binary (detector frame) |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | x0_image_positions           | radian    | x-coordinate (RA-like axis) of the images             |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | x1_image_positions           | radian    | y-coordinate (Dec-like axis) of the images            |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | magnifications               |           | magnifications                                        |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | time_delays                  |           | time delays                                           |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | image_type                   |           | image type                                            |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | n_images                     |           | number of images                                      |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | x_source                     | radian    | x-coordinate (RA-like axis) of the source             |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | y_source                     | radian    | y-coordinate (Dec-like axis) of the source            |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | effective_luminosity_distance| Mpc       | effective luminosity distance of the images           |
-              |                              |           | luminosity_distance / sqrt(|magnifications_i|)        |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | effective_geocent_time       | s         | effective GPS time of coalescence of the images       |
-              |                              |           | geocent_time + time_delays_i                          |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | effective_phase              | rad       | morse-phase-corrected phase                           |
-              |                              |           | phi - morse_phase_i                                   |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | effective_ra                 | rad       | RA of the image                                       |
-              |                              |           | ra + (x0_image_positions_i - x_source)/cos(dec)       |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | effective_dec                | rad       | Dec of the image                                      |
-              |                              |           | dec + (x1_image_positions_i - y_source)               |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | pdet_L1                      |           | detection probability of L1                           |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | pdet_H1                      |           | detection probability of H1                           |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | pdet_V1                      |           | detection probability of V1                           |
-              +------------------------------+-----------+-------------------------------------------------------+
-              | pdet_net                     |           | detection probability of the network                  |
-              +------------------------------+-----------+-------------------------------------------------------+
+              Detectable lensed GW source parameters.
 
 
 
@@ -1601,51 +1228,7 @@ Classes
       :Returns:
 
           **param_final** : ``dict``
-              dictionary of GW source parameters of the detectable events. The included parameters and their units are as follows (for default settings):
-
-              +--------------------+--------------+--------------------------------------+
-              | Parameter          | Units        | Description                          |
-              +====================+==============+======================================+
-              | zs                 |              | redshift of the source               |
-              +--------------------+--------------+--------------------------------------+
-              | geocent_time       | s            | GPS time of coalescence              |
-              +--------------------+--------------+--------------------------------------+
-              | ra                 | rad          | right ascension                      |
-              +--------------------+--------------+--------------------------------------+
-              | dec                | rad          | declination                          |
-              +--------------------+--------------+--------------------------------------+
-              | phase              | rad          | phase of GW at reference frequency   |
-              +--------------------+--------------+--------------------------------------+
-              | psi                | rad          | polarization angle                   |
-              +--------------------+--------------+--------------------------------------+
-              | theta_jn           | rad          | inclination angle                    |
-              +--------------------+--------------+--------------------------------------+
-              | a_1                |              | spin of the primary compact binary   |
-              +--------------------+--------------+--------------------------------------+
-              | a_2                |              | spin of the secondary compact binary |
-              +--------------------+--------------+--------------------------------------+
-              | luminosity_distance| Mpc          | luminosity distance                  |
-              +--------------------+--------------+--------------------------------------+
-              | mass_1_source      | Msun         | mass of the primary compact binary   |
-              |                    |              | (source frame)                       |
-              +--------------------+--------------+--------------------------------------+
-              | mass_2_source      | Msun         | mass of the secondary compact binary |
-              |                    |              | (source frame)                       |
-              +--------------------+--------------+--------------------------------------+
-              | mass_1             | Msun         | mass_1 of the compact binary         |
-              |                    |              | (detector frame)                     |
-              +--------------------+--------------+--------------------------------------+
-              | mass_2             | Msun         | mass_2 of the compact binary         |
-              |                    |              | (detector frame)                     |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_L1            |              | pdet of L1                           |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_H1            |              | pdet of H1                           |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_V1            |              | pdet of V1                           |
-              +--------------------+--------------+--------------------------------------+
-              | pdet_net           |              | pdet of the network                  |
-              +--------------------+--------------+--------------------------------------+
+              Detectable unlensed GW source parameters.
 
 
 
