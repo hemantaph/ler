@@ -1,17 +1,17 @@
 # Summary
 
 <p align="center">
-    <img src="_static/sl.png" alt="Strong lensing illustration" width="100%">
+    <img src="_static/sl.png" alt="Strong lensing illustration" width="1000px">
 </p>
 
-<iframe src="_static/gwlensing.html"
+<iframe src="_static/gwlensing_non_rotating.html"
         width="100%"
-        height="500"
+        height="450"
         frameborder="0"
         allowfullscreen
         style="border:1px solid #ccc; border-radius:10px;"></iframe>
 
-*Interactive animation showing the lensing of gravitational waves by a massive object.*
+*Animation showing the lensing of gravitational waves by a massive object.*
 
 `ler` is a statistics-based Python package for simulating compact-binary
 gravitational-wave populations and calculating detectable event rates. It

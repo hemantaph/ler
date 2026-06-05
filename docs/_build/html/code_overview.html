@@ -13,7 +13,7 @@
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
       <link rel="stylesheet" type="text/css" href="_static/scalefix.css?v=551ad726" />
-      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=88a06014" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=753c9bd5" />
       <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -60,6 +60,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Code overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#simplified-workflow">Simplified workflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#main-entry-points">Main entry points</a></li>
 </ul>
 </li>
@@ -110,12 +111,15 @@
              
   <section id="code-overview">
 <h1>Code overview<a class="headerlink" href="#code-overview" title="Link to this heading"></a></h1>
-<p>The diagram below shows the main internal workflow of <code class="docutils literal notranslate"><span class="pre">ler</span></code>: how the
+<p>The diagram below summarizes the main internal workflow of <code class="docutils literal notranslate"><span class="pre">ler</span></code>: how the
 public classes connect to the source-population samplers, lens-population
 samplers, image solver, detectability calculation, rate estimators, and
 JSON outputs.</p>
-<a class="reference internal image-reference" href="_images/ler_flowchart.svg"><img alt="Flowchart of the internal workflow of ler" class="align-center" src="_images/ler_flowchart.svg" style="width: 100%;" />
+<section id="simplified-workflow">
+<h2>Simplified workflow<a class="headerlink" href="#simplified-workflow" title="Link to this heading"></a></h2>
+<a class="reference internal image-reference" href="_images/simplified_workflow.svg"><img alt="Flowchart of the internal workflow of ler (simplified version)" class="align-center" src="_images/simplified_workflow.svg" style="width: 400px;" />
 </a>
+</section>
 <section id="main-entry-points">
 <h2>Main entry points<a class="headerlink" href="#main-entry-points" title="Link to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">GWRATES</span></code> handles unlensed compact-binary population sampling and detection

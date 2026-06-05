@@ -12,9 +12,9 @@
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
       <link rel="stylesheet" type="text/css" href="../_static/scalefix.css?v=551ad726" />
-      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=88a06014" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=6e89e6ab" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -854,7 +854,7 @@ Velocity dispersion: [151.09757508 182.54117392 201.69941703 180.6957201
 <p><strong>Notes:</strong></p>
 <ul class="simple">
 <li><p><strong>GW priors/samplers</strong> must be a function with <code class="docutils literal notranslate"><span class="pre">size</span></code> as the only input argument, or a <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code> class object (use cases shown in later sections). Use <code class="docutils literal notranslate"><span class="pre">numba.njit</span></code> decorator for prior/sampler functions when possible. <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code> creates interpolators for the custom functions to speed up the calculations relying on numba njit.</p></li>
-<li><p><strong>Lens parameter samplers</strong> must be <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code> class object. Generally it takes it the function (1D or 2D) and create <code class="docutils literal notranslate"><span class="pre">njit</span></code> interpolators pdf and inverse rvs (sampler).</p></li>
+<li><p><strong>Lens parameter samplers</strong> must be <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code> class object. Generally it takes in the function (1D or 2D) and create <code class="docutils literal notranslate"><span class="pre">njit</span></code> interpolators pdf and inverse rvs (sampler).</p></li>
 <li><p><strong>Merger rate density</strong> must be a function of redshift, i.e., <span class="math notranslate nohighlight">\(F(z_s)\)</span>.</p></li>
 <li><p><strong>Velocity dispersion function (galaxy number density)</strong> must use a function of velocity dispersion, i.e., <span class="math notranslate nohighlight">\(F(\sigma)\)</span> or <span class="math notranslate nohighlight">\(F(\sigma, z_l)\)</span>, to create the <code class="docutils literal notranslate"><span class="pre">ler.utils.FunctionConditioning</span></code> class object.</p></li>
 </ul>

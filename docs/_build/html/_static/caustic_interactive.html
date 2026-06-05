@@ -176,13 +176,22 @@
         const gim = -e2t[1] * (2 - t) / 2 + (1 - t) * et[0] * 2 / (1 + q) * Om[1] / fr + (1 - t) * et[1] * 2 / (1 + q) * Om[0] / fr;
         bb -= 2 * (g1 * gre + g2 * gim);
         
-        const [, u2] = sqeq(cc, bb, aa);
+        const [u1_4, u2_4] = sqeq(cc, bb, aa);
+        const u2 = u2_4 > 0 ? u2_4 : u1_4;
         let xr4 = NaN, yr4 = NaN;
         if (isFinite(u2) && u2 > 0) { const r = b * Math.pow(u2, -1 / t) * fr; [xr4, yr4] = pol2cart(r, th); }
         
         let xrc = NaN, yrc = NaN;
-        if (t > 1) { const [, uc] = sqeq(cc, bb, aa - mi); if (isFinite(uc) && uc > 0) { const r = b * Math.pow(uc, -1 / t) * fr;[xrc, yrc] = pol2cart(r, th); } }
-        else { const [uc] = sqeq(cc, bb, aa + mi); if (isFinite(uc) && uc > 0) { const r = b * Math.pow(uc, -1 / t) * fr;[xrc, yrc] = pol2cart(r, th); } }
+        if (t > 1) {
+          const [u1c, u2c] = sqeq(cc, bb, aa - mi);
+          const uc = u2c > 0 ? u2c : u1c;
+          if (isFinite(uc) && uc > 0) { const r = b * Math.pow(uc, -1 / t) * fr;[xrc, yrc] = pol2cart(r, th); }
+        }
+        else {
+          const [u1c, u2c] = sqeq(cc, bb, aa + mi);
+          const uc = u1c > 0 ? u1c : u2c;
+          if (isFinite(uc) && uc > 0) { const r = b * Math.pow(uc, -1 / t) * fr;[xrc, yrc] = pol2cart(r, th); }
+        }
         
         let xa4 = NaN, ya4 = NaN, xac = NaN, yac = NaN;
         if (isFinite(xr4)) { const O = omega(Math.atan2(yr4, xr4 * q), t, q); const a = alpha_es(xr4, yr4, b, q, t, g1, g2, O); xa4 = xr4 - a[0]; ya4 = yr4 - a[1]; }
@@ -211,67 +220,291 @@
       return sf[lo] + tt * (sf[hi] - sf[lo]);
     }
 
-    // ===== Image Position Finder & Magnification =====
+    // ===== Python epl_shear_njit.py Image Solver Equivalents =====
+    const EPS = 1e-16;
+    const MAX_ROOTS = 16;
+    const MAX_IMGS = 5;
+
+    function signedPower(x, p) {
+      if (x === 0) return 0;
+      return Math.pow(Math.abs(x), p) * Math.sign(x);
+    }
+
+    function ell2pol(rell, theta, q) {
+      const phi = Math.atan2(Math.sin(theta) * q, Math.cos(theta));
+      const r = rell * Math.sqrt((Math.cos(theta) ** 2) / (q * q) + Math.sin(theta) ** 2);
+      return [r, phi];
+    }
+
+    function geomlinspace(a, b, N) {
+      const ratio = Math.pow(b / a, 1 / (N - 1));
+      const delta = a * (ratio - 1);
+      let nlin = Math.floor(a / delta);
+      if (nlin < 1) nlin = 1;
+      if (nlin > N) nlin = N;
+      const out = [];
+      for (let i = 0; i < nlin; i++) out.push(a * i / nlin);
+      for (let i = 0; i < N; i++) out.push(a * Math.pow(ratio, i));
+      return out;
+    }
+
+    function oneDimLensEqCalcs(args, phi) {
+      const { b, t, y1, y2, q, gamma1, gamma2 } = args;
+      const y = [y1, y2];
+      const den = 1 - gamma1 * gamma1 - gamma2 * gamma2;
+      const c = Math.cos(phi), s = Math.sin(phi);
+      const rhat = [((1 + gamma1) * c + gamma2 * s) / den, (gamma2 * c + (1 - gamma1) * s) / den];
+      const thetahat = [((1 + gamma1) * s - gamma2 * c) / den, (gamma2 * s - (1 - gamma1) * c) / den];
+      const [fracRoverrsh, phiell] = pol2ell(1, phi, q);
+      const Omega = omega(phiell, t, q);
+      const cnst = 2 * b / (1 + q);
+      let R;
+
+      if (Math.abs(t - 1) > 1e-4) {
+        const denom = cnst * cdot(Omega, thetahat);
+        const val = Math.abs(denom) > EPS ? -cdot(y, thetahat) / denom : NaN;
+        R = b * signedPower(val, 1 / (1 - t));
+      } else {
+        const OmegaOrt = [-Omega[1], Omega[0]];
+        const xvec = [(1 - gamma1) * c - gamma2 * s, -gamma2 * c + (1 + gamma1) * s];
+        const denom = cdot(OmegaOrt, xvec);
+        if (Math.abs(denom) > EPS) {
+          R = cdot(OmegaOrt, y) / denom * fracRoverrsh;
+        } else {
+          const rhatSq = cdot(rhat, rhat);
+          R = Math.abs(rhatSq) > EPS ? (cdot(y, rhat) + cnst * cdot(Omega, rhat)) / (den * rhatSq) * fracRoverrsh : 0;
+        }
+      }
+
+      const [r] = ell2pol(R, phiell, q);
+      return { Omega, cnst, phiell, q, r, rhat, t, b, thetahat, y };
+    }
+
+    function oneDimLensEq(phi, args) {
+      const c = oneDimLensEqCalcs(args, phi);
+      const [rr] = ell2pol(1, c.phiell, c.q);
+      const ip = cdot(c.y, c.rhat) * cdot(c.Omega, c.thetahat) - cdot(c.Omega, c.rhat) * cdot(c.y, c.thetahat);
+      return Math.pow(rr * c.b, 2 / c.t - 2) * signedPower(cdot(c.y, c.thetahat) / c.cnst, 2 / c.t) * ip * ip
+        + signedPower(ip, 2 / c.t) * cdot(c.Omega, c.thetahat) ** 2;
+    }
+
+    function oneDimLensEqUnsmooth(phi, args) {
+      const c = oneDimLensEqCalcs(args, phi);
+      const [rr] = ell2pol(1, c.phiell, c.q);
+      const ip = cdot(c.y, c.rhat) * cdot(c.Omega, c.thetahat) - cdot(c.Omega, c.rhat) * cdot(c.y, c.thetahat);
+      return signedPower(rr * c.b, 1 - c.t) * (cdot(c.y, c.thetahat) / c.cnst) * Math.abs(ip) ** c.t
+        + ip * Math.abs(cdot(c.Omega, c.thetahat)) ** c.t;
+    }
+
+    function oneDimLensEqBoth(thpl, args) {
+      const y = [], yNs = [];
+      for (const th of thpl) {
+        y.push(oneDimLensEq(th, args));
+        yNs.push(oneDimLensEqUnsmooth(th, args));
+      }
+      return [y, yNs];
+    }
+
+    function minApprox(x1, x2, x3, y1, y2, y3) {
+      const div = 2 * (x3 * (y1 - y2) + x1 * (y2 - y3) + x2 * (-y1 + y3));
+      if (!(Math.abs(div) > EPS)) return x2;
+      const num = x3 * x3 * (y1 - y2) + x1 * x1 * (y2 - y3) + x2 * x2 * (-y1 + y3);
+      return num / div;
+    }
+
+    function brentqLensResidual(xa, xb, args, smoothBranch = true, xtol = 2e-14, rtol = 16 * Number.EPSILON, maxiter = 100) {
+      let xpre = xa, xcur = xb, xblk = 0, fblk = 0, spre = 0, scur = 0;
+      const fn = smoothBranch ? oneDimLensEq : oneDimLensEqUnsmooth;
+      let fpre = fn(xpre, args), fcur = fn(xcur, args);
+      if (!isFinite(fpre) || !isFinite(fcur) || fpre * fcur > 0) return NaN;
+      if (fpre === 0) return xpre;
+      if (fcur === 0) return xcur;
+
+      for (let i = 0; i < maxiter; i++) {
+        if (fpre * fcur < 0) { xblk = xpre; fblk = fpre; }
+        if (Math.abs(fblk) < Math.abs(fcur)) {
+          xpre = xcur; xcur = xblk; xblk = xpre;
+          fpre = fcur; fcur = fblk; fblk = fpre;
+        }
+        const delta = 0.5 * (xtol + rtol * Math.abs(xcur));
+        const sbis = 0.5 * (xblk - xcur);
+        if (fcur === 0 || Math.abs(sbis) < delta) return xcur;
+
+        let useBisect = true, stry = 0;
+        if (Math.abs(spre) > delta && Math.abs(fcur) < Math.abs(fpre)) {
+          if (xpre === xblk) {
+            const denom = fcur - fpre;
+            if (Math.abs(denom) >= EPS) { stry = -fcur * (xcur - xpre) / denom; useBisect = false; }
+          } else {
+            const dpreDen = xpre - xcur, dblkDen = xblk - xcur;
+            if (Math.abs(dpreDen) >= EPS && Math.abs(dblkDen) >= EPS) {
+              const dpre = (fpre - fcur) / dpreDen;
+              const dblk = (fblk - fcur) / dblkDen;
+              const denom = dblk * dpre * (fblk - fpre);
+              if (Math.abs(denom) >= EPS) { stry = -fcur * (fblk * dblk - fpre * dpre) / denom; useBisect = false; }
+            }
+          }
+          if (!useBisect && 2 * Math.abs(stry) < Math.min(Math.abs(spre), 3 * Math.abs(sbis) - delta)) {
+            spre = scur; scur = stry;
+          } else {
+            spre = sbis; scur = sbis;
+          }
+        } else {
+          spre = sbis; scur = sbis;
+        }
+
+        xpre = xcur; fpre = fcur;
+        xcur += Math.abs(scur) > delta ? scur : (sbis > 0 ? delta : -delta);
+        fcur = fn(xcur, args);
+        if (!isFinite(fcur)) return NaN;
+      }
+      return xcur;
+    }
+
+    function getPhi(thpl, args) {
+      const [y, yNs] = oneDimLensEqBoth(thpl, args);
+      const roots = [], nphi = thpl.length;
+      const addRoot = (root) => {
+        if (!isFinite(root) || roots.length >= MAX_ROOTS) return;
+        const wrapped = ((root % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+        roots.push(wrapped);
+      };
+
+      for (let i = 0; i < nphi - 1; i++) {
+        if (y[i + 1] * y[i] <= 0) addRoot(brentqLensResidual(thpl[i], thpl[i + 1], args));
+        else if (yNs[i + 1] * yNs[i] <= 0) addRoot(brentqLensResidual(thpl[i], thpl[i + 1], args, false));
+      }
+
+      for (let i = 1; i < nphi + 1; i++) {
+        const y1 = y[i - 1], y2 = y[i % nphi], y3 = y[(i + 1) % nphi];
+        const y1n = yNs[i - 1], y2n = yNs[i % nphi], y3n = yNs[(i + 1) % nphi];
+        if ((y3 - y2) * (y2 - y1) > 0 && (y3n - y2n) * (y2n - y1n) > 0) continue;
+        if (y3 * y2 <= 0 || y1 * y2 <= 0) continue;
+        if (i > nphi - 2) continue;
+
+        const x1 = thpl[i - 1], x2 = thpl[i], x3 = thpl[i + 1];
+        const xmin = minApprox(x1, x2, x3, y1, y2, y3);
+        const xminNs = minApprox(x1, x2, x3, y1n, y2n, y3n);
+        const ymin = oneDimLensEq(xmin, args);
+        const yminNs = oneDimLensEqUnsmooth(xminNs, args);
+
+        if (ymin * y2 <= 0 && x2 <= xmin && xmin <= x3) {
+          addRoot(brentqLensResidual(x2, xmin, args));
+          addRoot(brentqLensResidual(xmin, x3, args));
+        } else if (ymin * y2 <= 0 && x1 <= xmin && xmin <= x2) {
+          addRoot(brentqLensResidual(x1, xmin, args));
+          addRoot(brentqLensResidual(xmin, x2, args));
+        } else if (yminNs * y2n <= 0 && x2 <= xminNs && xminNs <= x3) {
+          addRoot(brentqLensResidual(x2, xminNs, args, false));
+          addRoot(brentqLensResidual(xminNs, x3, args, false));
+        } else if (yminNs * y2n <= 0 && x1 <= xminNs && xminNs <= x2) {
+          addRoot(brentqLensResidual(x1, xminNs, args, false));
+          addRoot(brentqLensResidual(xminNs, x2, args, false));
+        }
+      }
+      return roots;
+    }
+
+    function solveLensEqAligned(b, t, y1, y2, q, gamma1, gamma2, Nmeas = 400, NmeasExtra = 80) {
+      const p1 = Math.atan2(y2 * (1 - gamma1) + gamma2 * y1, y1 * (1 + gamma1) + gamma2 * y2);
+      const geom = geomlinspace(1e-4, 0.1, NmeasExtra);
+      const thpl = [];
+      for (let i = 0; i < Nmeas; i++) thpl.push(Math.PI * i / (Nmeas - 1));
+      const pmod = ((p1 % Math.PI) + Math.PI) % Math.PI;
+      for (const g of geom) thpl.push(pmod - g);
+      for (const g of geom) thpl.push(pmod + g);
+      thpl.sort((a, b) => a - b);
+
+      const args = { b, t, y1, y2, q, gamma1, gamma2 };
+      const roots = getPhi(thpl, args);
+      const imgs = [];
+      for (const root of roots) {
+        for (let addPi = 0; addPi < 2; addPi++) {
+          const th = root + addPi * Math.PI;
+          const R = oneDimLensEqCalcs(args, th).r;
+          if (!(R > 0)) continue;
+          const xs = R * Math.cos(th), ys = R * Math.sin(th);
+          const a = alpha_es(xs, ys, b, q, t, gamma1, gamma2, omega(Math.atan2(ys, xs * q), t, q));
+          const diff = Math.sqrt((xs - a[0] - y1) ** 2 + (ys - a[1] - y2) ** 2);
+          if (diff < 1e-8) imgs.push([xs, ys]);
+        }
+      }
+
+      const unique = [];
+      for (const p of imgs) {
+        if (!unique.some(u => Math.abs(u[0] - p[0]) < 1e-8 && Math.abs(u[1] - p[1]) < 1e-8)) {
+          unique.push(p);
+          if (unique.length >= MAX_IMGS) break;
+        }
+      }
+      return unique;
+    }
+
+    function eplFunction(x, y, b, t, q, Omega) {
+      const R = cabs([x * q, y]);
+      if (R < EPS) return 0;
+      const alph = cscale((2 / (1 + q)) * Math.pow(b / R, t) * R, Omega);
+      return (x * alph[0] + y * alph[1]) / (2 - t);
+    }
+
+    function shearFunction(x, y, gamma1, gamma2) {
+      return 0.5 * (gamma1 * x * x + 2 * gamma2 * x * y - gamma1 * y * y);
+    }
+
+    function lensingDiagnostics(zx, zy, b, t, gamma1, gamma2, q, phi, Omega) {
+      const ang = Math.atan2(zy, zx);
+      const R = cabs([zx * q, zy]);
+      let u = R > EPS ? Math.pow(b / R, t) : 1e10;
+      if (u > 1e10) u = 1e10;
+      const kappa = 0.5 * (2 - t);
+      const Roverr = Math.sqrt(Math.cos(ang) ** 2 * q * q + Math.sin(ang) ** 2);
+      const alph = cscale(2 / (1 + q), Omega);
+      const term1 = cscale(-kappa, cexp_i(2 * (ang + phi)));
+      const term2 = cscale((1 - t) * Roverr, cmul(cexp_i(ang + 2 * phi), alph));
+      const gammaShear = cadd(term1, term2);
+
+      const fxx = (kappa + gammaShear[0]) * u + gamma1;
+      const fyy = (kappa - gammaShear[0]) * u - gamma1;
+      const fxy = gammaShear[1] * u + gamma2;
+      const detA = (1 - fxx) * (1 - fyy) - fxy * fxy;
+      const traceA = 2 - fxx - fyy;
+      if (Math.abs(detA) < EPS) return { mu: 10000, type: 0 };
+      const mu = 1 / detA;
+      let type = 0;
+      if (detA < 0) type = 2;
+      else if (traceA > 0) type = 1;
+      else if (traceA < 0) type = 3;
+      return { mu, type };
+    }
+
+    function typeLabel(code) {
+      if (code === 1) return 'I';
+      if (code === 2) return 'II';
+      if (code === 3) return 'III';
+      return '0';
+    }
+
     function findImages(bx, by, qi, pi, gp, g1u, g2u) {
-      const [e1, e2] = phi_q2_ellipticity(pi, qi);
-      const [te, q] = ellipticity2phi_q(e1, e2);
-      let [tg, gm] = shear_c2p(g1u, g2u);
-      const b = Math.sqrt(q); tg -= te;
-      const [g1, g2] = shear_p2c(tg, gm);
-      const M = rotmat(-te), Mi = rotmat(te), t = gp - 1;
-      const bl = mv(Mi, [bx, by]);
-      
-      const gN = 150, rng = 2.5, cands = [];
-      for (let ix = 0; ix < gN; ix++) for (let iy = 0; iy < gN; iy++) {
-        const x = -rng + (2 * rng * ix) / (gN - 1), y = -rng + (2 * rng * iy) / (gN - 1);
-        const a = alpha_es(x, y, b, q, t, g1, g2, omega(Math.atan2(y, x * q), t, q));
-        const dx = x - a[0] - bl[0], dy = y - a[1] - bl[1];
-        if (Math.sqrt(dx * dx + dy * dy) < 2 * rng / gN * 2.5) cands.push([x, y]);
-      }
-      
-      const imgs = [], h = 1e-5;
-      for (const [cx, cy] of cands) {
-        let x = cx, y = cy;
-        for (let it = 0; it < 30; it++) {
-          const O = omega(Math.atan2(y, x * q), t, q);
-          const a0 = alpha_es(x, y, b, q, t, g1, g2, O);
-          const fx = x - a0[0] - bl[0], fy = y - a0[1] - bl[1];
-          if (Math.sqrt(fx * fx + fy * fy) < 1e-12) break;
-          const ax = alpha_es(x + h, y, b, q, t, g1, g2, omega(Math.atan2(y, (x + h) * q), t, q));
-          const ay = alpha_es(x, y + h, b, q, t, g1, g2, omega(Math.atan2(y + h, x * q), t, q));
-          const j00 = 1 - (ax[0] - a0[0]) / h, j01 = -(ay[0] - a0[0]) / h;
-          const j10 = -(ax[1] - a0[1]) / h, j11 = 1 - (ay[1] - a0[1]) / h;
-          const d = j00 * j11 - j01 * j10; if (Math.abs(d) < 1e-20) break;
-          x -= (j11 * fx - j01 * fy) / d; y -= (-j10 * fx + j00 * fy) / d;
-        }
-        const Of = omega(Math.atan2(y, x * q), t, q);
-        const af = alpha_es(x, y, b, q, t, g1, g2, Of);
-        if (Math.sqrt((x - af[0] - bl[0]) ** 2 + (y - af[1] - bl[1]) ** 2) < 1e-6) {
-          let dup = false; for (const im of imgs) if (Math.sqrt((im[0] - x) ** 2 + (im[1] - y) ** 2) < 1e-4) { dup = true; break; }
-          if (!dup) imgs.push([x, y]);
-        }
-      }
+      const t = gp - 1, b = Math.sqrt(qi);
+      const cp = Math.cos(pi), sp = Math.sin(pi);
+      const c2p = cp * cp - sp * sp, s2p = 2 * cp * sp;
+      const bl = [bx * cp + by * sp, -bx * sp + by * cp];
+      const g1Rot = g1u * c2p + g2u * s2p;
+      const g2Rot = -g1u * s2p + g2u * c2p;
+      const imgs = solveLensEqAligned(b, t, bl[0], bl[1], qi, g1Rot, g2Rot);
+
       const res = [];
-      for (const [ix, iy] of imgs) {
-        const O = omega(Math.atan2(iy, ix * q), t, q);
-        const a0 = alpha_es(ix, iy, b, q, t, g1, g2, O);
-        const ax = alpha_es(ix + h, iy, b, q, t, g1, g2, omega(Math.atan2(iy, (ix + h) * q), t, q));
-        const ay = alpha_es(ix, iy + h, b, q, t, g1, g2, omega(Math.atan2(iy + h, ix * q), t, q));
-        
-        const a11 = 1 - (ax[0] - a0[0]) / h, a12 = -(ay[0] - a0[0]) / h;
-        const a21 = -(ax[1] - a0[1]) / h, a22 = 1 - (ay[1] - a0[1]) / h;
-        const det = a11 * a22 - a12 * a21, tr = a11 + a22, mu = 1 / Math.abs(det);
-        let tp; if (det < 0) tp = 'II'; else if (tr > 0) tp = 'I'; else tp = 'III';
-        
-        const pos = mv(M, [ix, iy]);
-        const a_epl = alpha_epl(ix, iy, b, q, t, O);
-        
-        // Match Python Euler-theorem Potential definition: (x * alpha_x + y * alpha_y) / (2 - t)
-        const psi_epl = (ix * a_epl[0] + iy * a_epl[1]) / (2 - t); 
-        const psi_shear = 0.5 * (g1 * (ix * ix - iy * iy) + 2 * g2 * ix * iy);
-        const tau = 0.5 * ((ix - bl[0]) ** 2 + (iy - bl[1]) ** 2) - (psi_epl + psi_shear); 
-        
-        res.push({ x: pos[0], y: pos[1], mu, type: tp, tau });
+      for (const [xRot, yRot] of imgs) {
+        const xSky = xRot * cp - yRot * sp;
+        const ySky = xRot * sp + yRot * cp;
+        const O = omega(Math.atan2(yRot, xRot * qi), t, qi);
+        const diag = lensingDiagnostics(xRot, yRot, b, t, g1u, g2u, qi, pi, O);
+        const tau = 0.5 * ((xSky - bx) ** 2 + (ySky - by) ** 2)
+          - eplFunction(xRot, yRot, b, t, qi, O)
+          - shearFunction(xSky, ySky, g1u, g2u);
+        if (!isFinite(diag.mu) || Math.abs(diag.mu) >= 0.01) {
+          res.push({ x: xSky, y: ySky, mu: Math.abs(diag.mu), type: typeLabel(diag.type), tau });
+        }
       }
       res.sort((a, b) => a.tau - b.tau);
       return res;

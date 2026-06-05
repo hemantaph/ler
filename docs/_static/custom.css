@@ -40,6 +40,36 @@
   /* Optional: slight background color */
 }
 
+.code-overview-flowchart {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.code-overview-flowchart .align-center {
+  width: 1400px !important;
+  max-width: none;
+}
+
+.code-overview-flowchart img {
+  display: block;
+  width: 1400px !important;
+  max-width: none !important;
+  height: auto !important;
+}
+
+.code-overview-mermaid .mermaid {
+  min-width: 1400px;
+  text-align: center;
+}
+
+.code-overview-mermaid .mermaid svg {
+  width: 1400px !important;
+  max-width: none !important;
+  height: auto !important;
+}
+
 /* Dark mode enhancements */
 [data-theme="dark"] .scrollable-image {
   border: 1px solid #444;

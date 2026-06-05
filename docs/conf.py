@@ -53,7 +53,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx_copybutton",
     "autoapi.extension",
-    # "sphinxcontrib.mermaid",
+    "sphinxcontrib.mermaid",
     "myst_parser",
     "sphinx_rtd_dark_mode",
     "sphinx.ext.githubpages",
@@ -255,5 +255,5 @@ source_suffix = {
 }
 
 # Configure Mermaid
-# mermaid_cmd = 'mmdc'
-# mermaid_params = ['--theme', 'forest', '--width', '800', '--backgroundColor', 'transparent']
+mermaid_output_format = "raw"
+mermaid_params = ["--theme", "forest", "--width", "900", "--backgroundColor", "transparent"]

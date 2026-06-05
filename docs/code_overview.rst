@@ -2,15 +2,28 @@
 Code overview
 ====================
 
-The diagram below shows the main internal workflow of ``ler``: how the
+The diagram below summarizes the main internal workflow of ``ler``: how the
 public classes connect to the source-population samplers, lens-population
 samplers, image solver, detectability calculation, rate estimators, and
 JSON outputs.
 
-.. image:: _static/ler_flowchart.svg
+Simplified workflow
+-------------------
+
+.. image:: _static/simplified_workflow.svg
     :align: center
-    :width: 100%
-    :alt: Flowchart of the internal workflow of ler
+    :width: 400px
+    :alt: Flowchart of the internal workflow of ler (simplified version)
+
+.. Detailed workflow
+.. -----------------
+
+.. .. container:: scrollable-image code-overview-flowchart
+
+..    .. image:: _static/ler_flowchart.svg
+..       :align: center
+..       :width: 1000px
+..       :alt: Flowchart of the internal workflow of ler (detailed version)
 
 Main entry points
 -----------------
