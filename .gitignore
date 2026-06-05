@@ -130,6 +130,7 @@ __pycache__/
 build
 dist
 ler.egg-info
+paper_pdf/
 test
 ./devdir/rates_o4/interpolator_json/H1/param_dict_list.pickle
 ./devdir/rates_o4/interpolator_json/L1/param_dict_list.pickle
