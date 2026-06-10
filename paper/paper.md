@@ -1,5 +1,5 @@
 ---
-title: '$ler$ : LVK (LIGO-Virgo-KAGRA collaboration) event (compact-binary mergers) rate calculator and simulator'
+title: 'ler : LVK (LIGO-Virgo-KAGRA collaboration) event (compact-binary mergers) rate calculator and simulator'
 tags:
   - Python
   - astrophysics
