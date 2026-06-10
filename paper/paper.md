@@ -21,6 +21,7 @@ authors:
     # equal-contrib: False
     affiliation: "4,5"
   - name: Ng Chung Yin (Leo)
+    orcid: 0009-0000-3587-1832
     # equal-contrib: False
     affiliation: "1"
   - name: Justin Janquart
