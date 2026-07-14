@@ -59,7 +59,7 @@ affiliations:
     index: 6
   - name: Royal Observatory of Belgium, Avenue Circulaire, 3, 1180 Uccle, Belgium
     index: 7
-  - name: Departament de Física, Universitat de les Illes Balears, IAC3-IEEC, Crta. Valldemossa km 7.5, E-07122 Palma, Spain
+  - name: IAC3, Universitat de les Illes Balears, Crta. Valldemossa km 7.5, E-07122 Palma, Spain
     index: 8
 date: 6 May 2026
 bibliography: paper.bib
