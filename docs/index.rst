@@ -87,13 +87,15 @@ Glossary
          </div>
          </div>
 
+
+
    Lensing of gravitational waves
 
       A process similar to the gravitational lensing of light, where gravitational waves emitted from distant astrophysical events are bent and split (strong-lensing case) into multiple images by the gravity of intervening massive objects, such as galaxies and galaxy clusters. This can magnify and change the arrival time of the gravitational waves.
 
       .. raw:: html
 
-         <div style="text-align: center;">
+         <div style="text-align: center; margin-bottom: 2em;">
          <iframe src="_static/gwlensing.html"
             width="90%"
             height="500"
@@ -105,6 +107,8 @@ Glossary
          </div>
          </div>
 
+
+
       .. raw:: html
 
          <div style="text-align:center;">
@@ -115,6 +119,8 @@ Glossary
             </p>
          </div>
          </div>
+
+
 
    Rate calculation and statistics
 

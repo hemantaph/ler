@@ -575,6 +575,15 @@ window.runMermaid = runMermaid;</script>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span></div>
 
 
+        <span class="n">pdet_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">snr_th</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+            <span class="n">snr_th_net</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+            <span class="n">pdet_type</span><span class="o">=</span><span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+            <span class="n">distribution_type</span><span class="o">=</span><span class="s2">&quot;noncentral_chi2&quot;</span><span class="p">,</span>
+            <span class="n">include_optimal_snr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">include_observed_snr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+
 <div class="viewcode-block" id="TrainingDataGenerator.ler_init_args">
 <a class="viewcode-back" href="../../../autoapi/ler/utils/gwsnr_training_data_generator/index.html#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.ler_init_args">[docs]</a>
         <span class="bp">self</span><span class="o">.</span><span class="n">ler_init_args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -595,7 +604,9 @@ window.runMermaid = runMermaid;</script>
             <span class="n">sampling_frequency</span><span class="o">=</span><span class="mf">2048.0</span><span class="p">,</span>
             <span class="n">waveform_approximant</span><span class="o">=</span><span class="s2">&quot;IMRPhenomXPHM&quot;</span><span class="p">,</span>
             <span class="n">minimum_frequency</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
-            <span class="n">snr_type</span><span class="o">=</span><span class="s2">&quot;interpolation_aligned_spins&quot;</span><span class="p">,</span>
+            <span class="n">snr_method</span><span class="o">=</span><span class="s2">&quot;inner_product&quot;</span><span class="p">,</span>
+            <span class="n">snr_type</span><span class="o">=</span><span class="s2">&quot;optimal_snr&quot;</span><span class="p">,</span>
+            <span class="n">pdet_kwargs</span><span class="o">=</span><span class="n">pdet_kwargs</span><span class="p">,</span>
             <span class="n">psds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">ifos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">interpolator_dir</span><span class="o">=</span><span class="s2">&quot;./interpolator_json&quot;</span><span class="p">,</span>
@@ -606,6 +617,17 @@ window.runMermaid = runMermaid;</script>
         <span class="p">)</span></div>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ler_init_args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;spin_precessing&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_init_args</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ler_init_args</span><span class="p">[</span><span class="s2">&quot;spin_precession&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_init_args</span><span class="p">[</span><span class="s2">&quot;spin_precessing&quot;</span><span class="p">]</span>
+        <span class="n">pdet_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_init_args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pdet_kwargs&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ler_init_args</span><span class="p">[</span><span class="s2">&quot;pdet_kwargs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdet_kwargs</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_snr_key</span><span class="p">(</span><span class="n">gw_param</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">,</span> <span class="s2">&quot;snr_net&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">gw_param</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">key</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;GW parameter dictionary must contain &#39;optimal_snr_net&#39; or &#39;snr_net&#39;.&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="TrainingDataGenerator.gw_parameters_generator">
 <a class="viewcode-back" href="../../../autoapi/ler/utils/gwsnr_training_data_generator/index.html#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.gw_parameters_generator">[docs]</a>
@@ -625,9 +647,9 @@ window.runMermaid = runMermaid;</script>
 
         <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ler_init_args</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">snr_recalculation</span><span class="p">:</span>
-            <span class="n">snr_type</span> <span class="o">=</span> <span class="s1">&#39;interpolation_aligned_spins&#39;</span>
+            <span class="n">snr_method</span> <span class="o">=</span> <span class="s1">&#39;interpolation_aligned_spins&#39;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">snr_type</span> <span class="o">=</span> <span class="s1">&#39;inner_product&#39;</span>
+            <span class="n">snr_method</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;snr_method&#39;</span><span class="p">]</span>
 
         <span class="c1"># </span>
         <span class="kn">from</span> <span class="nn">ler.rates</span> <span class="kn">import</span> <span class="n">GWRATES</span>
@@ -649,12 +671,16 @@ window.runMermaid = runMermaid;</script>
             <span class="n">mtot_max</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;mtot_max&#39;</span><span class="p">],</span>
             <span class="n">ratio_min</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;ratio_min&#39;</span><span class="p">],</span>
             <span class="n">ratio_max</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;ratio_max&#39;</span><span class="p">],</span>
+            <span class="n">spin_max</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;spin_max&#39;</span><span class="p">],</span>
             <span class="n">mtot_resolution</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;mtot_resolution&#39;</span><span class="p">],</span>
             <span class="n">ratio_resolution</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;ratio_resolution&#39;</span><span class="p">],</span>
+            <span class="n">spin_resolution</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;spin_resolution&#39;</span><span class="p">],</span>
             <span class="n">sampling_frequency</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;sampling_frequency&#39;</span><span class="p">],</span>
             <span class="n">waveform_approximant</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;waveform_approximant&#39;</span><span class="p">],</span>
             <span class="n">minimum_frequency</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;minimum_frequency&#39;</span><span class="p">],</span>
-            <span class="n">snr_type</span><span class="o">=</span><span class="n">snr_type</span><span class="p">,</span>
+            <span class="n">snr_method</span><span class="o">=</span><span class="n">snr_method</span><span class="p">,</span>
+            <span class="n">snr_type</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;snr_type&#39;</span><span class="p">],</span>
+            <span class="n">pdet_kwargs</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;pdet_kwargs&#39;</span><span class="p">],</span>
             <span class="n">psds</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;psds&#39;</span><span class="p">],</span>
             <span class="n">ifos</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;ifos&#39;</span><span class="p">],</span>
             <span class="n">interpolator_dir</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;interpolator_dir&#39;</span><span class="p">],</span>
@@ -664,6 +690,33 @@ window.runMermaid = runMermaid;</script>
             <span class="n">mtot_cut</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;mtot_cut&#39;</span><span class="p">],</span>
         <span class="p">)</span>
         <span class="n">ler</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
+        <span class="n">snr_recalculator</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">snr_recalculation</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">gwsnr</span> <span class="kn">import</span> <span class="n">GWSNR</span>
+            <span class="n">snr_recalculator</span> <span class="o">=</span> <span class="n">GWSNR</span><span class="p">(</span>
+                <span class="n">npool</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">npool</span><span class="p">,</span>
+                <span class="n">snr_method</span><span class="o">=</span><span class="s1">&#39;inner_product&#39;</span><span class="p">,</span>
+                <span class="n">snr_type</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;snr_type&#39;</span><span class="p">],</span>
+                <span class="n">pdet_kwargs</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;pdet_kwargs&#39;</span><span class="p">],</span>
+                <span class="n">mtot_min</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;mtot_min&#39;</span><span class="p">],</span>
+                <span class="n">mtot_max</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;mtot_max&#39;</span><span class="p">],</span>
+                <span class="n">ratio_min</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;ratio_min&#39;</span><span class="p">],</span>
+                <span class="n">ratio_max</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;ratio_max&#39;</span><span class="p">],</span>
+                <span class="n">spin_max</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;spin_max&#39;</span><span class="p">],</span>
+                <span class="n">mtot_resolution</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;mtot_resolution&#39;</span><span class="p">],</span>
+                <span class="n">ratio_resolution</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;ratio_resolution&#39;</span><span class="p">],</span>
+                <span class="n">spin_resolution</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;spin_resolution&#39;</span><span class="p">],</span>
+                <span class="n">sampling_frequency</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;sampling_frequency&#39;</span><span class="p">],</span>
+                <span class="n">waveform_approximant</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;waveform_approximant&#39;</span><span class="p">],</span>
+                <span class="n">minimum_frequency</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;minimum_frequency&#39;</span><span class="p">],</span>
+                <span class="n">psds</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;psds&#39;</span><span class="p">],</span>
+                <span class="n">ifos</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;ifos&#39;</span><span class="p">],</span>
+                <span class="n">interpolator_dir</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;interpolator_dir&#39;</span><span class="p">],</span>
+                <span class="n">create_new_interpolator</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;create_new_interpolator&#39;</span><span class="p">],</span>
+                <span class="n">gwsnr_verbose</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;gwsnr_verbose&#39;</span><span class="p">],</span>
+                <span class="n">multiprocessing_verbose</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;multiprocessing_verbose&#39;</span><span class="p">],</span>
+                <span class="n">mtot_cut</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;mtot_cut&#39;</span><span class="p">],</span>
+            <span class="p">)</span>
 
         <span class="c1"># path to save parameters</span>
         <span class="n">json_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;ler_directory&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">output_jsonfile</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -674,7 +727,7 @@ window.runMermaid = runMermaid;</script>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">json_path</span><span class="p">):</span>
                 <span class="n">gw_param</span> <span class="o">=</span> <span class="n">get_param_from_json</span><span class="p">(</span><span class="n">json_path</span><span class="p">)</span>
-                <span class="n">len_final</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gw_param</span><span class="p">[</span><span class="s1">&#39;snr_net&#39;</span><span class="p">])</span>
+                <span class="n">len_final</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gw_param</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_snr_key</span><span class="p">(</span><span class="n">gw_param</span><span class="p">)])</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;current size of the json file: </span><span class="si">{</span><span class="n">len_final</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">len_final</span> <span class="o">=</span> <span class="mi">0</span>
@@ -690,10 +743,11 @@ window.runMermaid = runMermaid;</script>
                 <span class="k">if</span> <span class="n">gw_param</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">continue</span>
 
-                <span class="k">if</span> <span class="n">snr_recalculation</span><span class="p">:</span>
-                    <span class="n">snrs</span> <span class="o">=</span> <span class="n">ler</span><span class="o">.</span><span class="n">snr_bilby</span><span class="p">(</span><span class="n">gw_param_dict</span><span class="o">=</span><span class="n">gw_param</span><span class="p">)</span>
-                    <span class="n">gw_param</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">snrs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">snr_recalculation</span><span class="p">:</span>
+                <span class="n">snrs</span> <span class="o">=</span> <span class="n">snr_recalculator</span><span class="o">.</span><span class="n">optimal_snr</span><span class="p">(</span><span class="n">gw_param_dict</span><span class="o">=</span><span class="n">gw_param</span><span class="p">)</span>
+                <span class="n">gw_param</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">snrs</span><span class="p">)</span>
 
+                <span class="k">if</span> <span class="n">data_distribution_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">gw_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">helper_data_distribution</span><span class="p">(</span><span class="n">gw_param</span><span class="p">,</span> <span class="n">data_distribution_range</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">gw_param</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -703,7 +757,7 @@ window.runMermaid = runMermaid;</script>
             <span class="n">append_json</span><span class="p">(</span><span class="n">json_path</span><span class="p">,</span> <span class="n">gw_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">);</span>
 
             <span class="c1"># print(f&quot;Collected number of events: {len_}&quot;)</span>
-            <span class="n">len_final</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gw_param</span><span class="p">[</span><span class="s1">&#39;snr_net&#39;</span><span class="p">])</span>
+            <span class="n">len_final</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gw_param</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_snr_key</span><span class="p">(</span><span class="n">gw_param</span><span class="p">)])</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Collected number of events: </span><span class="si">{</span><span class="n">len_final</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -712,7 +766,7 @@ window.runMermaid = runMermaid;</script>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">gw_param</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">gw_param</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[:</span><span class="n">size</span><span class="p">]</span>
             <span class="n">append_json</span><span class="p">(</span><span class="n">json_path</span><span class="p">,</span> <span class="n">gw_param</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
-            <span class="n">len_final</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gw_param</span><span class="p">[</span><span class="s1">&#39;snr_net&#39;</span><span class="p">])</span>
+            <span class="n">len_final</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gw_param</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_snr_key</span><span class="p">(</span><span class="n">gw_param</span><span class="p">)])</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;final size: </span><span class="si">{</span><span class="n">len_final</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;json file saved at: </span><span class="si">{</span><span class="n">json_path</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
@@ -722,7 +776,7 @@ window.runMermaid = runMermaid;</script>
 <a class="viewcode-back" href="../../../autoapi/ler/utils/gwsnr_training_data_generator/index.html#ler.utils.gwsnr_training_data_generator.TrainingDataGenerator.helper_data_distribution">[docs]</a>
     <span class="k">def</span> <span class="nf">helper_data_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gw_param</span><span class="p">,</span> <span class="n">data_distribution_range</span><span class="p">):</span>
     <span class="c1"># optimal SNR </span>
-        <span class="n">snr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">gw_param</span><span class="p">[</span><span class="s1">&#39;snr_net&#39;</span><span class="p">])</span>
+        <span class="n">snr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">gw_param</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_snr_key</span><span class="p">(</span><span class="n">gw_param</span><span class="p">)])</span>
 
         <span class="n">idx_arr</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">snr_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data_distribution_range</span><span class="p">)</span>
@@ -742,12 +796,15 @@ window.runMermaid = runMermaid;</script>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">gw_param_final</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">len_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">len_arr</span><span class="p">):</span>  <span class="c1"># loop over snr range</span>
-                <span class="n">idx_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">idx_arr</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">len_ref</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">idx_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">idx_arr</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">len_ref</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                <span class="p">)</span>
 
                 <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">gw_param</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> 
                     
                     <span class="k">try</span><span class="p">:</span>
-                        <span class="n">buffer_</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">idx_buffer</span><span class="p">]</span>
+                        <span class="n">buffer_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">value</span><span class="p">)[</span><span class="n">idx_buffer</span><span class="p">]</span>
                     <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;IndexError&quot;</span><span class="p">)</span>
                         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;key: </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">, len(value): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">, len(idx_buffer): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">idx_buffer</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -774,7 +831,13 @@ window.runMermaid = runMermaid;</script>
         <span class="k">if</span> <span class="n">parameter_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">parameter_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mass_1&#39;</span><span class="p">,</span> <span class="s1">&#39;mass_2&#39;</span><span class="p">,</span> <span class="s1">&#39;luminosity_distance&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_jn&#39;</span><span class="p">,</span> <span class="s1">&#39;psi&#39;</span><span class="p">,</span> <span class="s1">&#39;geocent_time&#39;</span><span class="p">,</span> <span class="s1">&#39;ra&#39;</span><span class="p">,</span> <span class="s1">&#39;dec&#39;</span><span class="p">,</span> <span class="s1">&#39;a_1&#39;</span><span class="p">,</span> <span class="s1">&#39;a_2&#39;</span><span class="p">,</span> <span class="s1">&#39;tilt_1&#39;</span><span class="p">,</span> <span class="s1">&#39;tilt_2&#39;</span><span class="p">]</span>
 
-        <span class="n">parameter_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">parameter_list</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">detector</span><span class="p">]</span>
+        <span class="n">detector_snr_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;optimal_snr_</span><span class="si">{</span><span class="n">detector</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">parameter_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">parameter_list</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span>
+            <span class="n">detector_snr_key</span><span class="p">,</span>
+            <span class="n">detector</span><span class="p">,</span>
+            <span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;snr_net&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
         <span class="n">combined_dict</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="n">file_name_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -792,8 +855,18 @@ window.runMermaid = runMermaid;</script>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">combined_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-        <span class="c1"># if &#39;snr_net&#39; is not in the combined_dict, we can calculate it</span>
-        <span class="n">combined_dict</span><span class="p">[</span><span class="s1">&#39;snr_net&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">combined_dict</span><span class="p">[</span><span class="n">detector</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;optimal_snr_net&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">combined_dict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">detector_snr_key</span> <span class="ow">in</span> <span class="n">combined_dict</span><span class="p">:</span>
+                <span class="n">combined_dict</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">combined_dict</span><span class="p">[</span><span class="n">detector_snr_key</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">combined_dict</span><span class="p">:</span>
+                <span class="n">combined_dict</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">combined_dict</span><span class="p">[</span><span class="n">detector</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="s2">&quot;snr_net&quot;</span> <span class="ow">in</span> <span class="n">combined_dict</span><span class="p">:</span>
+                <span class="n">combined_dict</span><span class="p">[</span><span class="s2">&quot;optimal_snr_net&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">combined_dict</span><span class="p">[</span><span class="s2">&quot;snr_net&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Could not find &#39;</span><span class="si">{</span><span class="n">detector_snr_key</span><span class="si">}</span><span class="s2">&#39;, &#39;</span><span class="si">{</span><span class="n">detector</span><span class="si">}</span><span class="s2">&#39;, or &#39;snr_net&#39; &quot;</span>
+                    <span class="s2">&quot;to build &#39;optimal_snr_net&#39;.&quot;</span>
+                <span class="p">)</span>
 
         <span class="n">json_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ler_init_args</span><span class="p">[</span><span class="s1">&#39;ler_directory&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">output_jsonfile</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;json file saved at: </span><span class="si">{</span><span class="n">json_path</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>

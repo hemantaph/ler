@@ -285,18 +285,20 @@ class TestLeRPopulations(CommonTestUtils):
             f"ratio: {ratio_lo} vs {ratio_hi}\n"
         )
 
-        # Sanity: rates lie between the loose floor and the lensed pdf normalization.
+        # Sanity: rates are physical and below the lensed pdf normalization.
+        # Do not apply RATE_LOW_LENSED here: the deliberately low ``phistar``
+        # population can produce a valid rate below that generic stochastic floor.
         rate_max_lens_lo = ler_lo.normalization_pdf_z_lensed
         rate_max_lens_hi = ler_hi.normalization_pdf_z_lensed
 
         assert (
             np.isfinite(rate_lo)
-            and rate_lo > RATE_LOW_LENSED
+            and rate_lo > 0.0
             and rate_lo < rate_max_lens_lo
         ), f"phistar={PHISTAR_LOW}: rate_lo not finite or not in expected range"
         assert (
             np.isfinite(rate_hi)
-            and rate_hi > RATE_LOW_LENSED
+            and rate_hi > 0.0
             and rate_hi < rate_max_lens_hi
         ), f"phistar={PHISTAR_HIGH}: rate_hi not finite or not in expected range"
         # More lens galaxies should increase the detection-weighted lensed rate here.

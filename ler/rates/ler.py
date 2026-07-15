@@ -627,7 +627,7 @@ class LeR(LensGalaxyParameterDistribution):
         )
         print(f"    lens_model_list = {self.ler_args['lens_model_list']},")
         print(
-            f"    image_properties_function = {self.ler_args['image_properties_function']},"
+            f"    image_properties_function = '{self.ler_args['image_properties_function']}',"
         )
         print(
             f"    multiprocessing_verbose = {self.ler_args['multiprocessing_verbose']},"
