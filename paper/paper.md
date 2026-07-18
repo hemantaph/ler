@@ -20,14 +20,14 @@ authors:
     orcid: 0000-0001-9161-7919
     # equal-contrib: False
     affiliation: "4,5"
-  - name: Ng Chung Yin (Leo)
+  - name: Leo C. Y. Ng
     orcid: 0009-0000-3587-1832
     # equal-contrib: False
-    affiliation: "1"
+    affiliation: "6"
   - name: Justin Janquart
     orcid: 0000-0003-2888-7152
     # equal-contrib: False
-    affiliation: "4,5,6,7"
+    affiliation: "4,5,7,8"
   - name: Chris Van Den Broeck
     orcid: 0000-0001-6800-4006
     # equal-contrib: False
@@ -39,11 +39,11 @@ authors:
   - name: Neha Singh
     orcid: 0000-0002-1135-3456
     # equal-contrib: False
-    affiliation: "8"
+    affiliation: "9"
   - name: David Keitel
     orcid: 0000-0002-2824-626X
     # equal-contrib: False
-    affiliation: "8"
+    affiliation: "9"
 affiliations:
   - name: Department of Physics, The Chinese University of Hong Kong, Shatin, New Territories, Hong Kong
     index: 1
@@ -55,12 +55,14 @@ affiliations:
     index: 4
   - name: Nikhef – National Institute for Subatomic Physics, Science Park, 1098 XG Amsterdam, The Netherlands
     index: 5
-  - name: Center for Cosmology, Particle Physics and Phenomenology - CP3, Universit\'e Catholique de Louvain, Louvain-La-Neuve, B-1348, Belgium
+  - name: IGC, Institute for Gravitation and the Cosmos, Pennsylvania State University, University Park, PA 16802, USA
     index: 6
-  - name: Royal Observatory of Belgium, Avenue Circulaire, 3, 1180 Uccle, Belgium
+  - name: Center for Cosmology, Particle Physics and Phenomenology - CP3, Universit\'e Catholique de Louvain, Louvain-La-Neuve, B-1348, Belgium
     index: 7
-  - name: IAC3, Universitat de les Illes Balears, Crta. Valldemossa km 7.5, E-07122 Palma, Spain
+  - name: Royal Observatory of Belgium, Avenue Circulaire, 3, 1180 Uccle, Belgium
     index: 8
+  - name: IAC3, Universitat de les Illes Balears, Crta. Valldemossa km 7.5, E-07122 Palma, Spain
+    index: 9
 date: 6 May 2026
 bibliography: paper.bib
 ---
