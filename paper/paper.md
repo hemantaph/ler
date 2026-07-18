@@ -23,7 +23,7 @@ authors:
   - name: Leo C. Y. Ng
     orcid: 0009-0000-3587-1832
     # equal-contrib: False
-    affiliation: "6"
+    affiliation: "1,6"
   - name: Justin Janquart
     orcid: 0000-0003-2888-7152
     # equal-contrib: False
