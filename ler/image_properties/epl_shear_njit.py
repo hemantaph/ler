@@ -1416,7 +1416,7 @@ def lensing_diagnostics_scalar(z, b, t, gamma1, gamma2, q, phi, Omega):
     traceA = 2.0 - f_xx - f_yy
 
     if abs(detA) < EPS:
-        mu = 10000.0 # effectively infinite magnification on the critical curve
+        mu = 100000.0 # effectively infinite magnification on the critical curve
         image_type = 0
     else:
         mu = 1.0 / detA
