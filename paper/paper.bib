@@ -45,12 +45,13 @@ abstract = {Like light, gravitational waves are gravitationally lensed by interv
   year         = {2026}
 }
 
-@misc{lertestgithub:2026,
-  author       = {Phurailatpam, Hemantakumar and collaborators},
-  title        = {{lertest}: Environment and validation examples for {ler}},
-  howpublished = {\url{https://github.com/hemantaph/lertest}},
-  note         = {Accessed 2026-05-06},
-  year         = {2026}
+@software{lertest:2026,
+  author    = {Phurailatpam, Hemantakumar and collaborators},
+  title     = {{lertest}: Environment and validation examples for {ler}},
+  year      = {2026},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.21768512},
+  url       = {https://doi.org/10.5281/zenodo.21768512}
 }
 
 @misc{lergithub:2026,
@@ -61,14 +62,17 @@ abstract = {Like light, gravitational waves are gravitationally lensed by interv
   year         = {2026}
 }
 
-@misc{GWTC4:2026,
-      title={GWTC-4.0: Updating the Gravitational-Wave Transient Catalog with Observations from the First Part of the Fourth LIGO-Virgo-KAGRA Observing Run},
-      author={{LIGO Scientific Collaboration et al.}},
-      year={2025},
-      eprint={2508.18082},
-      archivePrefix={arXiv},
-      primaryClass={gr-qc},
-      url={https://arxiv.org/abs/2508.18082},
+@article{GWTC4:2026,
+  author  = {{The LIGO Scientific Collaboration, the Virgo Collaboration, and the KAGRA Collaboration}},
+  title   = {{GWTC-4.0}: Updating the Gravitational-Wave Transient Catalog with Observations from the First Part of the Fourth {LIGO--Virgo--KAGRA} Observing Run},
+  journal = {The Astrophysical Journal Letters},
+  volume  = {1004},
+  number  = {2},
+  pages   = {L22},
+  year    = {2026},
+  month   = jun,
+  doi     = {10.3847/2041-8213/ae2c74},
+  url     = {https://doi.org/10.3847/2041-8213/ae2c74}
 }
 
 @article{GWTC3:2023,
@@ -154,6 +158,7 @@ abstract = {Like light, gravitational waves are gravitationally lensed by interv
       eprint={1807.07062},
       archivePrefix={arXiv},
       primaryClass={gr-qc},
+      doi={10.48550/arXiv.1807.07062},
       url={https://arxiv.org/abs/1807.07062},
 }
 
@@ -164,6 +169,7 @@ abstract = {Like light, gravitational waves are gravitationally lensed by interv
       eprint={2412.09888},
       archivePrefix={arXiv},
       primaryClass={astro-ph.IM},
+      doi={10.48550/arXiv.2412.09888},
       url={https://arxiv.org/abs/2412.09888},
 }
 
@@ -235,48 +241,96 @@ abstract = {Like light, gravitational waves are gravitationally lensed by interv
     doi = {10.3847/1538-4357/ac1bb4}
 }
 
-@article{Wempe:2022,
-    author = "{Wempe}, Ewoud and Koopmans, L{\'e}on V.E. and Wierda, A. Renske A.C. and Hannuksela, Otto Akseli and Agnello, Alberto and Bonvin, Cyril and Bucciarelli, Bendetta and Camera, Chiara and Czoske, Oliver and Finke, Carsten and others",
-    title = {A lensing multi-messenger channel: Combining LIGO-Virgo-Kagra lensed gravitational-wave measurements with Euclid observations},
-    year = {2022},
-    eprint = {2204.08732},
-    archivePrefix = {arXiv}
+@article{Wempe:2024,
+  author  = {Wempe, Ewoud and Koopmans, L{\'e}on V. E. and Wierda, A. Renske A. C. and Hannuksela, Otto A. and Van Den Broeck, Chris},
+  title   = {On the detection and precise localization of merging black holes events through strong gravitational lensing},
+  journal = {Monthly Notices of the Royal Astronomical Society},
+  volume  = {530},
+  number  = {3},
+  pages   = {3368--3390},
+  year    = {2024},
+  month   = may,
+  doi     = {10.1093/mnras/stae1023},
+  url     = {https://doi.org/10.1093/mnras/stae1023}
 }
 
-@misc{numpy:2022,
-    author = "{NumPy Community}",
-    title = {NumPy: A fundamental package for scientific computing with Python},
-    year = {2022},
-    publisher = {NumPy},
-    journal = {NumPy Website},
-    url = {https://numpy.org/}
-}
-
-@misc{numba:2022,
-    author = "{Lam}, Stan and Pitrou, St{\'e}phane and Seibert, Mark",
-    title = {Numba: A High Performance Python Compiler},
-    year = {2022},
-    publisher = {Anaconda, Inc.},
-    journal = {Numba Documentation},
-    url = {https://numba.pydata.org/}
-}
-
-@misc{scipy:2020,
-    author = "{Virtanen}, Pauli and Gommers, Ralf and Oliphant, Travis E. and Haberland, Matt and Reddy, Tyler and Cournapeau, David and Burovski, Evgeni and Peterson, Pearu and Weckesser, Warren and Bright, Jonathan and van der Walt, St{\'e}fan J. and Brett, Matthew and Wilson, Joshua and Millman, K. Jarrod and Mayorov, Nikolay and Nelson, Andrew R. J. and Jones, Eric and Kern, Robert and Larson, Eric and Carey, CJ and Polat, {\.I}lhan and Feng, Yu and Moore, Eric W. and VanderPlas, Jake and Laxalde, Denis and Perktold, Josef and Cimrman, Robert and Henriksen, Ian and Quintero, E. A. and Harris, Charles R. and Archibald, Anne M. and Ribeiro, Ant{\^o}nio H. and Pedregosa, Fabian and van Mulbregt, Paul and SciPy 1.0 Contributors",
-    title = {{SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python}},
+@article{numpy:2022,
+    author = {Harris, Charles R. and Millman, K. Jarrod and {van der Walt}, St{\'e}fan J. and Gommers, Ralf and Virtanen, Pauli and Cournapeau, David and Wieser, Eric and Taylor, Julian and Berg, Sebastian and Smith, Nathaniel J. and Kern, Robert and Picus, Matti and Hoyer, Stephan and {van Kerkwijk}, Marten H. and Brett, Matthew and Haldane, Allan and Fern{\'a}ndez del R{\'i}o, Jaime and Wiebe, Mark and Peterson, Pearu and G{\'e}rard-Marchant, Pierre and Sheppard, Kevin and Reddy, Tyler and Weckesser, Warren and Abbasi, Hameer and Gohlke, Christoph and Oliphant, Travis E.},
+    title = {Array programming with {NumPy}},
+    journal = {Nature},
     year = {2020},
-    publisher = {SciPy},
-    journal = {Nature Methods},
-    url = {https://www.scipy.org/}
+    month = sep,
+    volume = {585},
+    number = {7825},
+    pages = {357--362},
+    doi = {10.1038/s41586-020-2649-2},
+    url = {https://doi.org/10.1038/s41586-020-2649-2},
+    publisher = {Springer Nature}
 }
 
-@misc{gwcosmo:2022,
-    author = {{gwcosmo Contributors}},
-    title = {{gwcosmo: A Python package for gravitational-wave cosmology}},
-    year = {2022},
-    publisher = {GitHub},
-    journal = {GitHub repository},
-    url = {https://github.com/gwcosmo/gwcosmo}
+@inproceedings{numba:2022,
+    author = {Lam, Siu Kwan and Pitrou, Antoine and Seibert, Stanley},
+    title = {Numba: A {LLVM}-based Python {JIT} compiler},
+    booktitle = {Proceedings of the Second Workshop on the LLVM Compiler Infrastructure in {HPC}},
+    series = {{LLVM} '15},
+    year = {2015},
+    pages = {1--6},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    doi = {10.1145/2833157.2833162},
+    url = {https://doi.org/10.1145/2833157.2833162}
+}
+
+@article{scipy:2020,
+    author = {Virtanen, Pauli and Gommers, Ralf and Oliphant, Travis E. and Haberland, Matt and Reddy, Tyler and Cournapeau, David and Burovski, Evgeni and Peterson, Pearu and Weckesser, Warren and Bright, Jonathan and {van der Walt}, St{\'e}fan J. and Brett, Matthew and Wilson, Joshua and Millman, K. Jarrod and Mayorov, Nikolay and Nelson, Andrew R. J. and Jones, Eric and Kern, Robert and Larson, Eric and Carey, C J and Polat, {\.I}lhan and Feng, Yu and Moore, Eric W. and VanderPlas, Jake and Laxalde, Denis and Perktold, Josef and Cimrman, Robert and Henriksen, Ian and Quintero, E. A. and Harris, Charles R. and Archibald, Anne M. and Ribeiro, Ant{\^o}nio H. and Pedregosa, Fabian and {van Mulbregt}, Paul and {SciPy 1.0 Contributors}},
+    title = {{{SciPy} 1.0: Fundamental Algorithms for Scientific Computing in Python}},
+    journal = {Nature Methods},
+    year = {2020},
+    volume = {17},
+    number = {3},
+    pages = {261--272},
+    doi = {10.1038/s41592-019-0686-2},
+    url = {https://doi.org/10.1038/s41592-019-0686-2},
+    publisher = {Springer Nature}
+}
+
+@article{Gray:2023gwcosmo,
+  author  = {Gray, Rachel and Beirnaert, Freija and Karathanasis, Christos and Revenu, Beno{\^\i}t and Turski, Cezary and Chen, Anson and Baker, Tessa and Vallejo, Sergio and Enea Romano, Antonio and Ghosh, Tathagata and Ghosh, Archisman and Leyde, Konstantin and Mastrogiovanni, Simone and More, Surhud},
+  title   = {Joint cosmological and gravitational-wave population inference using dark sirens and galaxy catalogues},
+  journal = {Journal of Cosmology and Astroparticle Physics},
+  volume  = {2023},
+  number  = {12},
+  pages   = {023},
+  year    = {2023},
+  month   = dec,
+  doi     = {10.1088/1475-7516/2023/12/023},
+  url     = {https://doi.org/10.1088/1475-7516/2023/12/023}
+}
+
+@article{Gray:2022gwcosmo,
+  author  = {Gray, Rachel and Messenger, Christopher and Veitch, John},
+  title   = {A pixelated approach to galaxy catalogue incompleteness: improving the dark siren measurement of the Hubble constant},
+  journal = {Monthly Notices of the Royal Astronomical Society},
+  volume  = {512},
+  number  = {1},
+  pages   = {1127--1140},
+  year    = {2022},
+  month   = may,
+  doi     = {10.1093/mnras/stac366},
+  url     = {https://doi.org/10.1093/mnras/stac366}
+}
+
+@article{Gray:2020gwcosmo,
+  author  = {Gray, Rachel and Maga{\~n}a Hernandez, Ignacio and Qi, Hong and Sur, Ankan and Brady, Patrick R. and Chen, Hsin-Yu and Farr, Will M. and Fishbach, Maya and Gair, Jonathan R. and Ghosh, Archisman and Holz, Daniel E. and Mastrogiovanni, Simone and Messenger, Christopher and Steer, Dani{\`e}le A. and Veitch, John},
+  title   = {Cosmological inference using gravitational wave standard sirens: A mock data analysis},
+  journal = {Physical Review D},
+  volume  = {101},
+  number  = {12},
+  pages   = {122001},
+  year    = {2020},
+  month   = jun,
+  doi     = {10.1103/PhysRevD.101.122001},
+  url     = {https://doi.org/10.1103/PhysRevD.101.122001}
 }
 
 @article{astropy:2013,
@@ -354,14 +408,17 @@ abstract = {Like light, gravitational waves are gravitationally lensed by interv
     eprint = {https://academic.oup.com/ptep/article-pdf/2021/5/05A101/37974994/ptaa125.pdf},
 }
 
-@misc{ligolensing:2023,
-      title={Search for gravitational-lensing signatures in the full third observing run of the LIGO-Virgo network},
-      author={{LIGO Scientific Collaboration et al.}},
-      year={2023},
-      eprint={2304.08393},
-      archivePrefix={arXiv},
-      primaryClass={gr-qc},
-      url={https://arxiv.org/abs/2304.08393},
+@article{ligolensing:2024,
+  author  = {{The LIGO Scientific Collaboration, the Virgo Collaboration, and the KAGRA Collaboration}},
+  title   = {Search for Gravitational-lensing Signatures in the Full Third Observing Run of the {LIGO--Virgo} Network},
+  journal = {The Astrophysical Journal},
+  volume  = {970},
+  number  = {2},
+  pages   = {191},
+  year    = {2024},
+  month   = aug,
+  doi     = {10.3847/1538-4357/ad3e83},
+  url     = {https://doi.org/10.3847/1538-4357/ad3e83}
 }
 
 @article{Abbott:2021,
