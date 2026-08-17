@@ -367,7 +367,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             mass_ratio_prior_params = dict(
                 param_name = "mass_ratio",
                 sampler_type = "powerlaw_with_smoothing",
-                q_min=0.01, q_max=1.0,beta=1.171, mmin=3.551, delta_m=4.910
+                q_min=0.1, q_max=1.0,beta=1.171, mmin=3.551, delta_m=4.910
             )
             mass_2_source_priors = None
             mass_2_source_priors_params = None
@@ -1303,7 +1303,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
             default: False
         **kwargs : ``dict``
             Model parameters: \n
-            - q_min: Minimum mass ratio, default: 0.01 \n
+            - q_min: Minimum mass ratio, default: 0.1 \n
             - q_max: Maximum mass ratio, default: 1.0 \n
             - beta: Power-law index, default: 1.171 \n
             - mlow_2: Minimum secondary mass (Msun), default: 3.551 \n
@@ -3149,7 +3149,7 @@ class CBCSourceParameterDistribution(CBCSourceRedshiftDistribution):
                 powerlaw_with_smoothing=dict(
                     param_name="mass_ratio",
                     sampler_type="powerlaw_with_smoothing",
-                    q_min=0.01, 
+                    q_min=0.1, 
                     q_max=1.0,
                     mlow_2=3.551, 
                     mmax=300.0, 

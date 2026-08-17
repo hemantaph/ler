@@ -849,7 +849,8 @@ class ImageProperties:
 
             # get the effective phase for each image type
             # morse phase correction
-            effective_phase = phase - image_type[:, i]
+            # decrepited: effective_phase = phase - image_type[:, i]
+            effective_phase = np.mod(phase - image_type[:, i], 2.0 * np.pi)
 
             # get the effective sky location for each image type
             # flat sky location assumption
@@ -916,8 +917,9 @@ class ImageProperties:
             print("theta_E is already in lensed_param, skipping computation of theta_E")
 
         if "n_images" not in lensed_param:
-            x0_image_positions = lensed_param["x0_image_positions"]
-            n_images = np.sum(~np.isnan(x0_image_positions), axis=1)
+            mu = lensed_param["magnifications"]
+            idx = ~np.isnan(mu) & ~(mu == 0)
+            n_images = np.sum(idx, axis=1)
             lensed_param["n_images"] = n_images.astype(int)
         else:
             print(

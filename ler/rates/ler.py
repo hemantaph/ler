@@ -398,6 +398,7 @@ class LeR(LensGalaxyParameterDistribution):
                 distribution_type="noncentral_chi2",
                 include_optimal_snr=False,
                 include_observed_snr=False,
+                return_only_net_results=True,
             ),
             # Settings for interpolation grid
             mtot_min=1.0,
